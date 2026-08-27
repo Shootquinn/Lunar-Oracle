@@ -72,3 +72,23 @@ gameplan are held until 1.12 lands.
 quantity blocks make the existing bare "seven phases" and "six degraded modes" in the gameplan and in
 `step1_manager_open.md` into lint findings on the first run of the counting-rule check. That is the
 Tier 2 touch rule working as designed, not a defect introduced at 1.4.
+
+## From The Software Engineer, 1.11
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| The Designer's spelled-number lint regex needs `\b` on the group; `one` matches inside `someone` | **CONFIRMED** | Probe `"someone stated twelve lines above, and everyone agreed on seven."` Without boundaries the regex returns `one, twelve, one, seven` — two false positives from `someone` and `everyone`. With `\b` on both sides it returns `twelve, seven`. A correction to a correction, and it went the right way. |
+| TRC-5: the four kind-first trace lines are also wrong, not just line 421's ordering | **CONFIRMED, and this is the larger half of F4** | The prototype emits exactly two trace shapes: `Trace (citation, resolution-only)` and `Trace (scalar, recompute-verified)`. Both are two-slot. The answer contract frozen at 1.3 requires three: `Trace (kind, grade, origin)`. So every trace line in the prototype is non-conforming — line 421 is additionally out of order, which is what made F4 visible, but the ordering defect was the smaller finding. **Nothing in the prototype emits a conforming trace.** |
+
+## From The Software Engineer, 1.8
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| Instance 6: `literature/REGISTER.tsv`, `FIELDS.tsv` and `INDEX.tsv` are ignored by the frozen 1.1 `.gitignore` and would be absent on every fresh clone | **CONFIRMED. Open, and only one third of it is fixed.** `git check-ignore -q` returns ignored for all three. `literature/` is deny-by-default admitting `*.md` only — a rule written for a shelf of summaries, which silently excludes every machine-readable file the corpus needs. The register escapes by moving to `oracle/REGISTER.tsv`, verified tracked. **`FIELDS.tsv` and `INDEX.tsv` are The Engineer's and still land under `literature/`.** Owed against 1.7 and the enforcement layer. |
+| The retrieval probe: a rich in-file register block is a fabrication vector | **ACCEPTED, harness committed and re-runnable** | `tools/probe_register_encoding.js`, 13.5 KB, built against a copy of `lsei/literature/` and run through the real retrieval layer. The claim is that the register writes the question's own words into member bodies, which is the shape `confirmInText()` exists to refuse. This is a measurement nobody had made and the encoding choice was being argued as a preference. Not independently re-run by the orchestrator; the harness is committed so it can be. |
+
+**Live inconsistency, being reconciled.** 1.8 amended the answer contract from version 1 to version 2
+while 1.11 was writing a suite that asserts version 1. Both are The Software Engineer's and both
+landed this session. He flagged it himself in his 1.8 return. The 1.11 agent has been resumed with
+the four amendments and writes the delta to `step1_11_software_engineer_loop_suite_v2.md`. **The
+version field caught this before any code existed, which is what it was added for.**
