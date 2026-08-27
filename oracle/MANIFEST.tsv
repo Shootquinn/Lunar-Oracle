@@ -1,0 +1,41 @@
+# oracle/MANIFEST.tsv — the promotion manifest.
+# Specified by The Designer, Step 1 Wave 2 review section 2.4(a); ruled by The Manager at the
+# Step 1 close, decision 5.2. Built and loaded at sub-step 1.14 by The Engineer.
+#
+# It answers "where is oracle/bootstrap_contract.md" in one grep, which is the question a
+# Step 2 session actually asks. The H row declares the file's own size.
+#
+# H  1  <date>  <n-D-rows>
+# D  <target-path>  <source-file>  <marker-name>  <promoter-substep>  <gate>  <state>
+#
+# state is a closed set of three: specified | promoted | superseded.
+# gate names what must land first, or -.
+# marker-name is - when the target has no marked block behind it. Rows of that shape are
+# what MF-2 cannot see; see the note under the last row.
+#
+# Checks: tools/check_manifest.js. Check-register row CHK-27.
+H	1	2026-08-27	20
+D	.gitignore	cr_scratch/step1_1_systems_engineer_enforcement.md	-	1.1	-	promoted
+D	COUNTING_RULE.md	cr_scratch/step1_12_designer_counting_rule.md	COUNTING_RULE.md	1.12	-	promoted
+D	QUANTITIES.md	-	-	1.14	tools/quantities.js	promoted
+D	literature/NAMING.md	cr_scratch/step1_7_engineer_naming.md	NAMING.md	1.7	1.1 corrected .gitignore, applied	promoted
+D	oracle/AMENDMENTS.tsv	-	-	1.14	oracle/MANIFEST.tsv	promoted
+D	oracle/MANIFEST.tsv	-	-	1.14	-	promoted
+D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register_addendum.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	promoted
+D	oracle/REGISTER.lunar.tsv	cr_scratch/step1_9_space_resources_engineer_register_rows_addendum.md	oracle/REGISTER.tsv (lunar rows, corrected)	1.9	-	promoted
+D	oracle/REGISTER.tsv	-	-	1.14	AM-98: two H rows, one file; register_schema section 3.1 admits one	specified
+D	oracle/VERIFIED.tsv	cr_scratch/step1_6_systems_engineer_currency_policy.md	-	1.6	-	promoted
+D	oracle/answer_contract.md	cr_scratch/step1_3_software_engineer_answer_contract.md	oracle/answer_contract.md	1.3	-	promoted
+D	oracle/bootstrap_contract.md	cr_scratch/step1_4_systems_engineer_bootstrap_contract.md	bootstrap_contract.md	1.4	-	promoted
+D	oracle/check_register.md	cr_scratch/step1_13_systems_engineer_check_register.md	oracle/check_register.md	1.13	-	promoted
+D	oracle/currency_policy.md	cr_scratch/step1_6_systems_engineer_currency_policy.md	oracle/currency_policy.md	1.6	-	promoted
+D	oracle/install_state.md	cr_scratch/step1_5_systems_engineer_install_state.md	install_state.md	1.5	-	promoted
+D	oracle/register_schema.md	cr_scratch/step1_8_software_engineer_register_schema.md	oracle/register_schema.md	1.8	-	promoted
+D	oracle/tests/answering_loop_suite.md	cr_scratch/step1_11_software_engineer_loop_suite.md	oracle/tests/answering_loop_suite.md	1.11	-	promoted
+D	tools/quantities.js	-	-	1.14	COUNTING_RULE.md	promoted
+D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	superseded
+D	oracle/REGISTER.lunar.tsv	cr_scratch/step1_9_space_resources_engineer_register_rows.md	oracle/REGISTER.tsv (lunar rows)	1.9	-	superseded
+# One row is state:specified with no marker behind it — oracle/REGISTER.tsv. It fails MF-2 by
+# construction, and that failure is the point: the schema at oracle/register_schema.md section
+# 3.1 says H is "one row, the first row", and the two promoted halves each carry one. Nobody
+# ruled the merge. See AM-40. Do not make this row green by inventing a state.

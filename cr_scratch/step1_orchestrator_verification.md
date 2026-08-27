@@ -347,3 +347,34 @@ harness — the fixture writes "not ignored" and the harness compared against "a
 was real. Three harness errors in one step, all in the machinery for reading verdicts rather than in
 the tools being read: a `grep -v` that deleted a failure line, a block extracted with the wrong END
 marker, and now a vocabulary mismatch. Two of the three manufactured failures; one hid a real one.
+
+## From The Engineer, 1.14 — promotion and the two registers
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| The brief's CRLF premise is false | **CONFIRMED, and the premise was the orchestrator's** | Measured: 35 of 41 `cr_scratch/*.md` are pure LF, 6 contain CR. The specific file an agent called "CRLF on all 767 lines" has **0 CRLF pairs and 767 bare LF**. That agent's CRLF diagnosis of its own tool failure was wrong, the orchestrator repeated it into a brief without checking, and The Engineer's own first probe reproduced it before he identified it as an instrument fault. **Orchestrator relay error 6.** The CRLF-tolerance fix applied to both tools is harmless but addressed a non-problem; the real cause of that exit 2 is unidentified and should not be recorded as solved. |
+| `oracle/REGISTER.tsv` cannot exist as one file | **CONFIRMED** | Both promoted halves carry exactly one `H` row each. Concatenated: 2 `H` rows against a schema admitting one, exit 1, **143 failure lines.** Promoted as `REGISTER.lunar.tsv` and `REGISTER.econ.tsv`. He declined the merge as a schema ruling he does not own, which is correct. Routed to The Systems Engineer and The Software Engineer. |
+| `grep -c '^FAIL'` returns 0 against a real count of 143 | **CONFIRMED, and it validates the amended verdict rule** | `ecr_verify.js` indents its failure lines two spaces. On the concatenation: `^ *FAIL ` returns 143, `^FAIL` returns 0. **A naive anchored count would have reported a clean run against 143 failures.** This is the fourth error in the verdict-reading machinery this step and the first the amended rule caught rather than committed. |
+| Promotion is real and verified | **CONFIRMED by listing** | `oracle/` holds 11 files including `answer_contract.md`, `bootstrap_contract.md`, `check_register.md`, `currency_policy.md`, `install_state.md`, `register_schema.md`, `MANIFEST.tsv`, `AMENDMENTS.tsv`, `VERIFIED.tsv`, both register halves and `tests/`. `literature/` holds `NAMING.md`. Both directories existed nowhere an hour ago. |
+
+**The instrument validating itself is the strongest result of the step.** `tools/quantities.js`, an
+independent implementation, reproduces The Designer's hand measurement of 16 hard counting-rule
+failures **exactly, clause by clause**, with the delta to 23 fully attributed to two events after his
+run. A hand measurement and an independent implementation agreeing to the clause is the only evidence
+available that either is right.
+
+**And the lift-is-a-copy prediction measured:** promotion takes 23 failures to 33, and **the eight new
+duplicates are exactly the eight blocks two personas independently predicted.**
+
+### Orchestrator relay errors: six confirmed
+
+1. "Ten of nineteen" FA files, relayed into an author ruling. True figure 14.
+2. Lunar register rows reported passing; strict re-run returns FAIL, exit 1.
+3. E10's "two pushes" left unswept when the orchestrator made the third.
+4. A helium-3 total that exists in no source, being three category figures summed.
+5. "Thirteen amendments" written into a review brief; the true figure is seven, 13 being the highest row label.
+6. "Every file in `cr_scratch/` is CRLF", written into a brief from an agent's wrong self-diagnosis. 35 of 41 are pure LF.
+
+All six are arm 2 of The Manager's common-cause ruling: a number crossing a boundary between seats
+without the relaying seat running the operation that produces it. Arm 1 now has a checker. Arm 2 has
+a standing rule and no mechanism, and it is where every one of these lives.

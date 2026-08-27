@@ -88,7 +88,7 @@ conditions:    cwd: repository root, 55 characters. Asserted against the **long-
 at:            2026-08-26; lsei 7f97983; cr-agents f0c976b
 predicate:     a repository root longer than 150 characters in long-name form fails assertion A4
                and the bootstrap stops before cloning.
-derived-from:  Q-PATH-CEILING-259
+derived-from:  Q-PATH-CEILING-259, Q-PATH-BUDGET-108
 sampled:       n/a — this operation subtracts, it does not classify
 superseded:    none
 ```

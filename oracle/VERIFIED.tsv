@@ -1,0 +1,7 @@
+# rows=5
+copy	ref	bumped_at	direction	note
+cr-agents	f0c976b	2026-08-27	initial	seeded; committed upstream 2026-08-20; never pushed to by this project
+lsei	c8274e6	2026-08-27	initial	seeded; the model working copy as this project first found it
+lsei	d7889e1	2026-08-27	ours	seeded, reconstructed from git log; pushed by this project 2026-08-26
+lsei	f788ea2	2026-08-27	ours	seeded, reconstructed from git log; pushed by this project 2026-08-26
+lsei	7f97983	2026-08-27	ours	seeded, reconstructed from git log; pushed by this project 2026-08-26
