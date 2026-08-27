@@ -73,6 +73,11 @@
 # convenience wildcard here — /*state*, /*.lock — would eventually swallow it, and the
 # failure would present as "the ref we verified against is missing on a fresh clone."
 /.oracle-state.json
+# The write-temp, as a second literal rather than a wildcard, for the same reason the line
+# above is a literal. It is currently covered only by the unanchored *.tmp litter rule at the
+# foot of this file, which is a different rule with a different purpose; a state file that
+# survives a clone because someone tightened the litter rule is the failure this row prevents.
+/.oracle-state.json.tmp
 
 # --- The findings shelf --------------------------------------------------------------------
 # Same posture as literature/ above, and for the same reason. The author ruled at the Step 0

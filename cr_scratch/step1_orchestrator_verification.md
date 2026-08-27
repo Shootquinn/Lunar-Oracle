@@ -147,3 +147,25 @@ one register. Worth a note at 1.13, which is the sub-step that enumerates them.
 - **Six Step 0 figures were wrong or under-described** and are corrected in the rows. Notably a
   water-to-dust ratio with no stated excavation depth anywhere in the source, a deck that states no
   TRL, and a source that prints no specific power at all. All six were quoted in Step 0 prose.
+
+## From The Systems Engineer, 1.5 and 1.13
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| `test -d tools/githooks` also passes on an empty directory with no hook firing | **CONFIRMED** | Probe: `core.hooksPath` set to an existing but empty directory, commit succeeds, nothing fires. So the obvious repair for BC-8 is inert too. |
+| The POSIX exec bit is not the gate on git-for-Windows, and a shebang-less hook fails closed | **CONFIRMED, both** | A `pre-commit` written without setting the exec bit fired and blocked the commit. A hook with its shebang removed produced `error: cannot spawn gh/pre-commit: No such file or directory` and the commit **failed**, which is the safe direction. |
+| All eight files in `tools/` are committed at `100644`, so a hook committed there is inert on a Linux clone and passes on the author's machine | **CONFIRMED** | `git ls-files -s tools/` returns `100644` for 8 of 8. `core.filemode=false` on this install. **Seventh instance of the pattern, and it inverts: the content is committed and the trigger is metadata.** |
+| Two committed checks named `check` cannot fail | **CONFIRMED** | `tools/check_register_rows.js` holds exactly one `process.exit`, a guard for a missing tokenize export. No register failure produces a nonzero exit. It also hard-codes `C:/Users/Quinn Morley/...` at line 3 and cannot run on any other install. |
+
+### Correction to this file's own 1.9 row
+
+The 1.9 entry above cited `exit 0` as part of the verification. **That half was worthless** and is
+withdrawn: the checker cannot exit nonzero on a register failure, so its exit status carries no
+verdict. What survives is the printed output, which is real evidence — the tool parsed the block,
+reported 15 A rows and 80 M rows against a header self-reporting 15 and 80, and reported 127 key
+slots with 0 failing. Those figures were produced by code that read the actual rows. The conclusion
+stands on weaker evidence than stated, and 1.13 has already ruled the fix: both weak checkers
+consolidate into `ecr_verify.js` at 2.15.
+
+**This is the check register catching the orchestrator on its first run**, which is the argument for
+the register that no amount of specification would have made.
