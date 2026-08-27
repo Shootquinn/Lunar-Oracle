@@ -1,15 +1,40 @@
 # See the directory map in lunar-oracle-gameplan.md. This file enforces it.
+# If this file and that table ever disagree, the table is the statement of intent and this
+# file is the bug. Do not resolve a disagreement by editing the table.
+#
+# Two properties every rule below is subordinate to:
+#   1. ANCHORED. Every path rule begins with `/`, so it names one place in this repository
+#      and cannot be re-matched at depth by a folder the merge taxonomy invents later.
+#      The only deliberately unanchored rule is the litter rule at the bottom.
+#   2. FAILS CLOSED under literature/. A file type nobody has thought of yet is excluded
+#      until somebody deliberately admits it.
 
-# Working copies of upstream repositories. Cloned by the bootstrap in CLAUDE.md.
-# Never committed, never vendored. The app in lsei/ is an authority, and a copy of an
-# authority drifts. Anchored, so a taxonomy folder named literature/lsei/ is not swallowed.
+# --- Working copies of upstream repositories ------------------------------------------
+# Cloned by the bootstrap in CLAUDE.md. Never committed, never vendored: the app in lsei/
+# is an authority on the model, and a copy of an authority drifts away from it silently
+# while continuing to answer questions. Anchored, so that a corpus taxonomy folder named
+# literature/lsei/ is not swallowed by the rule that hides the working copy.
 /cr-agents/
 /lsei/
 
-# Intake staging. Material on its way into literature/, not part of the repository.
+# --- Intake staging --------------------------------------------------------------------
+# Material on its way into literature/. Not part of the repository, and not the corpus's
+# permanent home: permanence attaches to the repository, not to this path. The merge is
+# not complete until this directory is empty; the exit criterion is a map row, not a
+# comment here. This rule is KEPT after _intake/ is deleted, so that a second corpus
+# staged here later fails closed rather than shipping on the next `git add -A`.
 /_intake/
 
-# --------------------------------------------------------------------------
+# --- Stale bootstrap target -------------------------------------------------------------
+# The working copies were flattened from deps/ to the repository root at Setup rev. 1 and
+# nothing writes deps/ any more. Before the patterns above were anchored, `cr-agents/`
+# matched at any depth and caught a resurrected deps/ by accident. Anchoring removed that
+# accident, so the safety net is stated deliberately or it does not exist. This rule stops
+# a stale bootstrap's 400 MB of somebody else's repository from being committed; it does
+# not detect one. Detection is the bootstrap suite's, at 6.1.
+/deps/
+
+# ----------------------------------------------------------------------------------------
 # literature/ is DENY BY DEFAULT. Only this project's own .md summaries ship.
 #
 # The corpus sits beside its source material on the author's disk: PDFs, and at least
@@ -18,9 +43,47 @@
 # day, and would have shipped *.PDF on any case-sensitive clone. Deny-by-default fails
 # closed instead: a new source file type added six months from now is excluded until
 # somebody deliberately admits it.
-# --------------------------------------------------------------------------
+#
+# The second line is not decoration. Without it git never descends into a subdirectory of
+# literature/ and the third line never gets the chance to re-admit anything below the top
+# level. Verified: removing it makes literature/<topic>/*.md invisible to `git status`.
+# ----------------------------------------------------------------------------------------
 /literature/**
 !/literature/**/
 !/literature/**/*.md
 
+# --- The source-PDF store (resolves loose end D6) ----------------------------------------
+# literature/_pdf/<taxonomy>/ holds source PDFs pulled from outside this repository, filed
+# under the same taxonomy names as the summaries but not interleaved with them. Nothing
+# here ships, ever, including .md: a summary written into the PDF store is a filing error,
+# and re-admitting .md here would ship the filing error. This rule sits AFTER the two
+# re-admissions above so that it wins over them; moving it above them silently reverses it.
+/literature/_pdf/
+
+# --- Machine-written install state -------------------------------------------------------
+# One root-level file, written by the bootstrap, describing THIS install: schema version,
+# the ref each working copy was last verified against, whether source PDFs are present
+# here, the corpus provenance digest, and the first-run flag. Ignored because a committed
+# first-run flag suppresses the opening sequence for every person who clones afterwards,
+# which is the exact opposite of what "once" is supposed to mean.
+#
+# Named as a literal, not a pattern, and that is load-bearing. The rule that keeps this row
+# honest is: anything that must survive a clone is not state, it is content, and it belongs
+# in the gameplan or in the corpus. Loose end E12's tracked ref record is content. A
+# convenience wildcard here — /*state*, /*.lock — would eventually swallow it, and the
+# failure would present as "the ref we verified against is missing on a fresh clone."
+/.oracle-state.json
+
+# --- Machine-extracted derivatives of upstream content ------------------------------------
+# Contingent on the 1.6 ruling on loose end C4. verify_report.js does not exist as a file in
+# either working copy; its 328-line source is a fenced block inside
+# lsei/report-generator-prompt.md, lines 357-686, and the upstream's own instruction is to
+# write it out and run it. If the bootstrap extracts it, the extracted copy is
+# derived-from-upstream, per-install, and regenerable: state, not content. It lands here and
+# never ships. Writing it into tools/ instead would vendor a second authority into a
+# repository whose entire map exists to prevent exactly that.
+/.derived/
+
+# --- Editor and OS litter ------------------------------------------------------------------
+# Deliberately unanchored: litter appears at any depth and has no home directory.
 *.tmp
