@@ -51,6 +51,13 @@
 /literature/**
 !/literature/**/
 !/literature/**/*.md
+# The corpus's own machine-readable files, named as literals. The rule above was written for a
+# shelf of summaries and silently excluded every non-.md file the corpus needs; the failure was
+# invisible for four sub-steps because the .md count still passes and retrieval degrades quietly
+# rather than failing. Literals rather than !*.tsv so that a future .tsv is a decision, not a
+# side effect of this one.
+!/literature/FIELDS.tsv
+!/literature/INDEX.tsv
 
 # --- The source-PDF store (resolves loose end D6) ----------------------------------------
 # literature/_pdf/<taxonomy>/ holds source PDFs pulled from outside this repository, filed
