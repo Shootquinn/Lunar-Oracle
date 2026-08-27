@@ -157,7 +157,36 @@ one register. Worth a note at 1.13, which is the sub-step that enumerates them.
 | All eight files in `tools/` are committed at `100644`, so a hook committed there is inert on a Linux clone and passes on the author's machine | **CONFIRMED** | `git ls-files -s tools/` returns `100644` for 8 of 8. `core.filemode=false` on this install. **Seventh instance of the pattern, and it inverts: the content is committed and the trigger is metadata.** |
 | Two committed checks named `check` cannot fail | **CONFIRMED** | `tools/check_register_rows.js` holds exactly one `process.exit`, a guard for a missing tokenize export. No register failure produces a nonzero exit. It also hard-codes `C:/Users/Quinn Morley/...` at line 3 and cannot run on any other install. |
 
-### Correction to this file's own 1.9 row
+### Correction to this file's own 1.9 row — SUPERSEDED, and the second correction is worse
+
+The first correction below said the `exit 0` half of the 1.9 verification was worthless. **That was
+too generous.** The review at 1.5/1.13 ran the ratified lunar rows through the strict verifier and
+the orchestrator re-ran it:
+
+```
+$ node tools/ecr_verify.js <extracted lunar block> lsei/literature
+FAIL B6 cluster nasa-2025 partly registered:
+  in=nasa-2025-fission-surface-power-directive.md
+  missing=nasa-2025-moon-to-mars-architecture-add-revc.md
+EXIT=1
+```
+
+**There is a live B6 failure in the ratified rows and the verification reported them as passing.**
+The verification was not weakly evidenced. It was wrong.
+
+Two mechanisms produced it and only one of them is the tool's. `check_register_rows.js` prints a B6
+failure as an ordinary report line and exits 0. **The orchestrator then filtered the output** with
+`grep -viE "^B[67] |UNKNOWN|probe_pos"` to extract summary lines, which removed the failure line
+before reading the result. A filter applied to find the verdict deleted the finding. That is the
+orchestrator's error, not the tool's, and it is the more serious of the two: the tool was silent,
+the filter was active.
+
+Routed to The Space Resources Engineer with instructions to fix the cluster, re-verify strictly, and
+re-run every other assertion on the grounds that a checker which cannot fail leaves all of them
+unenforced during authoring rather than only the one that fired.
+
+### The original correction, kept because the reasoning in it is still the record
+
 
 The 1.9 entry above cited `exit 0` as part of the verification. **That half was worthless** and is
 withdrawn: the checker cannot exit nonzero on a register failure, so its exit status carries no
