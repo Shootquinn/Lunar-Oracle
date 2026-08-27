@@ -39,11 +39,28 @@ Closed. The report's first line states exactly one.
 
 | Outcome | Meaning |
 |---|---|
-| `ABORT` | A precondition failed in Phases 1 to 3. The bootstrap performed no acquisition and assigned no degraded modes. |
+| `ABORT` | The bootstrap stopped before Phase 6. |
 | `DEGRADED` | Every phase ran and the in-force mode set (§5) is non-empty. |
 | `CLEAN` | Every phase ran and the in-force mode set is empty. |
 
-`ABORT` is not a degraded mode. It is the state in which the mode vocabulary is never reached.
+**An `ABORT` outcome line names its cause**, in the form `ABORT (<phase>, <assertion-id>)` —
+`ABORT (Phase 1, BC-1)`, `ABORT (Phase 2, BC-2)`, `ABORT (Phase 3, BC-5)`, `ABORT (Phase 5, ST-3)`.
+For Phases 1 to 3 the id is one of this contract's `BC-` assertions. For Phase 5 it is the install
+state record's own id for the read it refused, because that refusal is an assertion of that record and
+not of this contract.
+
+`ABORT` is not a degraded mode: a mode is a state of a working copy and an outcome is a state of the
+run, and nothing is both. But **what `ABORT` states is where the bootstrap stopped, and nothing about
+what it had already done.** A run that aborts in Phases 1 to 3 never reaches the mode vocabulary; a run
+that aborts at Phase 5 has already cloned, written git configuration and assigned a mode set, and the
+report still names that set under §5.
+
+The row previously read "A precondition failed in Phases 1 to 3. The bootstrap performed no acquisition
+and assigned no degraded modes." Phase 5 reaches `ABORT` after both, so every clause of that sentence
+was false on that path, and the test it invites — *assert that an `ABORT` run cloned nothing and
+assigned no modes* — fails against a correct implementation of Phase 5. **A state existed outside the
+enumeration as written.** The remedy is not a fourth outcome, which would be arithmetic; it is a
+definition the outcome can keep. (1.4 review F1; `AM-01`, `AM-16`.)
 
 ## 3. Phases
 
@@ -68,8 +85,8 @@ opened outside the repository must not bootstrap the nearest one it can find.
 
 Assertions: BC-1.
 
-**On failure:** `ABORT`. The report states that the repository root was not found and names the
-directory searched from. It does not state that the repository is broken, because the bootstrap has
+**On failure:** `ABORT (Phase 1, BC-1)`. The report states that the repository root was not found and
+names the directory searched from. It does not state that the repository is broken, because the bootstrap has
 not looked at a repository.
 
 ### Phase 2. Preflight
@@ -88,8 +105,8 @@ attempted, and it does not clone.
 The other three are recorded and carried forward; each is consumed by a later phase, and none of them
 decides anything here.
 
-**On failure:** `git` absent gives `ABORT`. The other three never fail this phase; they record a
-negative fact.
+**On failure:** `git` absent gives `ABORT (Phase 2, BC-2)`. The other three never fail this phase;
+they record a negative fact.
 
 ### Phase 3. Acquire
 
@@ -99,14 +116,24 @@ Acquire is gated on BC-5. **A missing working copy is not cloned into a root tha
 allowance.** The gate fires only on the acquire path: a root that exceeds the allowance and already
 holds both working copies is reported by Phase 4 and does not stop the session.
 
+**A copy that is missing when this phase begins is a transient of this phase and is not a mode.**
+Phase 3 resolves every missing copy before Phase 4 assigns the mode set: it is cloned and carries no
+mode; or the clone fails and it carries `offline`; or the root is over the allowance and the run ends
+`ABORT (Phase 3, BC-5)` with Phase 4 never running; or `git` was absent and Phase 2 already ended the
+run. There is no execution path on which a missing-but-recoverable copy survives into §5's mode set,
+which is why §5 does not enumerate it. This is E15 of the gameplan — "*missing but recoverable*
+resolves to success or to offline and is never itself a state at that phase" — and until now it sat in
+the §5 table as a member the mechanism that computes the set could never produce. (1.4 review F3;
+`AM-03`, `AM-18`.)
+
 Acquire does not disable push, does not fetch, and does not verify. Those are Phase 4's, and they run
 whether or not Acquire did anything. **This split is loose end E7:** the push-disable and the fetch
 previously sat inside the acquire branch, so a working copy that was present with push still enabled
 was never reached.
 
 **On failure:**
-- Root over allowance with a copy missing: `ABORT`, naming the measured root length and the
-  allowance. It does not warn and continue. A warning at this point is a warning nobody reads until
+- Root over allowance with a copy missing: `ABORT (Phase 3, BC-5)`, naming the measured root length
+  and the allowance. It does not warn and continue. A warning at this point is a warning nobody reads until
   the checkout is already half written.
 - Clone fails, network unreachable: the copy is absent, mode `offline` (§5). Not `ABORT` — Phase 4
   still runs, because what is present still needs verifying and the report is what the user acts on.
@@ -152,8 +179,10 @@ Write the four facts. Then report, in this order:
 The report is terse when the outcome is `CLEAN`. It is terse in the same fields when the outcome is
 not; a degraded bootstrap does not become chattier, it adds lines.
 
-**On failure:** a future schema version gives `ABORT` — the state record is refused, nothing is
-written, and Phases 6 and 7 do not run. Every other read failure is reported and the record is
+**On failure:** a future schema version gives `ABORT (Phase 5, <the install state record's id for the
+refused read>)` — the state record is refused, nothing is written, and Phases 6 and 7 do not run. The
+mode set computed at Phase 4 is still in force and is still reported; see §2 on what `ABORT` does and
+does not claim about a run that reached this phase. Every other read failure is reported and the record is
 rewritten.
 
 ### Phase 6. Read sequence
@@ -207,7 +236,7 @@ assertion, and what a failure does. `<copy>` ranges over `cr-agents` and `lsei`.
 |---|---|---|---|---|
 | BC-2 | `git` is on the path. | `git --version` | — | `ABORT` |
 | BC-3 | The network reaches both upstreams. | `git ls-remote --exit-code <url>` per upstream | A proxy answering `ls-remote` for a host that cannot serve a clone. | Record; consumed by Phase 3 |
-| BC-4 | Node is available. | `node --version` | — | Record; consumed by whatever invokes `tools/` |
+| BC-4 | Node is available. | `node --version` | — | Record; consumed by §6 — origin `app` is unavailable without it |
 | BC-5 | The repository root fits the allowance: `abspath(root).length <= 150 [Q-ROOT-ALLOWANCE]`, measured on the **long-name** form of the path, never the 8.3 short form. | `node -p "path.resolve('.').length"` run from the root | A clone succeeding into a root over the allowance, or failing on path length inside it. Either falsifies the budget, not the assertion. | Record; gates Phase 3 |
 
 **BC-5 runs every session**, which is a deliberate strengthening of `literature/NAMING.md` A4's
@@ -298,21 +327,30 @@ have, or decline to read one that is sitting on disk.
 
 ## 5. Degraded modes
 
-Six, closed. A mode is a state a working copy can be in. **The in-force modes are a set, not a
+Five, closed. A mode is a state a working copy can be in. **The in-force modes are a set, not a
 scalar.** No precedence is defined between them, because nothing in this contract chooses one: the
 report lists the set and Phase 7 tests the set for intersection.
 
 | Mode | Condition | Scope | Blocks Phase 7 |
 |---|---|---|---|
-| `missing-recoverable` | Copy absent; git and network present. | per copy | never in force at Phase 7 |
 | `offline` | Copy absent; it could not be fetched. | per copy | **yes** |
 | `moved-on` | Copy present; `HEAD` differs from the verified-against ref. | per copy | no |
 | `dirty-or-diverged` | Copy present with uncommitted modifications, or on a branch other than the recorded one, or holding commits `origin/main` does not. | per copy | no |
 | `present-but-wrong` | The directory exists and is not a git repository; or its `origin` points somewhere other than the expected upstream; or a content assertion for that copy failed. | per copy | **yes** |
-| `partially-acquired` | Exactly one working copy is usable. | per install | **yes** |
+| `partially-acquired` | Exactly one working copy is *usable*, as defined below. | per install | **yes** |
 
-`missing-recoverable` resolves during Phase 3, to acquisition or to `offline`. It is never in force
-when Phase 7 tests the set.
+**A missing copy is not a mode.** It resolves during Phase 3, to acquisition or to `offline` or to an
+abort, and it is never in force when Phase 4 assigns this set. Phase 3's prose carries it. A closed set
+whose enumeration includes a member no execution path can assign cannot be asserted by construction,
+which is the whole reason §5 is an enumeration.
+
+**`usable` is closed here, because `partially-acquired` is the one row that turns on it.** A working
+copy is **usable** when it is present and in neither `offline` nor `present-but-wrong`. `moved-on` and
+`dirty-or-diverged` are usable. So the author editing `lsei/` in another window leaves both copies
+usable, `partially-acquired` does not fire, the mode set is `{dirty-or-diverged}`, and the first-run
+sequence plays. That is the ruling, and it was made because the word occurred once in this contract and
+was defined nowhere, while the two available readings gave opposite blocking answers on a dirty working
+copy — which is the normal case here, not an edge case. (1.4 review F2; `AM-02`, `AM-17`.)
 
 **The blocking set is `offline`, `present-but-wrong`, `partially-acquired`.** In each, the system
 cannot answer some class of question it advertises. `moved-on` and `dirty-or-diverged` do not block: a
@@ -338,6 +376,12 @@ acquired its defect.
 A working copy under `dirty-or-diverged` is no longer the upstream authority; it is a local variant,
 and an answer computed against it says so.
 
+**That is a trace obligation and not a refusal**, and the distinction is what keeps it from
+contradicting the definition of `usable` above. It governs **what an answer must say**, not **whether
+an answer can be produced**. The blocking set exists to answer one question — *is there a class of
+question the system advertises and cannot answer?* — and against a dirty working copy the system can
+answer; the answer names a local variant. Two mechanisms, one condition, no conflict.
+
 ## 6. Available origins, and the offline refusal
 
 The answer contract's trace `origin` is a closed set of four. Phase 4 computes which are available in
@@ -345,10 +389,20 @@ this session, from the assertions above:
 
 | Origin | Available when |
 |---|---|
-| `app` | BC-14 passed |
+| `app` | BC-14 **and** BC-4 passed |
 | `literature` | BC-17 passed |
 | `findings` | BC-18 passed |
 | `none` | always |
+
+**`app` requires BC-4 as well as BC-14, and this is the whole of BC-4's consumption.** Node absent, both
+working copies present and clean: the mode set is empty, so §2 gives `CLEAN`, and the first `APP`
+question then arrives against a model that cannot be run. That is precisely the failure this section
+exists to prevent, and it reached the user at answer time rather than at bootstrap time. `CLEAN` is
+defined to mean the mode set is empty and it was being read to mean the install works; where those come
+apart, an origin is unavailable and the refusal rule below fires. **Node availability is a session
+capability and not an install fact**: it is computed at Preflight, consumed here, reported, and never
+stored — the install state record's §8 rules it out on both its tests. (1.4 review F4; `AM-04`, and the
+BC-4 clause of `AM-23`.)
 
 The set is computed, reported, and **not stored**. A stored availability is a copy of the filesystem,
 and a copy drifts.
@@ -442,20 +496,25 @@ superseded:    none
 ```quantity
 id:            Q-DEGRADED-MODES
 class:         fixed
-value:         6
+value:         5
 unit:          degraded modes in the closed set at §5 of this contract
 population:    the rows of the mode table at §5 of this contract
-operation:     manual: The Systems Engineer at sub-step 1.4; enumerated the rows of the §5 mode
-               table; 6 items inspected
-conditions:    none. A mode is a state a working copy can be in. An uninhabitable repository root
-               is not a mode: it is detected before any mode can be assigned and it terminates the
-               bootstrap as ABORT under §2.
-at:            2026-08-26; lsei 7f97983; cr-agents f0c976b
-predicate:     the bootstrap recognises 6 degraded modes and no others; a condition outside the
-               set is a failure of the contract, not a seventh mode.
+operation:     manual: The Systems Engineer at sub-step 1.4, re-enumerated at the Step 1 re-close
+               gate item C-1; enumerated the rows of the §5 mode table; 5 items inspected
+conditions:    none. A mode is a state a working copy can be in, and every member of this set is
+               assignable by Phase 4. An uninhabitable repository root is not a mode: it is
+               detected before any mode can be assigned and it terminates the bootstrap as ABORT
+               under §2. A missing-but-recoverable copy is not a mode either: Phase 3 resolves it
+               before Phase 4 assigns the set, and Phase 3's prose carries it.
+at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
+predicate:     the bootstrap recognises 5 degraded modes and no others; a condition outside the
+               set is a failure of the contract, not a sixth mode.
 derived-from:  none
 sampled:       n/a — this operation enumerates a closed list, it does not classify
-superseded:    none
+superseded:    6 (The Systems Engineer, sub-step 1.4, 2026-08-26) — the set included
+               missing-recoverable, which Phase 3 resolves before Phase 4 can assign it, so no
+               execution path produced it. Demoted to a Phase 3 transient at gate item C-1; 1.4
+               review F3, amendment AM-19.
 ```
 
 ```quantity
@@ -463,21 +522,29 @@ id:            Q-BLOCKING-MODES
 class:         fixed
 value:         3
 unit:          degraded modes that block the first-run sequence at Phase 7
-population:    the 6 [Q-DEGRADED-MODES] rows of the mode table at §5, partitioned by the
+population:    the 5 [Q-DEGRADED-MODES] rows of the mode table at §5, partitioned by the
                "Blocks Phase 7" column
-operation:     manual: The Systems Engineer at sub-step 1.4; classified every row of the §5 mode
-               table as blocking or non-blocking against the test "in this mode, is there a class
-               of question the system advertises and cannot answer"; 6 items inspected
-conditions:    none. missing-recoverable is excluded by resolution rather than by classification:
-               it resolves during Phase 3 and is never in force when Phase 7 tests the set.
-at:            2026-08-26; lsei 7f97983; cr-agents f0c976b
-predicate:     3 of the 6 degraded modes block the first-run sequence — offline,
-               present-but-wrong, partially-acquired — and the other 3 do not.
+operation:     manual: The Systems Engineer at sub-step 1.4, re-run at the Step 1 re-close gate
+               item C-1; classified every row of the §5 mode table as blocking or non-blocking
+               against the test "in this mode, is there a class of question the system advertises
+               and cannot answer"; 5 items inspected
+conditions:    none. The partition now covers its population: every row of the §5 table is
+               classified by the "Blocks Phase 7" column and no row is excluded by construction.
+               missing-recoverable was the excluded row and it has left the table.
+at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
+predicate:     3 of the 5 degraded modes block the first-run sequence — offline,
+               present-but-wrong, partially-acquired — and the other 2 do not.
 derived-from:  Q-DEGRADED-MODES
-sampled:       6 inspected by hand, 0 found wrong, by The Systems Engineer at sub-step 1.4. The
-               population is small enough that the sample is the population; no row was
-               classified without being read.
-superseded:    none
+sampled:       5 inspected by hand, 0 found wrong, by The Systems Engineer at sub-step 1.4 and
+               again at gate item C-1. The population is small enough that the sample is the
+               population; no row was classified without being read.
+superseded:    3 (The Systems Engineer, sub-step 1.4, 2026-08-26) — the value is unchanged and
+               the assertion is not. The population cell named six rows of the §5 mode table and
+               the predicate read "3 of the 6 … and the other 3 do not", over a live population of
+               five: a well-formed block asserting a false predicate, which --check passed. The
+               old figures are written out in words here rather than in the tagged form, because a
+               tag is a quotation of the current value and this is a recitation of a superseded
+               one. 1.4 review F3, amendment AM-20.
 ```
 
 ## 10. Version

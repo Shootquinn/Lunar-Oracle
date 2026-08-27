@@ -323,7 +323,7 @@ two conventions, and it took an outside reader running the table to see it.
 
 Everything between the markers is liftable verbatim to `oracle/install_state.md`.
 
-> **DIVERGED AT R-2 — DO NOT RE-LIFT THIS BLOCK.** `oracle/install_state.md` was amended **in place** at R-2 and is the authority. The block below is the text as frozen at 1.5 and is retained as the record of what was reviewed, not as a source to promote from. Re-running the lift command in this file would silently revert `AM-37`, the S1 gate split. `oracle/MANIFEST.tsv` records the promotion; `oracle/AMENDMENTS.tsv` records every amendment since.
+> **DIVERGED AT R-2 — DO NOT RE-LIFT THIS BLOCK.** `oracle/install_state.md` was amended **in place** at R-2 and is the authority. The block below is the text as frozen at 1.5 and is retained as the record of what was reviewed, not as a source to promote from. Re-running the lift command in this file would silently revert `AM-37`, the S1 gate split, and `AM-38`, rule 4 nullability qualifier with the second published instance at section 3 that goes with it (landed at gate item C-1, 2026-08-27). `oracle/MANIFEST.tsv` records the promotion; `oracle/AMENDMENTS.tsv` records every amendment since.
 
 <!-- BEGIN install_state.md -->
 

@@ -467,3 +467,48 @@ first, all echoes of corrections that had landed elsewhere:
   here. Both corrected, with the counting rule attached.
 
 `grep -c` for all four stale phrases now returns 0.
+
+## Gate item C-1, discharged — and the count went up
+
+All six blocking rows applied to the promoted text, plus four that were the same edits, each marked
+`applied` only after read-back. One row stays `owed` and its cell says why rather than being closed
+to tidy the register.
+
+**`quantities --check` reads 12, not 11, and the twelfth is its author's own.** Landing the mode
+correction makes `Q-DEGRADED-MODES` fail `M3`, because three sites still carry the old value — all
+recitations of the old block text inside code spans in two **frozen** review documents, written by
+two other personas while arguing that the old value was wrong. He checked both escape routes rather
+than assuming: the contract's `pending:` form does not suppress `M3`, and it could not be used here
+anyway because a check requires an amendment target to be a manifest row. He minted a row against the
+counting rule and **declined to edit another persona's argument to make a number go down.** Two of the
+eleven pre-existing failures have the same shape, so it is the rule's gap rather than his edit's.
+
+```
+node tools/quantities.js --check      exit 1   FAIL lines 12
+node tools/check_registers.js         exit 0   FAIL lines 0
+```
+
+**Three of the twelve touch a manifest target**, matched by reading `oracle/MANIFEST.tsv`: two name
+`QUANTITIES.md`, generated and self-correcting, and one names `oracle/bootstrap_contract.md` and is
+the row above. The other nine are in the two register addenda. All twelve carry an amendment row.
+Register: 133 rows, 62 owed, from 131 and 70.
+
+### Orchestrator relay error 8 — the rule was written and then broken one measurement later
+
+Error 7 was a path filter typed from memory. The correction wrote the rule into this file: *a filter
+over a file set reads the manifest, not a remembered list.*
+
+**The very next measurement broke it.** Extracting manifest targets, the column was guessed rather
+than read: `awk -F'\t' 'NR>1{print $1}'` returned the row-type letters `H` and `D`, so a
+substring match against "D" hit almost everything and reported seven spurious authority touches. It
+was caught only because the output was visibly absurd — single letters printed as file paths — and
+not by any check. Reading the manifest's actual columns gives 18 `D`-row targets and the true figure
+of three of twelve.
+
+**This is the fifth wrong verdict from the same act, and the first committed after writing the rule
+against it.** The record now reads: a `grep -v` that deleted a failure line; a block extracted with
+the wrong END marker; a case-insensitive count matching the word "failures"; a path filter from
+memory; and a column index from memory. Every one is the instrument that reads the result, not the
+tool being read. **A rule a person must remember to apply is not a process fix**, which is this
+project's own Deming reading, and the eighth error is the evidence for it — the rule was one screen
+above the command that broke it.

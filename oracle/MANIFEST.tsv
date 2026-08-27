@@ -16,7 +16,7 @@
 # marker-name is - when the target has no marked block behind it. Rows of that shape are
 # what MF-2 cannot see; see the note under the last row.
 #
-# Checks: tools/check_manifest.js. Check-register row CHK-27.
+# Checks: tools/check_registers.js. Check-register row CHK-27.
 H	1	2026-08-27	20
 D	.gitignore	cr_scratch/step1_1_systems_engineer_enforcement.md	-	1.1	-	promoted
 D	COUNTING_RULE.md	cr_scratch/step1_12_designer_counting_rule.md	COUNTING_RULE.md	1.12	-	promoted

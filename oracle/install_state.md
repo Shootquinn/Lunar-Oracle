@@ -93,6 +93,31 @@ fails loudly instead of matching nothing quietly. Changing the algorithm is a sc
 }
 ```
 
+**A second valid instance, covering the nullable partition**, which a test constructs verbatim. The
+first instance above exercises no null, and the two together are the fixture set §4 rule 4 needs:
+
+```
+{
+  "schema": 1,
+  "written_at": "2026-08-27T09:14:03Z",
+  "copies": {
+    "cr-agents": null,
+    "lsei": { "head": "7f97983", "upstream": "7f97983", "observed_at": "2026-08-27T09:14:03Z" }
+  },
+  "corpus": null,
+  "pdfs_present": false,
+  "first_run": { "attempted_at": "2026-08-27T09:14:03Z", "completed": false }
+}
+```
+
+This is a first install on which `cr-agents` could not be cloned and on which the corpus digest could
+not be computed, and on which the first-run sequence was attempted and did not complete. The three
+nullable paths are independent of each other, which is why this instance nulls one copy and the corpus
+rather than nulling everything: a fixture that nulls all three cannot show that rule 4 reads them one
+at a time. **It is valid**, and a validator that classifies it corrupt is running the pre-C-1 rule 4. It is also the instance 6.1 needs for the
+interrupted-sequence case, so one fixture closes three uncovered cases: a null copy, a null `corpus`,
+and `first_run` in its third state.
+
 **A corrupt instance:** `{"schema":1,"written_at":"2026-08-27T09:14:03Z","copies":{"cr-agents"` —
 truncated mid-write. Six further corrupt instances are enumerated at §6.3 with the rule each violates;
 a validator that accepts any of the seven is wrong.
@@ -135,10 +160,37 @@ every schema version. They may be applied before the version is known.
 they are meaningless against any other. They are applied only after §6.1 has established that the
 version is this one.
 
-4. Every path the schema requires at this version is present, with a value of the declared type or the
-   declared `null`.
+4. Every path the schema requires **given the nullability of its parent** is present, with a value of
+   the declared type or the declared `null`. A nullable object that is `null` requires none of its
+   leaves; a nullable object that is present requires all of them. The nullable paths are the three
+   §3 declares under its two nullable types: `copies.cr-agents`, `copies.lsei` and `corpus`. Their
+   nine leaves, three each, are what this qualifier governs; the other ten paths are required
+   unconditionally.
 5. No path outside the `19 [Q-STATE-KEYS]` is present.
 6. Every non-null timestamp matches `^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$`.
+
+**Rule 4's qualifier is load-bearing and its absence was blocking.** §3 rules that a nullable object
+is written whole or not at all, so `{"copies": {"cr-agents": null, "lsei": {…}}}` is a legal
+record in which `copies.cr-agents.head`, `.upstream` and `.observed_at` are absent. Rule 4 as written
+demanded all nineteen paths unconditionally, so that legal record failed validation, was classified
+corrupt, and was **rewritten** — the same destructive path as S1, reached from the other direction and
+on a record this specification explicitly permits. `corpus: null` is three more paths and is the
+ordinary state of an install whose `lsei` copy is offline.
+
+`19 [Q-STATE-KEYS]` was never wrong and is unchanged. What was wrong is that two rules read the same
+nineteen with two meanings: rule 5 reads them as the **permitted** set, which is right, and rule 4 read
+them as the **required** set, which is right only for a record with no nulls. The fix is the qualifier
+and nothing else.
+
+**Why the self-check missed it, which is the part worth carrying.** The walk at sub-step 1.5 §4.1
+reported `paths=19 leaves=14` over the valid instance published at §3 rather than over a hand count —
+good method, and the published instance had both copies populated and `corpus` populated. **A walk
+over the one instance that exercises no nullability cannot discover a rule that only misfires under
+nullability.** That is the same testing error as S1: in both cases the fixture the deliverable
+published was the single instance that avoids the defect, because it was derived from the happy path
+the author had in mind rather than from the partition the specification declares. §3 now publishes a
+second instance covering the nullable partition, and 6.1 asserts against both. (1.5/1.13 review S2;
+`AM-38`.)
 
 Rule 5 is doing unusual work and it is deliberate. **An unknown key at a known schema version means
 something other than the bootstrap wrote this file.** The record is the single-writer property's own

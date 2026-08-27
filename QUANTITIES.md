@@ -6,7 +6,7 @@
 
 | id | value | unit | class | at | birth file | superseded |
 |---|---|---|---|---|---|---|
-| Q-BLOCKING-MODES | 3 | degraded modes that block the first-run s... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
+| Q-BLOCKING-MODES | 3 | degraded modes that block the first-run s... | fixed | 2026-08-27 | oracle/bootstrap_contract.md | 1 |
 | Q-BOOTSTRAP-PHASES | 7 | numbered phases of the bootstrap sequence... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
 | Q-C4-FENCE-SPAN | 357-686 inclusive | line numbers of lsei/report-generator-pro... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 0 |
 | Q-C4-SOURCE-LINES | 328 | lines of JavaScript between the fences of... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
@@ -14,7 +14,7 @@
 | Q-CHECK-ROWS | 27 | C rows in oracle/check_register.md's mark... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
 | Q-COUNTING-RULE-VERSION | 2 | the version integer of this contract | fixed | 2026-08-27 | COUNTING_RULE.md | 1 |
 | Q-CURRENCY-VERDICTS | 11 | verdict values across the two closed axis... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
-| Q-DEGRADED-MODES | 6 | degraded modes in the closed set at §5 of... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
+| Q-DEGRADED-MODES | 5 | degraded modes in the closed set at §5 of... | fixed | 2026-08-27 | oracle/bootstrap_contract.md | 1 |
 | Q-ECON-REFS-ABBREV | 18 | distinct source references in the sevente... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-ECR-AXES | 17 | A rows in the economics namespace of the ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
 | Q-ECR-KEYS-DEAD | 0 | shipped match_key strings that can never ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |

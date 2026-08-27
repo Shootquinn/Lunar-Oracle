@@ -163,6 +163,8 @@ and it goes to the orchestrator in §3.
 
 Everything between the markers is liftable verbatim to `oracle/bootstrap_contract.md`.
 
+> **DIVERGED AT C-1 — DO NOT RE-LIFT THIS BLOCK.** `oracle/bootstrap_contract.md` was amended **in place** at the Step 1 re-close gate item C-1, 2026-08-27, and is the authority. The block below is the text as frozen at 1.4 and is retained as the record of what was reviewed, not as a source to promote from. Re-running the lift command in this file would silently revert `AM-01`/`AM-16` (the `ABORT` definition and its `(<phase>, <assertion-id>)` cause form), `AM-02`/`AM-17` (`usable` closed), `AM-03`/`AM-18` (`missing-recoverable` demoted to a Phase 3 transient), `AM-04` and the BC-4 clause of `AM-23` (BC-4 wired into section 6), and `AM-19`/`AM-20` (`Q-DEGRADED-MODES` 6 to 5, `Q-BLOCKING-MODES` 3-of-6 to 3-of-5). `oracle/MANIFEST.tsv` records the promotion; `oracle/AMENDMENTS.tsv` records every amendment since.
+
 <!-- BEGIN bootstrap_contract.md -->
 
 # The bootstrap contract
