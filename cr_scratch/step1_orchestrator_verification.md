@@ -314,3 +314,36 @@ naming a citation he cannot see would be the 0.9 residual one level up.
 **And a tool defect he owns:** `ecr_verify.js` exited 2 on his own deliverable, because the file is
 CRLF on all 767 lines and the marker regex required `-->\n`. Both tools are now CRLF-tolerant. Exit 2
 was the tool refusing rather than passing empty, which is the one thing it did right.
+
+## The Manager's close: a defect in the orchestrator's own Step 1 table
+
+He ran 1.1's `git check-ignore` fixture list — its own stated acceptance criterion, which nobody had
+run since the file was written — and it failed, exit 1. Row 14 asserted `.derived/verify_report.js`
+is ignored. The `/.derived/` rule was correctly deleted at 1.4 when the author dropped C4, and **the
+fixture was never swept with it.** Verified: that path returns exit 1, not ignored.
+
+The gameplan's Step 1 table, written by the orchestrator after the counting-rule contract landed and
+after Wave 2 flagged this exact class, recorded 1.1 as "18 probes pass". **Both halves are wrong.**
+The acceptance criterion is a 24-row list, not the 18 ad-hoc probes the orchestrator ran, and it did
+not pass. Row 14 now asserts the post-ruling state and is kept rather than deleted, so a future rule
+that re-ignores that path fails here.
+
+Re-run of the amended list, all 24 rows, with the vocabulary mapped correctly:
+
+```
+row 10  literature/NAMING.MD  want=ignored got=allowed
+rows checked: 24, mismatches: 1
+```
+
+**That single mismatch is the divergence 1.1 declared for itself**: exactly one row differs between
+`core.ignorecase` true and false, and the author's own note is that the fixture must be *run* on a
+case-sensitive filesystem to be a real assertion rather than approximated with a config flag. On this
+install the row behaves as the platform requires. It is not a defect; it is the reason the acceptance
+test is not fully assertable here, and that should be stated wherever the test is cited.
+
+**A third orchestrator harness error inside this verification, caught before it reached a verdict.**
+The first comparison run reported nine mismatches. Eight were a vocabulary bug in the comparison
+harness — the fixture writes "not ignored" and the harness compared against "allowed". Only row 10
+was real. Three harness errors in one step, all in the machinery for reading verdicts rather than in
+the tools being read: a `grep -v` that deleted a failure line, a block extracted with the wrong END
+marker, and now a vocabulary mismatch. Two of the three manufactured failures; one hid a real one.

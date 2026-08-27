@@ -299,7 +299,7 @@ status of `git check-ignore -q`, never the presence of `-v` output** — see §3
 | 11 | `literature/_pdf/lunar/x.pdf` | ignored | the PDF store (D6) |
 | 12 | `literature/_pdf/lunar/x.md` | ignored | the PDF store admits nothing, `.md` included — §2.2's variance |
 | 13 | `.oracle-state.json` | ignored | machine-written install state (Break 6) |
-| 14 | `.derived/verify_report.js` | ignored | extracted upstream derivative; contingent on the 1.6 C4 ruling |
+| 14 | `.derived/verify_report.js` | **allowed** | **Amended 2026-08-27 at the Step 1 close.** This row asserted `ignored` against the `/.derived/` rule, which was contingent on the C4 ruling. The author ruled the other way — `verify_report.js` is dropped, not extracted — so the rule was deleted at 1.4 and nothing writes that directory. The fixture was not swept with it, so this list, which is 1.1's own stated acceptance criterion, failed from the moment the rule was removed. Kept as a row rather than deleted: an unignored `.derived/` is now the asserted state, and a future rule that re-ignores it should fail here. |
 | 15 | `cr-agents/README.md` | ignored | working copy |
 | 16 | `lsei/index.html` | ignored | working copy; the authority that is never vendored |
 | 17 | `deps/cr-agents/README.md` | ignored | the stale bootstrap target must not resurrect into a commit |
@@ -345,7 +345,7 @@ assert ignored literature/NAMING.MD
 assert ignored literature/_pdf/lunar/x.pdf
 assert ignored literature/_pdf/lunar/x.md
 assert ignored .oracle-state.json
-assert ignored .derived/verify_report.js
+assert allowed .derived/verify_report.js
 assert ignored cr-agents/README.md
 assert ignored lsei/index.html
 assert ignored deps/cr-agents/README.md
