@@ -428,3 +428,42 @@ matches, so `check-A && grep -c FAIL && check-B` stops silently after the first 
 above runs each check into its own file and counts separately for that reason. That is the fourth
 distinct failure mode in the verdict-reading machinery this step: a filter that deleted a failure, a
 wrong END marker, a case-insensitive substring, and now a zero-match exit code.
+
+## Correction: "zero of the eleven touch a promoted authority" was wrong
+
+**Orchestrator relay error 7, and it is the same mechanism as the first.** The sentence was produced
+by filtering the failure lines for `oracle/|literature/|COUNTING_RULE` — **three paths typed from
+memory.** `oracle/MANIFEST.tsv` holds 47 targets. Two `M3` failures name `QUANTITIES.md:21`, `:24`,
+`:25` and `:42`, and `QUANTITIES.md` is one of them.
+
+Verified: `grep -c QUANTITIES.md oracle/MANIFEST.tsv` returns 1.
+
+The substance is mild — `QUANTITIES.md` is generated, so it self-corrects on the next index run — but
+the sentence was a verdict and it was false. **The rule this project already wrote covers it and was
+not followed: a filter over a file set reads the manifest, not a remembered list.** Every wrong
+verdict this step has come from the same act: writing the instrument that reads the result instead of
+reading the result.
+
+Four now, all mine, all in the verdict-reading machinery rather than in any tool:
+1. `grep -v` to extract a summary, which deleted the only real failure line.
+2. A block extracted with the last END marker in the file rather than the one paired with its BEGIN.
+3. A case-insensitive substring count that matched `K1 failures 0` and `does not fail`.
+4. A path filter typed from memory against a manifest of 47.
+
+## Gate item C-2, applied
+
+The index of record had no fifteenth sub-step: `grep -c "1\.14" lunar-oracle-gameplan.md` returned 0
+while `oracle/` held twelve promoted files. Three defects, all in the artifact a cold session reads
+first, all echoes of corrections that had landed elsewhere:
+
+- The table held 14 rows. 1.14 now has one.
+- The table's own preamble read "Fourteen sub-steps, 1.0 through 1.13" **one line above a table that
+  now holds fifteen**, and its next paragraph read "Nothing in this step has been promoted to its
+  target path... `oracle/` does not exist." Both corrected, and the paragraph now names
+  `oracle/MANIFEST.tsv` as the authority on the path-to-file join rather than the table column,
+  with the 47-target figure stated so the next filter is written against it.
+- The progress entry still said "fourteen sub-steps" and repeated the exact "18 passing probes" claim
+  that revision item R-1 was raised to correct, having been fixed in the table cell and left standing
+  here. Both corrected, with the counting rule attached.
+
+`grep -c` for all four stale phrases now returns 0.

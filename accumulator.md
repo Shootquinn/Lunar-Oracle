@@ -1,5 +1,5 @@
 # Accumulator: Lunar Oracle
-## Last updated: 2026-08-27, at the close of Step 1. Entries written by The Manager.
+## Last updated: 2026-08-27, at the Step 1 re-close. Entries written by The Manager.
 
 > Created at 0.1 from `cr-agents/templates/accumulator.md`. The template's ten sections, plus The
 > Writer and The Fact-Checker, who are on the standing roster (A.12.11, A.12.12) and both ran at
@@ -17,6 +17,12 @@
 > (economics prompt) 2 + 1 brief, The Fact-Checker 1, The Manager 2. The Writer and The Editor did not
 > run: A.3.3 permits skipping the writing wave for a step that produces specifications and data, and
 > The Manager ruled it skipped at the open.
+>
+> **Step 1 revision-pass entries added 2026-08-27 at the re-close.** Four seats ran in the revision:
+> The Engineer (1.14), The Systems Engineer (R-2), The Software Engineer (R-3), The Designer (R-4).
+> R-1 was the orchestrator's and R-6 was The Manager's, and neither carries a persona entry. **Two
+> personas withdrew their own mechanisms in favour of a colleague's, and both withdrawals are
+> recorded as withdrawals rather than absorbed into agreement.**
 
 ---
 
@@ -143,6 +149,35 @@
   sitting on a gate for eleven sub-steps is the defect still running, not a debt. `claim_bearing.js`
   needs its own row before 3.9; ruled in and numbered 3.8b at the Step 1 close.
 
+- **Step 1 revision pass: R-3, the answer contract at version 2. Accepted.** One edit, eleven
+  amendments, one increment. **The three queued bumps were never three**: the rule said the version
+  increments on any change, which reads either as counting changes or as naming states, and only one
+  reading is usable. All three consumers — the run log, the acceptance suite, the file itself — need
+  the integer to identify a state, and a version that counts amendments is a version nobody can land
+  without knowing what everyone else landed first. Ruled: **the version names a state of the file.**
+- **He kept the version field on evidence rather than on attachment to it.** His own 1.3 rule was that
+  the field goes if any consumer stops reading it. All three still read it, and it caught two real
+  disagreements in one step before any code existed. A field that has caught two defects is not
+  decoration.
+- **He withdrew his own mechanism.** He had drafted `L6` for the register-merge problem and withdrew it
+  in favour of The Systems Engineer's `SET-2`, reached independently from the schema side, and recorded
+  the withdrawal as `AM-121` `declined` **with the reason**, on the ground that a withdrawn amendment
+  leaving no trace is the defect the register exists to prevent.
+- **He implemented what a colleague had specified without implementing.** `L0` and `L1b` were specified
+  at R-2 with no code; he built both and proved both able to fail, and fixed `ecr_verify.js` taking the
+  last `H` row in a file rather than the paired one.
+- **He turned two green fixtures red.** `FIX-9` and `FIX-10` were both green and both wrong, and both
+  fail on one mechanism nobody had named. They are RED with close conditions that are their own runs.
+- **He declined a fix with the file open in front of him.** The limit-line arity defect (F7) is routed
+  to The Editor by `LIM-9`. His stated reason was never "no window"; it was "not mine." Having the file
+  open is not a reason to widen your own authority, and `LIM-3` stays RED. Recorded because the
+  opposite instinct is the common one.
+- **Owed to him, and it is the Step 1 gate item.** His four blocking 1.4-review findings, F1 to F4,
+  were written at Wave 1, entered the amendment register as `AM-01` to `AM-04`, were placed in R-2's
+  remit by The Manager, and **were never applied.** All four are `owed` at the re-close and `AM-01` is
+  verified live in the promoted text. **The review was right and the system lost it**, which is a
+  finding about the boundary between seats rather than about either seat.
+
 ### The Systems Engineer
 - **Step 0.2 (Wave 1) and 0.5 (Wave 2). He is the persona whose predictions are worth loading.** At
   0.2 he stated a conceptual-integrity position and three falsifiers he agreed to be held to,
@@ -203,6 +238,44 @@
   supplying a better argument for the first than he had used. He staged a fight over BC-7 and the
   reviewer declined it. The nineteen-assertion count is contested and he has not answered.
 
+- **Step 1 revision pass: R-2, the blocking findings applied to the promoted text. Accepted in part;
+  see the correction below.** S1 is the one that mattered: `oracle/install_state.md` ran all six
+  validity rules before it branched on schema version, so a future record that **adds a key** — which
+  is what a schema bump is — was classified corrupt and overwritten by the very clause written to
+  prevent that. He split §4 into a **parse gate** (true of every record at every version) and a
+  **shape gate** (true only at this version), interleaved the branch between them, and wrote "steps 3
+  and 5 may not be exchanged" with the reason underneath, because an ordering with no stated reason is
+  an ordering somebody tidies.
+- **He recorded that his own fixture could not have caught it.** His 1.5 future-version instance was
+  "the valid record with schema 2" — schema-1's exact path set, the only future record that dodges the
+  defect. He replaced it with a pair whose second member is byte-for-byte the corrupt instance except
+  for the version number, and must be classified the other way.
+- **Two rulings rather than repairs, both his and both accepted.** `oracle/REGISTER.tsv` will not
+  exist: the sidecar is a **set** of files, one `basis_root` each, joined at load (`AM-98`).
+  And `Q-CHECK-ROWS` moves `fixed` to `live`, which closes a four-way amendment collision **by
+  reclassifying the quantity rather than by picking a winner** — a self-declared size row is a checksum,
+  not a quotation, and a checksum forbidden to restate the number it checks is not a checksum.
+- **He filed a defect against a colleague's specification without editing it.** `AM-1` is a forecast
+  rather than a check and was reporting three false positives out of four; he wrote the finding, left
+  the spec alone because it is The Designer's, and said so. The Designer then agreed and demoted it.
+- **He closed two failures in his own file that were out of scope**, on the stated ground that writing
+  a report about counting discipline over a red file of your own is the defect the report is about.
+- **Two mitigations he applied unprompted, both now standing rules.** Every `cr_scratch` source whose
+  promoted file he amended in place carries a `DIVERGED AT R-2 — DO NOT RE-LIFT` note above its `BEGIN`
+  marker; and he stated that his failure count "is a reading of a moving file, not a score" and that
+  whoever closes last must regenerate the index. Both are adopted at the re-close: the divergence marker
+  as standing practice, and "no count taken while another seat holds a write is a verdict" as a clause
+  of `COUNTING_RULE.md` §3 rule 11.
+- **Correction received, and it is the Step 1 gate item.** His remit carried **seven** blocking items —
+  S1, R1, R2, and 1.4's F1 to F4. He executed three. `AM-01` to `AM-04` and `AM-38` are `owed` against
+  two promoted authorities, and `AM-01` is live: `oracle/bootstrap_contract.md` defines `ABORT` at line
+  42 as confined to Phases 1 to 3 and assigns it at line 155, in Phase 5. **The list arrived short and
+  the loss is at the boundary rather than in his work** — but his verdict line asserts completeness
+  against a remit whose size he did not check, which is the receiving half of the obligation-count rule
+  written at the re-close. Aggravated by a namespace collision he could not reasonably have seen:
+  `AM-2`/`AM-3`/`AM-4` are amendment-register *checks* and `AM-02`/`AM-03`/`AM-04` are amendment
+  *rows*, and his true statement about the first reads as a statement about the second.
+
 ### The Designer
 - **Step 0.5 (Wave 2), the gameplan as a designed artifact.** Two verdicts, both negative and both
   correct: **works as a briefing, fails as a worklist** for a cold-restart reader; and **fails** for
@@ -250,6 +323,44 @@
 - **Live position.** The worklist and the index have come apart and Step 1 widened the gap by roughly
   a factor of ten. Fifteen specified target paths, zero of which existed at his review, with nothing
   joining a target path to the file holding its text. The promotion ruling at close is the response.
+
+- **Step 1 revision pass: R-4, the counting rule at version 2. Accepted, and it is the strongest
+  deliverable of the revision.** `COUNTING_RULE.md` 245 lines to 494. Seventeen amendments: the ten
+  Wave 2 items, five this pass produced, and the two that R-2 and R-3 filed against the contract while
+  it was open. **Six of the seventeen are forms that did not exist, and four of those an author had
+  already invented in the wrong slot** — arithmetic under `script:`, an inherited condition under
+  `conditions:`, a range under `value:`, a correction owed against frozen text under `superseded:`.
+  His own sentence is the finding: a closed set with a missing member does not stop authors, it routes
+  them into the wrong member silently, and `259 - 1 - 108` under `script:` looks like a filled field.
+- **He found E16's own shape inside the contract written to close E16.** The mechanized clause list
+  lived in a scratch file while §5, eleven amendment rows and the checker's header all cited its clause
+  numbers, so a reader of `COUNTING_RULE.md` could not resolve `M11`. Moved into the contract as §9
+  and §10.
+- **Hard failures 32 to 11**, measured with the pattern and the anchoring stated beside the number, and
+  every one of the eleven attributed to another seat with an amendment row.
+- **He ruled arm 2 in and gave it a form**, and then said honestly what the form does not reach: rule 12,
+  `M15` over the two boundaries that are files, and `H7` for the three that are not. **He states in the
+  contract that all seven of Step 1's relay errors happened at the three `H7` covers and no script can
+  reach them.** That honesty is why the re-close treats `M15` as a beginning rather than as a closure.
+- **He withdrew his own mechanism twice.** `AM-1` was his specified check; he ruled it **a report and
+  not a check**, agreeing with The Systems Engineer against his own specification, and pointed the
+  property at `M3`, which asserts it better and mechanically. And `--exclude-superseded` — his own
+  escape hatch — is ruled **not a flag**: it is an unconditional clause of §8, with the hatch inverted
+  and renamed.
+- **Three defects found by running his own amendments rather than by reading them.** The nested-fence
+  rule, implemented literally, opened a fence on an **inline code span** and **silently deleted four
+  quantity blocks**, with the checker reporting cleanly on the survivors. The corpus census does not
+  reproduce because an upstream commit removed six duplicate summaries and no block existed to mark
+  anything stale. And `grep -c` exits 1 on zero matches, so `check-A && grep -c FAIL && check-B` stops
+  silently after the first clean check. **He found the first in ten minutes because he ran it; W2-2's
+  missing lint went unfound for two days because nobody had.**
+- **Correction received, accepted, and made by him.** His "fifteen target paths" is thirteen. The
+  Engineer measured it; The Designer corrected it in his own file rather than arguing the count.
+- **A rule of his own practice that he applied twice and never stated, now stated by The Manager.**
+  When the hard-instance test finds a missing form: **supply the form when somebody was already writing
+  in the empty slot, because the invention is the evidence of demand; demote or delete when the check
+  produces findings no author was working around.** W2-2 was the first case and `AM-1` was the second,
+  and he got both right without a rule.
 
 ### The Engineer
 - **Step 0.2 (Wave 1), the corpus merge. Objective 1, the primary assignment, and the one Wave 1
@@ -306,6 +417,39 @@
 - **He owns 1.14 at the Step 1 close** — the promotion manifest and the amendment register — chosen
   as the least conflicted seat: he authored one of the eight amendment targets where two other seats
   authored three and four.
+
+- **Step 1.14 (R-5 of the close): promotion, the two registers, and the counting-rule checker.
+  Accepted, and it is the largest single delivery of the step.** `oracle/` and `literature/` came into
+  existence: 11 marked blocks, 1 fenced seed and 2 generated files, **every lift verified byte-for-byte
+  against an independently computed source slice.** `oracle/MANIFEST.tsv` and `oracle/AMENDMENTS.tsv`
+  built and run.
+- **`tools/quantities.js` reproduces The Designer's hand measurement exactly, clause by clause**, with
+  the delta since his run fully attributed to two events that post-date it. A hand measurement and an
+  independent implementation agreeing to the clause is the only evidence available that either is right.
+  This is the strongest single result of Step 1.
+- **He refused the job he was not qualified for and said why.** `oracle/REGISTER.tsv` cannot be
+  assembled without a schema ruling he does not own; both halves carry one `H` row each and the
+  concatenation produces 143 failure lines. He routed it rather than deciding it. **That is The
+  Manager's falsifier 2 not firing: the least-conflicted seat behaved as the constraint predicted.**
+- **He corrected the brief's premise before trusting any of it, and the premise was the orchestrator's.**
+  "Every file in `cr_scratch/` is CRLF" is false — 35 of 41 are pure LF, and the file an agent called
+  "CRLF on all 767 lines" has zero CRLF pairs. He also recorded that **his own first probe reproduced
+  the wrong answer** and that a `grep -c $'\r$'` loop was an instrument fault, not a measurement.
+- **He found by hand the one amendment collision `AM-1` structurally could not see** —
+  `Q-ANSWER-CONTRACT-VERSION`, two amendments to one integer with no minted id — and typed a provisional
+  id for it so the check could report it.
+- **He corrected a colleague's count in his own deliverable**: "fifteen target paths" is thirteen, and
+  The Designer accepted it.
+- **Correction received, and it is a Step 2 inheritance rather than a defect in his work.** Promotion
+  lifted **marked blocks, not files.** Measured at the re-close: `oracle/check_register.md`,
+  `oracle/register_schema.md` and `oracle/currency_policy.md` hold **zero** quantity blocks between them
+  while their `cr_scratch` sources hold **twenty-two**, so three promoted contracts have their governed
+  quantities outside the authority that describes them. Two other contracts got theirs only because
+  their authors happened to place the fence inside the marker range. **Which copy is the authority was
+  decided by where somebody put a marker**, which is the accident The Manager's §5.4 was ruled to
+  prevent. R-2 filed it as `AM-111` naming one file; it is three, and it rides `AM-102`. The
+  specification said "promote the file" and defined the lift as a marker range, and said nothing about a
+  block outside it — that gap is The Manager's, not his.
 
 ### The Editor
 - **Step 0.4, second pass.** Audited The Writer's register specification and wrote the standing
