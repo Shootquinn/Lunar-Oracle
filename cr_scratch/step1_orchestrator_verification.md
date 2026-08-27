@@ -237,3 +237,33 @@ found what his reading missed.
 | Two assertions passed by authoring accident rather than enforcement | **His finding, accepted** | The banned-word list and comma spacing are implemented by the strict tool and not by his. One sentence written differently and the register ships telling users a `false_pair`'s sides contradict each other, with nothing to catch it. |
 | All nine near-duplicate clusters are now fully registered or wholly unregistered; zero partial | **Reported, dated** | Two same-author pairs are wholly unregistered and therefore silent. **The moment 1.10 or 2.16 registers one member of either, B6 fires as a false positive.** The addendum carries the test to apply rather than leaving it to be re-derived. |
 | He declined to propose a numeric cluster cut-off | **Accepted** | Nine samples, a nine-point gap, and one non-duplicate sitting closer to a non-duplicate than to its own duplicate. Over-inclusive is the right direction and he says so instead of fitting a threshold to nine points. |
+
+## Wave 2, The Fact-Checker's gate
+
+Five of seven UNVERIFIED suite claims cleared, one CONTRADICTED, one contradicted from Part 2. Three
+source claims contradicted or qualified. The three that change work:
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| FIX-10, the consequential suite claim, pinning register row C1 | **VERIFIED, and worse than the test claimed** | `valueModel` is not merely absent from `app_model.js`'s return tail — it lives in the `VALUE-CORE` island at `lsei/index.html` 7797 to 8448, and `app_model.js` reads only three other islands. It never opens that one. `margin_prop` is not among `model()`'s 26 output keys. She ran the router: the question returns `LITERATURE`/`ANSWERED` from a summary with a resolving trace. **C1 is live, and the fixture marked green fails its own stated invariant.** |
+| The helium-3 total, ~8,500 litres per year | **UNSUPPORTED. The orchestrator relayed it.** | Grep of the whole corpus returns three occurrences of `8,500`: two are "28,500 dollars per kg" in a launch-cost table, one is "8,500 kg of platinum". **No source states it as a helium-3 volume.** It is 7,000 + 1,000 + 500 summed by the agent, and the 7,000 is the handheld-and-backpack detector category rather than government demand. It also implies a balanced market where the source says demand exceeds supply. The six component figures verify; the total does not exist. The `two_sided` reclassification survives regardless, so the axis is unaffected and only the number is wrong. |
+| ECR-01's verdict, in the ratified economics rows | **CONTRADICTED** | The B7 correction underneath it verifies and is stronger than claimed — Wade records that no comparable Japanese study exists. But the verdict drops the word "Japanese," and Wade reports Lane 2017 finding Korean HCI-targeted industries grew faster in output and productivity. **That affirmative finding has no row anywhere.** And of the six members, two report no effect, two report positive labour-productivity effects, and two measure nothing about targeting. Routed back for re-scoping. |
+
+**A verified negative worth keeping.** `verify_report.js` was checked by *running* it: `node --check`
+clean, loads the real app, exits 0 on a clean document, fires two independent defect classes
+separately, and self-proves by planting seven decoys and catching the applicable ones. It is a real
+verifier, not a fragment. The author's ruling to drop the dependency stands on accurate grounds.
+
+**A methodological finding against the suite's own advice.** The ledger told a verifier that if they
+opened one file it should be `app_model.js`. One of the five claims concerns that file, and following
+the advice would have missed the only contradiction in the set. Guidance about where to look is not
+neutral.
+
+### Orchestrator relay error 4
+
+The helium-3 figure above was reported to the author as coming from the corpus. It does not. This is
+the fourth relay of an agent's figure without counting it: "ten of nineteen" FA files (14), the lunar
+register "all assertions pass" (a live FAIL), E10's "two pushes" (three), and now this. All four are
+the same act — repeating a number produced by someone else without running the operation that would
+produce it. The counting rule's `derived-from` field is the mechanism that separates a computed total
+from a quoted one, and it landed this step.
