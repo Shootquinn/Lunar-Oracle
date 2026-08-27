@@ -1,0 +1,631 @@
+[
+ {
+  "pass": 1,
+  "axes": [
+   {
+    "id": "ECR-01",
+    "members": [
+     "beason-1996-targeting-japan.md",
+     "henderson-2008-myth-of-miti.md",
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md",
+     "esteban-pretel-2009-postwar-japan-policy.md",
+     "aoki-2009-government-tfp-growth.md"
+    ],
+    "keys": [
+     "targeting",
+     "miti",
+     "industrial",
+     "policy",
+     "subsidies",
+     "subsidy",
+     "jdb",
+     "sectoral",
+     "tariff",
+     "tariffs",
+     "winners",
+     "protection",
+     "picking",
+     "targeted"
+    ]
+   },
+   {
+    "id": "ECR-02",
+    "members": [
+     "hoshi-1991-corporate-structure-liquidity-investment.md",
+     "miwa-2002-fable-of-the-keiretsu.md"
+    ],
+    "keys": [
+     "keiretsu",
+     "bank",
+     "banks",
+     "affiliation",
+     "affiliated",
+     "liquidity",
+     "roster",
+     "grouping",
+     "group",
+     "groups",
+     "cashflow",
+     "investment",
+     "classification",
+     "membership"
+    ]
+   },
+   {
+    "id": "ECR-03",
+    "members": [
+     "christiano-1989-japan-saving-rate.md",
+     "otsu-2007-neoclassical-postwar-japan.md"
+    ],
+    "keys": [
+     "saving",
+     "savings",
+     "subsistence",
+     "consumption",
+     "reconstruction",
+     "destroyed",
+     "accumulation",
+     "preferences",
+     "neoclassical",
+     "household",
+     "households",
+     "thrift",
+     "calibration",
+     "labor",
+     "labour"
+    ]
+   },
+   {
+    "id": "ECR-04",
+    "members": [
+     "dingman-1993-dagger-and-gift-korean-war.md",
+     "beckley-2018-americas-role-japan-miracle.md"
+    ],
+    "keys": [
+     "korean",
+     "war",
+     "procurement",
+     "tokuju",
+     "placebo",
+     "synthetic",
+     "boom",
+     "spike",
+     "1950",
+     "orders",
+     "special"
+    ]
+   },
+   {
+    "id": "ECR-05",
+    "members": [
+     "kawagoe-1999-japan-land-reform.md",
+     "nakamura-1989-postwar-japanese-economy.md",
+     "wade-2018-developmental-state-dead-or-alive.md"
+    ],
+    "keys": [
+     "land",
+     "reform",
+     "tenancy",
+     "tenant",
+     "tenanted",
+     "landlord",
+     "farm",
+     "farms",
+     "cultivator",
+     "cultivators",
+     "scap",
+     "agrarian",
+     "peasantry",
+     "redistribution",
+     "holdings"
+    ]
+   },
+   {
+    "id": "ECR-06",
+    "members": [
+     "aoki-2009-government-tfp-growth.md",
+     "may-1977-how-japans-economy-grew-so-fast-review.md",
+     "henderson-2008-myth-of-miti.md"
+    ],
+    "keys": [
+     "reallocation",
+     "agriculture",
+     "agricultural",
+     "migration",
+     "denison",
+     "shift",
+     "structural",
+     "nonagricultural",
+     "employment",
+     "schooling",
+     "education",
+     "human",
+     "capital"
+    ]
+   },
+   {
+    "id": "ECR-07",
+    "members": [
+     "jorgenson-2005-industry-origins-japan.md",
+     "aoki-2009-government-tfp-growth.md",
+     "otsu-2007-neoclassical-postwar-japan.md",
+     "may-1977-how-japans-economy-grew-so-fast-review.md",
+     "simonis-1979-denison-boltho-review.md"
+    ],
+    "keys": [
+     "tfp",
+     "residual",
+     "decomposition",
+     "accounting",
+     "productivity",
+     "total",
+     "factor",
+     "domar",
+     "aggregation",
+     "growth",
+     "sources",
+     "knowledge",
+     "scale"
+    ]
+   },
+   {
+    "id": "ECR-08",
+    "members": [
+     "may-1977-how-japans-economy-grew-so-fast-review.md",
+     "simonis-1979-denison-boltho-review.md",
+     "henderson-2008-myth-of-miti.md"
+    ],
+    "keys": [
+     "denison",
+     "chung",
+     "boltho",
+     "review",
+     "monograph",
+     "reported",
+     "secondary",
+     "citing",
+     "1976",
+     "brookings"
+    ]
+   },
+   {
+    "id": "ECR-09",
+    "members": [
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md",
+     "aoki-2009-government-tfp-growth.md"
+    ],
+    "keys": [
+     "technology",
+     "licensing",
+     "acquisition",
+     "foreign",
+     "imported",
+     "adoption",
+     "bof",
+     "steel",
+     "furnace",
+     "contracts",
+     "diffusion",
+     "absorptive",
+     "firm",
+     "plant",
+     "industry"
+    ]
+   },
+   {
+    "id": "ECR-10",
+    "members": [
+     "beason-1996-targeting-japan.md",
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md"
+    ],
+    "keys": [
+     "independent",
+     "corroboration",
+     "corroborate",
+     "replicate",
+     "replication",
+     "lineage",
+     "extends",
+     "extending",
+     "literature",
+     "studies",
+     "robust",
+     "consensus",
+     "confirm",
+     "confirms"
+    ]
+   },
+   {
+    "id": "ECR-11",
+    "members": [
+     "spear-1999-decoding-tps-dna.md",
+     "deming-1967-japan-quality-control.md"
+    ],
+    "keys": [
+     "tacit",
+     "codified",
+     "transfer",
+     "teaching",
+     "training",
+     "apprenticeship",
+     "toyota",
+     "tps",
+     "sqc",
+     "juse",
+     "quality",
+     "statistical",
+     "lectures",
+     "method",
+     "rules",
+     "diffusion"
+    ]
+   },
+   {
+    "id": "ECR-12",
+    "members": [
+     "henderson-2008-myth-of-miti.md",
+     "esri-2016-japan-high-growth-economic-plans.md"
+    ],
+    "keys": [
+     "plan",
+     "plans",
+     "planning",
+     "forecast",
+     "forecasts",
+     "target",
+     "targets",
+     "doubling",
+     "income",
+     "announcement",
+     "expectations",
+     "overshoot",
+     "exceeded",
+     "indicative"
+    ]
+   },
+   {
+    "id": "ECR-13",
+    "members": [
+     "esteban-pretel-2009-postwar-japan-policy.md",
+     "hoshi-1991-corporate-structure-liquidity-investment.md",
+     "wade-2018-developmental-state-dead-or-alive.md"
+    ],
+    "keys": [
+     "filp",
+     "credit",
+     "directed",
+     "loans",
+     "lending",
+     "finance",
+     "financing",
+     "subsidies",
+     "development",
+     "counterfactual",
+     "allocation",
+     "constraint",
+     "constraints",
+     "banking"
+    ]
+   },
+   {
+    "id": "ECR-14",
+    "members": [
+     "hoshi-1991-corporate-structure-liquidity-investment.md",
+     "wade-2018-developmental-state-dead-or-alive.md",
+     "caballero-2008-zombie-lending-japan.md"
+    ],
+    "keys": [
+     "zombie",
+     "forbearance",
+     "relationship",
+     "patient",
+     "evergreening",
+     "restructuring",
+     "stagnation",
+     "misallocation",
+     "congestion",
+     "banks",
+     "insolvent",
+     "lending"
+    ]
+   },
+   {
+    "id": "ECR-15",
+    "members": [
+     "pritchett-2000-hills-among-plateaus.md",
+     "hausmann-2005-growth-accelerations.md",
+     "flyvbjerg-2014-what-you-should-know-megaprojects.md"
+    ],
+    "keys": [
+     "megaproject",
+     "megaprojects",
+     "overrun",
+     "overruns",
+     "acceleration",
+     "accelerations",
+     "distribution",
+     "reference",
+     "class",
+     "benchmark",
+     "outturn",
+     "forecasting",
+     "optimism",
+     "base",
+     "rates"
+    ]
+   },
+   {
+    "id": "ECR-16",
+    "members": [
+     "lewis-1954-unlimited-supplies-labour.md",
+     "chirikjian-2002-self-replicating-robots-lunar.md",
+     "freitas-1980-advanced-automation-space-missions.md",
+     "lee-2008-robotic-self-replication-complexity.md",
+     "acemoglu-2020-robots-and-jobs.md"
+    ],
+    "keys": [
+     "robots",
+     "robot",
+     "robotic",
+     "automation",
+     "replication",
+     "replicating",
+     "substitute",
+     "substitution",
+     "surplus",
+     "labor",
+     "labour",
+     "employment",
+     "wages",
+     "workforce",
+     "displacement"
+    ]
+   },
+   {
+    "id": "ECR-17",
+    "members": [
+     "hausmann-2005-growth-accelerations.md",
+     "pritchett-2000-hills-among-plateaus.md"
+    ],
+    "keys": [
+     "persistence",
+     "persistent",
+     "sustained",
+     "acceleration",
+     "accelerations",
+     "reversion",
+     "instability",
+     "volatility",
+     "episode",
+     "episodes",
+     "transitions",
+     "plateaus",
+     "hills",
+     "correlation"
+    ]
+   }
+  ]
+ },
+ {
+  "pass": 2,
+  "axes": [
+   {
+    "id": "ECR-01",
+    "members": [
+     "beason-1996-targeting-japan.md",
+     "henderson-2008-myth-of-miti.md",
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md",
+     "esteban-pretel-2009-postwar-japan-policy.md",
+     "aoki-2009-government-tfp-growth.md"
+    ],
+    "keys": [
+     "champions",
+     "instruments",
+     "favored",
+     "favoured",
+     "support",
+     "relief",
+     "intervention",
+     "interventions"
+    ]
+   },
+   {
+    "id": "ECR-02",
+    "members": [
+     "hoshi-1991-corporate-structure-liquidity-investment.md",
+     "miwa-2002-fable-of-the-keiretsu.md"
+    ],
+    "keys": [
+     "fable",
+     "myth",
+     "main",
+     "shareholding",
+     "constraints",
+     "ties",
+     "firms",
+     "sample",
+     "artifact"
+    ]
+   },
+   {
+    "id": "ECR-03",
+    "members": [
+     "christiano-1989-japan-saving-rate.md",
+     "otsu-2007-neoclassical-postwar-japan.md"
+    ],
+    "keys": [
+     "hump",
+     "deficit",
+     "wartime",
+     "destruction",
+     "preference",
+     "preferences",
+     "elasticity",
+     "endogenous",
+     "wedge",
+     "wedges"
+    ]
+   },
+   {
+    "id": "ECR-06",
+    "members": [
+     "aoki-2009-government-tfp-growth.md",
+     "may-1977-how-japans-economy-grew-so-fast-review.md",
+     "henderson-2008-myth-of-miti.md"
+    ],
+    "keys": [
+     "sector",
+     "sectors",
+     "farm",
+     "workers",
+     "migrants",
+     "moving",
+     "adjusted",
+     "controls",
+     "share",
+     "points"
+    ]
+   },
+   {
+    "id": "ECR-09",
+    "members": [
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md",
+     "aoki-2009-government-tfp-growth.md"
+    ],
+    "keys": [
+     "import",
+     "imports",
+     "quota",
+     "quotas",
+     "acquirers",
+     "lagged",
+     "aggregate",
+     "level",
+     "levels"
+    ]
+   },
+   {
+    "id": "ECR-10",
+    "members": [
+     "beason-1996-targeting-japan.md",
+     "kiyota-2005-foreign-technology-acquisition.md",
+     "kiyota-2013-import-quota-removal.md"
+    ],
+    "keys": [
+     "confirmed",
+     "confirming",
+     "replicated",
+     "finding",
+     "findings",
+     "earlier",
+     "prior",
+     "builds",
+     "extension",
+     "extend",
+     "previous",
+     "cites",
+     "citing",
+     "related",
+     "weinstein"
+    ]
+   },
+   {
+    "id": "ECR-11",
+    "members": [
+     "spear-1999-decoding-tps-dna.md",
+     "deming-1967-japan-quality-control.md"
+    ],
+    "keys": [
+     "unwritten",
+     "socratic",
+     "seminars",
+     "courses",
+     "course",
+     "learned",
+     "apprentice",
+     "dna",
+     "implicit",
+     "taught",
+     "teach"
+    ]
+   },
+   {
+    "id": "ECR-12",
+    "members": [
+     "henderson-2008-myth-of-miti.md",
+     "esri-2016-japan-high-growth-economic-plans.md"
+    ],
+    "keys": [
+     "underestimated",
+     "ambitious",
+     "sato",
+     "actual",
+     "predicted",
+     "projections",
+     "projection"
+    ]
+   },
+   {
+    "id": "ECR-14",
+    "members": [
+     "hoshi-1991-corporate-structure-liquidity-investment.md",
+     "wade-2018-developmental-state-dead-or-alive.md",
+     "caballero-2008-zombie-lending-japan.md"
+    ],
+    "keys": [
+     "distortion",
+     "distortions",
+     "unprofitable",
+     "subsidized",
+     "entry",
+     "exit",
+     "depressed",
+     "1990s"
+    ]
+   },
+   {
+    "id": "ECR-15",
+    "members": [
+     "pritchett-2000-hills-among-plateaus.md",
+     "hausmann-2005-growth-accelerations.md",
+     "flyvbjerg-2014-what-you-should-know-megaprojects.md"
+    ],
+    "keys": [
+     "estimates",
+     "escalation",
+     "iron",
+     "law",
+     "projects",
+     "project",
+     "demand",
+     "shortfall",
+     "tail",
+     "frequency"
+    ]
+   },
+   {
+    "id": "ECR-17",
+    "members": [
+     "hausmann-2005-growth-accelerations.md",
+     "pritchett-2000-hills-among-plateaus.md"
+    ],
+    "keys": [
+     "unstable",
+     "regress",
+     "predictable",
+     "duration",
+     "break",
+     "breaks",
+     "decelerations",
+     "reverse",
+     "half"
+    ]
+   }
+  ]
+ }
+]

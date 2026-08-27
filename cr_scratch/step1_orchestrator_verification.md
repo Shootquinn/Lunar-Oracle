@@ -92,3 +92,35 @@ while 1.11 was writing a suite that asserts version 1. Both are The Software Eng
 landed this session. He flagged it himself in his 1.8 return. The 1.11 agent has been resumed with
 the four amendments and writes the delta to `step1_11_software_engineer_loop_suite_v2.md`. **The
 version field caught this before any code existed, which is what it was added for.**
+
+## From The Software Engineer, 1.4 review
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| BC-8 passes against a `tools/githooks` directory that does not exist | **CONFIRMED, and this is the worst finding of the step** | Probe: `git init`, then `git config core.hooksPath tools/githooks` with no `tools/` directory present. The config write exits 0. `git config --get` returns the string. A commit then succeeds, exit 0, with no hook firing. **So asserting that `core.hooksPath` is set proves nothing about whether any hook will ever run.** Register row E1 says a pre-commit hook is not a mechanism because hooks are not cloned, and that the fix is a committed script the bootstrap wires via `core.hooksPath`. That fix is silently inert unless the assertion also proves the target directory exists and holds an executable hook. E1's remedy had the same defect as E1. |
+| The Systems Engineer's live-run claim for BC-12 through BC-16 holds | **CONFIRMED by re-run** | Five for five pass. He did not overstate. The extraction check also re-verifies: 495 lines, 7 phase headings, 19 distinct BC ids. |
+| The bootstrap does not detect a fresh clone missing `FIELDS.tsv` / `INDEX.tsv` | **CONFIRMED** | Both ignored, `oracle/REGISTER.tsv` allowed. The failure path is the dangerous one: the `.md` count assertion passes, origin `literature` reports available, the outcome is `CLEAN`, and retrieval then runs field-scoped IDF with no field map. Silent degradation on a clean bootstrap. |
+
+**Note on the tension.** The A.9 pair ran as designed. The Systems Engineer's two contested judgement
+calls both survived review — the root-budget split and the uninhabitable-root-as-terminal-outcome —
+and the reviewer supplied a better argument for the first than its author had used. The marker rule
+survives as a rule with its application incomplete at 14 of 19. The reviewer also declined a fight
+the author staged over BC-7, which is the tension working rather than failing: neither persona is
+required to take every offered disagreement.
+
+## From The Manager (economics prompt), 1.10
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| 17 axes, 176 `match_keys`, 0 K1 failures, 0 K2 failures, all assertions pass | **CONFIRMED by re-run, not by report** | `node tools/ecr_verify.js cr_scratch/step1_10_manager_economics_register.md _intake/japanese-miracle/lit` returns `ALL PASS`. Classes 5 `one_sided` / 7 `two_sided` / 5 `false_pair` = 17. Four axes carry more than two sides (ECR-05, 06, 13 at three; ECR-07 at four). The twelve axes that can produce `CONTESTED` sum to 29 sides, matching his persona-count figure exactly. **He built the two key checks before authoring rather than after**, which is why 51 of 340 candidates were rejected at authoring time instead of shipping dead. |
+| A probe scored 0.00 on its own axis: `relationships` against a key of `relationship` | **ACCEPTED, and it is the significant one** | This is the third `match_keys` failure mode — a key nobody would actually say — which The Software Engineer established at 1.8 is unreachable by any build check. It was caught only because probes are measured rather than authored. It would otherwise have shipped as a 1.11 fixture and failed there, one step later and further from its cause. |
+
+**Structural item for the merge of the two row sets.** The `H` header row carries one `basis_root`
+field and there are two pre-merge roots: the lunar rows are authored against `lsei/literature`, the
+economics rows against `_intake/japanese-miracle/lit`. Nothing breaks at answer time because the join
+key is the leaf, but **the two headers cannot be spliced together unchanged.** Cheapest repair named
+by the author: that one field holds both, space-separated. Owed at the point the two sets combine.
+
+**A.9 is intact.** ECR-15 and ECR-16 state both positions and mark neither correct. The shared axis
+LCC-12 was written once under the lunar prefix and not duplicated, with one requirement left on it
+for The Space Resources Engineer.
