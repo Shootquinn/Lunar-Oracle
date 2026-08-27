@@ -59,3 +59,16 @@ three of them are the orchestrator's own corrections. Sub-step 1.12 was pulled f
 group The Manager scheduled it in, on The Designer's argument from 1.0: a correction pass applied
 before the counting-rule contract exists will produce the tenth instance. Corrections to the
 gameplan are held until 1.12 lands.
+
+## From The Systems Engineer, 1.4
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| `/.derived/` in `.gitignore` has no writer and its comment is false | **CONFIRMED, FIXED** | The rule's own eight-line comment states it is "contingent on the 1.6 ruling on loose end C4" and exists to hold an extracted `verify_report.js`. The author ruled the dependency is dropped, so nothing writes there. Rule and comment deleted. `.derived/x` is now tracked, which is the correct posture: if something does appear there it should be visible rather than silently ignored. |
+| The two shelves enforce opposite postures: `literature/` is deny-by-default, `findings/` is not in `.gitignore` at all | **CONFIRMED, FIXED** | `grep -c findings .gitignore` returned 0. Applied the same three rules as `literature/`. Verified: `findings/fa1-x.md` and `findings/sub/y.md` ship, `findings/x.pdf` and `findings/x.docx` do not. This implements the author's two-shelf ruling rather than making a new map decision; flagged to the author as applied. |
+| `Q-ROOT-ALLOWANCE` names `Q-PATH-CEILING-259` under `derived-from` and no such block exists | **CONFIRMED, OPEN** | A dangling reference in a quantity block, which is a hard failure under the counting-rule contract's own §5 check. The Engineer flagged the gap himself in his 1.7 addendum. **Owed against 1.7**, to be closed when the quantity checker is built. One block, not a redesign. |
+
+**A consequence worth stating before it surprises someone.** The Systems Engineer's three new
+quantity blocks make the existing bare "seven phases" and "six degraded modes" in the gameplan and in
+`step1_manager_open.md` into lint findings on the first run of the counting-rule check. That is the
+Tier 2 touch rule working as designed, not a defect introduced at 1.4.

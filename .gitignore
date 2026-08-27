@@ -74,15 +74,16 @@
 # failure would present as "the ref we verified against is missing on a fresh clone."
 /.oracle-state.json
 
-# --- Machine-extracted derivatives of upstream content ------------------------------------
-# Contingent on the 1.6 ruling on loose end C4. verify_report.js does not exist as a file in
-# either working copy; its 328-line source is a fenced block inside
-# lsei/report-generator-prompt.md, lines 357-686, and the upstream's own instruction is to
-# write it out and run it. If the bootstrap extracts it, the extracted copy is
-# derived-from-upstream, per-install, and regenerable: state, not content. It lands here and
-# never ships. Writing it into tools/ instead would vendor a second authority into a
-# repository whose entire map exists to prevent exactly that.
-/.derived/
+# --- The findings shelf --------------------------------------------------------------------
+# Same posture as literature/ above, and for the same reason. The author ruled at the Step 0
+# gate that the FA1-FA8 deliverables get their own shelf with its own retrieval contract,
+# which makes findings/ a corpus directory rather than an ordinary folder. Deny by default,
+# re-admit directories so the walk works, re-admit .md only. A PDF or a .docx dropped here
+# ships silently otherwise, and the two shelves would enforce opposite postures on the same
+# kind of object.
+/findings/**
+!/findings/**/
+!/findings/**/*.md
 
 # --- Editor and OS litter ------------------------------------------------------------------
 # Deliberately unanchored: litter appears at any depth and has no home directory.
