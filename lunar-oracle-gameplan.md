@@ -250,6 +250,32 @@ Oracle from returning a confident one-sided answer that passes every other check
 
 ---
 
+
+### Step 1 sub-steps
+
+Fourteen sub-steps, 1.0 through 1.13. Counting rule: rows in this table, measured 2026-08-27; the eleven drafted at the Step 0 close plus 1.0, 1.12 and 1.13, added at the Step 1 open to give register rows E17, E16 and E8 the addresses they lacked. Deliverable paths are relative to `cr_scratch/`.
+
+**Nothing in this step has been promoted to its target path.** Fifteen specifications are frozen as marked blocks inside the files named below; `oracle/` does not exist. A context recipe that names `oracle/bootstrap_contract.md` is naming a path with no file behind it, and this column is what joins the two until a manifest exists.
+
+**Read `cr_scratch/step1_orchestrator_verification.md` first.** It carries every load-bearing empirical claim this step made, re-run, with the command that produced each verdict — including four claims that did not survive and two errors by the orchestrator.
+
+| # | Origin | Sub-step | Assigned To | Deliverable | Status |
+|---|---|---|---|---|---|
+| 1.0 | E17 | **Cold read of the operating contract.** 121-test audience-comprehension suite, run against the plan by a reader who had not executed it. Closed register row E17. | The Designer | `step1_0_designer_coldread.md` | **Complete.** 22 failures, 8 blocking, each with a fix |
+| 1.1 | ARCH-1 | **The enforcement layer, corrected**, plus the map rows it lacked. Acceptance is a `git check-ignore` fixture list. | The Systems Engineer (propose), Orchestrator (apply) | `step1_1_systems_engineer_enforcement.md` | **Complete and applied.** `.gitignore` live, 18 probes pass |
+| 1.2 | ECON-12 | **The FA1-FA8 corpus contract.** No work: ruled by the author at the Step 0 gate. Two shelves, two retrieval contracts, two trace grades. | The author (ruled) | `— (Author rulings section above)` | **Complete.** Closed register row D1 |
+| 1.3 | LOOP-1 | **The answer contract, frozen.** Six verdicts, three trace grades as a closed set, the deliverable-is-a-file rule, six run-log outcomes, and the shelf-naming requirement the FA ruling created. | The Software Engineer | `step1_3_software_engineer_answer_contract.md` | **Complete. Now at version 2**, amended at 1.8 |
+| 1.4 | ARCH-2 | **The bootstrap contract**, as a specification. Seven phases, six degraded modes, the offline refusal, push-disable, `core.hooksPath`, `core.longpaths`, idempotence. | The Systems Engineer (write), The Software Engineer (review) | `step1_4_systems_engineer_bootstrap_contract.md, step1_4_software_engineer_testability_review.md` | **Complete, with 14 review findings, 4 blocking.** Amendments owed |
+| 1.5 | ARCH-3 | **The single install state record.** One file, one schema, four consumers, three abnormal reads. The object of falsifier 2. | The Systems Engineer (write), The Software Engineer (review) | `step1_5_systems_engineer_install_state.md, step1_5_13_software_engineer_review.md` | **Complete.** No fifth fact. One blocking review finding |
+| 1.6 | ARCH-4 | **The working-copy currency policy.** Record the ref, float the checkout, fetch explicitly, compare, report, automate nothing. Records the C4 ruling. | The Systems Engineer (write), The Engineer (review) | `step1_6_systems_engineer_currency_policy.md` | **Complete.** Closed D4, E6, E10, C4, and E11's ref half |
+| 1.7 | MERGE-1 | **The naming and source-identifier rules**, both namespaces, and the path-length ceiling. Overturned register row E14 by measurement. | The Engineer | `step1_7_engineer_naming.md, step1_7_engineer_naming_addendum.md` | **Complete.** 176/176 names pass; one claim withdrawn by its author |
+| 1.8 | LOOP-2 | **The contested-claims register schema and its single encoding.** One sidecar, one in-file block; the other two proposals killed. | The Software Engineer (lead), with three briefs | `step1_8_software_engineer_register_schema.md` | **Complete.** Encoding decided by measurement, not preference |
+| 1.9 | LUNAR-2 | **Fifteen lunar register axes**, authored against current `lsei/literature/` paths, pre-merge. | The Space Resources Engineer | `step1_9_space_resources_engineer_register_rows.md, ..._addendum.md` | **Complete.** 15 axes, 81 members; strict re-run exit 0 |
+| 1.10 | ECON-1 | **Seventeen economics register axes**, same pre-merge basis. | The Manager (economics prompt) | `step1_10_manager_economics_register.md` | **Correction in flight.** ECR-01's verdict contradicted by the Wave 2 gate |
+| 1.11 | LOOP-3 | **The answering-loop test suite.** `tdd_method.md` Prompt 1 applied to a loop. Written before any loop code exists. | The Software Engineer | `step1_11_software_engineer_loop_suite.md, ..._v2.md` | **Complete.** 211 tests, 49 generated, 162 hand-authored |
+| 1.12 | E16 | **The counting-rule contract.** A count enters the record with its counting rule or it is not quotable. Closed register row E16. | The Designer (author), The Software Engineer (review) | `step1_12_designer_counting_rule.md` | **Complete.** 16 hard failures live against it today, 10 in its own file |
+| 1.13 | E8 | **The check register.** Every committed check: what it asserts, what invokes it, when it fires, what a failure does, its authority. Closed register row E8. | The Systems Engineer (write), The Software Engineer (review) | `step1_13_systems_engineer_check_register.md, step1_5_13_software_engineer_review.md` | **Complete.** 24 rows; one specifies a self-invoking loop, owed |
+
 ## Context recipes
 
 | Sub-step | Agent | Files / Excerpts |
