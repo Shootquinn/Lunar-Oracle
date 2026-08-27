@@ -538,7 +538,7 @@ value:         37
 unit:          distinct side letters summed across the fifteen lunar axes
 population:    the (axis_id, side) pairs of the M rows of the liftable block, deduplicated within
                each axis and then summed
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | awk -F'	' '$1=="M"{print $2"	"$3}' | sort -u | wc -l
+operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | grep '^M' | cut -f2,3 | sort -u | wc -l
 conditions:    cwd: repository root, 55 characters. Counts distinct (axis_id, side) pairs, so a
                side carrying three member rows contributes one. The same figure is printed by
                tools/check_register_rows.js on its "total sides" line.
@@ -558,7 +558,7 @@ class:         fixed
 value:         7
 unit:          of the fifteen lunar axes, those carrying more than two sides as authored
 population:    the fifteen A rows and their M rows in the liftable block
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | awk -F'	' '$1=="M"{print $2"	"$3}' | sort -u | cut -f1 | uniq -c | awk '$1>2' | wc -l
+operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | grep '^M' | cut -f2,3 | sort -u | cut -f1 | uniq -c | awk '$1>2' | wc -l
 conditions:    cwd: repository root, 55 characters. Counted after the app sides were
                removed per schema section 5, which is what makes this figure differ from
                Q-LCC-SIDES-GT2's 10 on the Step 0 draft; that block's own predicate anticipated 8

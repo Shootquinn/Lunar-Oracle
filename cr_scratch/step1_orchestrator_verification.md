@@ -124,3 +124,26 @@ by the author: that one field holds both, space-separated. Owed at the point the
 **A.9 is intact.** ECR-15 and ECR-16 state both positions and mark neither correct. The shared axis
 LCC-12 was written once under the lunar prefix and not duplicated, with one requirement left on it
 for The Space Resources Engineer.
+
+## From The Space Resources Engineer, 1.9
+
+| Claim | Verdict | Evidence |
+|---|---|---|
+| 15 axes, 80 members, 127 key slots (107 distinct), 0 failing, all assertions pass | **CONFIRMED by re-run** | `node tools/check_register_rows.js <extracted block> lsei/literature`: `parsed A rows 15 M rows 80 | H says 15 80`, `keys total 127 distinct 107 failing 0`, exit 0. The header's self-reported counts match the parsed counts, which is the check catching a splice error rather than the author's arithmetic. |
+| He wrote the checker before the rows and it caught four keys that pass K1 and fail K2 | **ACCEPTED** | Three of the four are the same error, and he names it: he reached for the *app's* word for a quantity rather than the corpus's. The sharpest instance is that the three Cabeus sources never use the word "grade", which was the title of his own Step 0 entry. Same discipline The Manager applied at 1.10, same result: checks before rows catches what checks after rows cannot. |
+
+**One usability note on the checker, not a defect in the rows.** `check_register_rows.js` reads its
+input file raw, so pointing it at the `.md` deliverable emits `UNKNOWN ROW TYPE` for every prose
+line. `ecr_verify.js` lifts the BEGIN/END block when handed an `.md`. Two checkers, two behaviours,
+one register. Worth a note at 1.13, which is the sub-step that enumerates them.
+
+**Two open items handed on.**
+- **The `app_surface` tier defect.** Six modeled app sections carry a tier of `-`, and naming one
+  turns every `APP`/`BOTH` verdict on it into an automatic `axis-incomplete` refusal. All 38
+  addresses in the shipped rows were checked by hand and carry a status string, tier string or
+  exclusion sentence, so nothing shipped broken. **But The Engineer must rule before 2.15 that an
+  excluded node's app string is its exclusion sentence**, or four axes refuse on every question
+  touching the excluded nodes — which is exactly where the corpus is supposed to do the work.
+- **Six Step 0 figures were wrong or under-described** and are corrected in the rows. Notably a
+  water-to-dust ratio with no stated excavation depth anywhere in the source, a deck that states no
+  TRL, and a source that prints no specific power at all. All six were quoted in Step 0 prose.
