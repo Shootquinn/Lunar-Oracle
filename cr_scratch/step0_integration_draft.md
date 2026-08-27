@@ -17,9 +17,15 @@ table. Where two agents took opposing positions, both positions stand and neithe
 
 **Read this section first; the rest of the file assumes it.**
 
-**The plan is seven steps, and each step contains sub-steps numbered `N.M`.** Step 1 holds 1.1
-through 1.11, Step 2 holds 2.1 through 2.18, and so on to Step 7. The seven groupings *are* the
-steps; the seventy-two items inside them *are* the sub-steps. This is the shape Step 0 itself ran
+**The plan is seven steps, and each step contains sub-steps numbered `N.M`.** Step 1 holds 1.0
+through 1.13, Step 2 holds 2.1 through 2.18, and so on to Step 7. The seven groupings *are* the
+steps; the seventy-five items inside them *are* the sub-steps.
+
+> **Count: 75 sub-steps.** Counting rule: rows in the sub-step tables of sections 2 below, summed
+> across Steps 1 through 7, excluding Step 0. Measured 2026-08-26 after the Step 1 open added three
+> rows. Derived from: the 72 rows this file carried at the Step 0 close, plus 1.0, 1.12 and 1.13.
+> The three additions are the sub-steps that close register rows E17, E16 and E8, which had no
+> address before Step 1 opened. This is the shape Step 0 itself ran
 in, with sub-steps 0.1, 0.1b, and 0.2 through 0.8. An earlier draft of this file called the
 groupings "phases" and the items "steps," which sat one level off from this project's method
 numbers. That numbering is gone from this file; §7 is the record of what changed.
@@ -61,6 +67,8 @@ across steps, the dependency column is the contract.
 
 ### Step 1 — Rulings, contracts, and the enforcement layer. Nothing moves until these land.
 
+**14 sub-steps, 1.0 through 1.13.** Counting rule: rows in the table below, measured 2026-08-26. Derived from the 11 rows drafted at the Step 0 close plus 1.0, 1.12 and 1.13, added at the Step 1 open to give register rows E17, E16 and E8 the addresses they lacked.
+
 **Closing this step delivers** a corrected `.gitignore` whose `git check-ignore` fixture list
 passes; the author's two rulings — the FA1–FA8 corpus contract, and C4 on `verify_report.js`; and
 six frozen written contracts: the answer contract, `oracle/bootstrap_contract.md`, the install-state
@@ -71,6 +79,7 @@ approving the contracts every later sub-step is written against.
 
 | Sub-step | Origin ID | What it does | Assigned To | Depends on |
 |---|---|---|---|---|
+| 1.0 | E17 | **ADDED at the Step 1 open, numbered ahead of 1.1 rather than appended, because a worklist whose numbering disagrees with its execution order commits E17's own defect.** Audience-comprehension test suite for the operating contract, run against it cold. Returns the suite plus the failures with a fix for each. Discharges the TDD precondition for Step 1. Closes register row E17. | The Designer (author), The Software Engineer (reviews the suite before it is the contract) | — |
 | 1.1 | ARCH-1 | Correct the enforcement layer and propose the map rows it lacks. Anchor `/cr-agents/` and `/lsei/`; keep `literature/` deny-by-default admitting `*.md` only; add a row for the machine-written install state file; add the `literature/_pdf/<taxonomy>/` row that resolves D6; state the `_intake/` exit criterion; state the non-row for `CSA_LSEI_Workshops`; rule whether `cr_scratch/` grows or is archived per step. Acceptance is a `git check-ignore` fixture list covering `.pdf`, `.PDF`, `.docx`, `.txt`, `.md`, nested, `literature/lsei/x.md`, `deps/`, and the state file, asserted on a case-sensitive filesystem. Correct the stale `deps/` reference in `accumulator.md`. | The Systems Engineer (propose), Orchestrator (apply), the author (rules the map) | — |
 | 1.2 | ECON-12 | **Rule on the FA1–FA8 corpus contract: one corpus or two.** The Manager (economics prompt)'s Part 6 verdict is that an FA deliverable is a cross-source adjudication carrying a verdict column and arithmetic present in no source, and that merging it into `literature/` breaks the resolution-grade guarantee silently for files that look identical to their neighbours. If the author rules them in, the taxonomy gains a derivation grade **before** MERGE-4 freezes. If out, this repository holds two corpora with two retrieval contracts and ECON-8 is a rebuild rather than a port. Exhibits: `FA1-mechanism-table.md` and `FA2-verdict-table.md` headers. | The author (rules), Orchestrator (escalates at the 0.8 gate with exhibits) | — |
 | 1.3 | LOOP-1 | Freeze the answer contract. One page naming the six verdicts, the three trace grades as a closed set, the deliverable-is-a-file rule, and the run log's six outcomes. Every later suite and every later mechanism is written against this artifact. | The Software Engineer | — |
@@ -82,6 +91,8 @@ approving the contracts every later sub-step is written against.
 | 1.9 | LUNAR-2 | Author the fifteen lunar register rows **against current `lsei/literature/` paths**, before the merge. This is The Space Resources Engineer's own mitigation for the hazard he flagged: the register is a prerequisite for the retrieval invariant, and if it waits for the merge the Oracle can be made to answer before it can be made not to answer one-sidedly. The content is already drafted in his §5.4; this step needs paths, not thought. | The Space Resources Engineer | 1.8 (LOOP-2) |
 | 1.10 | ECON-1 | Author the seventeen economics register rows against current paths, each with `register_side`, `register_lean` and `register_class` (`two_sided` / `false_pair` / `one_sided`). Same pre-merge mitigation as LUNAR-2. | The Manager (economics prompt) | 1.8 (LOOP-2) |
 | 1.11 | LOOP-3 | **TEST SUITE, the answering loop.** `tdd_method.md` Prompt 1 applied to a loop rather than a document. Levels 1 and 2 — fixture questions asserting verdicts and grades, plus invariants over any question — minus the register fixtures, which do not exist yet. Every quantitative test names the primary source it validates against, per `lit_review: yes` and A.10 step 2. Reviewed and made the contract before any loop code is written. | The Software Engineer | 1.3 (LOOP-1) |
+| 1.12 | E16 | **ADDED at the Step 1 open.** The counting-rule contract: a count enters the record with its counting rule at the moment it is measured, or it is not quotable. Twelve required fields at measurement and a mandatory name at every quotation, because rules on bare numerals cannot be swept. Closes register row E16. | The Designer (author), The Software Engineer (review for mechanizability) | 1.0 |
+| 1.13 | E8 | **ADDED at the Step 1 open.** The check register: every committed check, what it asserts, what invokes it, when it fires, what a failure does, what its authority is. A closed list, handing a post-condition to 2.14. Carries the container-versus-content finding from C4. Closes register row E8. | The Systems Engineer (write), The Software Engineer (review) | 1.4 |
 
 ### Step 2 — Corpus identity, taxonomy, and the merge (Objective 1)
 
@@ -113,7 +124,7 @@ divergence included. At this gate the author is approving that the merged corpus
 | 2.17 | MERGE-11 | Build `oracle/verify_corpus.js`, **the single tool that reports corpus state**: naming conformance, provenance completeness, duplicate identifiers with no primary/secondary call, register integrity, dangling source-file paths, and **the upstream divergence check** — the comparison of upstream filename set and content hashes against the provenance digest held in ARCH-3's state record. Reports; never writes; re-runnable. **Integration consolidation:** The Engineer and The Systems Engineer each proposed a drift check; this is one tool, not two, and The Engineer's own interface note asked for exactly that. | The Engineer, with The Systems Engineer on the divergence half | 2.5 (MERGE-5), 2.16 (MERGE-10), 1.5 (ARCH-3) |
 | 2.18 | ARCH-5 | Corpus fork policy: the rule that provenance names an upstream ref, that the bootstrap runs MERGE-11's divergence check, and that divergence is **reported as a finding and never auto-merged**. Carries the `--lit` requirement (loose end C3): any invocation of prototype tooling in place must name our corpus explicitly, and the suite asserts which corpus was used. The policy is this step; the check is MERGE-11. | The Systems Engineer (policy), The Engineer (provenance format) | 1.5 (ARCH-3), 2.17 (MERGE-11) |
 
-### Step 3 — The app boundary and retrieval (Objectives 3, 5)
+### Step 3 — The app boundary and retrieval (Objective 3)
 
 **Closing this step delivers** an app boundary derived from the artifact with both reachability gaps
 closed — `OUTPUT_LEXICON` complete, `valueModel()` extracted; `oracle/question_classes.json`, the

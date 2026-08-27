@@ -100,7 +100,7 @@
   gameplan now opens with a paragraph for the stranger and the progress log is reverse-chronological
   and says so.
 - **His cheapest finding was his best: the loose ends register did not state its own size.** It now
-  declares 42 rows across five lettered tables, so a row lost to a bad splice is detectable by
+  declares 44 rows across five lettered tables (counting rule: rows matching `^| [A-E]<n> |` in the register, counted 2026-08-26; A 8, B 7, C 5, D 7, E 17. Section F is prose, not a table), so a row lost to a bad splice is detectable by
   counting. That device is his and it should be reused on every register this project builds. It
   passed at close.
 - **Ruled on the document's habit of narrating its own error-catching** — four such passages — as
