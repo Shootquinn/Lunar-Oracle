@@ -198,3 +198,42 @@ consolidate into `ecr_verify.js` at 2.15.
 
 **This is the check register catching the orchestrator on its first run**, which is the argument for
 the register that no amount of specification would have made.
+
+## 1.9 corrected — verified strictly, and the verification method is now stated
+
+```
+$ sed -n '187,283p' cr_scratch/step1_9_..._addendum.md > lunar2.tsv
+$ awk -F'\t' '{print $1}' lunar2.tsv | sort | uniq -c     ->  1 H, 15 A, 81 M
+$ node tools/ecr_verify.js lunar2.tsv lsei/literature > out.txt 2>&1 ; echo $?   ->  0
+$ grep -icE "^ *FAIL|FAIL " out.txt                        ->  0
+$ tail -1 out.txt                                          ->  ALL PASS
+```
+
+**Verification rule adopted after the failure above, and it is the correction that matters more than
+the fix.** A verdict is: the strict tool's exit status, **plus a count of failure lines over the
+whole unfiltered output**, plus the summary line. Never a filtered view. The B6 failure was in the
+output the first time and a `grep -v` written to find the summary removed it. The rule is now that
+the filter may not run before the verdict is read.
+
+**The fix itself, and why it is better than the one that was asked for.** The instruction was to fix
+a cluster. He started at the option that would have dismissed it — the two files are different NASA
+offices four months apart, no shared content, and the unregistered one contains no mass, no kWe and
+no specific mass at all. On LCC-10's own probe and three other fission questions it scores **0.00 and
+ranks #112 to #125 of 152**, so the stated hazard, an unregistered twin surfacing on a fission
+question, genuinely does not exist.
+
+He then measured a question nobody had asked. On *"What is NASA planning for 2025 on the Moon?"* the
+unregistered file ranks **#1 at 9.06 and the registered one #2 at 8.36** — 0.70 apart, near-tied, and
+**only one of the two carried a register block.** Which file retrieval happened to return decided
+whether the register engaged at all. Registered, with a position stating that the document baselines
+a fission element and states no mass allocation, matching the precedent already on that axis where a
+source is registered for printing *no* specific power.
+
+His own words on it: he would not have added it unprompted, and a check he wrote and then defeated
+found what his reading missed.
+
+| Follow-on claim | Verdict | Note |
+|---|---|---|
+| Two assertions passed by authoring accident rather than enforcement | **His finding, accepted** | The banned-word list and comma spacing are implemented by the strict tool and not by his. One sentence written differently and the register ships telling users a `false_pair`'s sides contradict each other, with nothing to catch it. |
+| All nine near-duplicate clusters are now fully registered or wholly unregistered; zero partial | **Reported, dated** | Two same-author pairs are wholly unregistered and therefore silent. **The moment 1.10 or 2.16 registers one member of either, B6 fires as a false positive.** The addendum carries the test to apply rather than leaving it to be re-derived. |
+| He declined to propose a numeric cluster cut-off | **Accepted** | Nine samples, a nine-point gap, and one non-duplicate sitting closer to a non-duplicate than to its own duplicate. Over-inclusive is the right direction and he says so instead of fitting a threshold to nine points. |
