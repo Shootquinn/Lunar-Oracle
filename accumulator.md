@@ -1,5 +1,5 @@
 # Accumulator: Lunar Oracle
-## Last updated: 2026-08-27, at the Step 1 re-close. Entries written by The Manager.
+## Last updated: 2026-08-27, at the Step 1 final close. Entries written by The Manager.
 
 > Created at 0.1 from `cr-agents/templates/accumulator.md`. The template's ten sections, plus The
 > Writer and The Fact-Checker, who are on the standing roster (A.12.11, A.12.12) and both ran at
@@ -23,6 +23,16 @@
 > R-1 was the orchestrator's and R-6 was The Manager's, and neither carries a persona entry. **Two
 > personas withdrew their own mechanisms in favour of a colleague's, and both withdrawals are
 > recorded as withdrawals rather than absorbed into agreement.**
+>
+> **Step 1 final-close entry added 2026-08-27.** One seat ran: The Systems Engineer, at gate item C-1.
+> **The 23 above is stale and is deliberately left standing beside the per-seat breakdown it agrees
+> with.** The counting rule it states — `ls cr_scratch/step1_*.md` less the two orchestrator files —
+> now returns **29**, measured at the final close, because the re-close, C-1 and this close each wrote
+> a file. Re-deriving 23 would require re-attributing six files per seat and re-deriving the 26 spawns
+> beside it, which is work and not a cell. **The defect is that the number is a literal in prose whose
+> population grows with ordinary work**: it is the `M15` class inside the accumulator, and the fix is a
+> computed tag rather than a habit of remembering to update it. Recorded rather than patched, so that
+> the fix is made once at the right level.
 
 ---
 
@@ -80,6 +90,36 @@
   is that **a number does not cross a boundary unless the seat relaying it ran the operation that
   produces it, and the relay carries the operation.** Underneath both: every agent output is verified
   and nothing verifies the verifier. One unchecked node, the highest-traffic one.
+- **The common-cause ruling revised at the final close, and arm 2's remedy withdrawn as a remedy.**
+  Orchestrator relay error 8 is the controlled experiment: the rule *a filter over a file set reads the
+  manifest, not a remembered list* was authored by the seat that had just committed error 7, and that
+  seat broke it **one measurement later** — while obeying its letter, because the rule specified the
+  input and said nothing about the instrument. Error 9 then put a fabricated manifest census into the
+  gameplan sentence written as part of the same repair. **Common cause, and the freshness of the rule is
+  what proves it**: it removes the only special cause anyone could plead, which is not knowing the rule.
+  **Arm 2 was one label over two classes.** Arm 2a, six instances, is a seat repeating a number somebody
+  else produced, and *run the operation yourself* is the right remedy. Arm 2b — errors 7, 8 and 9 plus
+  the four verdict-reading harness errors, **seven of the nine, and every wrong verdict this step** — is
+  a seat running an instrument it wrote and never tested, once, and using the first output as a result.
+  Telling somebody who ran the operation to run the operation is not advice. **By my own standard, a rule
+  a person must remember is not a process fix**, so both standing rules are kept as definitions of
+  conformance and measuring instruments, and neither is a control. The two remedies that are process
+  changes: **move the boundary artifacts into the declared file set** so the existing `M15` covers spawn
+  prompts by construction rather than reaching out to them, and **use the `H` row every register already
+  writes about itself as a known-answer test** on any ad-hoc extraction — the manifest declares 20, and
+  an extraction returning seven single letters or a census of 47 is refuted in one line by the file it
+  read. Instances are in `cr_scratch/step1_orchestrator_verification.md`; the ruling is at the final
+  close §3, with its own falsifier.
+- **A defect in how I write gate rows, found in my own C-2.** Its What column listed four things and its
+  done-when tested three, and the untested clause is the one that did not land — the same shape as the
+  R-2 remit of seven executed as three, one level up and authored by me. **A done-when that does not test
+  every clause of its own What is an invitation to discharge the tested part.**
+- **Ruled at the final close that a found defect in a shared factual index is corrected by its finder,
+  not routed.** Every refusal cycle adds two crossings of the boundary where nine of this step's errors
+  happen, so routing three verified one-line corrections through it to reduce errors made at it is a
+  control action that increases the variable it targets. The line, taken from The Systems Engineer's C-1
+  refusal: **you correct a false measurement in a shared factual index; you never touch another
+  persona's argument.** Its falsifier is F3 at the final close §6.
 - **Corrections received.** Two of the step's counting errors are mine rather than the
   orchestrator's: the 42-against-44 accumulator figure carried from Step 0, and "thirteen amendments"
   written into a Wave 2 brief when the figure is seven, because 13 was the highest row label. The
@@ -275,6 +315,47 @@
   written at the re-close. Aggravated by a namespace collision he could not reasonably have seen:
   `AM-2`/`AM-3`/`AM-4` are amendment-register *checks* and `AM-02`/`AM-03`/`AM-04` are amendment
   *rows*, and his true statement about the first reads as a statement about the second.
+
+- **Gate item C-1, and this is the entry that answers the correction above.** Sent the six `BLOCKING`
+  rows his R-2 pass had not reached, he discharged all six and **four more that were the same edits**,
+  and marked no cell `applied` until the promoted text was changed and read back. He verified each row
+  was live in the authority before editing rather than taking the register's word for it. `oracle/`'s
+  bootstrap contract now defines `ABORT` as *the bootstrap stopped before Phase 6*, with the cause form
+  `ABORT (<phase>, <assertion-id>)` carried into all four §3 `On failure` clauses; `usable` is closed;
+  `missing-recoverable` is a Phase 3 transient with every resolution path enumerated; both mode
+  quantities are corrected with `superseded` entries; BC-4's consumer is named. `install_state.md`
+  rule 4 is qualified by parent nullability and publishes a second fixture.
+- **He left one row `owed` and put the reason in the cell.** `AM-23`'s BC-4 clause landed and its other
+  eight did not, three of them moving a quantity that must land in one edit with `AM-24`. **Marking it
+  `applied` for one clause of nine would have been the exact defect this gate item existed to repair**,
+  and he said so in those terms. A seat who declines to bank a partial discharge, one pass after being
+  corrected for banking one, is a seat whose next `applied` can be believed.
+- **He made the number go up and reported it before anyone asked.** Landing the mode correction took
+  `tools/quantities.js --check` from eleven hard failures to twelve, because `M3` has no reading for a
+  recitation of a superseded value and three sites still carry the old figure — **all of them code-span
+  recitations inside two frozen review documents written by two other personas while arguing the old
+  value was wrong.** He checked both escape routes rather than assuming: the `pending:` form does not
+  suppress `M3`, and check `AM-3` forbids it here anyway because a `cr_scratch` review document is not
+  a manifest row. He minted `AM-132` against the counting rule and **declined to edit another persona's
+  argument to make a checker like his edit.** Two of the eleven pre-existing failures have the same
+  shape, which is the evidence that it is the rule's gap and not his.
+- **He ran the general form rather than the reported instance, and named his own false positive.** Sent
+  one bad checker name in `MANIFEST.tsv`, he swept every `tools/*.js` path named anywhere under
+  `oracle/`, in `COUNTING_RULE.md` and in `QUANTITIES.md` against the filesystem. Four more do not
+  resolve; **three are check-register rows for checks specified and not yet built, which is what a check
+  register is for**, and the fourth was his own `\.js` pattern matching the `.js` inside `.json`. He
+  reported the false positive instead of leaving it in a count.
+- **He found the defect his own fix created and rowed it.** The `ABORT` cause form has two id spaces and
+  only one is closed: `install_state.md` writes `ABORT (Phase 5, ST-3)` and nothing enumerates `ST-1`
+  to `ST-3`. That is F1's closure defect one level down, and it is `AM-133`.
+- **His `superseded` entry taught him something inside his own edit.** His first draft wrote the old
+  figure in the bracketed quotation-tag form and it immediately became a thirteenth `M3` failure,
+  because **a tag is a quotation of the current value and a `superseded` entry is a recitation of a
+  former one.** He rewrote it in words. That is the same mechanism as `AM-132`, met from the inside.
+- **The correction above still stands and is not softened by this entry.** Both are true of the same
+  seat: the remit of seven executed as three, and the six-plus-four discharged with a partial left
+  visibly partial. The second is the answer to the first, and the obligation-count rule is what makes
+  the difference cheap to detect next time.
 
 ### The Designer
 - **Step 0.5 (Wave 2), the gameplan as a designed artifact.** Two verdicts, both negative and both

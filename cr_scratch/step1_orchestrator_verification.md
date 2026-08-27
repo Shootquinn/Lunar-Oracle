@@ -512,3 +512,58 @@ memory; and a column index from memory. Every one is the instrument that reads t
 tool being read. **A rule a person must remember to apply is not a process fix**, which is this
 project's own Deming reading, and the eighth error is the evidence for it — the rule was one screen
 above the command that broke it.
+
+## Orchestrator relay error 8, and the rule that would have caught it had just been written
+
+Recorded by The Manager at the Step 1 final close, in the file where the other seven live.
+
+Immediately after writing *"a filter over a file set reads the manifest, not a remembered list"*
+into this document as the remedy for error 7, the next measurement extracted the manifest's target
+paths **with a guessed column**. Every row of `oracle/MANIFEST.tsv` begins `H` or `D`, so the guess
+returned the single letters `H` and `D` as if they were paths, and grepping the failure lines for
+them matched seven times. **Seven spurious promoted-authority hits were produced and did not reach a
+verdict only because the output was visibly absurd.** The correct figure is **three of twelve**.
+
+Re-derived here by The Manager, from the manifest rather than from a list:
+
+```
+awk -F'\t' '$1=="D" && $7=="promoted"{print $2}' oracle/MANIFEST.tsv  ->  17 paths
+grep -cFf <those 17 paths> <the 12 failure lines>                     ->  3
+  2  QUANTITIES.md              (generated; self-corrects on the next index run)
+  1  oracle/bootstrap_contract.md   (carries the CORRECT value 5; the stale 6 is recited
+                                    in two frozen cr_scratch review documents. AM-132.)
+```
+
+**Error 8 is not error 7's mechanism.** Error 7 was a membership list typed from memory. Error 8 was
+an **extraction written and used without one probe against a known answer**. The two demand different
+remedies, and the rule written for the first does not reach the second: the seat had the rule, had
+just written it, and obeyed its letter — it did read the manifest — while getting the answer wrong.
+
+**The known answer existed in the file being read.** `oracle/MANIFEST.tsv`'s `H` row declares its own
+`D`-row count: `H 1 2026-08-27 20`. Any extraction returning something other than 20 rows is refuted
+in one line by the file itself. Every register in this project declares its own size for exactly this
+reason. The probe was available and free and was not run.
+
+## Orchestrator relay error 9 — inside the repair for error 7
+
+The sentence added to the gameplan at gate item C-2, whose stated purpose is to send the next reader
+to the manifest instead of to a remembered list, read: *"`oracle/MANIFEST.tsv` … holds 47 targets."*
+
+Measured at the final close:
+
+```
+awk -F'\t' '$1=="D"' oracle/MANIFEST.tsv | wc -l          ->  20   (and the H row declares 20)
+awk -F'\t' '$1=="D"{print $2}' … | sort -u | wc -l        ->  18   distinct target paths
+awk -F'\t' '$1=="D" && $7=="promoted"{print $2}' … | wc -l ->  17  promoted
+wc -l < oracle/MANIFEST.tsv                                ->  48
+```
+
+**47 is no census of this file. It is the line count less one.** The number was written into the
+index of record, in the sentence about not writing numbers from memory, and it stood there until the
+final close. Corrected in place at the final close to `20 D rows / 18 distinct target paths / 17
+promoted`, with the command that produced each figure in the sentence.
+
+Errors 7, 8 and 9 are one family and it is **not** the relay family that errors 1–6 belong to. In
+1–6 a seat repeated somebody else's number. In 7, 8 and 9 the seat produced the number itself, with
+an instrument it wrote and never tested. See The Manager's Step 1 final close §3 for the split and
+the remedy.
