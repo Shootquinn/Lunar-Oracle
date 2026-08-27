@@ -97,11 +97,32 @@ fails loudly instead of matching nothing quietly. Changing the algorithm is a sc
 truncated mid-write. Six further corrupt instances are enumerated at §6.3 with the rule each violates;
 a validator that accepts any of the seven is wrong.
 
-**A future-version instance:** the valid instance above with `"schema": 2`.
+**Two future-version instances, and the second is the one that matters.**
+
+```
+F1  the valid instance above with "schema": 2                 -- same path set
+F2  the valid instance above with "schema": 2 AND one added key, "hooks_installed": true
+```
+
+**F2 is the realistic one.** A schema bump is a change to the path set (§12); a future version that
+adds nothing is a version nobody would have minted. F1 is the only future record whose paths this
+version already knows, so a test written on F1 alone exercises the one future record that cannot
+reach the ordering defect. Both assert **zero bytes written** and terminal outcome
+`ABORT (Phase 5, ST-3)`.
+
+F2 is byte-for-byte §6.3's corrupt instance 7 except for the value of `schema`, and it must be
+classified the other way. **That is the whole of the assertion:** the discriminator between corrupt
+and refuse is `schema` and nothing else, so `schema` is read first and the shape rules are applied
+after the branch. See §4 and §6.1.
 
 ## 4. Validity
 
-A read is valid when all six hold. Anything else is a corrupt read (§6.3).
+Six rules, in **two gates**, and the split is load-bearing rather than tidy. Anything failing either
+gate is a corrupt read (§6.3) — but the gates are applied at two different points in §6.1, with the
+schema-version branch between them.
+
+**§4a — the parse gate.** These three are true of every record this project will ever write, at
+every schema version. They may be applied before the version is known.
 
 1. The bytes parse as JSON.
 2. The parsed value is an object: `typeof v === "object" && v !== null && !Array.isArray(v)`.
@@ -109,6 +130,11 @@ A read is valid when all six hold. Anything else is a corrupt read (§6.3).
    `"object"`; `JSON.parse("[]")` returns an array and `typeof []` is `"object"`. Both were run.
 3. `schema` is present and is an integer greater than zero. A string `"1"`, a float `1.5` and a zero
    are each corrupt.
+
+**§4b — the shape gate.** These three are true of a record **written at this schema version**, and
+they are meaningless against any other. They are applied only after §6.1 has established that the
+version is this one.
+
 4. Every path the schema requires at this version is present, with a value of the declared type or the
    declared `null`.
 5. No path outside the `19 [Q-STATE-KEYS]` is present.
@@ -117,6 +143,18 @@ A read is valid when all six hold. Anything else is a corrupt read (§6.3).
 Rule 5 is doing unusual work and it is deliberate. **An unknown key at a known schema version means
 something other than the bootstrap wrote this file.** The record is the single-writer property's own
 detector, and it reports that finding in those words rather than ignoring the key.
+
+**And rule 5 is exactly why the gates are two.** *At a known schema version* is a precondition of the
+rule, not a decoration on it, and until R-2 nothing enforced the precondition: §6.1 ran all six rules
+before it read the version, so a schema-2 record that added a key — which is what a schema bump
+**is**, per §12 — failed rule 5, was classified corrupt, and was **rewritten** by §6.3. The clause
+that exists to refuse rather than overwrite was unreachable for every realistic future version. The
+finding is the reviewer's, at the 1.5/1.13 review S1. Rule 3 already isolates `schema` and already
+belongs in the parse gate, so the ordering is the whole of the fix and it costs nothing else.
+
+**What each gate costs if it is applied at the wrong point.** §4b applied too early destroys a newer
+Oracle's record, which is S1. §4a applied too late reads a `schema` out of bytes that are not JSON, or
+out of an array, and branches on it.
 
 ## 5. Every field: who writes it, who reads it, what happens when it is wrong
 
@@ -152,10 +190,17 @@ Read once, at Phase 5, in the order below. The three abnormal reads are §6.2, �
 ### 6.1 Order
 
 1. Open the file. Absent ⇒ §6.2.
-2. Parse and validate per §4. Invalid ⇒ §6.3.
-3. `schema` greater than this schema version ⇒ §6.4. **Read no other field first.**
+2. **§4a, the parse gate.** Fails ⇒ §6.3 corrupt.
+3. `schema` greater than this schema version ⇒ §6.4. **Read no other field first**, and by step 3
+   none has been read: the parse gate touches the bytes, the type of the root value, and `schema`.
 4. `schema` less than this schema version ⇒ §6.5.
-5. Otherwise the read is ordinary.
+5. **§4b, the shape gate.** Fails ⇒ §6.3 corrupt. Reached only when `schema` equals this version, so
+   rules 4, 5 and 6 are applied to a record they describe.
+6. Otherwise the read is ordinary.
+
+**Steps 3 and 5 may not be exchanged.** Step 5 before step 3 is the S1 defect: it classifies every
+future record that adds a key as corrupt and hands it to §6.3, which rewrites it. Fixture F2 at §3 is
+the test, and it asserts zero bytes written.
 
 ### 6.2 Absent — treat as first install
 
@@ -179,6 +224,12 @@ during the read and then reports the install as first.
 | 5 | `{}` | 3 — no `schema` |
 | 6 | `{"schema":"1", ...}` | 3 — string, not integer |
 | 7 | a valid instance plus `"hooks_installed": true` | 5 — unknown key at a known version |
+
+Instances 1 to 6 fail **§4a** and are classified before the version branch. **Instance 7 fails §4b**
+and is reached only when `schema` equals this version. That is the entire discrimination between
+instance 7 and §3's fixture F2, which carries the same unknown key at `schema: 2` and must be refused
+rather than rewritten. A validator that returns the same verdict for both is the S1 defect, and it is
+a pair a test asserts on together rather than separately.
 
 Instances 3 and 4 are listed because they are the two a naive `typeof` check admits. Instance 7 is
 listed because it is the one a permissive parser admits, and because it is the shape this record exists
@@ -217,7 +268,10 @@ the one field in this record that cannot be re-observed is the field a newer Ora
 have set.
 
 **Falsified by:** a future-version read that writes any byte; a future-version read that reports a
-field value out of the file; a future-version read that reaches Phase 6.
+field value out of the file; a future-version read that reaches Phase 6; **and a future-version read
+carrying a path this version does not know that is reported as corrupt** — fixture F2, which is the
+falsifier this clause did not have until R-2, and whose absence at §3 is why the one fixture that was
+written could not catch S1.
 
 ### 6.5 Written by an older schema version — migrate; not abnormal
 

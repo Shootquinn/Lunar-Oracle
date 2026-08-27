@@ -9,6 +9,9 @@
 # D  <target-path>  <source-file>  <marker-name>  <promoter-substep>  <gate>  <state>
 #
 # state is a closed set of three: specified | promoted | superseded.
+#   superseded also covers a TARGET PATH ruled never to exist, whose content lives at other
+#   rows. oracle/REGISTER.tsv is the one such row; see AM-98 and register_schema section 3.0.
+#   This is a definition of an existing value, not a fourth value.
 # gate names what must land first, or -.
 # marker-name is - when the target has no marked block behind it. Rows of that shape are
 # what MF-2 cannot see; see the note under the last row.
@@ -23,7 +26,7 @@ D	oracle/AMENDMENTS.tsv	-	-	1.14	oracle/MANIFEST.tsv	promoted
 D	oracle/MANIFEST.tsv	-	-	1.14	-	promoted
 D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register_addendum.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	promoted
 D	oracle/REGISTER.lunar.tsv	cr_scratch/step1_9_space_resources_engineer_register_rows_addendum.md	oracle/REGISTER.tsv (lunar rows, corrected)	1.9	-	promoted
-D	oracle/REGISTER.tsv	-	-	1.14	AM-98: two H rows, one file; register_schema section 3.1 admits one	specified
+D	oracle/REGISTER.tsv	-	-	1.14	RULED AT R-2, AM-98: no such file. Content is at oracle/REGISTER.lunar.tsv and oracle/REGISTER.econ.tsv; the schema clause is register_schema.md section 3.0	superseded
 D	oracle/VERIFIED.tsv	cr_scratch/step1_6_systems_engineer_currency_policy.md	-	1.6	-	promoted
 D	oracle/answer_contract.md	cr_scratch/step1_3_software_engineer_answer_contract.md	oracle/answer_contract.md	1.3	-	promoted
 D	oracle/bootstrap_contract.md	cr_scratch/step1_4_systems_engineer_bootstrap_contract.md	bootstrap_contract.md	1.4	-	promoted
@@ -35,7 +38,11 @@ D	oracle/tests/answering_loop_suite.md	cr_scratch/step1_11_software_engineer_loo
 D	tools/quantities.js	-	-	1.14	COUNTING_RULE.md	promoted
 D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	superseded
 D	oracle/REGISTER.lunar.tsv	cr_scratch/step1_9_space_resources_engineer_register_rows.md	oracle/REGISTER.tsv (lunar rows)	1.9	-	superseded
-# One row is state:specified with no marker behind it — oracle/REGISTER.tsv. It fails MF-2 by
-# construction, and that failure is the point: the schema at oracle/register_schema.md section
-# 3.1 says H is "one row, the first row", and the two promoted halves each carry one. Nobody
-# ruled the merge. See AM-40. Do not make this row green by inventing a state.
+# oracle/REGISTER.tsv was state:specified with no marker behind it, failing MF-2 by construction,
+# because nobody had ruled the merge. The Engineer declined it correctly at 1.14: it is a schema
+# question, not a promotion question. RULED AT R-2 by The Systems Engineer, and the ruling is
+# that there is no such file: oracle/register_schema.md section 3.0 makes the sidecar a SET of
+# files, one basis_root each, joined at load. The row is state:superseded so that a Step 2
+# session grepping the path it will find in eleven deliverables lands on the ruling rather than
+# on nothing. The row was NOT made green by inventing a state, and the earlier note's pointer to
+# "AM-40" was a typo for AM-98.

@@ -1,5 +1,8 @@
 // Runs the ratified schema's assertions L2 L3 L5 B1 B2 B3 B5 B6 B7 over an ECR sidecar fragment.
 // Usage: node ecr_verify.js <tsv-or-deliverable.md> <corpusRoot>
+// Failure lines print FAIL at column 0 and the run ends with a FAILURES <n> line, so a count
+// over the unfiltered output is exact. They were indented two spaces until R-3, which made
+// grep -c '^FAIL' return 0 against a real count of 143.
 const fs=require('fs'), path=require('path');
 const STOPWORDS=new Set(['the','a','an','and','or','but','of','in','on','at','to','for','with','by','from','as','is','are','was','were','be','been','being','it','its','this','that','these','those','what','which','who','how','why','when','where','did','does','do','not','no','so','than','then','if','into','about','across','over','under','out','up','down','per','via','vs','and/or','their',"it's",'would','could','should','will','shall','can','may','might','also','only','one','two','three','app','apps','model','models','modeled','modelled','modeling','modelling','assumes','assumed']);
 function tokenize(t){return (String(t).toLowerCase().match(/[a-z0-9]+/g)||[]).filter(x=>x.length>1&&!STOPWORDS.has(x));}
@@ -22,12 +25,17 @@ for(const [i,line] of tsv.entries()){
   if(!ARITY[t]){fail.push('L3 row '+(i+1)+' unknown type '+t);continue;}
   if(f.length!==ARITY[t]) fail.push('L3 row '+(i+1)+' type '+t+' has '+f.length+' fields, needs '+ARITY[t]);
   if(f.some(x=>/[\t\n]/.test(x))) fail.push('L3 row '+(i+1)+' embedded tab or newline');
-  if(t==='H') H=f;
+  if(t==='H'){ // L0 HEADER CARDINALITY AND POSITION -- schema section 9 L0, section 3.0 SET-1.
+    // Was 'if(t===H) H=f': last-H-wins, no count, no position. Against a two-header file that
+    // silently validated the SECOND header and reported the first one's counts as wrong.
+    if(H!==null) fail.push('L0 row '+(i+1)+' is a second H row; schema 3.1 admits exactly one');
+    else { H=f; if(i!==0) fail.push('L0 H is at row '+(i+1)+', not the first non-comment row'); }
+  }
   if(t==='A'){ if(axes.has(f[1])) fail.push('B1 duplicate axis '+f[1]); axes.set(f[1],f); }
   if(t==='M') mems.push(f);
 }
 // L2 self-declared size
-if(!H) fail.push('L1 no H row');
+if(!H) fail.push('L0 no H row');
 else{
   if(Number(H[4])!==axes.size) fail.push('L2 axis_count '+H[4]+' != parsed '+axes.size);
   if(Number(H[5])!==mems.length) fail.push('L2 member_count '+H[5]+' != parsed '+mems.length);
@@ -109,5 +117,6 @@ console.log('sides per axis: '+ids.map(i=>i+'='+(bySide.get(i)||new Set()).size)
 console.log('--- B7 SHARED-MEMBER REPORT (does not fail) ---');
 if(!share.length)console.log('  none'); else share.forEach(s=>console.log('  '+s));
 console.log('--- ASSERTIONS ---');
-if(!fail.length)console.log('  ALL PASS');else fail.forEach(f=>console.log('  FAIL '+f));
+if(!fail.length)console.log('ALL PASS');else fail.forEach(f=>console.log('FAIL '+f));
+console.log('FAILURES '+fail.length);
 process.exit(fail.length?1:0);

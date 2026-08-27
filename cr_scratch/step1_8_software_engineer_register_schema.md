@@ -1005,7 +1005,12 @@ unit:          candidate files that gained a confirmation, when the register blo
                paths only
 population:    as Q-REG-FLIPS-FULL, with the block reduced to axis id, side and partner paths
 operation:     script: tools/probe_register_encoding.js --blocks
-conditions:    as Q-REG-FLIPS-FULL
+conditions:    cwd: repository root, 55 characters. Node 26.4.0. Probes are built into a fresh
+               os.tmpdir() directory per run; the baseline arm is an unmodified copy of the same
+               152 files, so the only difference between arms is the block. Written out rather
+               than inherited as "as Q-REG-FLIPS-FULL": the counting rule has no inheritance form
+               for conditions, so M11 cannot see through the reference and read it as a block with
+               no cwd. The reference was the correct instinct and the missing form is W2-4/AM-81.
 at:            2026-08-26; lsei 7f97983; cr-agents f0c976b
 predicate:     a register block carrying only partner paths causes 9 files to gain a confirmation
                and changes the best-scoring file for 3 of the 15 axis queries. Partner paths are
@@ -1023,8 +1028,11 @@ unit:          candidate files that gained a confirmation, when the register blo
                id and side letter only
 population:    as Q-REG-FLIPS-FULL, with the block reduced to "- <axis_id> <side>"
 operation:     script: tools/probe_register_encoding.js --blocks
-conditions:    as Q-REG-FLIPS-FULL. Side letters are single characters and are dropped by both the
-               tokenizer and the document-frequency filter, so they are free.
+conditions:    cwd: repository root, 55 characters. Node 26.4.0. Probes are built into a fresh
+               os.tmpdir() directory per run; the baseline arm is an unmodified copy of the same
+               152 files, so the only difference between arms is the block. Side letters are single
+               characters and are dropped by both the tokenizer and the document-frequency filter,
+               so they are free. Written out rather than inherited, per Q-REG-FLIPS-MIN.
 at:            2026-08-26; lsei 7f97983; cr-agents f0c976b
 predicate:     an id-and-side register block causes no confirmation flips and changes no best file
                on any of the 15 axis trigger queries. It is not thereby retrieval-safe; see
@@ -1209,7 +1217,12 @@ operation:     cmd: git check-ignore -q <path> in a scratch repository initializ
                .gitignore block from cr_scratch/step1_1_systems_engineer_enforcement.md
 conditions:    cwd: a scratch git repository, git 2.55.0.windows.1, on a case-insensitive
                filesystem. The rules tested are /literature/** with re-admissions
-               !/literature/**/ and !/literature/**/*.md.
+               !/literature/**/ and !/literature/**/*.md. The absolute path length of that
+               scratch repository was not recorded at measurement time and cannot now be
+               recovered. It does not affect the value: git check-ignore matches a pattern
+               against a repository-RELATIVE path and reads no file, so no path-length ceiling
+               is reachable by this operation. Stated rather than invented, and this block
+               therefore fails M11 as written -- see AM-122, which is the amendment M11 needs.
 at:            2026-08-26; cr-agents f0c976b
 predicate:     literature/REGISTER.tsv, literature/FIELDS.tsv and literature/INDEX.tsv are all
                ignored by the frozen .gitignore and would be absent on every fresh clone;

@@ -2,17 +2,18 @@
 
 # QUANTITIES
 
-**60 blocks.** fixed 55; live 4; provisional 1.
+**60 blocks.** fixed 54; live 5; provisional 1.
 
 | id | value | unit | class | at | birth file | superseded |
 |---|---|---|---|---|---|---|
-| Q-BLOCKING-MODES | 3 | degraded modes that block the first-run s... | fixed | 2026-08-26 | cr_scratch/step1_4_systems_engineer_bootstrap_contract.md | 0 |
-| Q-BOOTSTRAP-PHASES | 7 | numbered phases of the bootstrap sequence... | fixed | 2026-08-26 | cr_scratch/step1_4_systems_engineer_bootstrap_contract.md | 0 |
+| Q-BLOCKING-MODES | 3 | degraded modes that block the first-run s... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
+| Q-BOOTSTRAP-PHASES | 7 | numbered phases of the bootstrap sequence... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
 | Q-C4-SOURCE-LINES | 328 | lines of JavaScript between the fences of... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
 | Q-CARD-KWH-PER-KG | 63 to 93 inclusive | kWh of thermal energy per kg of oxygen | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
-| Q-CHECK-ROWS | 24 | C rows in oracle/check_register.md's mark... | fixed | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 0 |
+| Q-CHECK-ROWS | 27 | C rows in oracle/check_register.md's mark... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
+| Q-COUNTING-RULE-VERSION | 2 | the version integer of this contract | fixed | 2026-08-27 | COUNTING_RULE.md | 1 |
 | Q-CURRENCY-VERDICTS | 11 | verdict values across the two closed axis... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
-| Q-DEGRADED-MODES | 6 | degraded modes in the closed set at §5 of... | fixed | 2026-08-26 | cr_scratch/step1_4_systems_engineer_bootstrap_contract.md | 0 |
+| Q-DEGRADED-MODES | 6 | degraded modes in the closed set at §5 of... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
 | Q-ECON-REFS-ABBREV | 18 | distinct source references in the sevente... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-ECR-AXES | 17 | A rows in the economics namespace of the ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
 | Q-ECR-KEYS-DEAD | 0 | shipped match_key strings that can never ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
@@ -45,7 +46,6 @@
 | Q-LCC15-TIERLESS-SECTIONS | 6 | modeled app sections whose tier column in... | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-LSEI-PUSHED-COMMITS | 3 | commits this project pushed to the Scenar... | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
 | Q-LUWEX-KWH-PER-KG | 15 to 44 inclusive | kWh per kg of water recovered | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
-| Q-PAIR-IDENTICAL | 87 | overlapping filename pairs whose two file... | fixed | 2026-08-26 | COUNTING_RULE.md | 1 |
 | Q-PATH-BUDGET-108 | 108 | characters of repository-relative path al... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
 | Q-PATH-CEILING-259 | 259 | characters of absolute working-tree path ... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
 | Q-REG-BLOCK-CARRIERS | 53 | files of the 152 in lsei/literature that ... | provisional | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
@@ -59,11 +59,11 @@
 | Q-REG-TSV-IGNORED | a non-.md register file under literature/ does not commit... | a governed observation | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-ROOT-ALLOWANCE | 150 | characters of repository-root absolute pa... | fixed | 2026-08-26 | cr_scratch/step1_7_engineer_naming_addendum.md | 0 |
 | Q-SCRATCHPAD-ROOT | 151 | characters in the absolute path of this s... | live | 2026-08-26 | cr_scratch/step1_7_engineer_naming_addendum.md | 1 |
-| Q-STATE-ABNORMAL-READS | 3 | abnormal reads of /.oracle-state.json spe... | fixed | 2026-08-27 | cr_scratch/step1_5_systems_engineer_install_state.md | 0 |
-| Q-STATE-CONSUMERS | 4 | components that read at least one field o... | fixed | 2026-08-27 | cr_scratch/step1_5_systems_engineer_install_state.md | 0 |
-| Q-STATE-FACTS | 4 | facts about this install held in /.oracle... | fixed | 2026-08-27 | cr_scratch/step1_5_systems_engineer_install_state.md | 0 |
-| Q-STATE-KEYS | 19 | distinct JSON paths in the schema at §3 o... | fixed | 2026-08-27 | cr_scratch/step1_5_systems_engineer_install_state.md | 0 |
-| Q-TOOLS-MODE-644 | 8 | files under tools/ committed at index mod... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 0 |
+| Q-STATE-ABNORMAL-READS | 3 | abnormal reads of /.oracle-state.json spe... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
+| Q-STATE-CONSUMERS | 4 | components that read at least one field o... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
+| Q-STATE-FACTS | 4 | facts about this install held in /.oracle... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
+| Q-STATE-KEYS | 19 | distinct JSON paths in the schema at §3 o... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
+| Q-TOOLS-MODE-644 | 10 | files under tools/ committed at index mod... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
 | Q-TOOLS-TOKENIZER-MIRRORS | 4 | files under tools/ holding a hand-copy of... | fixed | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 0 |
 | Q-VERIFIED-ROWS | 5 | bump rows in oracle/VERIFIED.tsv | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
 

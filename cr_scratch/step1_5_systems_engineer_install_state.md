@@ -323,6 +323,8 @@ two conventions, and it took an outside reader running the table to see it.
 
 Everything between the markers is liftable verbatim to `oracle/install_state.md`.
 
+> **DIVERGED AT R-2 — DO NOT RE-LIFT THIS BLOCK.** `oracle/install_state.md` was amended **in place** at R-2 and is the authority. The block below is the text as frozen at 1.5 and is retained as the record of what was reviewed, not as a source to promote from. Re-running the lift command in this file would silently revert `AM-37`, the S1 gate split. `oracle/MANIFEST.tsv` records the promotion; `oracle/AMENDMENTS.tsv` records every amendment since.
+
 <!-- BEGIN install_state.md -->
 
 # The install state record
@@ -765,13 +767,18 @@ Six, all mine, all arising from the review or from §1.4's probe. They are liste
 applied because 1.4's deliverable is under a review whose disposition is The Manager's, and applying
 them piecemeal would leave the reviewed text and the amended text both in circulation.
 
+> **R-2, 2026-08-27.** Row 5 is **overruled** and is struck below. It was live and unmarked for a
+> day after the ruling that killed it, which is the defect `oracle/AMENDMENTS.tsv` was built to
+> remove: a reader working this list would have applied a rejected amendment. The queue is the
+> authority on state now; this table is a copy, and where the two disagree the queue wins.
+
 | # | Where | Amendment |
 |---|---|---|
 | 1 | §2 | Delete `ABORT`'s second sentence. `ABORT` means the bootstrap stopped before Phase 6, and the outcome line carries `ABORT (<phase>, <assertion-id>)`. (F1) |
 | 2 | §5 | Define `usable`: present, and in neither `offline` nor `present-but-wrong`. `dirty-or-diverged` and `moved-on` are usable. (F2) |
 | 3 | §5, Phase 3 | Demote `missing-recoverable` to a Phase 3 transient. It leaves the mode table. (F3) |
 | 4 | §9 | `Q-DEGRADED-MODES` 6 → 5; `Q-BLOCKING-MODES` predicate 3-of-6 → 3-of-5, population 5 rows. Both with `superseded` entries. (F3) |
-| 5 | §4, BC-8 | Assert the hook file, not the config value and not the directory: `tools/githooks/<event>` exists, is non-empty, begins with `#!`, and contains the marker naming its check register row. Both weaker forms were measured passing against a repository where no hook fires. (§1.4) |
+| 5 | §4, BC-8 | **OVERRULED — DO NOT APPLY. Superseded by 1.13 §3.1, which is `AM-33` in `oracle/AMENDMENTS.tsv`; this row is `AM-21`, state `superseded`.** ~~Assert the hook file, not the config value and not the directory: `tools/githooks/<event>` exists, is non-empty, begins with `#!`, and contains the marker naming its check register row.~~ The finding stands and the remedy does not: a `pre-commit` file that exists, is non-empty and starts with `#!` still proves nothing about whether `core.hooksPath` resolves to that directory, whether git finds it under that name, or whether it exits 0 — it is one rung up the same ladder 1.13 refuses, and `git hook run` proves all of it in one command. **What survives:** the marker clause, relocated at R-2 to `CL-8(b)` of the check register, where its consumer actually is (`CHK-10`'s dispatcher, not git). Ruled at the 1.5/1.13 review X1; marker placed at R-2. Both weaker forms were measured passing against a repository where no hook fires. (§1.4) |
 | 6 | §4, BC-5 | Measure `$ROOT` in the shell, not `pwd` in Node. The long-name clause moves to Phase 1's binding of `$ROOT`. (F4, F10) |
 
 Plus the review's own list, which I accept without restating: BC-4 wired into §6's origin table; BC-20

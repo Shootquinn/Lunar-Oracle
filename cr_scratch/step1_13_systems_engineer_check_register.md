@@ -191,16 +191,47 @@ sandbox for a project with ten commits.
 A register nobody checks is E8 one level up; a checker nobody invokes is E8 two levels up. The chain
 as built:
 
+> **CORRECTED AT R-2.** The diagram below is the version as written, and it is **wrong as a
+> description of the register row it describes**. Line 4 reads "asserted by `CHK-09`, at
+> session-start" — and *at session-start* is doing all the work, correctly, because at session-start
+> nothing invoked the hook. But the row wired **both** triggers: `CHK-09.invoked_by` was
+> `pre-commit,session-start`, and `CHK-10` dispatches every row naming `pre-commit`. On the
+> pre-commit path this diagram is a cycle, and the reasoning below reads it as a virtue because it
+> is describing the other path. **The corrected chain is second.** Register row: `AM-49`, applied.
+> The mechanism is `CL-8(a)`.
+
+**As written (pre-commit path: unbounded recursion):**
+
 ```
 CHK-09 (tools/checks.js) checks the register
   invoked by  CHK-10 (tools/githooks/pre-commit)
   which fires only if                     HK-1  (git hook run pre-commit exits 0)
-  which is asserted by                    CHK-09, at session-start, from the bootstrap
+  which is asserted by                    CHK-09, at session-start, from the bootstrap   <-- and
+                                          ALSO at pre-commit, which is the cycle
   and whose bypass is reported by         HK-3  (the post-commit canary)
   and the bootstrap is                    CHK-23 (oracle/bootstrap_contract.md)
   which is executed by                    an agent reading CLAUDE.md
   and nothing verifies that it ran.
 ```
+
+**Corrected — two rows, and HK-1 is not on the hook:**
+
+```
+CHK-09 (tools/checks.js --register) checks the register       CL-1..CL-8
+  invoked by  CHK-10 (tools/githooks/pre-commit)   and, separately, session-start
+  and CHK-10 fires only if                HK-1  (git hook run pre-commit exits 0)
+  which is asserted by                    CHK-29 (tools/checks.js --wiring)
+                                          at session-start ONLY, reporting, never on the hook
+  and whose bypass is reported by         HK-3  (the post-commit canary)
+  and the bootstrap is                    CHK-23, whose artifact is oracle/bootstrap_check.js
+  which is executed by                    an agent reading CLAUDE.md
+  and nothing verifies that it ran.
+```
+
+**The acyclicity is now a property of the register rather than of the reading.** `HK-1` asks *would a
+hook fire*, which is a question about installation; `CHK-09` asks *is the register true of this
+repository*, which is a question about content. One row asked both, and the answer to the first was
+obtained by causing the event that asks the second.
 
 **The base case of this project's entire enforcement chain is an agent's compliance with a document,
 and no mechanism verifies it.** That is not a defect I can close at 1.13 and I am not going to pretend
@@ -211,6 +242,12 @@ it makes 6.1 — the bootstrap acceptance suite — the highest-value unbuilt it
 What the chain does buy: every link above the base case is machine-checked, and each one's failure is
 *reported by the link below it* rather than silently. That is strictly better than what exists today,
 where none of it is checked and nothing reports anything.
+
+**One qualification I owe, from R-2.** "Every link is machine-checked" was true of the diagram and
+false of the register, and the gap was exactly the direction of one arrow. A chain diagram is not a
+check. `CL-8(a)` is, and it is the reason this section now has a mechanism under it instead of a
+picture: **no row whose `invoked_by` names an event may assert a property of that event's own
+dispatch**, mechanically checkable for the `pre-commit` case as one grep for the literal.
 
 ### 1.6 The pattern, at instances seven and eight, both found in this sub-step
 
@@ -315,6 +352,8 @@ opportunity to make the same mistake, rather than after it.**
 ## 2. The deliverable
 
 Everything between the markers lifts to `oracle/check_register.md` unedited.
+
+> **DIVERGED AT R-2 — DO NOT RE-LIFT THIS BLOCK.** `oracle/check_register.md` was amended **in place** at R-2 and is the authority. The block below is the text as frozen at 1.13 and is retained as the record of what was reviewed, not as a source to promote from. Re-running the lift command in this file would silently revert `AM-49`, `AM-53`, `AM-54`, `AM-59`, `AM-103`, `AM-104`, `AM-105`, `AM-107` and `AM-108`. `oracle/MANIFEST.tsv` records the promotion; `oracle/AMENDMENTS.tsv` records every amendment since.
 
 <!-- BEGIN oracle/check_register.md -->
 
@@ -710,18 +749,38 @@ sub-step owns it; the orchestrator can close it at the Step 1 gate.
 
 ```quantity
 id:            Q-CHECK-ROWS
-class:         fixed
-value:         24
+class:         live
+value:         27
 unit:          C rows in oracle/check_register.md's marked CHECKS block
 population:    every file under the two declared scan roots, plus two declared rows outside them
 operation:     cmd: sed -n '/^# BEGIN CHECKS$/,/^# END CHECKS$/p' oracle/check_register.md | awk -F'\t' '$1=="C"' | wc -l
-conditions:    cwd: repository root, 55 characters. Before oracle/ exists, run the same command
-               against cr_scratch/step1_13_systems_engineer_check_register.md.
-at:            2026-08-27; self de1fef0; lsei 7f97983; cr-agents f0c976b
-predicate:     the check register holds 24 rows: 7 live, 15 specified, 2 retiring.
+conditions:    cwd: repository root, 55 characters. RECLASSIFIED fixed -> live at R-2, and the
+               reason is a measurement of this project rather than a preference: four amendments
+               from four documents (AM-48, AM-60, AM-61, AM-106) each forecast this one integer
+               arithmetically, none aware of the others, and AM-1 reported the collision. The
+               counting rule's own section 2 says a block accumulating superseded entries is the
+               signal that a quantity should be live; four competing successors before the first
+               correction lands is the same signal, earlier. The operation already COUNTED the
+               rows, so nothing about the measurement changes -- only the class, and with it the
+               rule that no amendment may state the value and every statement carries the command.
+               ONE EXEMPTION, stated rather than assumed: the H row of the register is not a
+               quotation site. It is the second, independently derived operand of CL-3, and its
+               whole purpose is that it CAN disagree with the parsed count -- a checksum that is
+               forbidden to restate the number it checks is not a checksum. Filed against
+               COUNTING_RULE.md section 3 as AM-109; until that lands, --lint reports the H row
+               and AM-108 is the standing disposition.
+at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
+predicate:     the check register holds 27 rows: 13 live, 12 specified, 2 retiring, as counted by
+               the command above on the date above. A statement of this value that does not carry
+               the date and the command is quoting a live quantity as a literal.
 derived-from:  none
 sampled:       n/a -- this operation counts, it does not classify
-superseded:    none
+superseded:    24 (7 live, 15 specified, 2 retiring), 2026-08-27, The Systems Engineer at 1.13.
+               Not wrong when written. Superseded at R-2 by three added rows -- CHK-27 and CHK-28
+               for tools/check_registers.js, which CL-1 required the day 1.14 built it, and CHK-29
+               for the --wiring half of the CHK-09 split that closes the pre-commit recursion --
+               and by CHK-14 to CHK-17 moving specified -> live now that tools/quantities.js
+               exists.
 ```
 
 ```quantity
@@ -751,8 +810,12 @@ unit:          hooks fired by a commit in a repository whose core.hooksPath name
                directory
 population:    one scratch repository, git 2.55.0.windows.1
 operation:     cmd: git init -q p && cd p && git config core.hooksPath tools/githooks && echo x > a && git add a && git commit -qm one
-conditions:    cwd: the session scratchpad. tools/ absent from the scratch repository. The result
-               is a property of git, not of this path.
+conditions:    cwd: the session scratchpad, 151 characters as measured at 2026-08-26 by
+               Q-SCRATCHPAD-ROOT, whose class is live and whose command is the authority on the
+               figure at any later date. tools/ absent from the scratch repository. The result is
+               a property of git and not of this path, so the length is recorded to satisfy M11's
+               locator requirement rather than because it affects the value; that is stated here
+               rather than left for a successor to work out.
 at:            2026-08-27
 predicate:     setting core.hooksPath to a directory that does not exist exits 0, reads back
                correctly, and the next commit succeeds with no hook firing; git hook run pre-commit
@@ -765,16 +828,28 @@ superseded:    none
 ```quantity
 id:            Q-TOOLS-MODE-644
 class:         live
-value:         8
+value:         10
 unit:          files under tools/ committed at index mode 100644
+population:    every file tracked under tools/, which is every file in the scan root CL-1 declares;
+               `git ls-files -s tools/ | wc -l` is the denominator and returns the same 10
 operation:     cmd: git ls-files -s tools/ | awk '$1=="100644"' | wc -l
-conditions:    cwd: repository root, 55 characters. core.filemode is false on the authoring machine.
-at:            2026-08-27; self de1fef0
-predicate:     8 of the 8 tracked files under tools/ are committed at mode 100644, including the
-               two carrying a #!/usr/bin/env node shebang that the filesystem reports as executable.
+conditions:    cwd: repository root, 55 characters. core.filemode is false on the authoring machine,
+               which is why the filesystem's executable bit is not the measurement.
+at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
+predicate:     10 of the 10 tracked files under tools/ are committed at mode 100644 on the date
+               above, including those carrying a #!/usr/bin/env node shebang that the filesystem
+               reports as executable. A statement of this value without the date and the command is
+               quoting a live quantity as a literal. HK-2 is the assertion that this must not be
+               true of tools/githooks/, and AM-57 is the .gitattributes edit that keeps it from
+               becoming true again.
 derived-from:  none
 sampled:       n/a -- this operation counts, it does not classify
-superseded:    none
+superseded:    8, 2026-08-27, The Systems Engineer at 1.13. Not wrong when written: eight files
+               were tracked under tools/. Sub-step 1.14 added tools/quantities.js and
+               tools/check_registers.js, both at 100644, and a live value is expected to move --
+               this entry records the move rather than the error, which is the second use the
+               counting rule gives the field. Re-measured at R-2 as part of closing M1, which
+               flagged the missing population key.
 ```
 
 ---

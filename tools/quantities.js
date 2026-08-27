@@ -2,49 +2,54 @@
 /*
  * tools/quantities.js - the checker and indexer for COUNTING_RULE.md.
  *
- * Authority: COUNTING_RULE.md (sub-step 1.12, The Designer). This script implements that
- * contract's section 7 mechanical clauses M1-M12 over the declared file set of its
- * section 8. It implements the contract AS WRITTEN at the 1.14 promotion. The ten defects
- * W2-1..W2-10 found in Wave 2 are NOT pre-applied: this script is the instrument that
- * measures them, and an instrument that silently corrects the specification it measures
- * cannot report on it. Where a Wave 2 amendment is available it sits behind an explicit
- * flag, named below.
+ * Authority: COUNTING_RULE.md, contract version 2 (sub-step 1.12, The Designer; amended at
+ * R-4 of the Step 1 close). This script implements that contract's section 9 clauses M1-M15
+ * over the declared file set of its section 8.
  *
- * Check-register rows: CHK-14 (--check), CHK-15 (--lint), CHK-16 (--index), CHK-17 (--live),
- * all four written at 1.13 with status specified. They move to live under CL-2 the moment
- * this file exists; see AM-103. Shares one parse with --index so checker and indexer cannot disagree
- * (COUNTING_RULE.md section 7 M6, and CHK-16's note).
+ * Built at 1.14 against contract version 1, with the Wave 2 amendments behind flags so they
+ * could be measured before they were ruled. R-4 ruled them in. The flags are now inverted:
+ * the amended behaviour is the default and the escape hatch is named for what it restores.
+ *
+ * Check-register rows: CHK-14 (--check), CHK-15 (--lint), CHK-16 (--index), CHK-17 (--live).
+ * Shares one parse with --index so checker and indexer cannot disagree (M6).
  *
  * Modes:
  *   --check   hard clauses. Exit 1 on any FAIL line. M1 M2 M3 M4 M10 M11 M12, plus
  *             M6 M7 when QUANTITIES.md exists.
- *   --lint    soft clauses. Always exit 0. M5 drift, M8, M9, and M13.
+ *   --lint    soft clauses. Always exit 0. M5 drift, M8, M9, M13, M14, M15.
  *   --index   regenerate QUANTITIES.md on stdout, or in place with --write.
  *   --census  parse only; print the block and tag census. Exit 0.
  *
- * Flags:
+ * Flags. The first three restore version-1 behaviour and exist to measure an amendment,
+ * never to get a cleaner number: a count taken under any of them says so, per section 3
+ * rule 11.
+ *   --include-superseded   do NOT apply section 8's promotion clause. Restores the parse in
+ *                which a promoted cr_scratch marker range is still a site. Measured at 1.14:
+ *                this is worth nine hard failures, eight of them duplicate ids created by
+ *                the promotion itself.
+ *   --no-eg      do NOT treat Q-EG- as an example namespace, and parse quantity fences
+ *                nested inside four-backtick displays as blocks. Version-1 behaviour.
+ *   --no-cwd-length   M11 asserts only that the string "cwd:" appears, without the character
+ *                count section 2 requires. Version-1 behaviour.
  *   --live       actually run "class: live" operation commands for M5. Off by default:
  *                M5 executes strings out of markdown, which is not something a check
  *                should do without being asked.
- *   --w2-1       apply W2-1's proposed amendment: a Q-EG- id is an example and is skipped
- *                by M2/M3/M4, and a quantity fence nested inside a four-backtick fence is
- *                not a block. Off by default. Use it to measure what the amendment buys.
- *   --w2-3      apply W2-3's stronger M11: cwd: must be followed by "<n> characters".
- *   --exclude-superseded   drop cr_scratch blocks that sit inside a marker pair whose
- *                target oracle/MANIFEST.tsv records as promoted. This is the Manager's
- *                section 5.4 ruling on the section 8 declared file set.
  *   --files-only print the declared file set and exit.
  *
- * Output prefixes are fixed, and they are the counting rule for this tool's own report:
+ * Output prefixes are fixed, and they are the counting rule for this tool's own report
+ * (COUNTING_RULE.md section 3 rule 11):
  *   FAIL   a hard failure. Determines --check's exit status. Count with grep -c "^FAIL ".
  *   LINT   a soft finding. Never affects exit status.
- *   STALE  an M4 staleness report. Never affects exit status (M4: "report for STALE").
+ *   STALE  an M4 staleness report. Never affects exit status.
  *   DRIFT  an M5 drift report. Never affects exit status.
  *   NOTE   an observation about the run itself.
  *   OK     a clause that passed.
- * Nothing else is printed at column 0, so a count of any prefix taken over the whole
- * unfiltered output is exact.
+ * Every prefix is printed at column 0 and nothing else is, so a count of any prefix taken
+ * over the whole unfiltered output is exact. This is a requirement, not a description:
+ * tools/ecr_verify.js indents its FAIL lines two spaces and grep -c '^FAIL' over its output
+ * returns 0 against a real count of 143.
  */
+
 
 'use strict';
 const fs = require('fs');
@@ -61,9 +66,9 @@ const OPT = {
   census: has('--census'),
   write: has('--write'),
   live: has('--live'),
-  w2_1: has('--w2-1'),
-  w2_3: has('--w2-3'),
-  exclSup: has('--exclude-superseded'),
+  w2_1: !has('--no-eg'),
+  w2_3: !has('--no-cwd-length'),
+  exclSup: !has('--include-superseded'),
   filesOnly: has('--files-only')
 };
 if (!OPT.check && !OPT.lint && !OPT.index && !OPT.census && !OPT.filesOnly) OPT.check = true;
@@ -156,6 +161,11 @@ function parseBlocks(file, lines) {
   while (i < lines.length) {
     const m = /^(\s*)(`{3,})(.*)$/.exec(lines[i]);
     if (!m) { i++; continue; }
+    /* CommonMark: a fence openers info string contains no backtick. A line such as
+     * ```` ```quantity ```` is an INLINE code span in prose, not a fence. Without this
+     * guard the four-backtick rule opened a fence at that line and swallowed every block
+     * after it -- measured at R-4: four blocks lost in one file. */
+    if (m[3].indexOf(String.fromCharCode(96)) !== -1) { i++; continue; }
     const ticks = m[2].length;
     const info = m[3].trim();
     if (outerFence !== null) {
@@ -180,6 +190,23 @@ function parseBlocks(file, lines) {
 const TAG_RE = /\[(Q-[A-Z0-9][A-Z0-9-]*)\]/g;
 const QUOTE_RE = /(\S+)[ \t]*\[(Q-[A-Z0-9][A-Z0-9-]*)\]/g;
 const LINK_RE = /\[(Q-[A-Z0-9][A-Z0-9-]*)\]\(/g;
+/* COUNTING_RULE.md section 3 rules 8 and 9, and section 9 M3: read the value that sits before
+ * a tag, tolerating the emphasis and backticks authors actually wrote, and reading a whole
+ * range token. Returns {kind, text}. kind: 'range' | 'num' | 'word' | 'none'. */
+function readValueBefore(line, tagStart) {
+  var s = line.slice(0, tagStart);
+  s = s.replace(/[\s]+$/, '');
+  /* strip trailing markdown that is not part of the value */
+  s = s.replace(/[`*_)\]"']+$/, '');
+  var m = /(\d[\d,._]*\s*[\u2013\u2014-]\s*\d[\d,._]*\s+(?:inclusive|exclusive))$/.exec(s);
+  if (m) return { kind: 'range', text: m[1].replace(/\s+/g, ' ') };
+  m = /(?:^|[^A-Za-z0-9])([~<>]?\d[\d,._]*%?)$/.exec(s);
+  if (m) return { kind: 'num', text: m[1] };
+  m = /([A-Za-z0-9][A-Za-z0-9._-]*)$/.exec(s);
+  if (m) return { kind: 'word', text: m[1] };
+  return { kind: 'none', text: (s.split(/\s+/).pop() || '') };
+}
+
 const isExample = id => OPT.w2_1 && /^Q-EG-/.test(id);
 
 /* ---------------------------------------------------------------- load */
@@ -237,8 +264,11 @@ for (const f of files) {
     let m;
     TAG_RE.lastIndex = 0;
     while ((m = TAG_RE.exec(l))) tagSites.push({ file: f, line: k + 1, id: m[1] });
-    QUOTE_RE.lastIndex = 0;
-    while ((m = QUOTE_RE.exec(l))) quoteSites.push({ file: f, line: k + 1, id: m[2], token: m[1] });
+    TAG_RE.lastIndex = 0;
+    while ((m = TAG_RE.exec(l))) {
+      var v = readValueBefore(l, m.index);
+      quoteSites.push({ file: f, line: k + 1, id: m[1], token: v.text, kind: v.kind, text: l });
+    }
     LINK_RE.lastIndex = 0;
     while ((m = LINK_RE.exec(l))) linkSites.push({ file: f, line: k + 1, id: m[1] });
   }
@@ -326,30 +356,63 @@ function m2() {
 /* ---------------------------------------------------------------- M3 */
 const NUMERAL = /^[~<>]?\(?[0-9][0-9,._–—-]*%?\)?[.,;:)]?$/;
 function normNum(s) { return String(s).replace(/[^0-9.–-]/g, '').replace(/[.,;:]+$/, ''); }
+/* Canonical form of a value, for M3's comparison. COUNTING_RULE.md section 3 rules 8 and 9. */
+function canon(s) {
+  s = String(s == null ? '' : s).trim().toLowerCase()
+        .replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ');
+  var m = /^(\d[\d,._]*\s*-\s*\d[\d,._]*\s+(?:inclusive|exclusive))/.exec(s);
+  if (m) return m[1].replace(/\s*-\s*/, '-').replace(/,/g, '');
+  m = /^([~<>]?\d[\d,._]*%?)$/.exec(s);
+  if (m) return m[1].replace(/,/g, '').replace(/%/g, '').replace(/[.]+$/, '');
+  return s;
+}
+function isNumericCanon(c) { return /^[~<>]?\d/.test(c); }
 function m3() {
-  let n = 0;
+  let n = 0, unreadable = 0, mismatch = 0;
   const g = new Map();
   for (const q of quoteSites) {
     if (isExample(q.id)) continue;
     if (!byId.has(q.id)) continue;               /* that is M2's failure, not M3's */
-    if (!NUMERAL.test(q.token)) {
-      say('LINT', 'M3-unreadable ' + q.file + ':' + q.line + ' ' + q.id +
-        ' token before the tag is "' + q.token + '", not a numeral (W2-8: no quoted-range form)');
+    const blk = byId.get(q.id)[0];
+    const blockCanon = canon(blk.fields.value);
+    if (String(blk.fields.class || '').split(/[s;,]/)[0] === 'live') {
+      /* section 3 rule 2: a live quotation carries value, timestamp and command on the line. */
+      const lit = String(blk.fields.value || '').split(/[s(;]/)[0];
+      if (lit && String(q.text || '').indexOf(lit) === -1) {
+        mismatch++;
+        say('LINT', 'M3-live ' + q.file + ':' + q.line + ' ' + q.id +
+          ' does not carry the current value "' + lit + '" on the line (section 3 rule 2)');
+      }
       continue;
     }
-    if (!g.has(q.id)) g.set(q.id, new Map());
-    const key = normNum(q.token);
-    if (!g.get(q.id).has(key)) g.get(q.id).set(key, []);
-    g.get(q.id).get(key).push(q.file + ':' + q.line);
+    if (q.kind === 'range' || q.kind === 'num') {
+      if (!g.has(q.id)) g.set(q.id, new Map());
+      const key = canon(q.token);
+      if (!g.get(q.id).has(key)) g.get(q.id).set(key, []);
+      g.get(q.id).get(key).push(q.file + ':' + q.line);
+      continue;
+    }
+    if (isNumericCanon(blockCanon)) {
+      unreadable++;
+      say('LINT', 'M3-unreadable ' + q.file + ':' + q.line + ' ' + q.id +
+        ' the text before the tag is "' + q.token + '", not the value; section 3 rule 8');
+      continue;
+    }
+    /* a governed observation or a ref: containment, and soft. H1 owns the rest. */
+    if (q.kind === 'word' && blockCanon.indexOf(canon(q.token)) === -1) {
+      mismatch++;
+      say('LINT', 'M3-prose ' + q.file + ':' + q.line + ' ' + q.id +
+        ' "' + q.token + '" does not appear in the block value; H1 rules on it');
+    }
   }
   for (const pair of g) {
     const id = pair[0], vals = pair[1];
-    const blockVal = normNum((byId.get(id)[0].fields.value || '').split(/\s/)[0]);
+    const blockVal = canon(byId.get(id)[0].fields.value);
     if (vals.size > 1) {
       n++;
       const parts = [];
       for (const v of vals) parts.push(v[0] + '(' + v[1].join(';') + ')');
-      FAIL('M3 ' + id + ' quoted with ' + vals.size + ' distinct numerals: ' + parts.join(' vs '));
+      FAIL('M3 ' + id + ' quoted with ' + vals.size + ' distinct values: ' + parts.join(' vs '));
     } else {
       const v = vals.keys().next().value;
       if (blockVal && v !== blockVal) {
@@ -359,9 +422,11 @@ function m3() {
       }
     }
   }
+  say('NOTE', 'M3 detail: ' + unreadable + ' unreadable sites; ' + mismatch + ' prose mismatches');
   if (!n) say('OK', 'M3 every site quoting an id states its current value');
   return n;
 }
+
 
 /* ---------------------------------------------------------------- M4 */
 function parseAt(s) { const m = /(\d{4}-\d{2}-\d{2})/.exec(s || ''); return m ? m[1] : null; }
@@ -413,6 +478,77 @@ function m4() {
       ' ids unreachable by topological order)');
   }
   if (!n) say('OK', 'M4 derivation graph sound: ' + edges.length + ' edges, acyclic');
+  return n;
+}
+
+/* COUNTING_RULE.md section 4: a pending: entry names a row in oracle/AMENDMENTS.tsv. */
+const amendmentIds = Object.create(null);
+try {
+  const am = fs.readFileSync(path.join(ROOT, 'oracle/AMENDMENTS.tsv'), 'utf8').replace(/\r/g, '');
+  for (const line of am.split('\n')) {
+    const f = line.split('\t');
+    if (f[0] === 'A' && f[1]) amendmentIds[f[1].trim()] = 1;
+  }
+} catch (e) { /* no register yet */ }
+function m4pending() {
+  let n = 0;
+  for (const b of blocks) {
+    const sup = String(b.fields.superseded || '');
+    const m = /pending:\s*([^\n]+)/.exec(sup);
+    if (!m) continue;
+    const ids = m[1].match(/AM-\d+/g) || [];
+    if (!ids.length) {
+      n++;
+      FAIL('M4 ' + b.file + ':' + b.startLine + ' ' + b.id +
+        ' pending: names no amendment id: "' + m[1].slice(0, 60) + '"');
+      continue;
+    }
+    for (const a of ids) {
+      if (!amendmentIds[a]) {
+        n++;
+        FAIL('M4 ' + b.file + ':' + b.startLine + ' ' + b.id +
+          ' pending: names ' + a + ', which is not a row in oracle/AMENDMENTS.tsv');
+      }
+    }
+  }
+  return n;
+}
+/* COUNTING_RULE.md section 2: the derived: operation form. Integer arithmetic over ids. */
+function m4derived() {
+  let n = 0;
+  for (const b of blocks) {
+    const op = String(b.fields.operation || '').trim();
+    if (!/^derived:/i.test(op)) continue;
+    let expr = op.replace(/^derived:\s*/i, '').split(/[,;]|\bwhere\b/)[0].trim();
+    const ids = expr.match(/Q-[A-Z0-9][A-Z0-9-]*/g) || [];
+    if (!ids.length) {
+      n++;
+      FAIL('M4 ' + b.id + ' derived: operation names no ids: "' + expr.slice(0, 50) + '"');
+      continue;
+    }
+    let ok = true;
+    for (const id of ids) {
+      if (!byId.has(id)) { ok = false; n++; FAIL('M4 ' + b.id + ' derived: names unknown id ' + id); continue; }
+      const pv = canon(byId.get(id)[0].fields.value);
+      if (!/^\d+$/.test(pv)) { ok = false; say('LINT', 'M4-derived ' + b.id + ' parent ' + id + ' has a non-integer value; arithmetic not evaluated'); continue; }
+      expr = expr.split(id).join(pv);
+    }
+    if (!ok) continue;
+    if (!/^[0-9+\-*/() ]+$/.test(expr)) {
+      say('LINT', 'M4-derived ' + b.id + ' expression is not plain integer arithmetic: "' + expr.slice(0, 50) + '"');
+      continue;
+    }
+    let got;
+    try { got = Function('"use strict";return (' + expr + ');')(); } catch (e) { got = null; }
+    const want = Number(canon(b.fields.value));
+    if (got === null || !isFinite(got)) {
+      n++; FAIL('M4 ' + b.id + ' derived: expression did not evaluate: "' + expr + '"');
+    } else if (got !== want) {
+      n++; FAIL('M4 ' + b.id + ' derived: ' + expr + ' = ' + got + ' but the block value is ' + want);
+    } else {
+      say('OK', 'M4 ' + b.id + ' derived: ' + expr + ' = ' + got + ', matches the block value');
+    }
+  }
   return n;
 }
 
@@ -625,6 +761,71 @@ function m13() {
   say('NOTE', 'M13 ' + k + ' bare-governed-numeral findings (W2-2\'s unmechanized lint)');
 }
 
+
+/* ---------------------------------------------------------------- M14 */
+/* COUNTING_RULE.md section 9 M14 / section 10 H8: two ids for one quantity. A proxy on
+ * unit and population equality, never a proof, and reported as LINT because only the
+ * owner of both blocks can rule (H8). */
+function m14() {
+  const norm = s => String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const byUnit = new Map(), byPop = new Map();
+  let k = 0;
+  for (const b of blocks) {
+    if (!b.id || isExample(b.id)) continue;
+    const u = norm(b.fields.unit), p = norm(b.fields.population);
+    if (u && u !== 'n/a') { if (!byUnit.has(u)) byUnit.set(u, []); byUnit.get(u).push(b); }
+    if (p && p !== 'n/a' && p !== 'none') { if (!byPop.has(p)) byPop.set(p, []); byPop.get(p).push(b); }
+  }
+  for (const pair of byUnit) {
+    if (pair[1].length < 2) continue;
+    const ids = pair[1].map(b => b.id);
+    if (new Set(ids).size < 2) continue;
+    k++;
+    say('LINT', 'M14 same unit under ' + new Set(ids).size + ' ids: ' + [...new Set(ids)].join(' , ') +
+      ' — "' + pair[0].slice(0, 60) + '" (H8 rules)');
+  }
+  for (const pair of byPop) {
+    if (pair[1].length < 2) continue;
+    const ids = [...new Set(pair[1].map(b => b.id))];
+    if (ids.length < 2) continue;
+    k++;
+    say('LINT', 'M14 same population under ' + ids.length + ' ids: ' + ids.join(' , ') + ' (H8 rules)');
+  }
+  say('NOTE', 'M14 ' + k + ' two-ids-one-quantity candidates');
+}
+
+/* ---------------------------------------------------------------- M15 */
+/* COUNTING_RULE.md section 3 rule 12 and section 9 M15: the two boundaries that are files.
+ * A relayed numeral in the accumulator or the gameplan carries its tag, or the seat that
+ * wrote it did not run the operation. The other three boundaries are H7. */
+const RELAY_FILES = ['accumulator.md', 'lunar-oracle-gameplan.md'];
+function m15() {
+  let k = 0, scanned = 0;
+  for (const fl of fileLines) {
+    if (RELAY_FILES.indexOf(fl[0]) === -1) continue;
+    scanned++;
+    for (const b of blocks) {
+      const cls = String(b.fields.class || '').split(/[\s;,]/)[0];
+      if (cls !== 'fixed' && cls !== 'live') continue;
+      if (b.file === fl[0]) continue;
+      const v = canon(b.fields.value);
+      if (!/^\d+$/.test(v) || v.length < 2) continue;   /* single digits are noise */
+      const noun = String(b.fields.unit || '').split(/[\s,;(]/).filter(Boolean)[0];
+      if (!noun || noun.length < 4) continue;
+      const re = new RegExp("\\b" + v + "\\b[^\\n]{0,40}?\\b" + noun.replace(/[^a-z0-9]/gi, ""), "i");
+      for (let i = 0; i < fl[1].length; i++) {
+        const l = fl[1][i];
+        if (l.indexOf('[' + b.id + ']') !== -1) continue;
+        if (!re.test(l)) continue;
+        k++;
+        say('LINT', 'M15 ' + fl[0] + ':' + (i + 1) + ' relays ' + v + ' ' + noun +
+          ' without [' + b.id + '] (section 3 rule 12)');
+      }
+    }
+  }
+  say('NOTE', 'M15 ' + k + ' untagged relays across ' + scanned + ' relay files');
+}
+
 /* ---------------------------------------------------------------- run */
 if (OPT.index) {
   const idx = buildIndex();
@@ -644,8 +845,8 @@ if (OPT.census) {
   }
   process.exit(0);
 }
-if (OPT.check) { m1(); m2(); m3(); m4(); m10(); m11(); m12(); m6m7(); }
-if (OPT.lint) { m5(); m8(); m9(); m13(); }
+if (OPT.check) { m1(); m2(); m3(); m4(); m4pending(); m4derived(); m10(); m11(); m12(); m6m7(); }
+if (OPT.lint) { m5(); m8(); m9(); m13(); m14(); m15(); }
 say('NOTE', 'hard failures: ' + hardFail);
 console.log(out.join('\n'));
 process.exit(OPT.check && hardFail > 0 ? 1 : 0);
