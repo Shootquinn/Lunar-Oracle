@@ -432,7 +432,7 @@ instance was adjusted.**
 
 ### Instance 1 — `89 / 6` corrected to `87 / 8`, registry left stale. **PREVENTED.**
 
-Two mechanisms, either of which is sufficient. Under §3 both sites write `[Q-PAIR-IDENTICAL]`, so the
+Two mechanisms, either of which is sufficient. Under §3 both sites write `[Q-EG-PAIR-IDENTICAL]`, so the
 correction's step 4 enumerates them; a site left stale is two numerals under one id and
 `--check` exits 1. Under §7 the registry does not hold the value at all — it is regenerated from the
 block — so the class of defect where a parallel copy drifts does not exist. The second mechanism is
@@ -447,7 +447,7 @@ passing-off, and no field of any contract makes a script able to tell the two ap
 
 What the contract does: `predicate` forces the measuring agent to write the licensed sentence —
 "summaries reproducing verbatim text from their source's printed abstract at or above 10% 10-gram
-overlap" — and §3 rule 4 makes "13 [Q-ABSTRACT-OVERLAP] contaminated abstracts" a violation that a
+overlap" — and §3 rule 4 makes "13 [Q-EG-ABSTRACT-OVERLAP] contaminated abstracts" a violation that a
 reviewer reading the block can see in one glance. That is **visibility, not prevention**. The
 violation is legible; nothing stops it being written.
 
@@ -484,7 +484,7 @@ question and cannot verify the answer.**
 
 Three quantities, three ids, and §2's `value` rule requires endpoint membership on a range. The
 sentence becomes: the fenced block is `357–686 inclusive [Q-C4-FENCE-SPAN]`, 330 lines; the source
-inside it is `328 [Q-C4-SOURCE-LEN]` lines, `358–685 inclusive`, with
+inside it is `328 [Q-C4-SOURCE-LINES]` lines, `358–685 inclusive`, with
 `derived-from: Q-C4-FENCE-SPAN`. `--check` recomputes `686 − 357 + 1 = 330` and asserts the stated
 length matches. The three numbers stop competing for one referent, which is the actual defect: all
 three were true and the reader had no way to know of what.

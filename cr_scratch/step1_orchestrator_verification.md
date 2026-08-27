@@ -402,3 +402,29 @@ re-measurement is a precondition of the re-close, not an optional confirmation.
 a `FAILURES <n>` summary line that the anchored pattern matches. The amended rule, `^ *FAIL ` with the
 trailing space, agrees with the tool in both states. A pattern that was right for one version of a
 tool and wrong for the next is the same class as everything else in this section.
+
+## Clean re-measurement, taken with nothing writing
+
+The precondition R-2 named. All three revision items landed first; no agent was running.
+
+```
+node tools/quantities.js --check      exit 1   FAIL lines 11   (^ *FAIL )
+node tools/check_registers.js         exit 0   FAIL lines 0
+node tools/ecr_verify.js REGISTER.lunar.tsv lsei/literature            exit 0   FAIL lines 0
+node tools/ecr_verify.js REGISTER.econ.tsv  _intake/japanese-miracle   exit 0   FAIL lines 0
+```
+
+**Attribution of the eleven, checked rather than accepted.** Eight are `M2` duplicate ids and two are
+`M3` value collisions, all in the 1.9 and 1.10 addenda, which re-mint quantity blocks instead of
+editing in place — the shape The Designer named as W2-11. One is `M11` on a register-schema block.
+**Every one carries at least one row in `oracle/AMENDMENTS.tsv`**, verified by id.
+
+**Zero of the eleven touch a promoted authority.** `grep` over the failure lines for `oracle/`,
+`literature/` or `COUNTING_RULE.md` returns 0; all eleven are `cr_scratch/` paths. The files that are
+now the authority are clean, and the failures are in the review record behind them, held by rows.
+
+**A counting trap R-4 found that had already broken a sweep of mine.** `grep -c` exits 1 on zero
+matches, so `check-A && grep -c FAIL && check-B` stops silently after the first clean check. The sweep
+above runs each check into its own file and counts separately for that reason. That is the fourth
+distinct failure mode in the verdict-reading machinery this step: a filter that deleted a failure, a
+wrong END marker, a case-insensitive substring, and now a zero-match exit code.

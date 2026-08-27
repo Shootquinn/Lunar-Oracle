@@ -86,7 +86,7 @@ specifies a form it never displays. The fix for my file is different and is W2-1
 | 223 | `id: Q-PAIR-IDENTICAL` | M2 on lift — the id then exists in two files in the declared set |
 | 227 | `population: the 95 [Q-OVERLAP-95] ...` | M2 — no block with that id exists anywhere |
 | 234 | `derived-from: Q-OVERLAP-95` | M4 — dangling parent |
-| 245 | ``writing `[Q-X](...)` is a failure`` | M12 — the clause illustrating the violation is an instance of it |
+| 245 | ``writing `Q-X(...)` is a failure`` | M12 — (id de-bracketed at R-4 under the mention form; the site now reads Q-EG-X) — the clause illustrating the violation is an instance of it |
 | 307 | `87 [Q-PAIR-IDENTICAL] of the 95 [Q-OVERLAP-95] ...` | M2 |
 | 312 | `7f97983 (...) [Q-LSEI-HEAD]` | M2 — no such block |
 

@@ -3,8 +3,9 @@
 
 **Contract version: 2 [Q-COUNTING-RULE-VERSION].** Closes loose end E16. Version 1 was frozen at
 sub-step 1.12 and promoted at 1.14. Version 2 is the R-4 amendment pass: it closes W2-1 through
-W2-10, adopts The Manager's §8 ruling, and moves the mechanized clause list into this file. §11 lists
-every change with its amendment id.
+W2-10, takes the two further amendments R-2 and R-3 filed against it while it was open, adopts The
+Manager's §8 ruling, and moves the mechanized clause list into this file. §11 lists every change
+with its amendment id.
 
 This file governs numbers and measured observations that this project asserts. Every term below is
 closed. A value outside a closed set is a failure, not a variant.
@@ -137,6 +138,14 @@ not already implied by `population` and `operation`. **For any `cmd:` or `script
 `cwd: <description>, <n> characters`.** That clause exists because of loose end E14: the clone that
 failed failed on the length of its root, the row recorded the leaf, and a successor would have
 shortened the filename and left the cause. `none` is permitted and is a claim.
+
+**Where the length provably cannot affect the value, `conditions` writes
+`cwd: <description>, length-independent: <reason>`.** The token is required and the prose is not
+enough: a check whose pass condition is "the author wrote a sentence about it" is not a check, and
+the next author phrases it differently. The live instance is `Q-REG-TSV-IGNORED`, whose operation is
+`git check-ignore`, which matches a pattern against a repository-relative path and reads no file, so
+no ceiling is reachable. Its author stated that plainly rather than inventing a number, which is the
+right instinct and the reason M11 needed the escape rather than an exception.
 
 **Inherited conditions** are written `inherits: Q-<id>`, optionally followed by what differs. The
 inheriting block's conditions are the named block's, plus the difference; M11 follows the edge and
@@ -393,7 +402,7 @@ and it is corrected by moving the table here.
 | M8 | No bare relative offsets | The spelled-out-or-digit alternation on lines above/below/before/after. **Not the digits-only form** — tested at 1.12 §6, the digits-only form misses the live instance. | 0 with findings |
 | M9 | No undated relative-time words in closed register rows | Over register rows whose Status contains FIXED or CLOSED, find "yet", "currently", "still", "already". The scope is load-bearing: six hits scoped, thirteen unscoped. | 0 with findings |
 | M10 | Range arithmetic closes | For a `value` that is a range with a membership word, compute the span; if the block or a derived block states a length, assert equality. | 1 |
-| M11 | `cmd:`/`script:` operations declare a `cwd` and its length | Assert `conditions` contains `cwd:` followed, before the next sentence break, by a character count; or `inherits: Q-<id>`, in which case follow the edge and check the parent. | 1 |
+| M11 | `cmd:`/`script:` operations declare a `cwd` and its length | Assert `conditions` contains `cwd:` followed, before the next sentence break, by a character count, or by the token `length-independent:`; or `inherits: Q-<id>`, in which case follow the edge and check the parent. | 1 |
 | M12 | Ids are not markdown link targets | Assert no bracketed id is immediately followed by an opening parenthesis, outside the `Q-EG-` namespace. | 1 |
 | M13 | **No bare governed numeral in a second file** | For each `fixed` block, key a spelled-out or digit numeral to the `unit` noun of the block; report any site outside the birth file that states it without the tag. This is §5's third row, which version 1 promised and did not implement. | 0 with findings |
 | M14 | Two ids for one quantity | Report any two blocks whose `unit` strings are equal after case and whitespace normalization, or whose `population` strings are. A proxy, not a proof; the ruling is H8's. | 0 with findings |
@@ -452,11 +461,13 @@ Each row was owed against a row of `oracle/AMENDMENTS.tsv`, and each is applied 
 | AM-88 | No form for quoting a range, so M3 could not read one | §3 rules 8 and 9, §9 M3 |
 | AM-89 | A file declaring its own size was reading as a quotation of it | §3 rule 10 |
 | AM-102 | Promotion is a copy, so the declared file set held both sites | §8 |
-| AM-107 | The mechanized clause list was not in the contract | §9, §10 |
-| AM-108 | A failure count with no pattern is not a count | §3 rule 11, §9 |
-| AM-109 | Arm 2 — numbers crossing a boundary between seats | §3 rule 12, §9 M15, §10 H7 |
-| AM-110 | An id could not be named without being quoted | §3, the mention form |
-| AM-111 | The contract's own version integer had no id | §1, and the block below |
+| AM-123 | The mechanized clause list was not in the contract | §9, §10 |
+| AM-124 | A failure count with no pattern is not a count | §3 rule 11, §9 |
+| AM-125 | Arm 2 — numbers crossing a boundary between seats | §3 rule 12, §9 M15, §10 H7 |
+| AM-126 | An id could not be named without being quoted | §3, the mention form |
+| AM-127 | The contract's own version integer had no id | §1, and the block below |
+| AM-109 (R-2) | A self-declared size row read as a quotation of the quantity it duplicates; and AM-1's honest kind | §3 rule 10; ruled in the register |
+| AM-122 (R-3) | M11 over-applied where path length provably cannot affect the value | §2 `length-independent:`, §9 M11 |
 
 AM-90 — the tenth instance the contract never scored itself against — is run at R-4 rather than
 amended here; the result is in that report.
@@ -468,7 +479,7 @@ value:         2
 unit:          the version integer of this contract, COUNTING_RULE.md
 population:    the version declaration at the head of this file, and every site that states which
                version of the counting rule it was written against
-operation:     manual: The Designer at R-4; bumped from 1 on applying the fifteen amendments
+operation:     manual: The Designer at R-4; bumped from 1 on applying the seventeen amendments
                listed above; 1 item inspected
 conditions:    none. The integer is a decision of this project, not a measurement.
 at:            2026-08-27; lsei 7f97983; cr-agents f0c976b

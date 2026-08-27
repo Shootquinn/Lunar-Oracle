@@ -2,12 +2,13 @@
 
 # QUANTITIES
 
-**60 blocks.** fixed 54; live 5; provisional 1.
+**64 blocks.** fixed 57; live 6; provisional 1.
 
 | id | value | unit | class | at | birth file | superseded |
 |---|---|---|---|---|---|---|
 | Q-BLOCKING-MODES | 3 | degraded modes that block the first-run s... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
 | Q-BOOTSTRAP-PHASES | 7 | numbered phases of the bootstrap sequence... | fixed | 2026-08-26 | oracle/bootstrap_contract.md | 0 |
+| Q-C4-FENCE-SPAN | 357-686 inclusive | line numbers of lsei/report-generator-pro... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 0 |
 | Q-C4-SOURCE-LINES | 328 | lines of JavaScript between the fences of... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
 | Q-CARD-KWH-PER-KG | 63 to 93 inclusive | kWh of thermal energy per kg of oxygen | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-CHECK-ROWS | 27 | C rows in oracle/check_register.md's mark... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
@@ -44,8 +45,11 @@
 | Q-LCC15-SIDES-GT2 | 7 | of the fifteen lunar axes | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-LCC15-STRICT-FAILURES | 1 | assertion failures reported by tools/ecr_... | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows_addendum.md | 0 |
 | Q-LCC15-TIERLESS-SECTIONS | 6 | modeled app sections whose tier column in... | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
+| Q-LSEI-HEAD | 7f97983 | the short commit ref at the head of the l... | live | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-LSEI-PUSHED-COMMITS | 3 | commits this project pushed to the Scenar... | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
 | Q-LUWEX-KWH-PER-KG | 15 to 44 inclusive | kWh per kg of water recovered | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
+| Q-OVERLAP-95 | 95 | filename pairs whose normalized basenames... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 0 |
+| Q-PAIR-IDENTICAL | 87 | overlapping filename pairs whose two file... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-PATH-BUDGET-108 | 108 | characters of repository-relative path al... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
 | Q-PATH-CEILING-259 | 259 | characters of absolute working-tree path ... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
 | Q-REG-BLOCK-CARRIERS | 53 | files of the 152 in lsei/literature that ... | provisional | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |

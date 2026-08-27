@@ -575,26 +575,50 @@ function m10() {
 /* ---------------------------------------------------------------- M11 */
 function m11() {
   let n = 0;
+  /* COUNTING_RULE.md section 2: conditions may read "inherits: Q-<id>". M11 follows the
+   * edge and checks the parent, up to a small depth so a cycle cannot hang the check. */
+  function resolveCond(b, depth) {
+    const cond = b.fields.conditions || '';
+    const m = /inherits:\s*(Q-[A-Z0-9][A-Z0-9-]*)/.exec(cond);
+    if (!m) return { cond: cond, from: b.id };
+    if (depth > 4) return { cond: cond, from: b.id, loop: true };
+    if (!byId.has(m[1])) return { cond: cond, from: b.id, missing: m[1] };
+    return resolveCond(byId.get(m[1])[0], depth + 1);
+  }
   for (const b of blocks) {
     const op = (b.fields.operation || '').trim();
     if (!/^(cmd|script):/.test(op)) continue;
-    const cond = b.fields.conditions || '';
+    const r = resolveCond(b, 0);
+    if (r.missing) {
+      n++;
+      FAIL('M11 ' + b.file + ':' + b.startLine + ' ' + b.id +
+        ' conditions inherits ' + r.missing + ', which is not a block');
+      continue;
+    }
+    if (r.loop) {
+      n++;
+      FAIL('M11 ' + b.file + ':' + b.startLine + ' ' + b.id +
+        ' conditions inheritance did not terminate within four hops');
+      continue;
+    }
+    const cond = r.cond;
+    const via = r.from === b.id ? '' : ' (inherited from ' + r.from + ')';
     if (cond.indexOf('cwd:') === -1) {
       n++;
       FAIL('M11 ' + b.file + ':' + b.startLine + ' ' + b.id + ' operation is "' +
-        op.slice(0, 14) + '..." but conditions names no cwd:');
+        op.slice(0, 14) + '..." but conditions names no cwd:' + via);
       continue;
     }
     if (OPT.w2_3) {
       const seg = cond.split('cwd:')[1].split(/\.\s|\.$/)[0];
-      if (!/\d+\s*characters/.test(seg)) {
+      if (!/\d+\s*characters/.test(seg) && seg.indexOf('length-independent:') === -1) {
         n++;
         FAIL('M11 ' + b.file + ':' + b.startLine + ' ' + b.id +
-          ' names a cwd with no character length: "cwd:' + seg.slice(0, 60) + '"');
+          ' names a cwd with no character length: "cwd:' + seg.slice(0, 60) + '"' + via);
       }
     }
   }
-  if (!n) say('OK', 'M11 every cmd:/script: operation declares a cwd');
+  if (!n) say('OK', 'M11 every cmd:/script: operation declares a cwd and its length');
   return n;
 }
 
@@ -819,7 +843,7 @@ function m15() {
         if (!re.test(l)) continue;
         k++;
         say('LINT', 'M15 ' + fl[0] + ':' + (i + 1) + ' relays ' + v + ' ' + noun +
-          ' without [' + b.id + '] (section 3 rule 12)');
+          ' without a tag; the id is ' + b.id + ' (section 3 rule 12)');
       }
     }
   }
