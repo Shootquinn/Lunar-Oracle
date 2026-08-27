@@ -12,7 +12,7 @@ const N=files.length; const idf=t=>Math.log(N/((df.get(t)||0)+1e-9));
 function loadRows(p){
   let s=fs.readFileSync(p,'utf8');
   if(/\.md$/i.test(p)){                 // accept the deliverable directly: lift the marked block
-    const m=s.match(/^<!-- BEGIN oracle\/REGISTER\.tsv[^\n]*-->\n([\s\S]*?)\n<!-- END oracle\/REGISTER\.tsv/m);
+    const m=s.match(/^<!-- BEGIN oracle\/REGISTER\.tsv[^\n]*-->\r?\n([\s\S]*?)\r?\n<!-- END oracle\/REGISTER\.tsv/m);
     if(!m){console.error('no BEGIN/END oracle/REGISTER.tsv block in '+p);process.exit(2);}
     s=m[1];
   }

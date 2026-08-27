@@ -6,7 +6,7 @@ function tokenize(t){return (String(t).toLowerCase().match(/[a-z0-9]+/g)||[]).fi
 function loadRows(p){
   let s=fs.readFileSync(p,'utf8');
   if(/\.md$/i.test(p)){                 // accept the deliverable directly: lift the marked block
-    const m=s.match(/^<!-- BEGIN oracle\/REGISTER\.tsv[^\n]*-->\n([\s\S]*?)\n<!-- END oracle\/REGISTER\.tsv/m);
+    const m=s.match(/^<!-- BEGIN oracle\/REGISTER\.tsv[^\n]*-->\r?\n([\s\S]*?)\r?\n<!-- END oracle\/REGISTER\.tsv/m);
     if(!m){console.error('no BEGIN/END oracle/REGISTER.tsv block in '+p);process.exit(2);}
     s=m[1];
   }

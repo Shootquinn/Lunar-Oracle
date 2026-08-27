@@ -267,3 +267,50 @@ register "all assertions pass" (a live FAIL), E10's "two pushes" (three), and no
 the same act — repeating a number produced by someone else without running the operation that would
 produce it. The counting rule's `derived-from` field is the mechanism that separates a computed total
 from a quoted one, and it landed this step.
+
+## 1.10 corrected — verified, and the verification rule needed its own counting rule
+
+```
+$ sed -n '183,254p' cr_scratch/step1_10_..._addendum.md | tr -d '\r' > ecr2.tsv
+$ awk -F'\t' '{print $1}' ecr2.tsv | sort | uniq -c     ->  1 H, 18 A, 53 M
+$ node tools/ecr_verify.js ecr2.tsv _intake/japanese-miracle/lit > o2.txt ; echo $?   ->  0
+$ grep -cE '^ *FAIL ' o2.txt                             ->  0
+$ tail -1 o2.txt                                         ->  ALL PASS
+```
+
+**Two failures of method by the orchestrator inside this one verification, both caught before the
+verdict was recorded.** First, the block was extracted with the *last* END marker in the file rather
+than the one paired with its BEGIN, which swept 70 lines of prose into the TSV and produced `EXIT=1`
+with seven fabricated `unknown type` failures. A wrong verdict from a correct tool. Second, the
+failure-line count was taken with `grep -ci fail`, which matched `K1 failures 0` and
+`(does not fail)` and reported 2 where the true count is 0.
+
+**The rule is amended.** The failure-line count is `grep -cE '^ *FAIL '`, matching the tool's own
+failure prefix, not a case-insensitive substring. A verdict rule whose own count has no counting rule
+is the defect the counting-rule contract exists to prevent, committed inside the verification of a
+register. This is the second time this step that a filter written to read a verdict has produced the
+wrong verdict, and the first time it went the safe direction — it manufactured failures rather than
+hiding one.
+
+### The correction itself: the gate found two defects, the author found a third
+
+| Item | Verdict |
+|---|---|
+| Wade is silent on Japanese targeting | **Verified and understated.** Wade lines 150-157 report Lane 2017 finding Korean HCI-targeted industries grew faster in output *and* productivity, persisting after the policy ended in 1979. Line 230 records that comparable studies for Japan and Taiwan **have not been conducted**. That is stronger than silence: he records that the study which would settle it does not exist. **The affirmative position is not absent from the corpus, it is absent from Japan.** |
+| Six of six members report no effect | **Contradicted in the literature's own words.** `kiyota-2013` lines 45-48: Japanese industrial policy "contributed to labor-productivity growth but not to growth in total factor productivity." |
+| **A third defect, found by the author running the warning over his own rows** | ECR-06 side B read "about 0.9 points, obtained as a residual after four named factors." `may-1977` line 29 says 0.95 points, reported as an explicit named category in the book's own accounting **and not as a residual**. The 0.9 is 8.77 minus 7.86, a subtraction performed in an FA deliverable. He imported the subtraction and its residual framing into a position presenting it as what the source relays, and his own earlier draft had 0.95 — **he degraded a correct figure while transcribing it.** |
+
+**The fix is measured rather than asserted.** ECR-01 is re-scoped rather than split, on the argument
+that splitting by instrument makes axes no question separates while country is a boundary questions
+actually cross. Lane 2017 gets its own axis, one member, recorded as reported speech inside Wade with
+Lane not on disk — the Johnson 1982 shape pointing the other way. Then the part that has to work: a
+country-less question, *"Did industrial policy targeting raise productivity?"*, puts **identical mass
+of 4.05 on both axes**, so whatever threshold retrieval is tuned to, they fire or fail together.
+**The Japan answer can no longer come back alone.**
+
+He also declined to supply Lane's full citation, because Wade's summary carries no reference list and
+naming a citation he cannot see would be the 0.9 residual one level up.
+
+**And a tool defect he owns:** `ecr_verify.js` exited 2 on his own deliverable, because the file is
+CRLF on all 767 lines and the marker regex required `-->\n`. Both tools are now CRLF-tolerant. Exit 2
+was the tool refusing rather than passing empty, which is the one thing it did right.
