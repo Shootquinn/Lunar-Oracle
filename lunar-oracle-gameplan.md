@@ -124,13 +124,13 @@ gameplan, per A.6.2.
 | # | Step | Assigned To | Status |
 |---|------|-------------|--------|
 | 0 | Draft, review, and land the operating gameplan. Sub-steps 0.1 through 0.8 below. | The Manager (bookends), Wave 1 (five), register wave (two), Wave 2 (two) | In progress |
-| 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 11 sub-steps, 1.1 to 1.11. | The Systems Engineer, The Software Engineer, The Engineer, The Growth Economist | Not started |
-| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. 18 sub-steps, 2.1 to 2.18. | The Engineer (owner), The Space Resources Engineer, The Growth Economist, The Systems Engineer | Not started |
-| 3 | **The app boundary and retrieval.** Objectives 3 and 5. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Growth Economist | Not started |
-| 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Growth Economist, The Space Resources Engineer | Not started |
+| 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 11 sub-steps, 1.1 to 1.11. | The Systems Engineer, The Software Engineer, The Engineer, The Manager (economics prompt) | Not started |
+| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. 18 sub-steps, 2.1 to 2.18. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer | Not started |
+| 3 | **The app boundary and retrieval.** Objectives 3 and 5. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Manager (economics prompt) | Not started |
+| 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Manager (economics prompt), The Space Resources Engineer | Not started |
 | 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | Not started |
 | 6 | **Bootstrap, first run, and the public-facing prose.** Objectives 2 and 5. 15 sub-steps, 6.1 to 6.15. | The Systems Engineer, The Writer, The Editor | Not started |
-| 7 | **Findings, standing tensions, and the sampling protocol.** 7 sub-steps, 7.1 to 7.7. | The Growth Economist, The Software Engineer | Not started |
+| 7 | **Findings, standing tensions, and the sampling protocol.** 7 sub-steps, 7.1 to 7.7. | The Manager (economics prompt), The Software Engineer | Not started |
 
 **The sub-step detail lives in `cr_scratch/step0_integration_draft.md`** and is not duplicated here.
 That file carries all 72 sub-steps with owners, dependencies expressed as `N.M (ORIGIN-ID)`, the
@@ -161,7 +161,7 @@ zero cycles, zero unrewritten IDs.
 |---|---|---|---|
 | 0.1 | **Manager opens.** Confirm the drafting variant of Step 0 (A.6.4). Create `accumulator.md`. Fix wave membership. Write the Wave 1 spawn prompts. Name the capability gaps that justify a Recruiter run. | The Manager | **Complete.** `cr_scratch/step0_manager_open.md` |
 | 0.1b | **Recruiter.** Persona specification for the gap 0.1 names. | The Recruiter | **Complete.** See below. |
-| 0.2 | **Wave 1, parallel.** Five agents, each drafting the slice of the gameplan that falls in their domain. Deliverable specs below. | The Systems Engineer, The Software Engineer, The Engineer, The Space Resources Engineer, The Growth Economist | **Complete.** Five files in `cr_scratch/` |
+| 0.2 | **Wave 1, parallel.** Five agents, each drafting the slice of the gameplan that falls in their domain. Deliverable specs below. | The Systems Engineer, The Software Engineer, The Engineer, The Space Resources Engineer, The Manager (economics prompt) | **Complete.** Five files in `cr_scratch/` |
 | 0.3 | **Integration.** Orchestrator synthesizes Wave 1 output into a single draft gameplan: objectives, steps, context recipes, echo sites, TDD stages. Surface the disagreements rather than resolving them (A.9). | Orchestrator | **Complete.** `cr_scratch/step0_integration_draft.md`. Returned as 73 steps in 7 phases; renumbered under the author's ruling to **72 sub-steps in 7 steps** |
 | 0.4 | **Register wave, sequential.** The Writer drafts the register specification (the haiku contract, the deliverable text-block format, the opening sequence). The Editor then audits it and, separately, writes the standing prohibition that keeps team deliverables free of theater. Order is Writer then Editor because the input is composed from scratch (A.3.3, default order). | The Writer, then The Editor | **Complete.** `cr_scratch/step0_writer_register_spec.md`, `cr_scratch/step0_editor_prohibition.md` |
 | 0.5 | **Wave 2, sequential. Three, not two (Manager F4).** The Systems Engineer returns to rule on conceptual integrity, held to the position he stated at 0.2, now that an integrated draft exists to judge. The Designer reviews the gameplan as a designed artifact: does a cognizant outsider who clones this repository understand what it is and what happens next. The Fact-Checker verifies every factual claim this gameplan makes about what the repositories and corpora actually contain, against the trees on disk. | The Systems Engineer, then The Designer, then The Fact-Checker | **Complete.** `cr_scratch/step0_5_systems_engineer_integrity.md`, `cr_scratch/step0_5_designer_review.md`, `cr_scratch/step0_5_factchecker_verification.md` |
@@ -215,8 +215,9 @@ contributes, what it costs to extend, and what should be rebuilt rather than ext
 CR-Agents team fits inside a loop that must return an answer in a conversation rather than over a
 multi-day session; a full-roster wave per question is not obviously the right shape and the
 alternative is his to name. (The "nine personas" quoted at 0.2 and in Open Question 4 has no
-authority anywhere: the CR-Agents roster is twelve standing personas plus The Recruiter, and The
-Growth Economist makes fourteen. Nine is neither the roster nor a defined wave size, and whether
+authority anywhere: the CR-Agents roster is twelve standing personas plus The Recruiter, and the
+author's ruling at the gate added no fourteenth: the economics work is The Manager under a second
+prompt, so the roster is unchanged. Nine is neither the roster nor a defined wave size, and whether
 there is a default wave size at all is part of what he is being asked.) Then the TDD front end: what an acceptance suite for a Lunar Oracle
 *answer* asserts, per `tdd_method.md`, and which gameplan step builds it. The `lit_review: yes` flag
 is set, so tests asserting quantitative or technical facts must name the primary source they
@@ -236,7 +237,7 @@ app's 10 excluded nodes are the ones users will ask about first. How TRL and evi
 discipline enter an answer that a user reads in a chat window rather than in a reviewed document.
 Plus the lunar-side **contested-claims register**, the counterpart to the economist's.
 
-**The Growth Economist, the economics question surface.** The counterpart deliverable. What the
+**The Manager (economics prompt), the economics question surface.** The counterpart deliverable. What the
 Japanese Miracle corpus makes answerable that the Scenario Explorer corpus alone does not: growth
 accounting, capital deepening, technology absorption, industrial policy and its debunkings, quality
 and process control, the developmental state literature and its critics. How an economics question
@@ -259,7 +260,7 @@ Oracle from returning a confident one-sided answer that passes every other check
 | 0.2 | The Systems Engineer | This gameplan (full). `lsei/README.md`. `cr-agents/CLAUDE.md` and `cr-agents/README.md` as the bootstrap precedent. The repository tree listing (not its contents). |
 | 0.2 | The Software Engineer | This gameplan (full). `lsei/oracle/answer_question.js` header comment plus its routing logic. `lsei/oracle/lib/literature_search.js` header comment. `lsei/report-generator-prompt.md`. `cr-agents/method/tdd_method.md` (full). `cr-agents/method/operational_guide.md` A.3.3, A.4, A.10. |
 | 0.2 | The Space Resources Engineer | This gameplan (full). `lsei/lunar-scenario-explorer-map.md` (the totals, claims and exclusions tables; not the whole file). The `lsei/literature/` filename listing. |
-| 0.2 | The Growth Economist | This gameplan (full). `cr_scratch/step0_recruiter_persona_spec.md` (his own spec). The `_intake/japanese-miracle/lit/` filename listing plus the 24 corpus-unique summaries named in Design notes, read in full. `lsei/literature/growth-and-industrial-theory/` filename listing. |
+| 0.2 | The Manager (economics prompt) | This gameplan (full). `cr_scratch/step0_recruiter_persona_spec.md` (his own spec). The `_intake/japanese-miracle/lit/` filename listing plus the 24 corpus-unique summaries named in Design notes, read in full. `lsei/literature/growth-and-industrial-theory/` filename listing. |
 | 0.4 | The Writer | The design intent section (full). `cr-agents/supplements/writing-guides/style.md` and `structure.md` (both full). The integrated draft gameplan from 0.3. |
 | 0.4 | The Editor | `cr-agents/supplements/signs_of_ai_writing.md` (full, mandatory). The Writer's register specification. The integrated draft gameplan from 0.3. |
 | 0.5 | The Systems Engineer | His own 0.2 file, `cr_scratch/step0_systems_engineer_architecture.md` (full), so the falsifiers are read as he stated them. The full draft gameplan after 0.4. `cr_scratch/step0_integration_draft.md` (full). `cr_scratch/step0_writer_register_spec.md` and `cr_scratch/step0_editor_prohibition.md`, for falsifier 3. |
@@ -277,13 +278,14 @@ only statement of which entry supersedes which.
 |---|---|---|
 | 0.4, 0.5 | 2026-08-26 | Register wave and Wave 2 closed. The Writer's register specification and The Editor's standing prohibition landed at 0.4. All three Wave 2 reviewers returned: The Systems Engineer ruled the three falsifiers (one fired, caught at 0.3) and added five plan defects; The Designer returned the echo-site catalogue and the structural damage list; The Fact-Checker returned 29 supported, 6 unsupported and 11 contradicted claims. Applied at 0.6. |
 | Setup rev. 3 | 2026-08-26 | Author closed Open Questions 2, 6 and 7: public repository; FA1 through FA8 come over (19 files to `_intake/japanese-miracle/fa/`); both corpus copies stay until the merge lands. Three live defects found by The Systems Engineer at 0.2 fixed immediately rather than scheduled, being safety rather than project work: `.gitignore` inverted to deny-by-default under `literature/` and verified against seven cases including `.txt`, `.PDF` and `.docx`; push URLs disabled on both working copies; `CLAUDE.md` path split from `deps/` repaired. |
+| 0.8 | 2026-08-26 | **Step 0 closed at the author's gate.** Three rulings: the recruited economics seat dissolved into The Manager under a separate economics prompt, with the role-conflict question dismissed and two spawns being the whole mechanism; Step 7 kept; the FA deliverables given their own shelf, closing D1 and unblocking the merge taxonomy at 2.1. |
 | 0.3 renumber | 2026-08-26 | Author ruled the numbering: phases are steps, steps are sub-steps. Integration draft rewritten in place to Steps 1 to 7 with `N.M` sub-steps and an `Origin ID` column preserving traceability to the five Wave 1 files. Count 73 to 72: `GATE-1` dissolved into Step 4's closing statement as a boundary gate carrying no work of its own; `GATE-2` kept as 6.15 because it carries the clearing work that sub-step 2.12 explicitly declines to do. Dependency validator: zero dangling, zero forward, zero cycles, zero unrewritten IDs. |
 | 0.3 | 2026-08-26 | Integration closed. Returned as 73 steps in 7 phases at `cr_scratch/step0_integration_draft.md`; renumbered the same day to 72 sub-steps in 7 steps (see the `0.3 renumber` row). Step-ID collision resolved onto ARCH/LOOP/MERGE/LUNAR/ECON prefixes with an old-to-new mapping table. Twelve ordering constraints found. New gate added (GATE-1): the loop is not pointed at `literature/` until the register, retrieval rebuild, classifier and three-class invariant land, because the corpus existing and the corpus being safe to answer from are two different dates and no Wave 1 draft named the second one. The Systems Engineer's falsifier 2 **half-failed and was caught**: the ref record and first-run flag were already consolidated by him, but the drift record was specified twice (ARCH-5 and MERGE-11) as the same computation with two owners; consolidated. The same failure shape was found outside the falsifier's scope, three encodings of the contested-claims register from three agents, also consolidated. |
 | Abstracts | 2026-08-26 | Open Question 8 re-measured with `tools/audit_abstract_overlap.js`: four files, not thirteen, and three of the four were already marked as quotation. All four rewritten as original prose; re-audit returns zero at or above the 10 percent threshold, down from four. Markers removed. The three with LSEI copies are byte-identical across both corpora. |
 | Dedup | 2026-08-26 | Author directed the duplicate-summary defect be fixed rather than scheduled. Six tokenization collisions found in `lsei/literature/` (Japanese Miracle corpus clean, zero). All six the same source twice, confirmed by DOI or NTRS ID; none referenced by filename in `index.html`. Four decided on a size gap: 4.6x, 5.1x, 3.0x and 1.67x. The fourth is Speyerer 2013 (26,400 against 15,836), and 1.67x sits 0.17 above the 1.5x line the same decisions file sets as the point below which a gap is not evidence; it is a size call made close to its own threshold and it is recorded that way rather than banded with the other three. The two closest (1.08x, 1.37x) were adjudicated by a separate reviewer reading all four files, which reversed the size call on Poston 2020. Corpus 158 to 152. Superseded files retained at `_intake/superseded-duplicates/`. Decisions recorded at `cr_scratch/step0_dedup_decisions.md`; enforced by `tools/check_corpus_collisions.js`, tested in both directions. |
 | 0.2 | 2026-08-26 | Wave 1 closed, all five. The Engineer's merge audit corrected two orchestrator claims (PDF pairing rule, pull size) and answered Open Question 8 in the affirmative. His classification of that answer was overstated and was corrected the same day: Open Question 8 **does not gate the public release** (see the `Abstracts` row and loose end A4). Step-ID collision noted for integration: The Software Engineer and The Systems Engineer both numbered their steps SE-1 onward. |
 | 0.1 rev. 1 | 2026-08-26 | The Manager closed rev. 1 of the open. Five Wave 1 prompts rewritten for the new layout; A2 restated as a ruling rather than an assumption; The Engineer promoted to first of five with an eight-part brief. Wave 1 spawned. |
-| 0.1b | 2026-08-26 | The Recruiter closed. Recruited The Growth Economist, anchored to Moses Abramovitz. Ruled against a second recruit. Pending author approval at the 0.8 gate. |
+| 0.1b | 2026-08-26 | The Recruiter closed. Recruited The Manager (economics prompt), anchored to Moses Abramovitz. Ruled against a second recruit. Pending author approval at the 0.8 gate. |
 | Setup rev. 2 | 2026-08-26 | Author identified the Scenario Explorer's origin folder, `CSA_LSEI_Workshops` (4.1 GB), with instructions to survey it shallowly. Surveyed. 163 unique PDFs at `context/reference/lit/`, paired to summaries by directory adjacency rather than filename: 143 of 158 (pre-dedup) recoverable that way against 92 by name. **Both the rule and the pull size were corrected by The Engineer at 0.2; see Design notes.** Recorded in Design notes; the pull assigned to The Engineer at 0.2. |
 | Setup rev. 1 | 2026-08-26 | Author feedback. Working copies flattened from `deps/` to `cr-agents/` and `lsei/` at root. Japanese Miracle corpus copied to `_intake/japanese-miracle/lit/` (119 summaries, 112 PDFs, 3 treaty texts, 363 MB). Directory map added. Corpus integration promoted to Objective 1. Open Question 1 closed by the author's ruling. |
 | Setup | 2026-08-26 | Repository initialized. CR-Agents (`f0c976b`) and LSEI (`f788ea2`) cloned as working copies and gitignored. `cr_scratch/` created. Gameplan seeded with Step 0 only. The LSEI ref was `c8274e6` at seed and is `f788ea2` now: two commits were authored through this working copy during Step 0 (the abstract rewrites at `d7889e1`, the dedup at `f788ea2`) and both are on `origin/main`. `f788ea2` is the ref every LSEI figure in this document was measured against. |
@@ -316,7 +318,7 @@ concedes the timing but not the principle, and named a trigger: recruit when the
 or immediately if The Engineer reports at 0.2 that the 95 overlapping pairs disagree substantively.
 Not resolved here. The trigger is the operative part either way.
 
-**The recruited persona, 0.1b.** The Recruiter returned **The Growth Economist**, anchored to Moses
+**The recruited persona, 0.1b.** The Recruiter returned **The Manager (economics prompt)**, anchored to Moses
 Abramovitz (1912-2000): NBER from 1938, economic adviser on the Allied Commission on Reparations in
 1946, Stanford, AEA President 1980. The anchor publications are "Resource and Output Trends in the
 United States since 1870" (1956), where he produced the growth residual and called it "a measure of
@@ -334,7 +336,7 @@ labour reserve that does not exist.
 
 **New productive tension (A.9), to be added to the roster if the author approves:** *The Growth
 Economist vs. The Space Resources Engineer.* Necessary conditions from opposite directions. The
-Space Resources Engineer asks whether anyone has built it and at what TRL. The Growth Economist
+Space Resources Engineer asks whether anyone has built it and at what TRL. The Manager (economics prompt)
 asks whether an economy holding it would compound. A process can be TRL 6 and economically inert; a
 growth mechanism can be well-evidenced and have no hardware. Do not resolve. A secondary tension
 runs against The Fact-Checker: she catches fabrication, he catches valid and correctly cited
@@ -555,6 +557,58 @@ at 0.2, and it is the file that carries the bootstrap contract and the first-run
 
 ---
 
+## Author rulings at the Step 0 gate, 2026-08-26
+
+Three decisions, all binding on the plan.
+
+**1. The recruited seat is dissolved. The Manager does the economics, prompted separately.**
+The Recruiter's candidate is not added to the roster. The economics work stays exactly as scoped and
+is authored by The Manager under an economics-focused prompt, because The Manager is already anchored
+to W. Edwards Deming: a statistician who spent the relevant years in the relevant country, who is
+himself a source in this corpus (`deming-1967-japan-quality-control`), and who is named in the FA1
+mechanism table as a causal channel in his own right (M3, the tacit-knowledge and management-method
+transfer organized through JUSE from 1950).
+
+The author dismissed the role-conflict question that came with this and the dismissal is the ruling:
+spawn him once with a manager prompt and once with an economics prompt. No arbitration ceremony
+between the two, no third persona brought in to close steps he authored. Two spawns, two prompts,
+one persona, and the accumulator records both hats under one name.
+
+The A.9 tension the recruited seat would have carried is retained on its merits: **The Manager
+(economics prompt) against The Space Resources Engineer**, necessary conditions from opposite
+directions. One asks whether anybody has built it and at what TRL, the other whether an economy
+holding it would compound. It is not resolved and it is presented side by side.
+
+The economics findings themselves stand unchanged, and they are the evidence this seat's work was
+worth doing: the corpus reaches the most-quoted growth accounting only through two book reviews of
+different periods; four decompositions of one episode yield four residuals because the residual is a
+function of how many inputs were measured; Beason and the two Kiyotas are not independent
+corroboration; and closure and terrestrial maturity are negatively coupled by selection rather than
+separated by an engineering gap.
+
+**2. Step 7 stays in the plan.** The Manager's recommendation, adopted. Its economics half is where
+the corpus work gets written down as a first-class artifact while it is fresh, and its other half is
+the human spot-check protocol, which is the only mechanism that catches an answer that is wrong in a
+way no automated test can see. Deferring rows does not reduce schedule risk, it relocates it; the
+lever is gate cadence and that is already seven.
+
+**3. The FA deliverables get their own shelf.** Loose end D1 is closed. `literature/` holds
+per-source summaries whose warrant is that every claim traces to one source. A second directory holds
+the FA1 through FA8 deliverables, whose warrant is different: they adjudicate across sources and
+carry arithmetic present in none of them, and FA2 says so in its own words, that its net-MPK
+threshold is "the summarizer's calibration, not a number lifted from the papers."
+
+Two shelves, two retrieval contracts, two trace grades. An answer may quote a paper as evidence and
+may quote an FA deliverable as a prior conclusion of this project, and it must say which it did. The
+failure this prevents is the Oracle returning one of the author's own past verdicts as though it were
+a finding in a paper, which is undetectable once the two file types sit in one folder looking alike.
+
+Retrieval reaches the second shelf rather than ignoring it, which is what makes the Johnson 1982
+acquisition specification in `FA1-source-list.md` findable rather than something a person has to
+remember exists.
+
+---
+
 ## Loose ends register
 
 **This section is the compaction-recovery artifact.** Everything below was found during Step 0. A
@@ -597,8 +651,8 @@ fired); ACCEPTED LIMIT (known, not fixable at this layer, documented where it bi
 | B3 | 2.3, 3.7 | The IDF table is pooled across two fields with different vocabulary distributions, so "policy", "capital" and "targeting" get a weight wrong for both halves. The fix needs field-scoped IDF, which makes **a machine-readable field label per file a hard requirement on the taxonomy**, not a preference. | The Software Engineer. | DEFERRED. Owners: The Engineer (taxonomy, 2.3) and The Software Engineer (retrieval, 3.7) |
 | B4 | 2.1, 2.15 | **The cluster count is contested, and this is the one row where the contest is load-bearing.** A filename-overlap ranker returns whichever member of an author-year cluster tokenizes best, not the one carrying the claim, so the register's `sources` field must name every cluster member or the invariant is satisfiable by returning the wrong file. The count is **16 (The Space Resources Engineer) against 17 (The Engineer)**, and it **cannot be settled as posed, because neither states the counting rule**: under a strict rule — leading author token, optional single hyphenated surname, then a 19xx/20xx year — the same trees return 9. What the invariant actually rests on is verified independently of the count: **`sowers-2019` holds four members** (`-psr-ice-mining`, `-thermal-mining-ice`, `-thermal-mining-niac-report`, `-thermal-mining-niac`). | The Space Resources Engineer (16); The Engineer (17); The Fact-Checker at 0.5 for the missing rule and for `sowers-2019`. | DEFERRED. Owner: The Engineer. 2.1 (MERGE-2) reconciles the count **and states the counting rule when it does**, since a number without its rule cannot be reconciled at all; 2.15 asserts that every cluster member named by a register row resolves |
 | B5 | 2.1 | "182 sources" is a filename count. DOI deduplication finds 7 confirmed duplicate pairs plus 2 unconfirmable preprints; true distinct sources is about 162 to 173. **The DOI coverage figure needs restating with its basis and cannot be reproduced as written.** "Only 79 of 182 carry a DOI at all" was measured on the 182 population under a definition the register never stated — a confirmed DOI field rather than any DOI string. A regex for a resolvable DOI anywhere in the file, over the 176-file union, returns **91 with and 85 without**. **Echo site.** | The Engineer; the re-measurement by The Fact-Checker at 0.5. | DEFERRED. Owner: The Engineer. 2.1 (MERGE-2) emits an identifier and an identifier kind per file and replaces every figure in this row; whichever definition it uses, it states it |
-| B6 | 1.10 | **The exemplar contested pair is not contested.** `beason-1996-targeting-japan` and `henderson-2008-myth-of-miti` were quoted throughout Step 0 as the model two-sided pair. Read on disk they are on the same side: Beason tests the conventional targeting narrative across 13 sectors and finds against it; Henderson argues MITI's causal role "has been greatly exaggerated" and is carried mainly for its Denison and Chung decomposition. Returning Beason without Henderson is returning one of two agreeing sources, not one side of a dispute. **The corpus already says so about itself:** Henderson's own Topic mapping section reads "Also relevant to the **MITI-skeptic thread alongside Beason 1996** and Kiyota 2013." The two sources are filed as co-belligerents by the summaries themselves. | The Writer found it; orchestrator confirmed from both abstracts; The Fact-Checker upheld it at 0.5 by reading both files in full and quoting the Topic mapping line. | OPEN. It is a `false_pair` in The Growth Economist's own taxonomy, which already anticipated the category. Reclassify at 1.10. **Every downstream use of this pair as an illustration needs re-checking, including loose end B1's worked example.** |
-| B7 | 1.10 | **The corpus has no primary pro-targeting source, and that is a systematic bias rather than a gap.** Johnson 1982, *MITI and the Japanese Miracle*, is in neither corpus. Beason's abstract names it as the narrative he is testing, so the affirmative industrial-policy position survives in this corpus only as reported speech inside its critics. Asked whether industrial policy worked, this Oracle can currently only answer no, and it will sound well-sourced doing it. **Two corrections from 0.5.** Wade 2018 **is** affirmative on the developmental state — his abstract argues it better explains the catch-up decades, and rebuts the conversion claim — and is merely silent on *sectoral targeting*; "neither makes the targeting claim" is right, "nearest affirmative source" undersells him, and that distinction is the one a retrieval layer will blur. And Johnson 1982 is not merely absent, it is **already registered**: `_intake/japanese-miracle/fa/FA1-source-list.md` entry 14 carries the slug `johnson-1982-miti-japanese-miracle`, a full citation, "PDF route: library or Internet Archive", and the note "Read against Beason and Weinstein." | Orchestrator, from the corpus listings and three abstracts. Upheld at 0.5 by four independent searches for the absence: filename, full-text author name, exact title, and the abstracts of the four plausible affirmative sources. | OPEN. **Acquisition target: Johnson 1982 — a fetch against a written specification rather than a research task**, since the slug, the pairing and the PDF route already exist. Owner: The Growth Economist, 1.10 |
+| B6 | 1.10 | **The exemplar contested pair is not contested.** `beason-1996-targeting-japan` and `henderson-2008-myth-of-miti` were quoted throughout Step 0 as the model two-sided pair. Read on disk they are on the same side: Beason tests the conventional targeting narrative across 13 sectors and finds against it; Henderson argues MITI's causal role "has been greatly exaggerated" and is carried mainly for its Denison and Chung decomposition. Returning Beason without Henderson is returning one of two agreeing sources, not one side of a dispute. **The corpus already says so about itself:** Henderson's own Topic mapping section reads "Also relevant to the **MITI-skeptic thread alongside Beason 1996** and Kiyota 2013." The two sources are filed as co-belligerents by the summaries themselves. | The Writer found it; orchestrator confirmed from both abstracts; The Fact-Checker upheld it at 0.5 by reading both files in full and quoting the Topic mapping line. | OPEN. It is a `false_pair` in The Manager (economics prompt)'s own taxonomy, which already anticipated the category. Reclassify at 1.10. **Every downstream use of this pair as an illustration needs re-checking, including loose end B1's worked example.** |
+| B7 | 1.10 | **The corpus has no primary pro-targeting source, and that is a systematic bias rather than a gap.** Johnson 1982, *MITI and the Japanese Miracle*, is in neither corpus. Beason's abstract names it as the narrative he is testing, so the affirmative industrial-policy position survives in this corpus only as reported speech inside its critics. Asked whether industrial policy worked, this Oracle can currently only answer no, and it will sound well-sourced doing it. **Two corrections from 0.5.** Wade 2018 **is** affirmative on the developmental state — his abstract argues it better explains the catch-up decades, and rebuts the conversion claim — and is merely silent on *sectoral targeting*; "neither makes the targeting claim" is right, "nearest affirmative source" undersells him, and that distinction is the one a retrieval layer will blur. And Johnson 1982 is not merely absent, it is **already registered**: `_intake/japanese-miracle/fa/FA1-source-list.md` entry 14 carries the slug `johnson-1982-miti-japanese-miracle`, a full citation, "PDF route: library or Internet Archive", and the note "Read against Beason and Weinstein." | Orchestrator, from the corpus listings and three abstracts. Upheld at 0.5 by four independent searches for the absence: filename, full-text author name, exact title, and the abstracts of the four plausible affirmative sources. | OPEN. **Acquisition target: Johnson 1982 — a fetch against a written specification rather than a research task**, since the slug, the pairing and the PDF route already exist. Owner: The Manager (economics prompt), 1.10 |
 
 ### C. Defects in the prototype Oracle
 
@@ -614,9 +668,9 @@ fired); ACCEPTED LIMIT (known, not fixable at this layer, documented where it bi
 
 | # | N.M | Question or finding | Position(s) taken, or evidence | Status |
 |---|---|---|---|---|
-| D1 | 1.2 | Are the FA1-FA8 deliverables the same kind of object as a summary? | The Growth Economist: **no.** A summary's warrant is that every claim resolves to one source; an FA deliverable is a cross-source adjudication with a verdict column and arithmetic present in no source (FA2 says outright that its net-MPK threshold is "the summarizer's calibration"). Merging them breaks the resolution-grade guarantee silently, for files that look identical to their neighbours, and the Oracle will cite a verdict as a finding. Recommendation: two corpora, two contracts. | OPEN. **Blocks the merge taxonomy**, decide before it lands. 1.2 is the ruling |
+| D1 | 1.2 | Are the FA1-FA8 deliverables the same kind of object as a summary? | The Manager (economics prompt): **no.** A summary's warrant is that every claim resolves to one source; an FA deliverable is a cross-source adjudication with a verdict column and arithmetic present in no source (FA2 says outright that its net-MPK threshold is "the summarizer's calibration"). Merging them breaks the resolution-grade guarantee silently, for files that look identical to their neighbours, and the Oracle will cite a verdict as a finding. Recommendation: two corpora, two contracts. | **CLOSED by the author, 2026-08-26. Separate shelf.** Two directories, two retrieval contracts, two trace grades; an answer says which shelf it drew from. See Author rulings above. Sub-step 2.1 writes the taxonomy against this ruling. |
 | D2 | 1.8, 3.8 | Is the contested-claims register consulted at classification time or after retrieval? | The Software Engineer: **at classification time**, as a third retrieval mode, the register being an address space rather than a filter. He declined the exception to the inherited rule, on the ground that a post-retrieval check can only fire on what retrieval already returned, so implementing it requires issuing a second search and combining, which is the forbidden shape. Residual hole named: `match_keys` matching is heuristic and can miss. His fallback can only emit REFUSE plus a `MISCLASSIFIED` log row and is structurally incapable of reconciling. | POSITION TAKEN, reviewed at 0.5 and upheld. The Systems Engineer records that the same rule was reached from the other side, with neither agent citing the other |
-| D3 | 3.1 | Does the app remain sole computational authority? | Three personas, three compatible positions, no conflict. The Systems Engineer: yes, and the boundary must be **mechanically enumerable**; a corpus number crossing into a lunar answer is a **transfer**, not a fact, and carries the burden of naming why the transfer is legitimate. The Space Resources Engineer: yes, and **a coefficient's status field is part of what the app computes**, so an APP verdict carries the status of every coefficient on the path (forcing case: `captureEff` = 1 against LUWEX at 50-73%). The Growth Economist: yes, and the app's authority should get *smaller and sharper*; he opposes promoting the corpus to a second calculator and wants the ten excluded nodes promoted to first-class answers. | **AUTHOR** ruling wanted, Open Question 5. 3.1 audits the boundary against the artifact before it becomes a routing contract |
+| D3 | 3.1 | Does the app remain sole computational authority? | Three personas, three compatible positions, no conflict. The Systems Engineer: yes, and the boundary must be **mechanically enumerable**; a corpus number crossing into a lunar answer is a **transfer**, not a fact, and carries the burden of naming why the transfer is legitimate. The Space Resources Engineer: yes, and **a coefficient's status field is part of what the app computes**, so an APP verdict carries the status of every coefficient on the path (forcing case: `captureEff` = 1 against LUWEX at 50-73%). The Manager (economics prompt): yes, and the app's authority should get *smaller and sharper*; he opposes promoting the corpus to a second calculator and wants the ten excluded nodes promoted to first-class answers. | **AUTHOR** ruling wanted, Open Question 5. 3.1 audits the boundary against the artifact before it becomes a routing contract |
 | D4 | 1.6 | Pinned or floating working copies? | The Systems Engineer: **neither as stated.** Record the ref, float the checkout, compare at bootstrap, report drift, automate nothing. A hard pin makes staleness invisible the same way floating makes breakage invisible, and trading one invisible failure for another is not a decision. He adds that drafting assumption A3 must not survive into the answering loop: an answer that cannot name the model it was computed against is not traced. | **AUTHOR** ruling wanted, Open Question 3. 1.6 is the policy |
 | D5 | 0.5 | Does the project need a second recruited persona for corpus curation? | The Recruiter: gap dissolved, assign the artifact not the seat. The Manager: gap deferred, not dissolved. Two live triggers were set. **The Engineer's has now fired negative:** the overlap is cosmetic. The figure is **87 of 95 byte-identical, 8 differing** — corrected from 89 of 95 at 0.5 by pairing the two corpora on the retrieval tokenizer's key and comparing bytes. Three of the eight differ because of this session's own dedup. **The correction does not reopen the trigger:** the differences are still cosmetic, so the closure survives it. | **NARROWED, NOT CLOSED** (The Manager at 0.7). His trigger fired negative on a number stated three ways, and the corrected figure is **87 of 95 byte-identical, 8 differing**, not 89 of 95. The verdict survives the correction; the reasoning does not. Byte-identical is a proxy for agreement, and differing is not a proxy for substantive disagreement. Three of the eight differ because of this project's own deduplication; five differ for reasons nobody has read. The trigger narrows to those eight and stays armed until sub-step 2.2 reads them, which 2.2 does anyway, so it costs nothing and buys an answer instead of a proxy. **Neither The Recruiter nor The Manager has been shown wrong.** |
 | D6 | 1.1 | Where do pulled PDFs land? | The Engineer recommends `literature/_pdf/<taxonomy>/` rather than interleaved with summaries, and flagged that this reads against the directory map's wording rather than taking the variance himself. | **AUTHOR**, small. 1.1 adds the map row that resolves it |
@@ -735,16 +789,16 @@ used.
     The
    prototype's rule is that a question the app can answer is answered from the app. The merged
    corpus contains economics the app does not model at all. The boundary needs restating for the
-   grown-up version. A Systems Engineer question with The Growth Economist's input.
+   grown-up version. A Systems Engineer question with The Manager (economics prompt)'s input.
 6. ~~**Does the rest of the Japanese Miracle folder follow the corpus here?**~~ **Closed by the
    author, 2026-08-26.** The FA1 through FA8 deliverables and their source lists come over; they are
-   now at `_intake/japanese-miracle/fa/` (19 files, including `FA1-mechanism-table.md`, which The
-   Growth Economist reports is the existing draft of the transfer test this project was about to
+   now at `_intake/japanese-miracle/fa/` (19 files, including `FA1-mechanism-table.md`, which The Manager
+(economics prompt) reports is the existing draft of the transfer test this project was about to
    rebuild from scratch). The rest stays: the New Space article, the model versions, the old
    `cr_scratch`. **The 19 files verify; "the rest stays" does not, from here.** What remains in the
    Japanese Miracle folder cannot be checked from this repository, and two files that did come over
    — `_intake/japanese-miracle/JM-gameplan.md` and `JM-accumulator.md` — appear in neither list
-   above. The inventory of what came and what stayed is owed. **What remains open is not whether but how.** The Growth Economist ruled at 0.2
+   above. The inventory of what came and what stayed is owed. **What remains open is not whether but how.** The Manager (economics prompt) ruled at 0.2
    that an FA deliverable is not the same kind of object as a summary: a summary's warrant is that
    every claim resolves to one source, while an FA deliverable is a cross-source adjudication with a
    verdict column and arithmetic present in no source. Merging them into `literature/` breaks the

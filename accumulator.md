@@ -203,8 +203,8 @@
   neighbour and returns a number. Three adjacency pairs shipped as data.
 - **Live position, and it is half of a standing tension.** He flagged the pre-merge register-authoring
   hazard himself and proposed his own mitigation — author the rows against current paths before the
-  merge, rebind after — which is why 1.9 sits in Step 1 and 2.16 in Step 2. His A.9 tension with The
-  Growth Economist is unresolved by design: he asks whether anyone has built it and at what TRL; the
+  merge, rebind after — which is why 1.9 sits in Step 1 and 2.16 in Step 2. His A.9 tension with The Manager
+(economics prompt) is unresolved by design: he asks whether anyone has built it and at what TRL; the
   economist asks whether an economy holding it would compound.
 
 ### The Topologist
@@ -245,7 +245,9 @@ task by default and does not join the standing roster unless the author decides 
   shape in advance — Lancaster on indexing and abstracting, or Bates if the failure is on the asking
   side — which makes the next call cheap.
 
-### The Growth Economist
+### The Manager (economics prompt)
+
+*The recruited seat was dissolved by the author at the Step 0 gate. The work below was authored under that seat and is retained in full; it is now The Manager's, under a separate economics-focused prompt. Two spawns, two prompts, one persona.*
 Anchored on Moses Abramovitz (1912–2000). Recruited at 0.1b. **The seat is provisional and the
 author rules on it at 0.8, so this entry records what the seat produced that no other seat would
 have.**
@@ -276,7 +278,7 @@ have.**
   Fact-Checker independently upheld it. **No standing persona would have caught that**, because
   catching it requires knowing which side of the Japanese debate each source is on.
 - **Live position, and it is half of a standing tension** the Recruiter proposes adding to A.9 for
-  the duration of this project: *The Growth Economist vs. The Space Resources Engineer*, necessary
+  the duration of this project: *The Manager (economics prompt) vs. The Space Resources Engineer*, necessary
   conditions from opposite directions, do not resolve. A secondary tension runs against The
   Fact-Checker — she catches fabrication, he catches valid and correctly cited sources doing work
   they were never licensed to do — and that second one is this project's actual failure mode.
