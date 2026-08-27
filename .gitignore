@@ -1,0 +1,26 @@
+# See the directory map in lunar-oracle-gameplan.md. This file enforces it.
+
+# Working copies of upstream repositories. Cloned by the bootstrap in CLAUDE.md.
+# Never committed, never vendored. The app in lsei/ is an authority, and a copy of an
+# authority drifts. Anchored, so a taxonomy folder named literature/lsei/ is not swallowed.
+/cr-agents/
+/lsei/
+
+# Intake staging. Material on its way into literature/, not part of the repository.
+/_intake/
+
+# --------------------------------------------------------------------------
+# literature/ is DENY BY DEFAULT. Only this project's own .md summaries ship.
+#
+# The corpus sits beside its source material on the author's disk: PDFs, and at least
+# three .txt files carrying full treaty text. Those are published works this project does
+# not own. An allow-list that named only *.pdf would have shipped the .txt files on merge
+# day, and would have shipped *.PDF on any case-sensitive clone. Deny-by-default fails
+# closed instead: a new source file type added six months from now is excluded until
+# somebody deliberately admits it.
+# --------------------------------------------------------------------------
+/literature/**
+!/literature/**/
+!/literature/**/*.md
+
+*.tmp
