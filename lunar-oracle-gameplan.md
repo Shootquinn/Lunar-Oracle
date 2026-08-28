@@ -23,7 +23,7 @@ This file is the plan for building it.
 - `_intake/japanese-miracle/lit/` (119 summaries, 112 source PDFs, 3 treaty texts)
 
 **Date:** 2026-08-26 (revised same day after author feedback)
-**Current step:** 2 (open). **Cycle A closed 2026-08-28**; Cycle B is next. Step 1 approved by the author at the gate 2026-08-28
+**Current step:** 2 (open). **Cycle A closed 2026-08-28. The six-cycle plan was rejected by the author and replaced with three waves**; W1 opens next. Step 1 approved by the author at the gate 2026-08-28
 **lit_review:** yes
 
 > **This gameplan is deliberately incomplete.** It carries Step 0 and nothing after it. Steps 1
@@ -308,17 +308,69 @@ saying which rule produced it is not quotable here.
 | **2.19** | **Step 2 open** | **The arm-2 process changes.** Move spawn prompts and verdict sentences into the declared file set so `M15` covers them by construction; give `oracle/MANIFEST.tsv` an accessor so a hand-typed filter has nothing to be typed instead of; rename the `AM-` namespace so checks `AM-1`..`AM-5` and rows `AM-01`..`AM-135` stop sharing a prefix. | The Software Engineer (tool half), The Designer (contract half) | **Approved by the author 2026-08-28.** The Manager's Step 1 close named all three as Step 2 work with an owner; none of the eighteen carried them, and his own falsifier F1 presumes Step 2 does the first two — a falsifier whose antecedent nothing schedules cannot fire |
 | **2.20** | **Step 2 open** | **Check-register reconciliation for the three new instruments.** `CHK-13` names `tools/check_no_sources.js` while 2.14 says `oracle/`; `oracle/verify_corpus.js` has no row at all and `oracle/**/*.js` is a declared scan root, so it fails `CL-1` the day it lands; and `CHK-01` and `CHK-04` fire on a `merge-gate` trigger that nothing installs, while `CHK-10` dispatches `pre-commit` only. 2.5 is the merge. | The Systems Engineer, in Cycle F after 2.17 exists | **Approved by the author 2026-08-28 on three defects; it carries four.** The fourth was routed by The Software Engineer at Cycle A: the corpus suite he built is itself wired to the `merge-gate` trigger nothing installs, and a runner placed under `oracle/` fails `CL-1` on landing. Found by measurement, not by reading — the register's own `H` row declares `27 13 12 2` and the parse agrees, so the known-answer test passes and all four defects sit inside a register that is internally consistent |
 
-**The cycle structure, from The Manager's open.** Within a cycle, agents run in parallel and their
-write sets are disjoint; between cycles the orchestrator integrates.
+**The structure. Cycle A ran under the six-cycle plan; the remaining nineteen sub-steps run under a
+three-wave plan that replaced it.**
 
-| Cycle | What runs | The constraint that shapes it |
+**The author rejected the six-cycle shape after Cycle A closed**, on the grounds that it was split up
+and pigeonholed, that a lot of the work plays off other work, and that a synergistic team-based wave
+approach would deliver the rest while improving quality rather than trading quality for speed. The
+Manager was asked to propose the replacement and told not to defend his own plan out of authorship.
+**He conceded the point rather than defending it** — six cycles was three cycles of work and three
+cycles of waiting — and found four defects in his own plan that the restructure fixes, the sharpest
+being that the Fact-Checker's A.10 source gate was scheduled to fire *after* the suite it gates had
+been the contract for the whole step. `cr_scratch/step2_manager_rewave.md` is the replacement.
+
+**The evidence the author was right is Cycle A's own record.** Every high-value finding crossed a
+sub-step boundary: The Designer measured a premise in his own brief and found it half wrong, which
+is the taxonomy's and the merge's finding; The Engineer at 2.1 found the three re-import hazards,
+which are 2.2's; the corpus suite produced findings owned by 2.13, 2.14 and 2.20; the taxonomy spawn
+produced the retrieval layer's numbers, which are 3.7's. Four seats each found something belonging
+to work they were not assigned. **The restructure makes that the mechanism rather than luck.**
+
+**Where The Manager says the author is wrong, and it shapes the design.** The work plays off other
+work in its *findings*, not in its *writes*. All five Cycle A crossings came from a seat **reading**
+outside its lane; none required **writing** outside it. So the waves collapse the conversation and
+leave the write lock intact.
+
+| Wave | What the wave OWNS | Discharges |
 |---|---|---|
-| A | TDD gate (the corpus suite), 2.1, 2.3 draft, 2.19 contract half | **CLOSED 2026-08-28.** Four spawns; two were the same persona on two disjoint files, which the rule permits because it is about files rather than seats. Four deliverables, every quantitative claim re-run by the orchestrator, zero refuted |
-| B | 2.2, the two taxonomy reviews, 2.19 tool half, suite review | The lunar and economics reviewers write separate files and their A.9 tension is not resolved at this gate |
-| C | **2.4 → gate → 2.5 → 2.6** | **One seat, exclusive lock on `literature/`, nothing else runs.** The merge is single-writer and its failure mode is silent |
-| D | 2.7, 2.8, 2.10–2.12 serially; 2.13–2.14; 2.15 | 2.7, 2.8, 2.11 and 2.16 all edit `## Provenance` blocks in the same files and never run concurrently |
-| E | 2.16; 2.9 recommendation to the author | |
-| F | 2.17 split across two files, then 2.18 and 2.20 | 2.17 is two seats, so it is two files: one publishes the interface, the other builds against it |
+| **W1** | **Merge day is safe.** Nothing touches `literature/` | 2.2, 2.3, 2.4, 2.9, 2.13, 2.14, 2.19(b), 2.20, and the Fact-Checker's A.10 source gate |
+| **W2** | **The tree lands and is checked while re-running is still cheap** | 2.5, 2.6, 2.17-divergence, 2.18 |
+| **W3** | **The corpus says what it is** | 2.7, 2.8, 2.10–2.12, 2.15–2.17 |
+| review | The method's own Wave 2, which was always going to run | — |
+
+The wave boundaries are the two points at which the corpus stops being cheap to undo. That is
+arithmetic rather than preference, and it is why the count is three.
+
+**Not collapsed, with the cost stated rather than hidden.** The merge stays single-writer, because it
+rewrites a whole tree and its failure mode is silent. The `## Provenance` chain stays one seat.
+Assertions still precede the operation they gate — the barrier goes, the ordering does not. And
+**rewaving does not shorten The Engineer's serial path**; The Manager records that as unfixed and
+says the one lever he has moves the *judgement* on 2.7 and 2.8 to other seats without moving the
+*write*, which he calls partial rather than dressing it up.
+
+**Two author rulings at the restructure, 2026-08-28.**
+
+| Ruling | Decision |
+|---|---|
+| **The three assertion slots** | **Reassign all three.** Whoever writes an assertion is not the seat that runs the operation it gates, on 2.4, 2.10 and 2.14. The Manager named the arm-2b split at one slot at the Step 2 open; verified against the suite, it was needed at **three** — `SLOT-B` and `SLOT-C` carry no cross-check of any kind, `SLOT-A` has one only because `SLT-7` specifies it, and `SLOT-D` is the single clean case because 2.15 is The Software Engineer's while 2.16 is The Engineer's. The author took the full change over the narrower option, against owners he had himself ratified |
+| **The W1 seam** | **The Manager's call at the wave open, not pre-committed.** In W1 the merge assertions are written while the dedup table they are parameterized on is still being filled, and The Manager offered detection rather than prevention there and said so. The author declined to rule either way on the ground that it depends on information nobody has yet — whether the table actually churns once 2.2 starts — and required the call to be made explicitly, recorded, and resting on the volatility measurement rather than defaulting by inattention |
+
+**Five quality mechanisms the restructure adds**, none of which is a rule anyone must remember: the
+slot reassignment above, which makes arm 2b structurally impossible on all four gated operations; a
+required `## Not mine` section per deliverable, so a cross-boundary finding is an output rather than
+luck, and an empty one is falsifiable where an omitted one is invisible; a required premise check,
+which is what caught `M8` returning zero findings over 176 files against a premise the orchestrator
+had pasted; **the read-digest** — every instrument stamps what it read, because `COUNTING_RULE.md`
+§3 rule 11 requires a failure count to carry its command but not its moment; and three standing brief
+clauses. The read-digest replaced the orchestrator's instinct to specify measurement windows, which
+The Manager refused on his own standing ground that a rule someone must remember is not a process
+fix.
+
+**The tensions are preserved by one uniform guard**, because co-location could smother them by
+consensus: paired seats never co-author a file, every wave brief names the pair's disagreement as a
+required output, and falsifier `H3` fires if The Software Engineer and The Systems Engineer report
+no disagreement in W1.
 
 ---
 
@@ -349,6 +401,7 @@ only statement of which entry supersedes which.
 | Step | Date | Notes |
 |---|---|---|
 | 2 open | 2026-08-28 | **Step 2 opened. Twenty sub-steps, six cycles.** The Manager's open is `cr_scratch/step2_manager_open.md`, 887 lines: the TDD ruling, the wave structure with a declared write set per spawn, the Wave 1 spawn prompts written to be pasted, fourteen named risks and five counting-rule mechanisms. He ruled the **TDD precondition fires** — not on user-facing prose but on the corrected rule his own falsifier forced at Step 1, that a specification whose form other agents write against is reader-facing, and Step 2 imposes three such forms on ~176 files. The suite is `oracle/tests/corpus_suite.md`, authored by a seat that owns no merge output. He ruled the four assertions-first sub-steps are **not** the suite: 2.4's assertions and 2.5's merge are the same seat, which is arm 2b by construction, so they become named amendment slots instead. **Cycle C takes an exclusive lock on `literature/` and nothing runs beside it.** Writing wave skipped, with the reason recorded. His first spawn died on a connection error mid-response and was resumed from its own context rather than restarted, so nothing was re-measured. |
+| 2 rewave | 2026-08-28 | **The author rejected the six-cycle structure and The Manager replaced it with three waves.** The ask was for a synergistic team-based wave approach that delivers the rest **while improving quality**, not trading quality for speed. He was told not to defend his own plan out of authorship and **did not**: six cycles was three cycles of work and three of waiting, and he found four defects in it that the restructure fixes — the Fact-Checker's A.10 gate scheduled to fire after the suite it gates had been the contract all step; the check register reconciled two cycles after an instrument was built against a guess of it; containment sitting after a merge that pulls 224,042,382 bytes with no repository-wide `*.pdf` rule in existence; and **three of four assertion slots owned by the seat that runs the operation they gate**, where he had named one. Where he says the author is wrong: the work plays off other work in its findings, not its writes, so the waves collapse the conversation and leave the write lock intact. **Two author rulings**: reassign all three slots, and the W1 seam is The Manager's call at the wave open resting on a volatility measurement rather than pre-committed. **What he refused to collapse, stated with its cost**: the merge stays single-writer, the provenance chain stays one seat, and rewaving does not shorten The Engineer's serial path — recorded as unfixed rather than dressed up. |
 | 2 Cycle A | 2026-08-28 | **Cycle A closed. Four spawns, four deliverables, every quantitative claim re-run by the orchestrator and zero refuted.** The corpus acceptance suite landed at `oracle/tests/corpus_suite.md` — 148 tests in twelve groups, declaring its own size and holding exactly 148, with four amendment slots declared **empty by id** so a slot that never fills is visible as a slot rather than an absence. 2.1 replaced every figure in loose end B5 and **settled B4, the row that said it could not be settled as posed**: 16 and 17 are the group count and the surplus count of one clustering, and neither seat measured wrong. 2.3 filled the field-label hole in its own author's Step 0 spec and produced **B3's first measured numbers, which correct B3's own emphasis** — `targeting` errs least of the three tokens the row names. 2.19's contract half ruled the corpus into CHECK unconditionally and out of `M13`, on a staging of the full union that reproduced the orchestrator's baseline before anything was measured against it. **Four register rows closed or resolved (A3, B4, B5, D7), three overtaken (A7, B3, E1).** Integration regenerated the quantities index, a cycle-boundary action correctly refused by the seat that found it while other seats held writes; `--check` returns to the standing twelve failures, so Cycle A added no durable debt. **Three findings the cycle produced about itself:** 2.19's mechanism fired on the orchestrator's own spawn prompt within the cycle that created it; disjoint write sets are not disjoint read sets, because every instrument here walks the declared file set rather than the caller's write set; and the index of record asserts two values its own promoted registers contradict, because an addendum that re-declares an id forks the index rather than updating it, and the fork resolves silently in favour of the stale copy. |
 | 2 baseline | 2026-08-28 | **The orchestrator measured both corpora before any agent ran**, so Step 2's counts have a known-answer test whose author is not the seat producing them — The Manager's own remedy from the Step 1 close, applied rather than described. `cr_scratch/step2_orchestrator_baseline.md`. **Two counting rules are live and both are correct**: raw filenames give union 185 and 86 overlaps, `normalize()` gives 176 and 95, and the difference is exactly nine named files. The normalized figures are operative because `normalize()` is the merge key. **A7 is nine, not one** — `GDP.md` is the only member whose difference is case alone, and the other eight differ by separator, coexist on every filesystem, and would land as eight duplicate pairs with no collision reported, so 2.4 must assert normalized-key collision rather than case-insensitive collision. **Of 86 exact-name overlaps, 81 are byte-identical**, so 2.2's same-name adjudication set is five files. Four findings routed to sub-steps: loose end A3 contradicts itself; The Engineer's Part 2 specifies no field label though B3, 2.3 and a `FIELDS.tsv` slot held open since 1.1 all require one; 2.14 inherits Step 1's owed `CHK-10` self-invoking loop; and 2.10 asserts a bare "250 MB" whose SI and binary readings differ by 10 MB. **The economics half of the corpus has no upstream** — its provenance ref resolves in this repository as an unrelated Step 1 commit tracking zero files under a gitignored directory, and neither `_intake/` nor the tree it came from is a git repository, so 2.17's divergence check and 2.18's policy both assume something that exists on one half only. Two things went the other way: The Engineer's Part 2 folder counts reconcile with the measurement to zero residue once the six A3 deletions are placed, and his Part 9 estimate of 52 PDFs for the pull is exact. |
 | 1 gate | 2026-08-28 | **The author approved Step 1 and opened Step 2**, and ruled on the two sub-steps The Manager added at the open. **2.19 approved** — the three arm-2 process changes his Step 1 close named as Step 2 work with an owner, which none of the eighteen carried and which his own falsifier F1 presumes. **2.20 approved** — check-register reconciliation for the three instruments Step 2 builds, whose three defects sit inside a register whose known-answer test passes, which is why reading it did not find them. Step 2 is twenty sub-steps. |
