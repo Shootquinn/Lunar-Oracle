@@ -42,6 +42,55 @@ provisional figures are **95** overlapping (on the 158-file pre-dedup basis), **
 **24** corpus-unique. This measurement returns **86**, **185** and **33** on the current basis. The
 gaps are not errors in either direction until 2.1 states which rule it is counting under.
 
+## The Engineer's Part 2 folder counts reconcile with this baseline, exactly
+
+His Step 0 taxonomy table gives `isru-processing` 32, `power-and-thermal` 20 and
+`growth-and-industrial-theory` 27. This baseline measures 30, 17 and 26. Every other folder agrees
+to the file. The gap is 2, 3 and 1 — six files.
+
+Those six are the A3 deletions, and they distribute exactly that way. Measured by locating each
+retained superseded file's surviving twin:
+
+| Superseded file | Folder of its surviving twin |
+|---|---|
+| `azami-2024-lunar-manufacturing-review` | `isru-processing` |
+| `metzger-2021-aqua-factorem` | `isru-processing` |
+| `csank-2022-powering-the-moon` | `power-and-thermal` |
+| `poston-2020-krusty-reactor-design` | `power-and-thermal` |
+| `speyerer-2013-persistently-illuminated-regions` | `power-and-thermal` |
+| `metzger-2013-bootstrapping-space-industry` | `growth-and-industrial-theory` |
+
+32 − 2 = 30, 20 − 3 = 17, 27 − 1 = 26, all other folders unchanged, and the six sum without
+residue. **Both measurements are correct and neither needs amending**: his table is the 158-file
+pre-dedup basis and this one is the 152-file post-dedup basis. Recorded because the two will sit
+side by side in Step 2 and the discrepancy is the kind this project has twice mistaken for an error.
+
+It also confirms A3's "corpus 158 to 152" independently, from the folder distribution rather than
+from A3's own count.
+
+## A gap between The Engineer's Part 2 and what 2.3 requires of it
+
+Part 2 rules that folder segments are never scored by the ranker — he ran identical queries against
+a flat probe corpus and the foldered LSEI corpus and got identical ranks — and concludes the
+taxonomy "is therefore a decision about human navigation only, and it should be made on that basis
+without pretending it buys retrieval quality." That is right, and it is not in tension with B3.
+
+But Part 2's machine-readable output is `- **Also:**`, the second-membership line, plus
+`literature/INDEX.tsv`. **It specifies no field label.** Sub-step 2.3 requires one: "A
+machine-readable field label per file is a hard requirement of this step, not a preference — B3's
+pooled-IDF break cannot be fixed without it."
+
+These are different fields doing different jobs. The folder is navigation, `Also:` is
+cross-reference, and the field label is what lets 3.7 scope the IDF table to one of two vocabulary
+distributions. An agent executing Part 2 faithfully ships no field label and satisfies the sub-step
+in appearance only. Named here so the Wave 1 prompt carries it.
+
+Verified at source rather than taken from B3: `corpusDocFrequency(literatureDir)` in
+`lsei/oracle/lib/literature_search.js` builds one document-frequency table over the whole corpus
+directory with no field scoping, and `idf()` reads that single table. B2's two anchors verify as
+written as well — line 214 is `frac >= 0.45`, and the comment above line 128 says in the tool's own
+words "run against the shipped 156-file corpus rather than the original 57."
+
 ## A7 is a population of exactly one, and both members are the same file
 
 The only pair of names differing solely by case, across the whole prospective union:
