@@ -148,6 +148,14 @@ CL-8  NO ASSERTION OF ITS OWN DISPATCH
       of its own row, inside the file at that path
       -- makes CHK-10's dispatch join bidirectional: the register names the hook
          and the hook names its row                                             block
+
+CL-9  EVERY TRIGGER NAMES ITS DISPATCHER
+   a. every invoked_by token used by any C row, other than consumed:<ids>, has exactly
+      one T row in the trigger table of section 5.2, and that T row names either a
+      dispatcher id that is a C row of kind `trigger`, or an operator string beginning
+      `hand:` naming who runs it and when                                       block
+   b. every token of the section 2 invoked_by vocabulary that no C row uses is
+      reported as reserved-and-unused                                           report
 ```
 
 **CL-6 is RED as this register lands**, on four of `CHK-24`'s six consumers, and its close
@@ -201,6 +209,13 @@ HK-1  THE RESOLVER FIRES
       -- exercises hooksPath resolution, directory existence, filename, executability and the
          hook's exit code, through the code path git uses at commit time
       falsified by: any of those five being wrong, each of which gives exit 1
+      falsified ALSO by a SIXTH cause, added at 2.14 because it is the one that actually
+         fired the first time this was run: a DISPATCHED ROW failing on accepted repository
+         state. HK-1 was written as a question about wiring, and the wiring was fine; what
+         was wrong was that a live blocking row asserted a whole-file-set property that has
+         twelve accepted failures. The five listed causes are all properties of the hook.
+         The sixth is a property of the LIST the hook dispatches, and no assertion about
+         installation can see it. See the CHK-14 authority cell.
       on failure: every row naming pre-commit is UNWIRED and is reported by id       block
 
 HK-2  THE TRIGGER IS COMMITTED, NOT JUST THE BYTES
@@ -251,6 +266,43 @@ and it is one grep.
 and meaningful with an empty index.** A hook whose checks require staged content reports that as a
 skip, not as a pass.
 
+### 5.2 Every trigger names its dispatcher, or names the person who is the dispatcher
+
+2.20 was opened on the finding that `CHK-01` and `CHK-04` name `merge-gate` and **nothing installs a
+merge-gate dispatcher**. That is true. It is also not the defect, because the same sentence is true of
+`substep-gate`, of `session-start` and of `ci-linux`, and none of those was noticed. **The defect is
+that this register had no place to say which triggers have a dispatcher and which are a person**, so
+"nothing installs it" was a fact you could only reach by reading, and reading found one of four.
+
+The table below is that place, and `CL-9` computes its completeness in both directions. Building it
+immediately found a trigger nobody had flagged (`ci-linux`, named by `CHK-12` for its case-sensitivity
+half, with no CI in existence) and a token in the closed vocabulary that **no row uses at all**
+(`post-commit` — `CHK-11` is the post-commit hook and is invoked by `git`, exactly as `CHK-10` is).
+
+**The ruling on `merge-gate`: it is KEPT, and declared hand-operated.** The alternative was to
+reclassify it to `substep-gate`, and that is the wrong trade even though it is fewer tokens. The
+specificity is load-bearing: `CHK-01` asserts a whole-corpus property, and at every sub-step boundary
+that is twenty runs of a check whose input changed once. At the merge it is the point. Collapsing the
+two would move a check away from the moment it exists for in order to retire a word.
+
+```
+# BEGIN TRIGGERS
+T	pre-commit	CHK-10	the committed dispatcher, reached through core.hooksPath, which BC-8 sets
+T	git	CHK-10,CHK-11	git itself, at its own events. The two trigger rows sit directly on it
+T	substep-gate	hand:the agent executing the sub-step, against the gameplan step table
+T	merge-gate	hand:the agent executing 2.5, the corpus merge. Kept rather than collapsed; see above
+T	session-start	hand:the agent reading CLAUDE.md at session open. Section 9's unverified base case
+T	answer-loop	hand:the answering loop of oracle/answer_contract.md, from 3.x
+T	ci-linux	hand:NOBODY. No CI exists. CHK-12 row 10 is complete only on a case-sensitive filesystem, so this is a REAL GAP and not a naming question, and it was found by building this table rather than by reading the register
+T	manual	hand:a person, deliberately and by design. Section 6 bars CHK-17 from every automatic trigger because it executes shell strings harvested from markdown
+# END TRIGGERS
+```
+
+`hand:` is not a euphemism for unwired. A hand-operated trigger has an operator, and naming the
+operator is what makes "nobody" visible when that is the true answer — which is exactly what happened
+to `ci-linux` on the line above. What `CL-9` forbids is a trigger with neither a dispatcher nor a
+person: a row that fires on nothing while reading as though it fires on something.
+
 ## 6. The trust boundary
 
 **A row may name an automatic trigger only if the check's behaviour is a pure function of the
@@ -285,7 +337,7 @@ counts.
 
 ```
 # BEGIN CHECKS
-H	1	2026-08-27	27	13	12	2
+H	2	2026-08-28	37	21	14	2
 S	tools/**
 S	oracle/**/*.js
 C	CHK-01	tools/check_corpus_collisions.js	check	no two summaries under a corpus root tokenize to the same key set	pre-commit,merge-gate	block	E5; E13; gameplan A3 -- the retrieval layer cannot distinguish colliding names and silently returns one of them every time	live
@@ -297,15 +349,15 @@ C	CHK-06	tools/ecr_probes.js	harness	reports per-axis IDF-weighted separation be
 C	CHK-07	tools/ecr_key_candidates.json	fixture	the ECR axis, member and candidate-key set CHK-05 reads	consumed:CHK-05	n/a	1.10's Q-ECR-KEYS measurement. Retires with CHK-05 at 2.15	live
 C	CHK-08	tools/probe_register_encoding.js	harness	measures what each of three register encodings does to retrieval IDF and to full-text confirmation; self-declared not a mechanism	manual	report	1.8 section 1.1. The numbers the encoding ruling rests on, so a successor can re-run them rather than trust them	live
 C	CHK-09	tools/checks.js	check	--register: CL-1 to CL-8 of this register	pre-commit,session-start	block	1.13. The register is a closed list only while this runs; without it the list is complete on the day it was written. The HK assertions are CHK-29's, not this row's -- see section 5.1	specified
-C	CHK-10	tools/githooks/pre-commit	trigger	dispatches every row whose invoked_by names pre-commit, in row order; the first non-zero exit wins and is reported by row id	git	block	E1; installed at 2.14. Hooks are not cloned, so this is a committed script reached through core.hooksPath	specified
-C	CHK-11	tools/githooks/post-commit	trigger	consumes .git/hook-canary; when it is absent, appends HEAD to .git/hooks-bypassed	git	report	HK-3. Detects a --no-verify bypass of every pre-commit row; cannot prevent one	specified
+C	CHK-10	tools/githooks/pre-commit	trigger	dispatches every row whose invoked_by names pre-commit, in row order; the first non-zero exit wins and is reported by row id	git	block	E1; INSTALLED at 2.14. Hooks are not cloned, so this is a committed script reached through core.hooksPath	live
+C	CHK-11	tools/githooks/post-commit	trigger	consumes .git/hook-canary; when it is absent, appends HEAD to .git/hooks-bypassed	git	report	HK-3. Detects a --no-verify bypass of every pre-commit row; cannot prevent one	live
 C	CHK-12	tools/check_gitignore_map.sh	check	the 24 rows of the 1.1 directory map agree with .gitignore, asserted at core.ignorecase=false	pre-commit,ci-linux	block	1.1 sections 3.1-3.2; loose end A1. Row 10 is complete only on a case-sensitive filesystem, so the ci-linux trigger is not optional	specified
-C	CHK-13	tools/check_no_sources.js	check	no shelf file reproduces a run of its source above the threshold Open Question 8 sets	pre-commit	block	1.1 section 4.1. The enforcement layer fails closed on unknown file types and is blind to unknown content inside an admitted type; this is the missing half	specified
-C	CHK-14	tools/quantities.js	check	--check: counting rule section 5 rows 1 and 2: block resolution, mandatory keys, derived-from existence and acyclicity, cross-site numeral agreement, index equality	pre-commit,substep-gate	block	1.12 section 5; E16. Makes the echo-site list a command rather than an act of recall	live
+C	CHK-13	tools/check_no_sources.js	check	no published-source carrier enters the repository: an extension gate over EVERY dot-separated segment, a %PDF/%!PS/AT&TFORM magic-byte gate read as binary, and a 500000-byte size backstop that reports its own coverage	pre-commit	block	1.1 section 4.1, whose NAME half is .gitignore; loose end E1; corpus_suite.md PDF-1 to PDF-16. Built at 2.14. THE CONTENT-REPRODUCTION HALF THIS ROW USED TO DESCRIBE IS NOW CHK-30 -- one row named one file and described two different mechanisms, and the split is why	live
+C	CHK-14	tools/quantities.js	check	--check: counting rule section 5 rows 1 and 2: block resolution, mandatory keys, derived-from existence and acyclicity, cross-site numeral agreement, index equality	substep-gate	block	1.12 section 5; E16. Makes the echo-site list a command rather than an act of recall. UNWIRED FROM pre-commit AT 2.14, and this was found by RUNNING the dispatcher rather than by reading it: --check asserts a property of the WHOLE declared file set and carries the standing twelve hard failures, every one of them in a Step 1 deliverable with an owed amendment. On a per-commit trigger it blocks a commit on a condition the committer did not touch and cannot fix, and the predictable outcome is routine --no-verify, which disables every OTHER pre-commit row at the same time. A check that provokes habitual bypass takes the rest of the suite down with it. Same move as CHK-03 at R-2, in the opposite direction	live
 C	CHK-15	tools/quantities.js	check	--lint: counting rule section 5 row 3: bare governed numerals, live values quoted as literals, offsets stated against no datum	substep-gate	report	1.12 section 5. Carries false positives by design and must never block on a script's judgment	live
 C	CHK-16	tools/quantities.js	generator	--index: regenerates QUANTITIES.md from the blocks in the declared file set	substep-gate,manual	n/a	1.12 section 7. Shares one generator with CHK-14 so that the checker and the indexer cannot disagree	live
 C	CHK-17	tools/quantities.js	harness	--live: re-runs the cmd: operation of every live quantity and reports drift	manual	report	1.11 F9. Executes shell strings harvested from markdown, so section 6 bars it from every automatic trigger; manual is the whole ruling	live
-C	CHK-18	oracle/tests/run_suite.js	check	the 211 tests of the 1.11 v2 answering-loop suite, and the six mechanically checkable clauses of the 1.3 answer contract	substep-gate,ci-linux	block	1.11; 1.3 section 3.1. A 211-test suite nothing invokes is a 211-line document	specified
+C	CHK-18	oracle/tests/run_suite.js	check	the 211 tests of the 1.11 v2 answering-loop suite, the six mechanically checkable clauses of the 1.3 answer contract, AND the corpus suite of oracle/tests/corpus_suite.md	substep-gate,ci-linux	block	1.11; 1.3 section 3.1. A 211-test suite nothing invokes is a 211-line document. EXTENDED at 2.20 to the corpus suite, which had no runner and no row; a SECOND runner would be a second authority on how tests run, so it is one runner, one row, two suites. CORRECTION TO THE 2.20 BRIEF, measured: a runner at oracle/tests/run_suite.js does NOT fail CL-1. oracle/**/*.js is a declared S root and this row has existed since 1.13. What was true is narrower -- the CORPUS SUITE was uncovered, not the runner	specified
 C	CHK-19	oracle/tests/gen_matrix.js	generator	emits the Rule G and Rule V cell matrices by parsing the answer contract itself, never a copy of it	consumed:CHK-18	n/a	1.11 RG-13 and RV-37. A contract edit changes the matrix and trips those two tests	specified
 C	CHK-20	oracle/lib/claim_bearing.js	library	marker: -	consumed:CHK-18,CHK-21,CHK-22	n/a	1.11 CLM-1 to CLM-12; author ruling 1, which dropped verify_report.js. Implementation row is Step 3's	specified
 C	CHK-21	oracle/lib/verify_haiku.js	check	the haiku carries no numeral, unit token, coefficient name or named source	answer-loop	refuse	1.3 section 7; 1.11 FIL-10. A claim in the haiku is a claim outside the trace grammar	specified
@@ -313,8 +365,18 @@ C	CHK-22	oracle/lib/verify_register.js	check	1.8 section 9 L1-L5 at load, and B4
 C	CHK-23	oracle/bootstrap_check.js	check	the BC assertions of oracle/bootstrap_contract.md, and the terminal outcome and mode set they produce	session-start	block	1.4; oracle/bootstrap_contract.md is the authority, this row is the artifact. Executed today by an agent reading CLAUDE.md; nothing verifies that it ran, and 6.1 is where it acquires an executor a test can drive	specified
 C	CHK-24	lsei/oracle/lib/literature_search.js	library	marker: and/or	consumed:CHK-01,CHK-03,CHK-04,CHK-05,CHK-06,CHK-08	n/a	E5; E13. Upstream and outside the scan roots, declared here because six rows depend on it and four of them hold a copy rather than a reference	live
 C	CHK-27	tools/check_registers.js	check	--manifest: MF-1 to MF-3 over oracle/MANIFEST.tsv, and the H row's declared size	substep-gate	block	Designer, Wave 2 review 2.4(a); 1.14. Without it the promotion manifest is a list nothing joins against the filesystem	live
-C	CHK-28	tools/check_registers.js	check	--amendments: AM-1 to AM-4 over oracle/AMENDMENTS.tsv, and the H row's declared size	substep-gate	block	Designer, Wave 2 review 3.3; 1.14. Without it a ruled amendment and its rejected competitor sit in the queue with nothing distinguishing them	live
+C	CHK-28	tools/check_registers.js	check	--amendments: AMC-1 to AMC-5 over oracle/AMENDMENTS.tsv, and the H row declared size	substep-gate	block	Designer, Wave 2 review 3.3; 1.14. Without it a ruled amendment and its rejected competitor sit in the queue with nothing distinguishing them. AM-145 DISCHARGED at 2.20. Two defects in one cell: the AM-/AMC- rename of AM-143, and an UNDERSTATEMENT BY ONE independent of it -- there are five checks, not four, because AM-112 was implemented as the fifth at R-3 and this cell had said four ever since	live
 C	CHK-29	tools/checks.js	check	--wiring: HK-1 and HK-2 of section 5	session-start	report	1.13 section 3.8; 2.14's post-condition. Split from CHK-09 at R-2: HK-1 asks whether a hook would fire, which the hook itself must never ask -- see section 5.1	specified
+C	CHK-25	oracle/lib/verify_app_ref.js	check	every trace whose origin is app carries the lsei ref the value was computed against, equal to the ref read at the start of the run	answer-loop	refuse	1.6 section 12; drafting assumption A3. Without it an answer cannot name the model it was computed against. AM-46 DISCHARGED at 2.20: this row and CHK-26 were written into oracle/currency_policy.md section 8 in register syntax and never copied here, so a POLICY DOCUMENT HELD TWO ROWS OF THE CHECK REGISTER and CL-1 could see neither. A register row living outside the register is a fork of the register	specified
+C	CHK-26	tools/check_verified_tsv.js	check	oracle/VERIFIED.tsv: declared size equals row count, five fields per row, copy and direction in their closed sets, every ref resolving in that copy object store when the copy is present	pre-commit	block	1.6 section 3. VERIFIED.tsv is the compared-against value and is the one input to section 6 with no live cross-check. AM-46 DISCHARGED at 2.20; see CHK-25 for what the amendment was	specified
+C	CHK-30	tools/check_no_reproduction.js	check	no shelf file reproduces a run of its source above the threshold Open Question 8 sets	pre-commit	block	1.1 section 4.1. SPLIT OUT OF CHK-13 AT 2.14. Containment asks whether a source FILE is in the tree; this asks whether a source TEXT is inside an admitted file, and a path rule and a magic-byte gate are both structurally blind to the second. The two shared one row because one plausible filename covered both. Open Question 8 sets the threshold and The Engineer owns it. CHK-02 already MEASURES the overlap and deliberately classifies nothing, so this row is the consequence CHK-02 does not carry	specified
+C	CHK-31	tools/verify_corpus.js	check	the merged corpus is the corpus of record: every MANIFEST-declared root present, every summary reachable by the retrieval walk, and the recorded provenance digest equal to the recomputed one	substep-gate	block	2.17 corpus half, The Engineer. ROW MINTED BEFORE THE ARTIFACT, which is the whole of 2.20 defect 3: 2.17 named it oracle/verify_corpus.js, oracle/**/*.js is a declared S root, and CL-1 would have failed it on the day it landed. Ruled to tools/ at 2.20 alongside CHK-13 -- ONE PATH DECISION, MADE ONCE, by one seat holding both the register and the file	specified
+C	CHK-32	tools/corpus_divergence.js	check	the upstream corpus and this one differ only in ways the currency policy admits, and a WITHDRAWAL upstream is reported as its own verdict rather than folded into upstream-ahead	substep-gate	block	2.17 divergence half, The Systems Engineer; loose end E11. Minted here for the same reason as CHK-31 and in the same edit: 2.17 is two artifacts held by two seats, and registering one while the other lands unregistered would reproduce the defect one file over	specified
+C	CHK-33	tools/merge_identity.js	harness	extracts a source identifier per corpus file at the NAMING.md section 7 precedence levels and emits file, corpus, identifier, identifier_kind, confidence as TSV; classifies nothing	manual	report	2.12, The Engineer. One of the three new instruments 2.20 is named for. CL-1 WAS RED ON IT: a file under tools/** with no row is a blocking failure, and it had none	live
+C	CHK-34	tools/clusters.js	harness	author-year clustering under two stated rules, one strict and one permissive, and the level-3 fallback grouping over the rows merge_identity left without an identifier	manual	report	2.12, The Engineer. CL-1 was RED on it. It reports both rules rather than one because the permissive rule is the one actually used, and a harness that hides its alternative is an argument rather than a measurement	live
+C	CHK-35	tools/doicov.js	harness	DOI coverage over a pair of corpus roots under several stated definitions of what counts as a DOI, reporting the count under each rather than one number	manual	report	2.12, The Engineer. CL-1 was RED on it. The several-definitions form is the point: a single DOI-coverage number is a number whose definition is invisible	live
+C	CHK-36	tools/manifest.js	harness	reads oracle/MANIFEST.tsv and answers queries over its D rows; deliberately checks nothing, because CHK-27 does	manual	report	2.19(b), The Software Engineer; Step 1 final close item 20. CL-1 was RED on it. It does not validate, and that separation is its own header argument: an accessor that also validates is two contracts on one artifact	live
+C	CHK-37	tools/check_no_sources.js	check	--ignore-probe: the .gitignore published-source-carrier rules hold over a probe set the run prints, covering the eight PDF-2 paths, two case permutations and nine other carriers	pre-commit	block	corpus_suite.md CON-1, The Software Engineer, Wave 1. HIS ARGUMENT AND IT IS RIGHT: a measurement in a status cell decays and had already decayed once, PDF-2 naming four open paths when five were open. Same path as CHK-13 under section 3 one-artifact-several-modes, mode carried as a literal prefix. It prints its own probe set size because the failure it guards is not a probe that fails, it is a probe set that quietly shrinks until the survivors all pass	live
 # END CHECKS
 ```
 

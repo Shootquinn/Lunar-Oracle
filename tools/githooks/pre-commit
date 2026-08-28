@@ -1,0 +1,204 @@
+#!/usr/bin/env node
+/*
+ * tools/githooks/pre-commit -- the pre-commit dispatcher. Check-register row CHK-10.
+ * Installed at 2.14 by The Systems Engineer, 2026-08-28.
+ *
+ * CL-8(b) requires this file to name its own row id, so that CHK-10's dispatch join is
+ * bidirectional: the register names the hook, and the hook names its row. The literal above
+ * and this sentence are that.
+ *
+ * WHY THIS FILE IS COMMITTED AND THE HOOK IS NOT. Git hooks are not cloned (loose end E1), so
+ * .git/hooks/ is empty on a fresh clone and a hook installed there is a mechanism for exactly
+ * one machine. This file lives under version control, and oracle/bootstrap_contract.md BC-8
+ * points core.hooksPath at this directory so that a clone acquires the trigger by running the
+ * bootstrap. THE CONTRACT IS NOT THE INSTALLATION: BC-8 succeeding is not evidence that this
+ * file fires, which is what HK-1 exists to test and why it is asserted at session-start and
+ * never from inside a hook (check_register.md section 5.1).
+ *
+ * THE 100644 TRAP, and it is the reason HK-2 exists. core.filemode is false on the authoring
+ * machine, so a hook committed here at mode 100644 is executable in this working tree and INERT
+ * on a Linux clone, where it will be skipped in silence and every check it dispatches will be
+ * unwired while every check ABOUT the wiring passes. `git ls-files -s tools/githooks/` must
+ * report 100755 for every file in this directory. Fix: git update-index --chmod=+x.
+ *
+ * DISPATCH RULE. Every row of oracle/check_register.md whose invoked_by names pre-commit, in
+ * row order. The first non-zero exit wins and is reported by row id.
+ *
+ * The argv comes from the register too, and needs no tenth column: section 3 makes a multi-mode
+ * script carry its mode as a literal prefix on `asserts` -- `--register: <claim>` -- so the flag
+ * is read from the cell rather than hard-coded here. A dispatcher holding its own copy of the
+ * argv is a second authority on how a check is invoked, and it drifts.
+ *
+ * STATUS IS OBEYED, AND SKIPS ARE LOUD. A row with status `specified` is a debt, not a
+ * mechanism (section 7), and its artifact does not exist yet. This dispatcher does not attempt
+ * it -- but it PRINTS every row it skipped, by id, on every commit. A debt that is invisible at
+ * the moment it would have mattered is a debt nobody pays. CL-2 is what keeps status honest:
+ * a `specified` row whose path exists is a blocking failure, so status cannot quietly lie about
+ * an artifact that has since landed.
+ *
+ * EMPTY INDEX. The `git hook run` subcommand invokes hooks with nothing staged, so every check
+ * this dispatches must be safe and meaningful with an empty index, and must report an empty
+ * scan as a scan of nothing rather than as a pass. That is CHK-13's PDF-16, and it is a
+ * property of the checks rather than of this file.
+ *
+ * The sentence above is deliberately NOT written as the four-word literal CL-8(a) greps for,
+ * and the reason is worth a line because it is a weakness in CL-8(a) rather than a courtesy.
+ * CL-8(a) is a grep for a string, so IT CANNOT DISTINGUISH AN INVOCATION FROM A MENTION: the
+ * files most obliged to explain the recursion are the files the grep hits hardest. CHK-10's
+ * invoked_by is `git`, not `pre-commit`, so the clause does not currently reach this file at
+ * all -- but it would the moment anyone added `pre-commit` to this row, and it would then fail
+ * on a comment. That is the AM-143 shape: a rule that fires on the documentation of the thing
+ * it forbids. Routed to 2.20's deliverable rather than fixed here, because narrowing CL-8(a)
+ * to an executable context is a change to the clause, not to this file.
+ *
+ * NO SELF-INVOCATION. This file must never invoke the event it dispatches; that is the
+ * CHK-09/CHK-10 recursion measured at the 1.5/1.13 review, which is unbounded because git has
+ * no reentrancy guard. CL-8(a) is the standing grep.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { execFileSync, spawnSync } = require('child_process');
+
+const ROOT = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
+const REGISTER = path.join(ROOT, 'oracle', 'check_register.md');
+const TRIGGER = 'pre-commit';
+
+function fail(msg) {
+  console.error('CHK-10 pre-commit dispatcher: ' + msg);
+  process.exit(1);
+}
+
+/* ---- CON-6: THE REENTRANCY GUARD ---------------------------------------------------------
+ *
+ * `git hook run` has NO reentrancy guard and sets NO environment marker a hook can test, so
+ * nothing in git bounds this. The cycle measured at the 1.5/1.13 review was CHK-10 dispatching
+ * CHK-09, CHK-09 invoking the hook-run subcommand, and that re-entering CHK-10 -- unbounded, on
+ * every commit. R-2 split the row, so the cycle does not exist today. **That is not a fix, it is
+ * the absence of one instance.** The next row anyone adds that names pre-commit and shells out
+ * re-creates it, and the failure mode is a machine that stops responding rather than a red test.
+ *
+ * So the guard lives HERE, in the dispatcher, and not in any assertion. THE DISTINCTION MATTERS
+ * and check_register.md section 5.1 is why: the sentinel alternative was rejected there for HK-1
+ * on the ground that it makes an ASSERTION'S MEANING depend on who called it. That objection is
+ * correct and it does not reach this code. Nothing here asserts anything. A dispatcher declining
+ * to dispatch itself changes no assertion's meaning; it bounds a recursion. HK-1 still asks its
+ * question, from session-start, exactly once, and gets the same answer it always did.
+ *
+ * The depth is REPORTED rather than silently absorbed, because a guard that hides the recursion
+ * leaves the defect in place and removes the symptom -- and the row that caused it then looks
+ * fine forever.
+ */
+const DEPTH_KEY = 'LUNAR_ORACLE_HOOK_DEPTH';
+const depth = parseInt(process.env[DEPTH_KEY] || '0', 10) || 0;
+
+if (depth > 0) {
+  console.error('CHK-10 REENTRANCY REFUSED at depth ' + (depth + 1) + '.');
+  console.error('CHK-10 This dispatcher was re-entered from inside a check it had already dispatched.');
+  console.error('CHK-10 That is the CHK-09/CHK-10 cycle of check_register.md section 5.1, which is');
+  console.error('CHK-10 unbounded because git hook run has no guard of its own. The recursion is');
+  console.error('CHK-10 refused here rather than left to the operating system.');
+  console.error('CHK-10 THE DEFECT IS THE ROW, NOT THIS REFUSAL: some row naming ' + TRIGGER + ' shells out');
+  console.error('CHK-10 to its own trigger. CL-8(a) is the grep that names it.');
+  process.exit(1);
+}
+
+/* Children inherit the incremented depth, so a check that invokes the hook re-enters this file
+ * with depth 1 and is refused above. */
+process.env[DEPTH_KEY] = String(depth + 1);
+
+if (!fs.existsSync(REGISTER)) {
+  /* The register is the dispatch list. Missing, this hook does not know what to run, and a
+   * dispatcher that runs nothing while exiting 0 is a hook that reports a pass it did not earn. */
+  fail('oracle/check_register.md not found. Nothing dispatched, and that is a failure, not a pass.');
+}
+
+const text = fs.readFileSync(REGISTER, 'utf8');
+const parts = text.split('# BEGIN CHECKS');
+if (parts.length !== 2) fail('register has no single # BEGIN CHECKS block.');
+const block = parts[1].split('# END CHECKS')[0];
+
+const rows = block.split('\n')
+  .filter(function (l) { return l.indexOf('C\t') === 0; })
+  .map(function (l) { return l.split('\t'); })
+  .filter(function (c) { return c.length === 9; })
+  .map(function (c) {
+    return { id: c[1], p: c[2], kind: c[3], asserts: c[4], invoked: c[5], onFail: c[6], status: c[8] };
+  });
+
+const mine = rows.filter(function (r) {
+  return r.invoked.split(',').map(function (s) { return s.trim(); }).indexOf(TRIGGER) !== -1;
+});
+
+if (mine.length === 0) fail('no row names ' + TRIGGER + '. A dispatcher with an empty list is not a clean run.');
+
+/* HK-3. The canary is written before anything is dispatched, so that a bypass is detectable
+ * even when a dispatched check would have failed. post-commit (CHK-11) consumes it; when it is
+ * absent, --no-verify skipped this hook and post-commit records the bypass. Verified at 1.13:
+ * --no-verify skips pre-commit and does NOT skip post-commit. This DETECTS a bypass; nothing
+ * here can prevent one, and claiming otherwise would be the more dangerous error. */
+try {
+  fs.writeFileSync(path.join(ROOT, '.git', 'hook-canary'),
+    String(Date.now()) + '-' + Math.random().toString(36).slice(2) + '\n');
+} catch (e) {
+  console.error('CHK-10 could not write .git/hook-canary: ' + e.message + ' (HK-3 bypass detection is blind this commit)');
+}
+
+const skipped = [];
+let ran = 0;
+
+for (const r of mine) {
+  if (r.status === 'specified') { skipped.push(r.id + ' (' + r.p + ' -- specified, artifact does not exist yet)'); continue; }
+  if (r.status === 'retiring') { skipped.push(r.id + ' (' + r.p + ' -- retiring)'); continue; }
+
+  const abs = path.join(ROOT, r.p);
+  if (!fs.existsSync(abs)) {
+    /* status says live, the file is gone. CL-2 makes this a blocking register failure; here it
+     * is a blocking dispatch failure, because the alternative is skipping a live check quietly. */
+    fail(r.id + ' is status ' + r.status + ' but ' + r.p + ' does not exist. A live check that cannot run is not a pass.');
+  }
+
+  /* section 3: a multi-mode artifact carries its mode as a literal prefix on `asserts`. */
+  const m = /^(--[a-z-]+):/.exec(r.asserts);
+  const argv = m ? [m[1]] : [];
+
+  let cmd, args;
+  if (/\.js$/.test(r.p)) { cmd = process.execPath; args = [abs].concat(argv); }
+  else if (/\.sh$/.test(r.p)) { cmd = 'sh'; args = [abs].concat(argv); }
+  else { cmd = abs; args = argv; }
+
+  const res = spawnSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
+  ran++;
+
+  if (res.error) fail(r.id + ' could not be executed: ' + res.error.message);
+
+  /* SECTION 2, on_failure: block -- "Exit 1 is a finding. Any other non-zero exit is a harness
+   * failure, not a finding, and is reported as such." tools/ecr_verify.js exits 2 on a usage
+   * error. A dispatcher that reads 2 as a check failure reports the wrong thing about the wrong
+   * file: it tells the committer their content is bad when in fact the instrument is broken, and
+   * the committer then goes looking in the corpus for a defect that is in the tooling. Both
+   * still stop the commit -- an instrument that cannot run is not a pass either -- but they are
+   * NAMED DIFFERENTLY, because the two send a person to two different places. */
+  if (res.status === 1) {
+    console.error('');
+    console.error('CHK-10 BLOCKED by ' + r.id + ' (' + r.p + ') -- exit 1, a FINDING. on_failure=' + r.onFail);
+    console.error('CHK-10 dispatched ' + ran + ' of ' + mine.length + ' rows naming ' + TRIGGER + '; first non-zero exit wins.');
+    process.exit(1);
+  }
+  if (res.status !== 0) {
+    console.error('');
+    console.error('CHK-10 HARNESS FAILURE in ' + r.id + ' (' + r.p + ') -- exit ' + res.status + ', which is not 1.');
+    console.error('CHK-10 This is NOT a finding about the staged content. The instrument itself did not run');
+    console.error('CHK-10 correctly (usage error, missing input, internal error). Fix the tool, not the commit.');
+    process.exit(res.status);
+  }
+}
+
+console.log('CHK-10 pre-commit: dispatched ' + ran + ' of ' + mine.length + ' rows naming ' + TRIGGER + ', all exit 0.');
+if (skipped.length) {
+  console.log('CHK-10 NOT DISPATCHED, and these are debts rather than passes:');
+  for (const s of skipped) console.log('CHK-10   skipped ' + s);
+}
+process.exit(0);

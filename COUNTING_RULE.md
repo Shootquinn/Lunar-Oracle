@@ -11,6 +11,11 @@ rule 12's boundaries into files at declared paths, makes M15's population comput
 enumerated, and records two measured limits of M15 in H7. §12 lists every change with its
 amendment id.
 
+**Version 4 is Step 2 Wave 1, the moment amendment**, and its changes are applied in this file while
+the integer above still reads 3. That is not an oversight: §13 explains it, files it as AM-151, and
+the reason is a rule of The Manager's that this contract's own author asked for. §13 lists every
+version-4 change with its amendment id.
+
 This file governs numbers and measured observations that this project asserts. Every term below is
 closed. A value outside a closed set is a failure, not a variant.
 
@@ -156,8 +161,65 @@ inheriting block's conditions are the named block's, plus the difference; M11 fo
 checks the parent. Prose of the form `as Q-X` or `same as above` is not an inheritance, M11 cannot
 follow it, and two blocks in this project wrote exactly that and were read as having no `cwd` at all.
 
-**`at`** — ISO date, then the short ref of every repository the measurement depended on, or `none`. A
-measurement over `lsei/` that does not name an `lsei` ref is incomplete.
+**`at`** — **the moment.** ISO date, then the short ref of every repository the measurement
+depended on, or `none` — **and then, for any measurement taken by an instrument that walks §8's
+declared file set, that run's read-digest and the number of files it read.** A measurement over
+`lsei/` that does not name an `lsei` ref is incomplete. A measurement over the declared file set
+that does not name a read-digest is incomplete in the same way and for the same reason.
+
+````
+at:            2026-08-28; lsei 7f97983; cr-agents f0c976b;
+               read-digest a8056cd36462cde8 over 88 files
+````
+
+**The read-digest is a ref for the one tree that has none.** Every `at:` in this project names refs
+for `lsei/` and `cr-agents/` — two trees §8 explicitly says this contract does not walk — and names
+nothing at all for the working tree that every clause in §9 does walk. No author chose that. It is
+the field reaching for a state token and finding only the tokens that exist, which is R-4's defect in
+its mirror image: not a closed set with a missing member, but a set whose members all name the wrong
+subject. **A rule a person must remember is a form that does not exist yet**, and the prose invention
+already in circulation — The Systems Engineer's "a count taken while another seat holds a write is
+not a verdict" — is that rule, correct and unenforceable, waiting for this field.
+
+**The date is not the moment, and that is measured rather than argued.** `Q-D219-FILESET-PRE` states
+76 files at `at: 2026-08-28` under the operation `node tools/quantities.js --files-only | wc -l`.
+That command returned 88 on 2026-08-28. Same id, same command, same ISO date, twelve files apart.
+`at:` has a resolution of one day; the declared file set moves in minutes. Three runs of `--check`
+taken inside one minute while this section was being written carried three different read-digests —
+`e06bc06118fa6218`, then `7a99743a12a7de48`, then `a8056cd36462cde8` — because another seat was
+writing `tools/` in the same wave and `tools/**/*.js` is in the set all three runs read.
+
+**Two figures carrying different read-digests are not comparable**, and they are not in disagreement
+either. They may not be differenced, reconciled, averaged, or quoted as one figure. Across Step 2
+Cycle A the hard-failure count of `--check` was measured at 12, then 13, then 14, then 12, by three
+seats and the orchestrator. Every one of the four was a correct measurement. Every one was of a
+different moment, and not one of the four can be reconciled from what is written down.
+**Disjoint write sets are not disjoint read sets:** every instrument here walks the whole declared
+file set rather than the caller's write set, so §8's write discipline never touched this failure and
+could not have.
+
+**The one exception, and it is the exception that keeps the rule usable.** Two figures at different
+digests ARE comparable when the measurer moved the set deliberately and states what he moved. A
+controlled before/after — §8's corpus table is one, staged on one root with the corpus as the only
+variable — is an experiment, and its delta is a result. The discriminator is not the size of the
+difference, it is **who moved the set**: if the measurer moved it and says so, the delta is a number;
+if somebody else moved it, or nobody can say who, the delta is not a number. 12/13/14/12 is the
+second case, four times over.
+
+**The digest's form, and what it is not for.** SHA-256 over the sorted repository-relative path, byte
+size and mtime of every file in the declared set, truncated to sixteen hex characters. mtime is in it
+deliberately: without it, a file completed to the same byte length after being read mid-write digests
+identically, and reading a colleague's file mid-write is how part of the 12-13-14-12 sequence was
+produced. **The digest is a comparison token and not a reproduction token.** It is not stable across
+clones — a fresh clone carries fresh mtimes — and a successor cannot rebuild it from this
+repository's history. That limit is stated here rather than treated as a defect, because the failure
+this closes is two seats in one working tree taking two true measurements minutes apart, and for that
+failure the mtime is exactly the right ingredient. **Comparability is a triple and not the digest
+alone:** the read-digest, the instrument's version, and the flags. `tools/quantities.js --check` and
+`tools/quantities.js --check --include-superseded` return 12 and 22 hard failures at one digest, and
+§8 already ruled that pair "an unruled number under §3 rule 11". `--compare <digest>` compares the
+digest only. A run whose flags or whose tool version differ from the run it is compared against is
+not comparable whatever `--compare` prints, and that is H9.
 
 **`predicate`** — the full sentence the number licenses, containing the noun that must appear wherever
 it is quoted. This is the field that separates what was measured from what it was called. A quotation
@@ -228,6 +290,21 @@ referent. Without them the numeral is a string that happens to match.
     its second argument. A tool that emits a failure prefix states in its own header what column the
     prefix sits at and what command counts it. This clause is a requirement on tools this project
     writes, not only on prose about them.
+
+    **A count taken by an instrument that walks §8's declared file set carries its MOMENT as well as
+    its command: that run's read-digest and the number of files read.** The command answers *what was
+    counted*; the read-digest answers *what it was counted over*, and an instrument walking a set that
+    four seats are writing into needs both, or it has stated neither. "The check reports 12 failures"
+    and "the check reports 14 failures" were both true inside Cycle A and neither of them is a
+    statement. The form is §2's `at:`; the assertion over blocks is M16; what the digest cannot cover
+    is H9.
+
+    **This binds a count in prose exactly as it binds a count in a block.** A failure count usually
+    has no block and never will — it is an observation about a run, not a quantity this project
+    asserts — which is why the requirement lives here and not only in §2. **And it binds the absence
+    of a count**: "the check is clean", "no failures", "nothing outstanding" are counts of zero and
+    carry the same two things. A clean run is the report most worth being able to date, because it is
+    the one nobody re-runs.
 12. **A number does not cross a boundary unless the seat relaying it ran the operation that produces
     it, and the relay carries the operation.** A boundary is: into a spawn prompt, into a message to
     the author, into a summary table, into the gameplan, into the accumulator. Where the number is
@@ -366,7 +443,7 @@ population for M5, M8, M9, M14 and M15, and **out of M13's population, unconditi
 
 Measured, not estimated, on a staged copy of the prospective merged corpus. **Sampling rule: no
 sample.** The whole population was staged — the 176-name normalized union of `lsei/literature/**/*.md`
-and `_intake/japanese-miracle/lit/*.md`, keyed by `normalize()` as `literature/NAMING.md` §1 states
+and `_intake/japanese-miracle/lit/*.md`, keyed by `normalize()` as §1 of the corpus naming contract states
 it, copied into a scratch root and checked through `QJS_ROOT`. The staging reproduced the
 orchestrator's baseline to the file before anything was measured against it: 152 and 119 sources, 95
 normalized collisions, 24 `_intake`-only, union 176 [Q-D219-STAGED-CORPUS] — provisional until
@@ -430,6 +507,31 @@ wait-and-see.
 exclusion is from M13's *scan*, not from §3. Rule 1 binds a summary exactly as it binds any other
 file in the set; it is enforced there by H6 and by the reviewing persona rather than by a script, and
 that is stated here rather than left to be discovered.
+
+**WHAT WOULD OVERTURN THIS RULING, AND WHO TAKES IT.** A ruling with no stated overturning condition
+is a ruling somebody tidies. This one rests on a single claim — that a corpus file carries no
+quantity block and no quotation tag except apparatus a seat of this project wrote into it — and
+Wave 3 makes that claim falsifiable for the first time, because it writes `## Provenance` blocks into
+all of it. It also rests on a measurement taken against a STAGED copy at a read-digest that no longer
+exists; the real merge is a different tree and this section does not pretend otherwise.
+
+**The measurement is one number: `--check` FAIL lines whose path lies under `literature/`, at the
+post-Wave-3 read-digest.** It is 0 today and 0 on the staged merge, necessarily, because there was
+nothing there to fail. **A non-zero count is not by itself an overturn.** A provenance block missing a
+required key SHOULD fail M1, and that is the ruling working exactly as it was argued. **The ruling is
+overturned by any FAIL line under `literature/` that is not traceable to a block or a tag a seat of
+this project wrote** — a hard failure produced by transcribed prose somebody else wrote. §8's
+standing argument is that a checker whose default run reports failures the reader must know to
+discount is a checker that gets switched off; one such line is one too many, and on it
+`literature/**/*.md` leaves the CHECK population and this subsection is reversed in place.
+
+**It is taken by the seat that lands the provenance blocks, in the edit that lands them.** Not by a
+reviewer afterwards, not at a gate, and not by The Designer, who cannot take it: the only cheap
+moment is the one where somebody already has the context loaded, which is Tier 2's touch rule turned
+on a ruling instead of on a quantity. It is taken twice — immediately before the provenance blocks
+land and immediately after — and because the measurer moved the set himself and says what he moved,
+§2's exception applies and the pair is an experiment rather than two unreconcilable figures. Both
+runs report their read-digest. Recorded against AM-149.
 
 ### The relay paths — §3 rule 12's file boundaries, at declared locations
 
@@ -503,6 +605,7 @@ and it is corrected by moving the table here.
 | M12 | Ids are not markdown link targets | Assert no bracketed id is immediately followed by an opening parenthesis, outside the `Q-EG-` namespace. | 1 |
 | M13 | **No bare governed numeral in a second file** | For each `fixed` block, key a spelled-out or digit numeral to the `unit` noun of the block; report any site outside the birth file that states it without the tag. This is §5's third row, which version 1 promised and did not implement. **Population at version 3: §8's declared set less `literature/**/*.md`**, per §8's corpus ruling — 43 of 43 findings there were false positives on the staged merge, and the exclusion is unconditional, not a flag. | 0 with findings |
 | M14 | Two ids for one quantity | Report any two blocks whose `unit` strings are equal after case and whitespace normalization, or whose `population` strings are. A proxy, not a proof; the ruling is H8's. | 0 with findings |
+| M16 | **A file-set count carries its moment** | For each block whose `operation` is `cmd:` or `script:` naming an instrument that walks §8's declared file set, assert `at:` contains `read-digest <16 hex chars> over <n> files`. The trigger is the operation, exactly as M11's is, and the two clauses are the same shape: a `cmd:` states where it ran and when it ran, or it is not runnable twice. **LINT and not FAIL at version 4**, and §13 says why. | 0 with findings |
 | M15 | Relayed numerals carry their tag | §3 rule 12 over the boundaries that are files. M13's comparison restricted to the relay population, where relay traffic is dense and a false positive is cheap to disposition. **The population is computed from a path rule and is never enumerated in the tool's source:** `accumulator.md`, `lunar-oracle-gameplan.md`, `cr_scratch/relay/**/*.md`, `oracle/VERIFIED.tsv`. A hard-coded list of relay files is a thing somebody must remember to extend, which is the defect class this clause exists to remove; a longer hard-coded list would repeat it at a larger size. | 0 with findings |
 
 M3, M4 and M6 are the three that matter. M3 removes the failure mode behind all seven of the two-file
@@ -532,6 +635,13 @@ error, in a Wave 1 spawn prompt written this session, caught by the existing too
 beyond the population. Under the version-2 population that finding does not appear at all. The
 remedy works, and the measurement isolates exactly what it depends on.
 
+**The read-digest stamp is a NOTE and not a clause of this table, and that is deliberate.** It
+asserts nothing. It stamps every run with what that run read, unconditionally, printed before any
+clause executes so that the stamp survives a clause that throws. The ruling that a thing which reports is not a
+check was made on this contract's ground once already, against a check its own author specified,
+and it applies here — and the right home for a report is the head of the output, not a
+row here. The clause that asserts over it is M16 and the judgment no script can make is H9.
+
 **The tool's own failure prefix is `FAIL ` at column 0**, nothing else is printed at column 0 with
 that prefix, and the header of `tools/quantities.js` says so. That is a requirement on the tool under
 §3 rule 11, not a description of it.
@@ -548,6 +658,7 @@ that prefix, and the header of `tools/quantities.js` says so. That is a requirem
 | H6 | Whether a Tier 3 numeral has become governed | Test G1 is mechanical *after* the second file exists; the person writing the second file decides in advance. |
 | H7 | A number relayed into a message to the author, or into a summary that is spoken rather than written; and any relayed number that is not already a governed quantity, wherever it lands | §3 rule 12's remaining non-file boundary, plus the two limits of M15 measured at 2.19 and stated below. All seven of Step 1's relay errors happened at boundaries no script could reach. The check is that the relaying seat ran the operation. |
 | H8 | Whether two blocks M14 pairs are one quantity | Two measurements can share a unit and a population and still answer different questions. Only the owner of both can say. |
+| H9 | Whether two figures at the same read-digest were taken under the same tool version and the same flags | The digest covers the files read, not the reading. `--check` returns 12 hard failures and `--check --include-superseded` returns 22 at one digest, over one tree, in one instant. The tool prints its version and its flag string on every run; only a person compares two runs' stamps, and only a person knows whether he moved the set himself. |
 
 **H1 through H5 are the contract's honest surface.** They are what the reviewing persona checks at the
 gate, and they are the reason §5 lists "the deliverable is rejected" as a consequence alongside the two
@@ -664,4 +775,71 @@ every amendment target to be a row in `oracle/MANIFEST.tsv`, and `tools/check_re
 manifest row. A correction to it therefore has nowhere to be recorded. That is `AM-129`'s third live
 instance and the first one to block a row rather than merely be noted.
 
+---
 
+## 13. Version 4 — what changed, and why the version integer still reads 3
+
+Step 2 Wave 1, the moment amendment. The finding is The Software Engineer's, filed in one line
+against §3 rule 11 during Cycle A: **a failure count carries its command and not its moment.** Each
+row below is owed against a row of `oracle/AMENDMENTS.tsv` and each is applied in this file.
+
+| Amendment | Finding | Section changed |
+|---|---|---|
+| AM-146 | §3 rule 11 required the command and not the moment; four correct measurements of one number in one cycle, none reconcilable | §3 rule 11 — the moment paragraph, and the absence of a count |
+| AM-147 | `at:` named refs for the two trees this contract does not walk and nothing for the tree every clause does walk | §2 `at:` — the read-digest, its form, its limits, and the deliberate-move exception |
+| AM-148 | The read-digest covers what was read, not the reading; two runs differ by nine or ten failures at one digest under one flag | §9 M16, §10 H9 |
+| AM-149 | §8's `literature/` ruling stated no overturning condition and was taken against a staged tree that no longer exists | §8 — the overturning measurement, and its owner |
+
+**THE FORM RULING, AND IT IS THE SUBSTANCE OF THIS VERSION.** The read-digest is **not a thirteenth
+key**. The block still has twelve, all required, in the order §2 gives. It is a required extension of
+`at:`, which is already the field whose declared job is the moment, plus a clause of §3 rule 11 for
+counts that will never have a block. R-4's ruling was that *a closed set with a missing member does
+not stop authors, it routes them into the wrong member silently* — six of that pass's seventeen
+amendments were forms that did not exist and four had already been invented in the wrong slot. **This
+is the complementary case and it needs the complementary answer.** A thirteenth key named `moment`,
+sitting beside a field defined as "ISO date, then the short ref of every repository the measurement
+depended on", would be a closed set with a DUPLICATE member. A missing member routes every author to
+one wrong slot, which is at least a consistent defect a grep can find. A duplicate member routes
+authors to either slot on a coin flip, and nothing can find that at all. Supply the form the field
+was always shaped to hold.
+
+**SUPPLY, NOT DEMOTE, AND HERE IS THE TEST.** The Designer's own rule is: SUPPLY when somebody was
+already writing in the empty slot, because the invention is the evidence of demand; DEMOTE OR DELETE
+when the check produces findings no author was working around. Two independent authors were already
+writing in this slot. The Systems Engineer wrote the rule in prose — "a count taken while another
+seat holds a write is not a verdict" — which is correct, unenforceable, and a thing a person must
+remember, the exact signature of a form that does not exist. And every `at:` field in this project
+reaches for a state token and settles for refs to `lsei/` and `cr-agents/`, two trees §8 says this
+contract does not govern, while the tree all fifteen mechanized clauses actually walk goes unnamed.
+Against that, four seats produced 12, 13, 14 and 12 in one cycle, each working around the gap in a
+different direction. Nobody was working around a check here; the check did not exist. This is supply.
+
+**WHY M16 IS A LINT.** M16 fires today on **eight** blocks and every one of the eight is The
+Designer's, in `cr_scratch/step2_designer_file_set.md`, a frozen deliverable outside this sub-step's
+write set. That is the fifth recorded instance on this project of an author producing the defect at
+the highest rate while writing its countermeasure, and this time the rate is eight of eight. If M16
+were a FAIL the hard-failure count would move from 12 to 20 in the deliverable whose entire subject
+is that the hard-failure count keeps moving — and by §8's own argument, a checker whose first run
+reports a wall the reader must discount is a checker that gets switched off. The eight are owed under
+Tier 2's touch rule to whoever next edits that file, as AM-150. M16 graduates to FAIL when that row
+closes; the graduation is not automatic and is not scheduled, because a check that promotes itself on
+a date is a check nobody re-measured.
+
+**WHY THE VERSION INTEGER STILL READS 3, WHICH IS A DEFECT AND IS RECORDED AS ONE.**
+`Q-COUNTING-RULE-VERSION` should read 4. It reads 3. Editing it would change the regenerated index,
+M6 would report the committed `QUANTITIES.md` as differing from it, and the hard-failure count would
+go from 12 to 13 — moved by the seat writing this section. The remedy is to regenerate the index, and
+The Manager has ruled regeneration a wave-boundary action taken by the orchestrator with the
+read-digest recorded, on the strength of The Designer's own refusal to take it mid-cycle while other
+seats held writes. That refusal was right and it is now the rule; the cost of the rule is visible
+here. **The contract's own version integer cannot be bumped by the seat amending the contract**, and
+that coupling is filed as AM-151 rather than worked around by bumping it anyway or quietly leaving it
+alone. The same constraint is why version 4 mints no new quantity block: any new block changes the
+regenerated index identically. Version 4 is prose only, by force.
+
+**What version 4 does NOT claim.** It does not claim the moment problem is closed. M16 asserts that a
+block carries a digest, never that the digest is the right one — an author who pastes a stale digest
+passes M16, exactly as Limit 2 of H7 says a relayed number that is simply wrong is invisible to M15.
+The theory under the requirement is that writing the digest forces the run, and the run is where the
+stale figure is caught. That is a forcing function on a person, not an assertion by a script, and it
+is stated plainly for the same reason H7's two limits are.

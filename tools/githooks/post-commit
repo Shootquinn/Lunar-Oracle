@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+/*
+ * tools/githooks/post-commit -- the bypass recorder. Check-register row CHK-11.
+ * Installed at 2.14 by The Systems Engineer, 2026-08-28. Implements HK-3.
+ *
+ * CL-8(b) requires this file to name its own row id. The literal CHK-11 above and here is that.
+ *
+ * WHAT IT DOES. tools/githooks/pre-commit (CHK-10) writes a nonce to .git/hook-canary before it
+ * dispatches anything. This hook CONSUMES the nonce. When the nonce is absent, pre-commit did
+ * not run for this commit, and this hook appends HEAD to .git/hooks-bypassed.
+ *
+ * WHY IT IS on_failure: report AND NOT block. It DETECTS a bypass. It cannot PREVENT one, and a
+ * row claiming otherwise would be the more dangerous error: `git commit --no-verify` skips
+ * pre-commit and, verified at 1.13, does NOT skip post-commit -- which is the entire reason this
+ * hook can see the bypass at all. By the time this runs the commit exists. Blocking here would
+ * mean failing after the fact on something already done.
+ *
+ * WHY CONSUMPTION RATHER THAN COMPARING PARENTS. Consuming the nonce makes the signal
+ * exactly-once, and it is correct for root commits, merges and amends without any parent
+ * arithmetic -- there is no first-commit special case and no merge special case, because the
+ * question asked is "did pre-commit run for THIS invocation", not "how does this commit relate
+ * to its parents".
+ *
+ * THE 100644 TRAP applies to this file exactly as it does to pre-commit. HK-2 asserts mode
+ * 100755 for every file in this directory; at 100644 this hook is inert on a Linux clone, and a
+ * bypass recorder that is itself inert records no bypasses and reports nothing, which is
+ * indistinguishable from no bypasses having occurred.
+ *
+ * THIS HOOK NEVER EXITS NON-ZERO. A post-commit hook's exit status does not affect the commit,
+ * so a non-zero exit here would produce noise that means nothing. It reports on stdout.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
+
+function main() {
+  let root;
+  try { root = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim(); }
+  catch (e) { console.log('CHK-11 post-commit: not in a git work tree; nothing recorded.'); return; }
+
+  const canary = path.join(root, '.git', 'hook-canary');
+  const ledger = path.join(root, '.git', 'hooks-bypassed');
+
+  let head = 'unknown';
+  try { head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', cwd: root }).trim(); }
+  catch (e) { /* a repository with no HEAD yet; 'unknown' is the honest value */ }
+
+  if (fs.existsSync(canary)) {
+    /* Consume it. The nonce is per-invocation, so leaving it would let the NEXT commit inherit
+     * this one's evidence and a bypass would go unrecorded. */
+    try { fs.unlinkSync(canary); }
+    catch (e) { console.log('CHK-11 could not consume .git/hook-canary: ' + e.message); }
+    console.log('CHK-11 post-commit: pre-commit ran for ' + head.slice(0, 12) + '.');
+    return;
+  }
+
+  /* No canary. pre-commit did not run for this commit. */
+  try {
+    fs.appendFileSync(ledger, head + '\t' + new Date().toISOString() + '\n');
+    console.log('CHK-11 post-commit: NO CANARY. pre-commit did not run for ' + head.slice(0, 12) + '.');
+    console.log('CHK-11 recorded in .git/hooks-bypassed. This detects a bypass; it does not undo one.');
+    console.log('CHK-11 the bootstrap reports a non-empty .git/hooks-bypassed at session start.');
+  } catch (e) {
+    console.log('CHK-11 could not append to .git/hooks-bypassed: ' + e.message);
+  }
+}
+
+main();

@@ -8,6 +8,48 @@
 #      The only deliberately unanchored rule is the litter rule at the bottom.
 #   2. FAILS CLOSED under literature/. A file type nobody has thought of yet is excluded
 #      until somebody deliberately admits it.
+#
+# AMENDED AT 2.14 (The Systems Engineer). Property 1 now has TWO deliberate exceptions, not
+# one, and the second is the section immediately below. A published-source carrier must be
+# excluded WHEREVER it appears, so anchoring it would defeat it: the measured hole was that
+# x.pdf, docs/x.pdf, oracle/x.pdf and tools/x.pdf all committed cleanly while literature/x.pdf
+# did not. Property 1's reason -- "cannot be re-matched at depth by a folder the merge taxonomy
+# invents later" -- is exactly the behaviour wanted here and exactly why it is inverted. The
+# exception is stated rather than taken, because a rule that quietly breaks the file's own
+# declared invariant is how the invariant stops being checked.
+
+# --- Published-source carriers, repository-wide (loose end E1; suite rows PDF-2, PDF-3) ----
+# DELIBERATELY UNANCHORED. See the amendment note above.
+#
+# WHY THIS IS NOT A LICENCE FOOTNOTE. This repository ships summaries the project wrote. It
+# does not ship the publications it summarises, and Wave 3 pulls 224,042,382 bytes of PDF into
+# literature/_pdf/. That store is ignored by an anchored rule below, and an anchored rule stops
+# at its anchor: before this section landed, a PDF dropped anywhere else in the tree committed.
+#
+# CASE. Written as character classes, not as a pair of *.pdf / *.PDF lines, because a pair
+# covers two of the eight case permutations of a three-letter extension and misses x.Pdf. The
+# classes are exhaustive by construction and are correct at core.ignorecase=false, which is the
+# setting CHK-12 asserts under and the setting a Linux clone actually has.
+#
+# THIS IS NOT THE CONTAINMENT MECHANISM, and reading it as one is the error the check exists to
+# prevent. A path rule matches a NAME. It cannot see source-1.pdf.bak, whose extension is .bak,
+# and it cannot see a PDF renamed to x.md. tools/check_no_sources.js (CHK-13) is the content
+# half; this is the name half; neither substitutes for the other. See 1.1 section 4.1: the
+# enforcement layer fails closed on unknown file TYPES and is blind to unknown CONTENT inside
+# an admitted type.
+#
+# Measured before this section landed: zero source carriers were tracked, so nothing already in
+# the repository is orphaned by it. `git ls-files | grep -icE '\.(pdf|djvu|epub|docx?|pptx?|ps|tiff?)$'` = 0.
+*.[pP][dD][fF]
+*.[dD][jJ][vV][uU]
+*.[eE][pP][uU][bB]
+*.[dD][oO][cC]
+*.[dD][oO][cC][xX]
+*.[pP][pP][tT]
+*.[pP][pP][tT][xX]
+*.[pP][sS]
+*.[tT][iI][fF]
+*.[tT][iI][fF][fF]
 
 # --- Working copies of upstream repositories ------------------------------------------
 # Cloned by the bootstrap in CLAUDE.md. Never committed, never vendored: the app in lsei/

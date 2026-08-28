@@ -279,3 +279,208 @@ discrepancy rather than absorbed silently.
    sources**; the `162 to 173` range → 168; `79 of 182 carry a DOI` → **withdrawn by its author**,
    replaced by **89 of 176** under a stated definition, with `91 with / 85 without` retained as a
    different and equally valid definition rather than a rival. Loose end B5 closes on these.
+
+---
+
+## W1 in-flight finding (orchestrator, independent, 2026-08-28)
+
+Taken while Wave 1 was running, from the working tree, not from any seat's report.
+
+**`tools/check_registers.js` is a binary file to git, and has been since it was created.**
+
+| Item | Measurement | Command |
+|---|---|---|
+| NUL bytes, working copy | 3 | `tr -dc '\000' < tools/check_registers.js \| wc -c` |
+| NUL bytes, `HEAD` | 3 | `git show HEAD:tools/check_registers.js \| tr -dc '\000' \| wc -c` |
+| Byte offsets | 7926, 7953, 8500 | `grep -abo -P '\x00' tools/check_registers.js` |
+| `file(1)` verdict | `a node script executable (binary data)` | `file tools/check_registers.js` |
+| Same for `quantities.js`? | No — `Unicode text, UTF-8 text` | same command |
+| Does it still run? | exit 0 | `node tools/check_registers.js` |
+
+The three NULs are key separators written as raw bytes rather than the two-character escape
+`\0`, in the `MF-3` marker check:
+
+```
+for (const r of rows) if (r[2] !== '-' && r[3] !== '-') seen[r[2] + '<NUL>' + r[3]] = ...
+if (!seen[mk.file + '<NUL>' + mk.marker]) { n++; FAIL('MF-3 marker ...
+```
+
+**Verdict: NOT INTRODUCED THIS WAVE.** `HEAD` carries the same three. This is not a W1 defect
+and no seat is charged with it.
+
+**Why it matters anyway.** Git decides text-versus-binary by scanning for NUL in the first 8000
+bytes. Two of these sit at 7926 and 7953, inside that window. So `git diff` has emitted
+`Bin 12072 -> 15274 bytes` for every change this file has ever received, and will emit it for the
+~3.2 KB a W1 seat is adding to it at this moment. **One of the two enforcement instruments in this
+repository has never produced a reviewable diff.** That is the same shape as arm 2b — an
+instrument trusted without the check that would have caught it — moved one level up, from the
+seat that writes the instrument to the review that is supposed to read it.
+
+**Not fixed here, deliberately, on two grounds.** The file is open under a running agent, so an
+edit now races a write. And it is another seat's file: the orchestrator routes, it does not edit.
+
+**Routed to the Wave 2 correction list.** The fix is a character class, not a redesign: replace
+each raw NUL with the escape `\0` inside the string literal. Byte-for-byte identical behaviour,
+identical key space, and the file becomes text. The close condition is `file(1)` reporting text
+and `git diff` rendering line-level, not the script's exit code, which was already 0 and proves
+nothing about this.
+
+**Second-order:** whatever assertion set covers the enforcement layer should assert that every
+instrument under `tools/` is text to git. The property that failed here is not "the script works",
+it is "a human can review a change to the script" — and no existing test names it.
+
+---
+
+## W1-6, The Fact-Checker: orchestrator re-run (2026-08-28)
+
+Moment: `HEAD b0f436c`, 271 corpus `.md` across `lsei/literature` (152) and
+`_intake/japanese-miracle/lit` (119). Six W1 seats were still writing; nothing below reads a
+file any of them holds.
+
+| Her claim | Verdict | Evidence |
+|---|---|---|
+| `audit_abstract_overlap.js` L38 requires a bare heading | **CONFIRMED AT SOURCE** | `/^##+\s*Abstract\s*$([\s\S]*?)(?=^##\s)/mi` — the `$` after `\s*` ends the line at "Abstract" |
+| Annotated headings are the population it misses | **CONFIRMED AND ENLARGED** | 18 files tree-wide carry `## Abstract (…`; 257 carry the bare form. She scoped to 9 in-corpus; the tree holds twice that |
+| `Licence:` appears in zero corpus files | **CONFIRMED** | only hits are `cr_scratch/`, two Step 0 notes, and `corpus_suite.md` — i.e. the test that asserts on it |
+| PDF-9: largest summary 84,767 | **CONFIRMED EXACT** | `nasa-moon-to-mars-doc.md`; next is 63,040 |
+| Smallest PDF 81,677, populations overlap | **CONFIRMED EXACT** | unchanged from the E1 measurement |
+| PDF-10: 29 of 112 under 500 KB | **CONFIRMED EXACT** | 112 PDFs total, 29 under 500,000 |
+| DUP-5: 14 `Publisher URL:` lines are `doi.org` | **CONFIRMED EXACT** | 14 lines, `^Publisher URL:.*doi\.org` |
+| DUP-5: "across 8 sources" | **NOT REPRODUCED** | 14 distinct paths, **11** distinct basenames, **11** distinct DOI targets. Three files (`kokkinis-2024`, `matthews-2026`, `smith-vaniz-2026`) exist in both trees, which is 14 − 11. No rule I can construct yields 8 |
+
+**The count is wrong and the finding is worse.** Her reading was "dedup will key level-2 on a
+level-1 identity." The stronger statement, measured:
+
+**Twelve of the fourteen carry no `DOI:` line at all.** Only `jorgenson-2005` and `kiyota-2005`
+have one — and both of those carry it *redundantly* with the URL. So the two populations are
+complementary rather than overlapping: for twelve files the DOI exists in the corpus and is filed
+under a field named `Publisher URL:`. **Any check keyed on `DOI:` scores those twelve as
+having no identifier while the identifier sits one line away.** That is not a dedup hazard, it is
+a provenance-coverage hazard, and it lands directly on PRV-13: sixteen of thirty scored
+NOT-PRINTED under a rule that never looked at the field the value is actually in.
+
+**Second defect, not in her report: the field is not machine-parseable.** Four of the eleven
+distinct values carry trailing prose inside the field —
+`https://doi.org/10.1080/… (Taylor & Francis, Nuclear Technology journal page)`, and one that
+runs to a full sentence about an HTTP 403 from AIAA ARC. A tool that reads `Publisher URL:` and
+takes the remainder as a URL gets a URL with a paragraph glued to it, in four of eleven cases.
+The prose is *good* — it records resolver-verified-not-fetch-verified, which is exactly the
+distinction this project wants — but it is recorded in a value field, so the honesty is
+unreadable to every instrument.
+
+**Routing.** The count correction goes to her, not around her; the two enlargements go on the
+Wave 2 correction list. Neither changes her verdict that PRV-13 and PRV-15 both fail — that
+verdict is confirmed, and PRV-13 now fails for one more reason than she gave.
+
+---
+
+## W1-4, The Space Resources Engineer: orchestrator re-run (2026-08-28)
+
+| His claim | Verdict | Evidence |
+|---|---|---|
+| P1 false: `space-economy-and-markets` is a lunar-corpus folder, 26 files | **CONFIRMED** | `lsei/literature` has **8** folders totalling 152; all 8 are the lunar corpus. "Seven" was the review split, not the field label |
+| `Q-LCC15` `H` row has no distinct-leaves field | **CONFIRMED EXACT** | `H  lsei/literature  2026-08-27  7f97983  15  81` — six fields; 15 axes, 81 member rows, and nothing else |
+| That is why one id forked in value and one only in id | **CONFIRMED, and it is the sharpest thing in the wave** | `MEMBER-ROWS` is pinned by `H` field 6 and could not drift. `DISTINCT-LEAVES` has no `H` field, so nothing held it. A mechanical cause, not a narrative one |
+| `distribution` is the only shared `match_key` token | **CONFIRMED EXACT** | 107 lunar tokens, 179 econ, `comm -12` yields exactly one: `distribution` |
+| It is carried by `LCC-03` × `ECR-15`, both `two_sided` | **CONFIRMED EXACT** | the single possible key-collision between the two registers lands on the axis written to hold the A.9 tension, and a class-equality guard cannot see it because the classes are equal |
+
+**Unreconciled, not disputed:** he reports measuring "all 106 of my files." The seven non-econ
+lunar folders sum to 126 and the eight sum to 152; 106 reproduces under neither. His §4A also
+speaks of 11 folders, which is the merged placement table rather than the lunar tree. Two
+populations are in play under one word. Routed to him for the counting rule; it does not touch
+any verdict above.
+
+---
+
+## Orchestrator error, self-caught at W1-4 (2026-08-28)
+
+**`literature/FIELDS.tsv` does not exist.** `find . -name FIELDS.tsv` returns nothing;
+`literature/` holds exactly one file, `NAMING.md`.
+
+The gameplan's `B3` row — **which I wrote at the Cycle A close** — reads: *"The fix landed:
+`literature/FIELDS.tsv`, folder-to-field, closed value set of exactly two…"* and then, one
+sentence later, *"The 3.7 change is three lines."*
+
+**The row contradicts itself in adjacent sentences.** A fix that landed does not have a future
+step, and B3's own step column reads `2.3, 3.7`. What landed at 2.3 was the *specification* of
+`FIELDS.tsv`; the file and the retrieval change are both owed at 3.7. I wrote "landed" about an
+artifact I never checked for on disk.
+
+This is the same shape as `A3`, whose self-contradiction I struck at 2.1 — and the same relay
+family as the "22 summaries" figure. It is the tenth instance. **Cause: I wrote a status cell
+from an agent's design description without running `ls`.** The measurement that would have caught
+it costs one command and I did not spend it, in a row whose whole subject is a file.
+
+**Fix:** B3's cell must say the label scheme is *specified* at 2.3 and *unbuilt*, with the file
+owed at 3.7. Not edited yet — the gameplan is the integration artifact and this goes in with the
+rest of the wave, so the correction is recorded here first and lands once.
+
+**Second-order, and it is the real one.** The deliverable table at line 671 has carried
+`literature/FIELDS.tsv` as **required** since the Step 1 gate, and that row states the file was
+*"invisible to the enforcement layer for four sub-steps"* because `literature/` denies by default
+and re-admits `*.md` only. So the project already diagnosed why a non-`.md` deliverable under
+`literature/` goes unnoticed — and then went four more sub-steps without noticing this one is
+still absent. **A required deliverable has been missing for the entire step and no check names
+it.** No assertion in the corpus suite asserts that a file listed as required in the deliverable
+table exists. That is a gap in the enforcement layer, not a gap in B3.
+
+---
+
+## W1-1, W1-2, W1-5, W1-7: orchestrator re-run (2026-08-28)
+
+Moment for everything below: `--check` reports **15 hard failures @ read-digest
+`546be9aeaf2f4c21` over 99 files, tool 2.19-1**. W1-3 was still writing.
+
+**The Engineer (W1-1) — every figure reproduced, none refuted.**
+
+| Claim | Verdict |
+|---|---|
+| `merge_plan.tsv` 176 rows × 17 columns | **EXACT** — 177 lines incl. header, 26 comment lines, 17 columns |
+| Block 1 = 117, Block 2 = 59 | **EXACT** |
+| `LIFT` 52 + `LIFT-IDENTICAL` 65 = 117 | **EXACT** |
+| `HOLD-NOID` 34 + `HOLD-PAIR` 16 + `SCRUB` 5 + `STEP0` 3 + `FALSEMERGE` 1 = 59 | **EXACT** |
+| Churn 5/59 = 8.47%, under the 15% threshold | **EXACT** |
+| `azami-2024` is 1 of 137 with `id_in_source` NO | **EXACT** — 136 `yes`, 1 `NO`, 39 `n/a` |
+| Exactly 4 of 119 intake files contain `cr_scratch/`; 0 of 152 lsei | **EXACT** |
+| 115 non-`.md` in intake: 112 PDF + 3 `.txt` | **EXACT**, and the three `.txt` are the UN treaties |
+
+**The scrub evidence is stronger than he claimed and he did not notice why.** The four intake
+files carrying `cr_scratch/` references are `473486main_iss_atcs_overview.md`,
+`BEA_depreciation_rates.md`, `IEEE 2022 Paper SH TCS Architecture….md`, `falcon-heavy-wikipedia.md`.
+**Three of those four are the underscore-and-space files** — i.e. three of the nine `A7`
+normalization-collision members. The population that only matches after `normalize()` and the
+population carrying cross-repository references are the *same files*. An exact-name instrument
+misses both facts at once, for the same reason.
+
+**The Software Engineer (W1-2).** Suite at **175 tests declaring 175** — verified by id count.
+His `MRG-4` contract collision is the wave's most consequential finding and I did not re-run it:
+it asserts on a semantic disagreement, not a count. `primary_secondary` means *which corpus copy
+supplies the bytes* to The Engineer and *which member of the pair is primary* to him. **8 pair
+groups, 0 with one primary** — correct under his reading, vacuous under The Engineer's. He
+declined to rewrite the test to fit either. **This needs a ruling and it is a genuine A.9
+instance, not an error by either seat.**
+
+**The Manager, econ (W1-5).** Econ `H` row reads `18  53`; register holds 18 `A` rows and 53 `M`
+rows. **EXACT both ways** — the known-answer test passes. His remedy comparison (12→13 for the
+briefed fix, 12→6 for the collapse) is **NOT RE-RUN**: reproducing it requires mutating governed
+files while a seat is still writing. Accepted as reported, with the fix unexecuted.
+
+**The Designer (W1-7).** The mechanism is **LIVE and self-demonstrating**. `--check` now emits
+`NOTE hard failures: N @ read-digest H over K files, tool 2.19-1, flags --check`. That line did
+not exist this morning. Today's series — 12 → 17 → 15, over 88 → 90 → 95 → 97 → 99 files — is
+now distinguishable for the first time; before it, the only available reading was that a seat's
+amendments broke five checks, which is false. Three seats and I have all published counts today
+that were correct and non-comparable.
+
+**Live relocation state at this moment.** `literature/` is **empty**. `oracle/NAMING.md` exists
+at 33,803 bytes and is still being written (mtime 14:01:58). The Software Engineer measured 82
+occurrences across 28 files before the move, of which 9 across 6 were live; **3 live citations
+remain** — `oracle/MANIFEST.tsv`'s promoted row, `tools/merge_identity.js`, and the gameplan.
+`PTH-13` caught `FAIL MF-1 row literature/NAMING.md is promoted but no file exists at that path`
+within the hour of the move — **a test written this wave catching a mutation made this wave, by
+another seat.** Not currently firing; W1-3 is mid-edit.
+
+**The finding that recurred to a third seat.** The Software Engineer: "`--check` went 12 → 15.
+**All three new failures are in The Engineer's file; zero are mine.** Had I differenced counts I
+would have assigned myself three defects." That is Cycle A's near-miss, in the deliverable
+implementing its remedy, to the seat who filed it. Three independent instances now.

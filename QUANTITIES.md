@@ -2,7 +2,7 @@
 
 # QUANTITIES
 
-**97 blocks.** fixed 87; live 6; provisional 3; superseded 1.
+**111 blocks.** fixed 95; live 10; measured 1; provisional 4; superseded 1.
 
 | id | value | unit | class | at | birth file | superseded |
 |---|---|---|---|---|---|---|
@@ -12,6 +12,8 @@
 | Q-C4-SOURCE-LINES | 328 | lines of JavaScript between the fences of... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
 | Q-CARD-KWH-PER-KG | 63 to 93 inclusive | kWh of thermal energy per kg of oxygen | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-CHECK-ROWS | 27 | C rows in oracle/check_register.md's mark... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
+| Q-CONTAIN-BACKSTOP-BLIND | 29 | source PDFs under _intake/ that the size ... | fixed | 2026-08-28 | cr_scratch/step2_systems_engineer_containment.md | 0 |
+| Q-CORPUS-SUITE-TESTS | 175 | test rows in the fourteen tables of secti... | live | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
 | Q-COUNTING-RULE-VERSION | 3 | the version integer of this contract | fixed | 2026-08-28 | COUNTING_RULE.md | 2 |
 | Q-CURRENCY-VERDICTS | 11 | verdict values across the two closed axis... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
 | Q-D219-AMC-SITES | 159 | occurrences of an unpadded single-digit A... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
@@ -30,6 +32,9 @@
 | Q-DEGRADED-MODES | 5 | degraded modes in the closed set at §5 of... | fixed | 2026-08-27 | oracle/bootstrap_contract.md | 1 |
 | Q-ECON-REFS-ABBREV | 18 | distinct source references in the sevente... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-ECR-AXES | 17 | A rows in the economics namespace of the ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
+| Q-ECR-AXES-CROSSFIELD | 1 | economics register axes whose member file... | fixed | 2026-08-28 | cr_scratch/step2_manager_econ.md | 0 |
+| Q-ECR-AXES-PROMOTED | 18 | A rows in the promoted economics conteste... | fixed | 2026-08-28 | cr_scratch/step2_manager_econ.md | 2 |
+| Q-ECR-FORK-DELTA | 6 | hard-failure lines cleared from tools/qua... | fixed | 2026-08-28 | cr_scratch/step2_manager_econ.md | 0 |
 | Q-ECR-KEYS-DEAD | 0 | shipped match_key strings that can never ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
 | Q-ECR-KEYS-SHIPPED | 176 | match_key strings on the 17 [Q-ECR-AXES] ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
 | Q-ECR-KEYS-TESTED | 340 | candidate match_key strings tested agains... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
@@ -40,6 +45,7 @@
 | Q-ECR-SIDES-GT2 | 4 | economics axes of class two_sided or fals... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
 | Q-ESINTER-AGAINST-METERED | 23 to 33 inclusive | the factor by which the only metered sint... | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-FFIS-AGAINST-OLESON | 0.251 | tonnes per kWe | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
+| Q-FILESET-FORK | 4 | instruments that walk this repository and... | live | 2026-08-28 | cr_scratch/step2_systems_engineer_containment.md | 0 |
 | Q-HOOKSPATH-INERT | 0 | hooks fired by a commit in a repository w... | fixed | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 0 |
 | Q-LCC-APP-SIDED | 6 | of the fifteen lunar register axes | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-LCC-MEMBER-REFS | 67 | member references across the fifteen luna... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
@@ -61,6 +67,7 @@
 | Q-LSEI-HEAD | 7f97983 | the short commit ref at the head of the l... | live | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-LSEI-PUSHED-COMMITS | 3 | commits this project pushed to the Scenar... | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
 | Q-LUWEX-KWH-PER-KG | 15 to 44 inclusive | kWh per kg of water recovered | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
+| Q-MAX-SUMMARY-BYTES | 84767 | bytes on disk of the largest single corpu... | fixed | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
 | Q-MERGE-A3-CSANK-8OF12 | 8 | questions of 12 on which the two `csank-2... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
 | Q-MERGE-AY-LEADTOKEN-16 | 16 | author-year clusters holding more than on... | superseded | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 1 |
 | Q-MERGE-AY-STRICT-9 | 9 | author-year clusters holding more than on... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
@@ -70,10 +77,17 @@
 | Q-MERGE-SAMESOURCE-8 | 8 | same-source merges among the 176 [Q-MERGE... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
 | Q-MERGE-SOURCES-168 | 168 | distinct sources in the prospective merge... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 2 |
 | Q-MERGE-UNION-176 | 176 | distinct normalized filenames across the ... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MIN-INTAKE-PDF-BYTES | 81677 | bytes on disk of the smallest PDF anywher... | fixed | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
+| Q-NAMING-PATHREFS-LIVE | 11 | occurrences of the literal string literat... | provisional | 2026-08-28 | cr_scratch/step2_systems_engineer_containment.md | 0 |
 | Q-OVERLAP-95 | 95 | filename pairs whose normalized basenames... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 0 |
 | Q-PAIR-IDENTICAL | 87 | overlapping filename pairs whose two file... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-PATH-BUDGET-108 | 108 | characters of repository-relative path al... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
 | Q-PATH-CEILING-259 | 259 | characters of absolute working-tree path ... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
+| Q-PDF-IGNORE-OPEN | 5 | probe paths that git check-ignore reports... | live | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
+| Q-PDF-UNDER-500K | 29 | intake PDFs whose size on disk is below t... | fixed | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
+| Q-PLAN-BLOCK1-117 | 117 | rows of cr_scratch/merge_plan.tsv | fixed | 2026-08-28 | cr_scratch/step2_engineer_dispositions.md | 0 |
+| Q-PLAN-CHURN | 8.47 | percent of block-2 rows carrying rev > 1 | measured | 2026-08-28 | cr_scratch/step2_engineer_dispositions.md | 0 |
+| Q-QCHECK-FAILURES-BASE | 12 | hard failures reported by the checker on ... | live | 2026-08-28 | cr_scratch/step2_software_engineer_slots.md | 0 |
 | Q-REG-BLOCK-CARRIERS | 53 | files of the 152 in lsei/literature that ... | provisional | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-REG-FLIPS-FULL | 14 | candidate files that gained a full-text c... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-REG-FLIPS-ID | 0 | candidate files that gained a confirmation | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |

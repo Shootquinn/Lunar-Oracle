@@ -6,9 +6,25 @@ three measurement sub-steps. A suite written against 2.1's numbers would be a tr
 2.1's author is the seat that executes 2.5. This suite is authored by a seat that owns no merge
 output in this step, which is the whole of its value.
 
-**148 tests.** Counting rule: rows in the twelve tables of §§1–12 whose first cell matches
-`^[A-Z]{3}-[0-9]+$`, counted over this file. Per group: NRM 9, NAM 16, PTH 11, FLD 12, PRV 17,
-DUP 11, CRP 13, PDF 16, REG 18, CNT 11, SLT 8, MUT 6.
+**175 tests.** Counting rule: rows in the **fourteen** tables of §§1–12 whose first cell matches
+`^[A-Z]{3}-[0-9]+$`, counted over this file. Per group: NRM 9, NAM 16, PTH 14, FLD 14, PRV 17,
+DUP 11, CRP 13, **MRG 12**, PDF 16, **CON 9**, REG 18, CNT 11, SLT 9, MUT 6.
+
+**Was 148 in twelve tables at the Cycle A close; +27 at the Wave 1 `SLOT-A`/`SLOT-C` fill,
+2026-08-28.** The section numbers did not change and no cross-reference moved: the two new tables are
+§7.1 (`MRG`, `SLOT-A`) and §8.1 (`CON`, `SLOT-C`), inside §7 and §8. The other five are `PTH-12`
+to `PTH-14` under the `PTH-9` ruling, `FLD-13` and `FLD-14` absorbed from The Engineer's `INDEX-1`
+and `INDEX-4`, and `SLT-9`. **`SLT-5` holds across the fill**: the header count, the per-group list
+and the rows agree, and the command that checks it is
+
+```
+awk '/^## 13\./{exit} /^\| *[A-Z]{3}-[0-9]+ *\|/{c++} END{print c}' oracle/tests/corpus_suite.md
+```
+
+which returns 175 at read-digest `e06bc06118fa6218`. The `## 13.` guard is load-bearing: §13's gate
+table carries bolded `**PRV-13**` and `**PRV-15**` first cells, which the declared rule excludes both
+by section and by the literal anchoring of `^[A-Z]{3}-[0-9]+$`. A count taken without that guard
+returns 177 and is a correct count of a different population.
 
 **Authorities this suite binds to, by address.** `literature/NAMING.md` §§1–3, 7, 8, 9, 11;
 `oracle/register_schema.md` §§3, 8, 9; `oracle/check_register.md` §§2–4, 8; `COUNTING_RULE.md`
@@ -87,6 +103,21 @@ specification wrong. Each was measured by running something, not by reading it.
    a decision for a person — move the contract out of the corpus root, grant it a §10 by-name
    exception, or root retrieval below it — and it is not mine to fold quietly into a neighbour.
    PTH-9 is RED on it with an owner and a close condition.
+   **RULED by the author, 2026-08-28: relocation.** Not the by-name exception, not re-rooting
+   retrieval. `PTH-9` stays RED with its close condition rewritten to the ruling, and it gained three
+   rows rather than being closed by it — `PTH-12` (moved, not copied), `PTH-13` (live citations
+   repointed; 9 of 82 occurrences are live, the other 73 are the `cr_scratch/` record and must NOT be
+   rewritten), and `PTH-14` (**still tracked at the new path**). `PTH-14` is the one the ruling
+   created: `literature/NAMING.md` ships today only because `!/literature/**/*.md` re-admits it under
+   a deny-by-default root, and **that re-admission does not follow the file out of `literature/`.**
+   A relocation into any deny-scoped path silently stops the naming contract shipping, and the by-name
+   exception the author declined had no such failure mode. The Systems Engineer executes the move;
+   these three are what the move has to satisfy.
+   One consequence for the tooling, measured: `M13` now excludes `literature/**/*.md` per
+   `COUNTING_RULE.md` §9, and today that exclusion covers exactly one file — `NAMING.md`. **After the
+   move, `NAMING.md` re-enters `M13`'s population**, because the exclusion is keyed on the path and
+   not on the document. That is correct — the naming contract is our own apparatus and should be
+   governed — but it is a behaviour change nobody asked for and it arrives with the move.
 
 ### 0.2 One thing this suite cannot do, said out loud
 
@@ -158,7 +189,10 @@ earns nine and not thirty.
 | PTH-6 | The budget arithmetic closes on the measured limit | `150 + 1 + 108 == 259`, and 259 is the bisected git-for-Windows limit rather than a quoted one | Change the root allowance to 151 without changing 108; the sum no longer equals the measured ceiling, and PTH-6 reports the arithmetic rather than the ceiling | green |
 | PTH-7 | A4 runs before cloning and fails loudly | `abspath(repoRoot).length <= 150`, checked at bootstrap; on failure the bootstrap exits non-zero stating the measured length and the budget, and does not warn and continue | Change the failure branch to a warning; the checkout proceeds half-written, which is loose end E14 in full | green |
 | PTH-8 | A4 is the only machine-dependent check | Every other length assertion here is machine-independent. Asserted by running the whole PTH group from a second working directory and comparing verdicts row by row | Move any A3 clause onto an absolute path; the two runs then disagree and PTH-8 names the row | green |
-| PTH-9 | Every file `listCorpusFiles()` returns from `literature/` is at depth 2 | The corpus root holds no top-level `.md`. Asserted on the **walker's output**, not on a directory listing, because the walker is what retrieval sees | Move any summary to `literature/x.md`; A3's depth clause fires | **RED** — `literature/NAMING.md` sits at depth 1 and the walker returns it, so the naming contract is a retrievable literature source. Measured: `check_corpus_collisions.js` reports "1 summaries" and the one is NAMING.md. Owner: the author, at the 2.3 taxonomy ruling. Close: NAMING.md relocated out of the corpus root, or a §10 by-name exception, or retrieval rooted below it |
+| PTH-9 | Every file `listCorpusFiles()` returns from `literature/` is at depth 2 | The corpus root holds no top-level `.md`. Asserted on the **walker's output**, not on a directory listing, because the walker is what retrieval sees | Move any summary to `literature/x.md`; A3's depth clause fires | **RED** — `literature/NAMING.md` sits at depth 1 and the walker returns it, so the naming contract is a retrievable literature source. Measured: `check_corpus_collisions.js` reports "1 summaries" and the one is NAMING.md. **RULED by the author, 2026-08-28: relocation.** Not a §10 by-name exception and not re-rooting retrieval. Owner: The Systems Engineer, W1, the file being in his write set. Close, and it is an observation not a date: `listCorpusFiles()` over `literature/` returns zero paths at depth 1, **and** the relocated contract is reachable at its new path from every document that cites it |
+| PTH-12 | The relocation moved the contract, it did not copy it | After PTH-9 closes, exactly one `NAMING.md` exists in the repository, and `literature/` holds none. Asserted by `git ls-files '*NAMING.md'` returning exactly one line | Leave a copy behind "for compatibility"; there are then two naming contracts, the retrievable one is the stale one, and the defect PTH-9 exists to fix is still live with a second authority added. `CLAUDE.md` already states the rule for `lsei/index.html`: a second copy is a second authority and a second authority drifts | **RED** — depends on PTH-9. Owner: The Systems Engineer, W1. Close: the assertion runs and returns one line |
+| PTH-13 | Every **live** citation of the old path was repointed | Zero occurrences of the string `literature/NAMING.md` in the LIVE set — landed contracts, tools and the gameplan. Measured before the move so the closing count is checkable, at read-digest `e06bc06118fa6218`: **82 occurrences across 28 files** in total, of which **9 across 6 files are live** — `COUNTING_RULE.md` 1, `lunar-oracle-gameplan.md` 1, `oracle/bootstrap_contract.md` 1, `oracle/MANIFEST.tsv` 1, `tools/merge_identity.js` 1, this file 4. The other 73 are in `cr_scratch/` deliverables and are **the record of what was believed when it was written**; rewriting them would falsify the record and is forbidden | Move the file and leave the live citations; `oracle/MANIFEST.tsv` then carries a `promoted` row whose target-path does not exist, `MF-1` goes red on the next run, and `tools/merge_identity.js` reads a path that is not there. A relocation that breaks `MF-1` is a relocation nobody finished | **RED** — depends on PTH-9. Owner: The Systems Engineer, W1, for `MANIFEST.tsv`'s row, `COUNTING_RULE.md`'s §8 glob and his own files; mine for this file's four. Close: live count is zero |
+| PTH-14 | The relocated contract is still tracked at its new path | `git check-ignore -q <new path>` exits non-zero, and `git ls-files` lists it. Today `literature/NAMING.md` ships **only** because `!/literature/**/*.md` re-admits it under a deny-by-default root; that re-admission does not follow the file out | Move it to a path under a deny rule — `literature/_pdf/`, `_intake/`, or any future deny-by-default root. The naming contract then silently stops shipping, and the first symptom is a fresh clone with no naming contract in it. This is the one failure mode a relocation has that a by-name exception did not, and it is why the assertion exists | **RED** — depends on PTH-9. Owner: The Systems Engineer, W1. Close: the check-ignore probe and the `ls-files` probe both pass at the new path |
 | PTH-10 | A name exceeding the ceiling is not truncated | The merge exits non-zero naming the file **and its measured length**; nothing lands under a shortened name | Add auto-truncation; a rename then happens without a decision and every citation to the intended name breaks silently | green |
 | PTH-11 | The worst-case landed path is reported with its margin | The longest repo-relative corpus path is measured and printed beside the ceiling. Landed-taxonomy arithmetic: `10+1+31+1+64 = 107`, one under | Introduce a 32-character folder and a 64-character leaf: 108, exactly at the ceiling. PTH-11 must report zero margin rather than pass silently, because a ceiling reached is a ceiling about to be broken | green |
 
@@ -173,6 +207,26 @@ second-membership line and `literature/INDEX.tsv`, and neither is a field. A fil
 field label, satisfies 2.3 in appearance, and leaves B3's pooled-IDF break exactly where it was. The
 authority on the field label is `NAMING.md` §9 and nothing else.
 
+**Reconciled with The Engineer's `INDEX-1`…`INDEX-5`, W1. This group is the surviving contract.**
+Two seats wrote two assertion sets over the same two artifacts in Cycle A without reading each other,
+and two contracts on one artifact is how `CHK-13` came to have two paths. The settlement is
+technical, row by row, and it is not a clean win for either side:
+
+| His | Disposition | Ground |
+|---|---|---|
+| `INDEX-1` | **Absorbed as `FLD-13`** | Genuinely new. It is the condition that makes his fourth column safe and this group did not have it |
+| `INDEX-2` | **Already `FLD-11`** | `primary` equals path segment 2. Same assertion, same artifact |
+| `INDEX-3` | **Already `FLD-3` + `FLD-11`** | `FLD-3` is closed-and-exhaustive in both directions over `FIELDS.tsv`; `FLD-11` covers the `also` half. His row states both as one; splitting them is why `FLD-3` can go red naming the folder |
+| `INDEX-4` | **Absorbed as `FLD-14`** | Genuinely new, and I did not have it. `FLD-8` guarantees one *field* per file and is blind to `also == primary`, which is a membership defect one level up |
+| `INDEX-5` | **Dissolved into `CRP-5` and `FLD-10`** | Two assertions in one row. The collision half is `CRP-5`, already written at two scopes on the normalized key; the row-count half is `FLD-10`'s regenerate-and-diff, which subsumes it — a diff that matches proves the count without asserting it separately. His own row says it is 2.4's, and 2.4 is now this file's `SLOT-A` |
+
+**Two of his five survive and two of mine changed.** `FLD-11` was WRONG — I specified three columns
+against a landed four-column generator specification — and `FLD-7`'s criterion would have gone red on
+his generated `field` column for the wrong reason. Both are corrected above with the reason in the
+row. **The reason FLD survives as the contract is not that it is bigger.** It is that his five are
+assertions inside a specification document, where a reader who does not open that document never
+meets them, and this file is the artifact the merge gate reads. Where he was right, I took the row.
+
 | ID | What is tested | Pass criterion | Mutation that makes it red | Status |
 |---|---|---|---|---|
 | FLD-1 | `literature/FIELDS.tsv` exists and is committed | The file is present and tracked; `git check-ignore` reports it not ignored — the `.gitignore` re-admits it by literal name | Remove the `!/literature/FIELDS.tsv` literal; the deny-by-default rule swallows it and retrieval silently loses field scoping | **RED** — measured: `literature/FIELDS.tsv` does not exist. Owner: The Engineer at 2.3. Close: the map lands with the taxonomy |
@@ -181,11 +235,13 @@ authority on the field label is `NAMING.md` §9 and nothing else.
 | FLD-4 | Every file derives a field | For every file `listCorpusFiles()` returns, the first path segment is a key of the map. Count of files deriving no field is zero | Delete one map row; the count becomes non-zero and FLD-4 names the files | green |
 | FLD-5 | The field is derived from the path, never from file content | The derivation reads `relpath.split('/')[0]` and opens no file. Asserted by grepping the deriver for `readFile`: zero hits within the derivation | Add a front-matter override; the label can then be edited into disagreement with the folder and nothing notices, which is the §9 "not in the file" ruling | green |
 | FLD-6 | The field is not in the filename | Zero landed leaves begin with a field word from `FIELDS.tsv`'s `field` column | Rename `sargeant-2020-…` to `lunar-sargeant-2020-…`; §9's measurement shows the lead token becomes `lunar` and scores 4 where it scored 0, converting the strongest filename signal into a constant | green |
-| FLD-7 | The field partition is data, not a rule | The number of distinct `field` values is read from the file and is not hard-coded anywhere in the retrieval layer or the checkers. Grep for any literal field name outside `FIELDS.tsv`: zero hits | Hard-code the two field names in the deriver; the taxonomy then cannot change without a code edit, which §9 says explicitly it must be able to do | green |
+| FLD-7 | The field partition is data, not a rule | **Two clauses, and the second is the one that matters.** (a) Zero literal field names in EXECUTABLE CODE — the retrieval layer and every checker, `tools/**/*.js` and `oracle/**/*.js`. (b) **Mutate `FIELDS.tsv`'s `field` column to two novel strings and assert every consumer's output changes accordingly, with no code edit.** (b) is the actual §9 requirement; (a) is a cheap proxy for it | Hard-code the two field names in the deriver; the taxonomy then cannot change without a code edit, which §9 says explicitly it must be able to do. (b) catches this even if the literal is spelled or assembled in a way (a)'s grep misses | green — **criterion strengthened at the SLOT-A/C fill, not narrowed; see §11.3.** The old criterion said "grep for any literal field name outside `FIELDS.tsv`: zero hits", which would have gone red on `INDEX.tsv`'s generated `field` column and on this very row. A generated artifact with one writer is a cache, not an authority; a grep that cannot tell a cache from a rule is the wrong instrument, and the mutation is the right one |
 | FLD-8 | A file cannot carry two fields | The derivation is total and single-valued: exactly one field per path. The `- **Also:**` second-membership line does **not** produce a second field | Make the deriver read `Also:` and emit a second field; the IDF table then double-counts a document and the weights are wrong for both fields | green |
 | FLD-9 | The field label and the `Also:` cross-reference are different fields doing different jobs | Assert they are read by different consumers: the field by the IDF scoper, `Also:` by `INDEX.tsv` only. No consumer reads both for one purpose | Point the IDF scoper at `Also:`; FLD-9 goes red and FLD-8 goes red with it | green |
 | FLD-10 | `INDEX.tsv` is regenerated, never hand-edited | Regenerate in memory from the `## Provenance` blocks and diff against the committed file; any difference is a failure | Hand-edit one `also` cell in `INDEX.tsv`; the diff fires. This is `COUNTING_RULE.md` M6's shape applied to the corpus index | **RED** — measured: `literature/INDEX.tsv` does not exist. Owner: The Engineer at 2.5. Close: emitted by the merge |
-| FLD-11 | `INDEX.tsv` columns are `path`, `primary`, `also` | Header row exact; `primary` equals the file's folder; `also` is empty or a folder name in `FIELDS.tsv` | Write an `also` value naming a folder that does not exist; FLD-11 fires where a walk of every file would not have | green |
+| FLD-11 | `INDEX.tsv` columns are `path`, `primary`, `also`, `field` — **four, not three** | Header row exact and in that order; `primary` equals path segment 2; `also` is empty or a folder name in `FIELDS.tsv`; `field` equals `FIELDS[primary].field` | Write an `also` value naming a folder that does not exist; FLD-11 fires where a walk of every file would not have. Drop the fourth column; every consumer doing arithmetic over the corpus falls back to a join it has to write itself | green — **corrected at the SLOT-A/C fill from three columns to four; see §11.3.** The three-column form was mine and it was wrong against the landed generator specification. This is a strengthening — one more column must hold — and `FLD-13` is the assertion that makes the fourth column safe |
+| FLD-13 | The `field` column of `INDEX.tsv` agrees with `FIELDS.tsv`, row by row | For every row, `field == FIELDS[primary].field`. A disagreement is a generator bug and never a datum, because `INDEX.tsv` has exactly one writer and `FIELDS.tsv` is the authority | Hand-edit one `field` cell. Nothing else in the suite notices: `FLD-10`'s regenerate-and-diff would catch it only if the generator is re-run, and this is the assertion that holds while it is not. **Absorbed from The Engineer's `INDEX-1`; it is the condition that makes his fourth column safe and it was not in this group** | **RED** — `literature/INDEX.tsv` and `literature/FIELDS.tsv` do not exist. Owner: The Engineer at 2.5. Close: both files land and the assertion runs |
+| FLD-14 | `also` is never equal to `primary` | For every row of `INDEX.tsv`, `also == '' or also != primary` | Emit `also` equal to `primary` for a file with no genuine second membership. The file is then double-counted by any consumer that unions the two columns, and `FLD-8`'s single-field guarantee is untouched because the *field* is still single — the defect is one level up, in membership. **Absorbed from The Engineer's `INDEX-4`; there was no `FLD` equivalent and I did not have it** | **RED** — depends on `INDEX.tsv`. Owner: The Engineer at 2.5. Close: the file lands and the assertion runs |
 | FLD-12 | Field scoping is actually consumed | The Step 3 retrieval layer builds one document-frequency table **per field**, not one over the corpus root. Asserted on the table count returned by the builder | Restore the single pooled table; measured at the baseline, `corpusDocFrequency(literatureDir)` today builds exactly one table with no field scoping, so this test is the one that detects the merge having changed nothing | **RED** — the rebuild is 3.7's. Owner: The Engineer at 3.7. Close: field-scoped IDF landed. Carried red here deliberately: the field label's whole warrant is a consumer that does not exist yet, and a green FLD-12 today would be a green light for a mechanism nobody built |
 
 ---
@@ -258,6 +314,54 @@ reason, and it is measured rather than argued: nine members, eight of which a ca
 
 ---
 
+### 7.1 MRG — `SLOT-A` filled: the merge assertions
+
+**Written 2026-08-28 by the seat that owns no merge output.** `SLOT-A` was The Engineer's while
+2.5 is also his; the author reassigned it under `SLT-7`/`SLT-8`, and this table is the fill.
+
+**The brief's premise P1 is FALSE as written and these rows are shaped by that.** P1 says these
+assertions can be written against a disposition table that is still being written "because Block 1 is
+stable by construction." Measured at read-digest `e06bc06118fa6218`: **`cr_scratch/merge_plan.tsv`
+does not exist.** Not "Block 2 is unfinished" — there is no table. His `tools/merge_identity.js`,
+`tools/clusters.js` and `tools/doicov.js` are on disk, so D8 has started; the table has not landed.
+
+So these rows assert against the **declared column contract** — `source_path`, `target_path`,
+`disposition`, `primary_secondary`, `target_folder`, `field_label`, `also`, `dedup_key`,
+`identifier`, `rev`, `basis` — and not against data. **That contract is declared "at minimum",
+which is an OPEN set, and an assertion over an open column set cannot fail on a missing column.**
+`MRG-1` closes it: the table declares its own columns in an `H` row and the assertion is on that
+declaration. This is the `H`-row device again and it is the only thing that makes the rest of this
+table checkable before the data exists.
+
+**Every row below names its mutation.** A row with no mutation is `CHK-03` again. Per `SLT-7` none
+of these is green until it has been observed RED against a deliberately broken fixture, dated, before
+2.5 runs — and per `SLT-8` I am now the proving seat and not the executing one, which is the point of
+the reassignment. §11.3 carries the `asserted_against` list and the observation dates.
+
+> **THE STATUS CELLS BELOW ARE THE STATE AT WRITING AND ARE SUPERSEDED BY §11.3.**
+> `cr_scratch/merge_plan.tsv` LANDED LATER THE SAME DAY, between read-digest `e06bc06118fa6218` and
+> `ef803a7a63cf24a8`, and all twelve rows were then run against it: **3 green, 1 `H`, 8 red on real
+> data.** The cells are left as written rather than rewritten, because a status cell that silently
+> tracks the world is a cell nobody can date. §11.3 carries the results, the digest and the
+> `MRG-4` contract collision. Read it before acting on any cell here.
+
+| ID | What is tested | Pass criterion | Mutation that makes it red | Status |
+|---|---|---|---|---|
+| MRG-1 | The table declares its own columns and its own size | An `H` row naming every column in order, and the parsed `D`-row count equal to the declared count. Column set asserted against the `H` row, never against a hard-coded list in the checker | Add a twelfth column and leave the `H` row alone; every consumer keyed on an ordinal shifts by one and nothing reports it. This is `oracle/MANIFEST.tsv`'s `H` row applied to the merge plan, and it is what makes an "at minimum" column list checkable | **RED** — `cr_scratch/merge_plan.tsv` does not exist. Owner: The Engineer, W1. Close: the table lands with an `H` row |
+| MRG-2 | `disposition` is a closed set, stated in the table | Every `D` row's `disposition` is one of the values the `H` row's own legend names; zero blanks, zero `-` where a decision was required. The closed set is read from the table, not from this row | Add a sixth disposition value in one row. A value outside the set is a decision nobody ruled, and a checker with the set hard-coded here would need editing to notice — which is why it reads the legend | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-3 | Every union file has exactly one row, and every row exactly one union file | The join is total and bijective **in both directions** against the 176-key union. Reported as two counts, not one: rows with no source file, and source files with no row | Drop one file's row. A one-directional check passes — every remaining row still resolves — and the file vanishes from the merge with the table reporting success. `CRP-12` catches this after the merge; `MRG-3` catches it before, which is the whole difference between a gate and a post-mortem | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-4 | The primary/secondary call is recorded **per pair**, and is total over the contested population | For every contested pair, both members carry a `primary_secondary` value and exactly one of the two is primary. Asserted on the pair, not on the file: a file-wise check passes on two primaries | Mark both members of `csank-2022` primary. A per-file assertion sees two well-formed values and passes; the corpus then carries two primaries for one source and every consumer that picks "the primary" picks by iteration order | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-5 | **No disposition was decided by file size** | For the five differing same-name pairs, the recorded `basis` is a content reason and never a size comparison. Known answer, and it is the trap: `step0_dedup_decisions.md` records `poston-2020` as the pair that REFUSED size-based selection — the kept summary is the **smaller** file, and the entry enumerates what the 19,230-byte loser carried that the winner lacks. The byte-identical copy now queued for import IS that loser | Break the tie on `poston-2020`, `azami-2024` or `csank-2022` by size. It silently reverses a documented Step-0 decision in the direction the record explicitly rejected, and it reverses it in a direction that looks like diligence | **RED** — no table. Owner: The Engineer, W1. Close: table lands with `basis` populated for all five |
+| MRG-6 | The landed path is derivable from the row alone | `target_path == 'literature/' + target_folder + '/' + normalize(leaf) + '.md'`, computed from the row and compared to the row's own `target_path`. Both are in the table, so the assertion is a self-consistency check that needs no filesystem | Write a `target_path` that disagrees with `target_folder`. The merge lands the file where `target_path` says and every count keyed on `target_folder` is wrong by one, in both folders, silently | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-7 | **The merge glob is `*.md`, never `*`** | The executing command's source pattern is asserted, literally, as `*.md`. Owed to this slot by The Manager's W1 brief and recorded here so it has somewhere to be checked | Use `*`. `_intake/` carries 112 PDFs and three UN treaty `.txt` files; a bare `*` lands all of them under `literature/`, where deny-by-default hides the PDFs from `git status` and the `.txt` files ship. The merge reports success and `PDF-1` still passes, because nothing was *tracked* — the corpus is simply wrong | **RED** — no merge command exists to assert against. Owner: The Engineer, 2.5. Close: the command lands and carries the glob |
+| MRG-8 | An unresolved collision REFUSES, and lands nothing | On any unresolved collision the merge exits non-zero, names both paths and the shared key, and the target tree is byte-identical to its pre-run state. **All-or-nothing, asserted by tree hash before and after**, not by counting what landed | Make it warn and continue, or make it land the rows it can. A partial merge is the worst state available: the tree is neither the old one nor the new one, `CRP-12`'s landed+excluded sum closes against the wrong union, and there is no recorded moment to re-run from | **RED** — no merge command. Owner: The Engineer, 2.5. Close: the refusal branch lands and is observed |
+| MRG-9 | Dedup-key collision **within a target directory** | For each `target_folder`, no two rows share a `dedup_key` under `NAMING.md` §7. On the table, before anything moves | Place two rows with one `dedup_key` in `logistics-and-delivery`. Two summaries of one source land in one folder under one key and the second is discoverable only by reading both | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-10 | Dedup-key collision **across the whole target tree** | Across all `target_folder` values, no two rows share a `dedup_key`. Reported with both target paths and the shared key | **This is the row that stops `MRG-9` passing vacuously.** Put the two colliding rows in DIFFERENT folders: `MRG-9` passes — correctly, per-directory — while the corpus carries one source twice under one key. A7 is general and it is at two scopes for exactly this reason, and a fixture built from the one known pair would never have shown it | **RED** — no table. Owner: The Engineer, W1. Close: table lands |
+| MRG-11 | `rev` is append-only and a bumped row carries its reason | A row whose `disposition`, `primary_secondary` or `target_folder` changed after first write has `rev > 1` **and** a non-empty `basis` naming why. Asserted by diffing the table against its own committed history, not against a snapshot somebody kept | Bump `rev` without writing `basis`, or change a value without bumping `rev`. The second is the dangerous one: The Manager's seam call and my `asserted_against` list both key on `rev`, so a silent revision defeats the detection rather than tripping it | **RED** — no table. Owner: The Engineer, W1. Close: table lands with `rev` populated |
+| MRG-12 | The table is the **only** adjudication input the merge reads | The executing command reads `cr_scratch/merge_plan.tsv` and no other decision source. Asserted by grepping the merge for any other adjudication path: zero hits | Let the merge re-derive a disposition it could not find in the table. Every row this suite asserts is then advisory, the committed table stops being the record of what executed, and `SLOT-A` gates nothing. **This is the assertion that makes the other eleven load-bearing** | **RED** — no merge command. Owner: The Engineer, 2.5. Close: the command lands and reads one source |
+
+---
+
 ## 8. PDF — containment
 
 **Three gates, and they are not interchangeable.** Extension, size, magic bytes. The measurements in
@@ -268,7 +372,7 @@ currently load-bearing.
 | ID | What is tested | Pass criterion | Mutation that makes it red | Status |
 |---|---|---|---|---|
 | PDF-1 | Zero `.pdf` tracked anywhere in the repository | `git ls-files '*.pdf' '*.PDF'` returns zero lines. Measured in the authoring session: zero | `git add -f` any PDF; PDF-1 returns 1 and names it | green |
-| PDF-2 | The ignore rule is repository-wide, not path-scoped | `git check-ignore` reports IGNORED for `x.pdf`, `docs/x.pdf`, `oracle/x.pdf`, `tools/x.pdf`, `literature/x.pdf`, `literature/isru/x.pdf`, `_intake/x.pdf` | Remove the repository-wide rule; the four non-corpus paths commit cleanly | **RED** — measured with `git check-ignore` in the authoring session: `x.pdf`, `docs/x.pdf`, `oracle/x.pdf` and `tools/x.pdf` are all **NOT ignored** today. Part 5 hole 1 is open. Owner: The Software Engineer at 2.13/2.14. Close: a repository-wide `*.pdf` rule landed and this test green |
+| PDF-2 | The ignore rule is repository-wide, not path-scoped | `git check-ignore` reports IGNORED for all eight probe paths: `x.pdf`, `docs/x.pdf`, `oracle/x.pdf`, `tools/x.pdf`, `cr_scratch/x.pdf`, `literature/x.pdf`, `literature/isru/x.pdf`, `_intake/x.pdf` | Remove the repository-wide rule; the five non-corpus paths commit cleanly | **RED** — re-measured 2026-08-28 at read-digest `e06bc06118fa6218`: **five of eight** probe paths commit — `x.pdf`, `docs/x.pdf`, `oracle/x.pdf`, `tools/x.pdf` **and `cr_scratch/x.pdf`**. `Q-PDF-IGNORE-OPEN` = 5. **The earlier status on this row said four and named four; it omitted `cr_scratch/x.pdf`, which is my own error and is corrected here rather than argued.** The three `IGNORED` results are all side effects of deny-by-default directory rules, not of any `*.pdf` rule: there is no repository-wide `*.pdf` rule. Part 5 hole 1 is open. Owner: The Systems Engineer at 2.14 (the author's W1 reassignment; `.gitignore` is his write set, not mine). Close: all eight probes report IGNORED and `CON-1` observes it |
 | PDF-3 | The other published-source carriers are covered | Same check for `.djvu`, `.epub`, `.docx`, `.doc`, `.pptx`, `.ps`, `.tif`, `.tiff` at the same seven paths | Drop `.tif` from the list; page scans are the same licence problem as the PDF and are not covered today | green |
 | PDF-4 | Full-text `.txt` is contained | The three UN treaty texts (18,378 / 23,794 / 27,097 bytes) do not ship. Deny-by-default under `/literature/**` covers them there; assert the containment check covers them **outside** it too | Copy `un-1967-outer-space-treaty.txt` to `docs/`; measured, it is under every size threshold and carries no magic bytes, so only an extension or a content rule catches it | green |
 | PDF-5 | `literature/_pdf/` ships nothing, including `.md` | `git check-ignore` reports IGNORED for `literature/_pdf/isru-processing/x.pdf` **and** for `literature/_pdf/isru-processing/x.md` | Move the `/literature/_pdf/` rule above the two `!` re-admissions; the re-admissions then win and a summary misfiled into the PDF store ships | green |
@@ -283,6 +387,43 @@ currently load-bearing.
 | PDF-14 | The five 2.13 fixtures all fire | `x.pdf`, `x.PDF`, `x.pdf.bak`, a `%PDF` file named `.md`, a 600 KB `.md` — each exits 1, individually, and the report names which gate caught it | Remove the gate-name from the report; a fixture then passes for the wrong reason and nobody can tell | green |
 | PDF-15 | It accepts the real corpus unchanged | Run against the merged tree: exit 0, zero findings | Lower the size threshold below 84,767; the largest legitimate summary is then a finding, and a check that flags real corpus files is a check that gets switched off | green |
 | PDF-16 | An empty stage is not a pass it did not earn | Invoked with nothing staged — which is how `git hook run` invokes it — the check exits 0 **and says it scanned nothing**. It never reports a clean stage as a verified stage | Make emptiness print "OK, no source files found"; the hook then reports a pass on every `git hook run`, which is the assertion asserting its own dispatch. See `check_register.md` §5.1 and the CHK-09/CHK-10 recursion: `git hook run` has no reentrancy guard and sets no environment marker, so an assertion suite that installs the hook and then invokes `git hook run` to prove it fires reproduces the cycle | green |
+
+---
+
+### 8.1 CON — `SLOT-C` filled: the containment assertions
+
+**Written 2026-08-28. Premise P2 HOLDS**: `SLOT-C` depends on no merge output and was writable
+immediately. It is the only one of the brief's three premises that held as stated.
+
+**These assert what `PDF-1`…`PDF-16` cannot.** That group asserts that the gates catch things. This
+one asserts that the gates are REACHED, that they are reached by the hook rather than only by hand,
+and that the harness proving it does not prove it by causing it. None of these nine duplicates a
+`PDF` row; where one was close, I asserted the property `PDF` leaves open instead of restating it.
+
+**`PDF-2` may not be closed by scoping the rule back to `literature/`, and `CON-1` is why that is
+now mechanical rather than a promise.** There is no repository-wide `*.pdf` rule; the three probe
+paths that report IGNORED do so as a side effect of deny-by-default directory rules. A rule scoped to
+`literature/` would turn `PDF-2` green while changing nothing about the five paths that commit.
+
+**The empty-stage clause of `PDF-16` may not be relaxed, and `CON-8` fixes its exit code and its
+scanned-count in one assertion** so that a check reporting "OK, nothing found" cannot pass as a check
+reporting "OK, I scanned and found nothing."
+
+**Relayed to The Systems Engineer at `cr_scratch/relay/spawn/` before he builds
+`tools/check_no_sources.js`.** I assert; he builds. `tools/check_no_sources.js` is his write set this
+wave and not mine, by the author's ruling, and no row below writes it.
+
+| ID | What is tested | Pass criterion | Mutation that makes it red | Status |
+|---|---|---|---|---|
+| CON-1 | The eight-path ignore probe is a **fixture that runs**, not a measurement someone once took | A committed fixture runs `git check-ignore -q` over all eight probe paths of `PDF-2` and asserts IGNORED for every one. It reports the probe paths it used, so a shrunken probe set is visible | Drop `cr_scratch/x.pdf` from the probe list. `PDF-2` then goes green over seven paths while the eighth commits — which is not hypothetical: **the earlier `PDF-2` status named four open paths when five were open, and it was I who wrote both the measurement and the row.** A measurement in a status cell decays; a fixture does not | **RED** — 5 of 8 probes commit today, `Q-PDF-IGNORE-OPEN` = 5. Owner: The Systems Engineer, 2.14, `.gitignore` being his. Close: all eight report IGNORED with the fixture committed |
+| CON-2 | Each of the five fixtures fires **in isolation** | The harness runs `x.pdf`, `x.PDF`, `x.pdf.bak`, a `%PDF` file named `.md`, and a 600 KB `.md` **one at a time, from a clean fixture tree each time**, and each exits 1 naming which gate caught it | Run all five in one tree. `PDF-14` passes on the set; it cannot tell that the extension gate caught four of them and the magic-byte gate was never exercised, because the first non-zero exit wins. A fixture that fires for another fixture's reason proves nothing about its own gate | **RED** — `tools/check_no_sources.js` does not exist. Owner: The Systems Engineer, 2.14. Close: the check lands and the five runs are observed individually |
+| CON-3 | The containment fixtures never touch the real tree | Tree hash of `literature/`, `_intake/` and `lsei/` before and after the whole fixture run: identical. Fixtures live under `cr_scratch/fixtures/` and nowhere else | Plant `x.pdf` in `oracle/` to test the open path, and forget to remove it. The probe for an ignore hole becomes an actual PDF in the repository, in the one directory where nothing would hide it. This is `MUT-5` applied to containment, and containment fixtures are the ones that plant real carriers | **RED** — no fixtures yet. Owner: The Systems Engineer, 2.14. Close: the fixture tree lands under `cr_scratch/fixtures/` and the hashes match |
+| CON-4 | The hook is **wired**, not merely committed | `core.hooksPath` resolves to the committed hook directory, and the file at `<hooksPath>/pre-commit` is the committed `tools/githooks/pre-commit` — compared by content, not by existence | Commit the hook and never set `core.hooksPath`. Hooks are not cloned, so every fresh clone has a committed hook that never runs, and every check wired to `pre-commit` silently never fires. `CHK-10` is the trigger for the whole containment chain; unwired, it is `CHK-03` with a script behind it | **RED** — 2.14 is not built. Owner: The Systems Engineer, 2.14. Close: `CHK-29`'s HK-1/HK-2 observed passing from a fresh clone |
+| CON-5 | `git hook run pre-commit` reaches `CHK-10`, observed | The invocation is run once and `CHK-10`'s dispatch line appears in its output, naming the rows it dispatched in row order | Assert the wiring by reading `check_register.md` instead of running the hook. The register would then be asserting itself — it is the document that claims what runs — and `CHK-09` exists precisely because a closed list is only closed while something checks it | **RED** — depends on `CON-4`. Owner: The Systems Engineer, 2.14. Close: the invocation is run and the dispatch observed |
+| CON-6 | **The reentrancy fixture.** `git hook run pre-commit` from inside a dispatched check terminates | Run `CHK-10` with a row that invokes `git hook run pre-commit`, and assert the recursion depth is **bounded and reported**. Either a reentrancy guard fires and the inner invocation is refused, or the run is refused outright — but the depth is never left to the operating system | **This is the live one and it has been built and watched.** `CHK-10` dispatches every row naming `pre-commit`; `CHK-09` asserts `git hook run pre-commit`; that re-enters `CHK-10`. **Unbounded, on every commit** — measured at the 1.5/1.13 review. R-2 split the row so the cycle does not exist today, but `git hook run` still has no reentrancy guard and sets no environment marker, so the NEXT row anyone adds that names `pre-commit` and shells out re-creates it. The mutation is: add one such row | **RED** — no guard and no marker exist. Owner: The Systems Engineer, 2.14. Close: `git hook run` from inside a dispatched check is refused or bounded, and the bound is printed |
+| CON-7 | **No assertion invokes the event it asserts** | For every containment assertion: the thing that triggers the check and the thing that observes it are different processes. Asserted structurally on the assertion set, by grepping each assertion for an invocation of its own trigger: zero hits | Prove the hook fires by having the assertion run the hook. It then passes on every run including the runs where the hook is unwired, because the assertion supplied the invocation the hook was supposed to supply. `check_register.md` §5.1 and `CL-8(a)`; the `CHK-09`/`CHK-10` recursion is what this looks like when it also loops | **RED** — the assertion set does not exist to grep. Owner: The Systems Engineer, 2.14, with me as the proving seat. Close: the set lands and the grep returns zero |
+| CON-8 | An empty stage reports its scope **and** its exit code, together | Invoked with nothing staged — which is how `git hook run` invokes it — the check exits **0** AND prints the count of files it scanned, which is **0**. Both, on the same line, so neither can be read without the other | Print `OK, no source files found` and exit 0. Every `git hook run` then reports a pass it did not earn, and the assertion suite that installs the hook and invokes it to prove it fires reads that pass as proof. `PDF-16`'s clause may not be relaxed and this is the runnable form of it | **RED** — the check does not exist. Owner: The Systems Engineer, 2.14. Close: the empty-stage run is observed with both figures |
+| CON-9 | The check is reached **through the hook**, not only by hand | Stage a `%PDF` file named `x.md` and attempt a real commit in a scratch clone. The commit is REFUSED. Asserted end to end, from `git commit`, not from `node tools/check_no_sources.js` | Test only by invoking the script directly. Every `PDF` row passes and the commit path is untested — which is the only path that matters, because a check nobody's commit reaches is a check that protects nothing. `oracle/tests/` is outside every declared scan root and this suite has no runner, so "we ran it by hand" is the default state, not the exception | **RED** — depends on `CON-4`. Owner: The Systems Engineer, 2.14. Close: a scratch-clone commit is observed refused |
 
 ---
 
@@ -340,9 +481,9 @@ reconciles.
 
 | Slot id | Sub-step | Owner | Opens when | May add | May **not** weaken | Fill state |
 |---|---|---|---|---|---|---|
-| **SLOT-A / 2.4** | Merge assertions | The Engineer (written); The Software Engineer (proves each can fail, before 2.5 runs) | 2.2 and 2.3 have landed — the assertions are parameterized on the dispositions and the folder assignment | Assertions on merge disposition per pair, on the primary/secondary call, on folder placement, and on the refusal behaviour for an unresolved collision | **CRP-4 and CRP-5 may not be narrowed to a case-insensitive rule.** No test may move from RED to green without its named close condition being met. No test may be deleted; a test believed wrong is argued, not removed | **EMPTY** |
+| **SLOT-A / 2.4** | Merge assertions | **The Software Engineer (written)**; The Engineer executes 2.5. Reassigned by the author 2026-08-28 under `SLT-7`/`SLT-8` | 2.2 and 2.3 have landed — the assertions are parameterized on the dispositions and the folder assignment | Assertions on merge disposition per pair, on the primary/secondary call, on folder placement, and on the refusal behaviour for an unresolved collision | **CRP-4 and CRP-5 may not be narrowed to a case-insensitive rule.** No test may move from RED to green without its named close condition being met. No test may be deleted; a test believed wrong is argued, not removed | **FILLED (12 tests, MRG-1…MRG-12, §7.1, 2026-08-28).** Written against the declared column contract while `cr_scratch/merge_plan.tsv` did not exist, then RUN against it when it landed the same day: **3 green, 1 `H`, 8 RED, on real data.** `SLT-7` discharged for the five rows observed failing and the three observed passing; NOT discharged for the four that assert on the merge command, which does not exist. `CRP-4`/`CRP-5` unchanged and un-narrowed; `MRG-9`/`MRG-10` add the §7 dedup-key scope beside them and found **6 collisions**. `MRG-4` is a **contract collision** awaiting a ruling — see §11.3 |
 | **SLOT-B / 2.10** | PDF-pull assertions | The Engineer | 2.5 has landed and the taxonomy folders exist | Assertions on the T1–T4 tiers, on the hand-queue population, on the pulled byte count against the known answer of 224,042,382 bytes, and on the orphan report | **PDF-11's byte-and-unit clause may not be relaxed to a bare "MB".** T3 and T4 may not acquire a further automatic tier; adjacency produced 2,024 candidate pairings and matched `un-1967-outer-space-treaty` to thirteen PDFs | **EMPTY** |
-| **SLOT-C / 2.13** | Containment assertions | The Software Engineer, with The Systems Engineer on the bootstrap half | Immediately — it depends on no merge output | The five fixtures, the bootstrap wiring assertion, and the `git hook run pre-commit` invocation check | **PDF-2 may not be closed by scoping the rule back to `literature/`.** The empty-stage clause of PDF-16 may not be relaxed. No assertion may invoke the event it asserts — CL-8(a) and §5.1, and the CHK-09/CHK-10 recursion is why | **EMPTY** |
+| **SLOT-C / 2.13** | Containment assertions | **The Software Engineer (written); The Systems Engineer builds 2.14.** Reassigned by the author 2026-08-28: the two were one seat and are now two | Immediately — it depends on no merge output | The five fixtures, the bootstrap wiring assertion, the `git hook run pre-commit` invocation check, and a reentrancy fixture | **PDF-2 may not be closed by scoping the rule back to `literature/`.** The empty-stage clause of PDF-16 may not be relaxed. No assertion may invoke the event it asserts — CL-8(a) and §5.1, and the CHK-09/CHK-10 recursion is why | **FILLED (9 tests, CON-1…CON-9, §8.1, 2026-08-28).** All nine RED: `tools/check_no_sources.js` and the hook wiring do not exist. `CON-1` makes `PDF-2`'s scoping prohibition mechanical; `CON-8` is `PDF-16`'s empty-stage clause in runnable form; `CON-7` asserts the no-self-invocation rule structurally and `CON-6` is the reentrancy fixture |
 | **SLOT-D / 2.15** | Register assertions | The Software Engineer | 2.5 and 2.16 have landed | Post-merge L0–L5 and B1–B7 runs against the merged corpus root, the CHK-03/CHK-05 consolidation into CHK-04, and the `H`-row known-answer checks | **REG-8's uniqueness clause may not be dropped back to "resolves".** The consolidation may not be deferred again: CHK-03 sat on a gate with `on_failure: none` for eleven sub-steps and was unwired at R-2 rather than fixed | **EMPTY** |
 
 **Live position, not withdrawn.** 2.15 is the wrong date for the CHK-03/CHK-05 consolidation. A check
@@ -362,6 +503,91 @@ disagreement rather than relitigating it here.
 | SLT-6 | A declined slot names a reason and an owner | `DECLINED` carries both, in the cell | Write `DECLINED` bare; a declined amendment and a forgotten one are then indistinguishable, which is AM-121's shape | green |
 | SLT-7 | 2.4's assertions are proved able to fail **before** 2.5 runs | The gate: every SLOT-A assertion is run against a deliberately broken fixture and observed red, and the observation is recorded with its date, before the merge executes | Run 2.5 first. 2.4's assertions are written by the seat that executes 2.5 — arm 2b by construction, which accounted for seven of Step 1's nine relay errors and every wrong verdict the step produced | green |
 | SLT-8 | The proving seat is not the writing seat | For each slot, the seat that proves the assertions can fail is not the seat that wrote them. Asserted on the recorded owner pair | Let one seat do both; the instrument is then verified by the hand that built it, once, and the first output is used as a result | green |
+| SLT-9 | A slot filled against an artifact that does not exist says so, in the fill state | A `FILLED` state whose assertions have no artifact to run against names that fact and names what is missing. It is not `DECLINED` — the tests exist and are checkable the moment the artifact lands — and it is not a silent green | Write `FILLED (12 tests)` for `SLOT-A` with no note. A reader then believes twelve merge assertions guard 2.5, when what exists is twelve assertions guarding a file nobody has written. **This row exists because filling `SLOT-A` before its opening condition was met is exactly what the wave asked for, and the honest form of that is a state that admits it** | green |
+
+---
+
+### 11.2a The `PTH-9` relocation executed mid-wave, and `PTH-13` caught a live hard failure
+
+`literature/NAMING.md` → **`oracle/NAMING.md`**, by The Systems Engineer, between read-digest
+`ef803a7a63cf24a8` and `d77ca1899f73b455`. All four rows run against the completed move:
+
+| Row | Result | Status |
+|---|---|---|
+| **`PTH-9`** | Zero `.md` at depth 1 under `literature/`. The walker no longer returns the naming contract as a corpus document | **green** — closed by observation, not by date |
+| **`PTH-12`** | Exactly one `NAMING.md` in the repository. Moved, not copied; no compatibility copy left behind | **green** |
+| **`PTH-13`** | **RED, and it caught a real hard failure the same hour it was written.** Three live citations of the old path survive: `oracle/MANIFEST.tsv`, `tools/merge_identity.js`, `lunar-oracle-gameplan.md`. The manifest one is the mutation this row names, verbatim — **`FAIL MF-1 row literature/NAMING.md is promoted but no file exists at that path`**, a hard failure that did not exist before this wave. `COUNTING_RULE.md` and `oracle/bootstrap_contract.md` were repointed correctly | **RED** — 3 live citations. Owner: The Systems Engineer for the manifest row and `merge_identity.js`. Close: live count zero and `MF-1` green |
+| **`PTH-14`** | `oracle/NAMING.md` is NOT ignored and is tracked. **The failure mode the ruling created did not occur** — he moved it under `oracle/`, which carries no deny rule, rather than under a deny-scoped path | **green** |
+
+**`PTH-13` is the row that earned its place.** I wrote it on the argument that a relocation which
+breaks `MF-1` is a relocation nobody finished; it broke `MF-1` within the hour, and the assertion
+names the file, the row and the reason rather than leaving somebody to diff a hard-failure count that
+also moved for three unrelated reasons that day.
+
+**And the `M13` consequence predicted in §0.1 arrived with the move.** Measured before: 5 findings
+over 87 files, **1 excluded** as `literature/**/*.md` — that one being `NAMING.md`. Measured after:
+5 findings over 99 files, **0 excluded**. `NAMING.md` has re-entered `M13`'s population because the
+exclusion is keyed on the PATH and not on the document. Correct, and nobody asked for it.
+
+### 11.3 The `asserted_against` list, and the criterion changes this fill made
+
+**The list is the trigger for The Manager's seam call, so it has to exist before there is anything to
+put in it.** The rule: every `MRG` row records the `merge_plan.tsv` row ids it was asserted against
+and the `rev` those rows carried at the moment of assertion. If any listed row is later revised —
+`rev` bumped on `disposition`, `primary_secondary` or `target_folder` — the seam call fires and W1
+splits, per The Manager's threshold, regardless of the Block 2 churn figure.
+
+**The table landed mid-deliverable and both moments are recorded, which is the read-digest doing its
+job on its own author.** `cr_scratch/merge_plan.tsv` did not exist at read-digest `e06bc06118fa6218`
+and did exist at `ef803a7a63cf24a8`. **The twelve rows were written against nothing and then run
+against something**, both on 2026-08-28, and the two states are distinguished by digest rather than
+by memory. Premise P1 was false when measured and true an hour later; neither statement corrects the
+other.
+
+**All 176 rows asserted against, at `rev` as committed.** Block 1 rows 1–117, Block 2 rows 1–59.
+Five rows carry `rev > 1` (churn 5/59 = 8.47%, under The Manager's 15%) and all five carry a `basis`.
+**The seam call's side condition is now live: any revision to any of these 176 rows fires it.**
+
+| `MRG` row | Result against `merge_plan.tsv` @ `ef803a7a63cf24a8`, 2026-08-28 | Status |
+|---|---|---|
+| **MRG-1** | 17-column header row present, 176 data rows, **0 rows with a wrong field count**. But **the size declaration is in a COMMENT** — `# rows = 176 block1 = 117 block2 = 59` — and there is no `^H` row. A comment is not parsed by anything. The open-column-set hole IS closed by the header row; the self-declared size is not | **RED** — comment, not `H` row. Owner: The Engineer. Close: an `H` row |
+| **MRG-2** | Seven dispositions, every row in the set, zero blanks: `LIFT` 52, `LIFT-IDENTICAL` 65, `LIFT-LSEI-SCRUB` 5, `LIFT-LSEI-STEP0` 3, `HOLD-NOID` 34, `HOLD-PAIR` 16, `HOLD-FALSEMERGE` 1. **The set is declared in a comment, not in a legend a checker reads** | **RED** on the legend only; the data passes |
+| **MRG-3** | 176 rows against the 176-key union; 117 + 59 = 176 closes | **green** |
+| **MRG-4** | **CONTRACT COLLISION, and it is the finding of this fill.** His `primary_secondary` means *which corpus copy supplies the bytes* — `sole-lsei` 57, `sole-intake` 24, `both-identical` 87, `lsei-primary` 8 — and **not** the pair primary. He defers pair adjudication to the `DUP-xx` register rows, deliberately and correctly. So: **8 `pair_id` groups, and 0 of them have exactly one member marked primary**, because that is not what the column carries. **My row asserts a property of a column that has the name I expected and a different meaning.** Not his defect and not mine: two seats, one column name, two contracts — `CHK-13` again, caught this time | **RED, pending a ruling on which artifact carries the pair call.** See §11.3 note |
+| **MRG-5** | Not machine-checkable from the table alone: `basis` is prose. The five differing same-name pairs are `HOLD-PAIR`/`HOLD-FALSEMERGE` and none is dispositioned by size in the text | **H** — a human gate, and it is a reading, not a script |
+| **MRG-6** | **0 rows** where `target_path` disagrees with `literature/` + `target_folder` + `key` | **green** |
+| **MRG-7** | The table's own header states it: *"THE MERGE GLOB IS `*.md`, NEVER `*`. lit/ holds 115 non-`.md` siblings and a bare `*` sweeps them into retrieval."* Stated; the merge command it governs does not exist yet | **RED** — no command to assert against. Owner: The Engineer, 2.5 |
+| **MRG-8** | No merge command exists | **RED** — Owner: The Engineer, 2.5 |
+| **MRG-9** | **6 within-folder `dedup_key` collisions**, `L0` rows excluded. Three are `L1` DOIs shared by two rows, one is an `L2` landing page shared by **three** — `nasa.gov/moontomarsarchitecture` | **RED** — 6 findings, and each needs adjudication. Owner: The Engineer |
+| **MRG-10** | **6 whole-tree collisions, the same 6. All six are same-folder, so `MRG-10` finds nothing `MRG-9` missed — TODAY.** That is not the assertion passing vacuously; it is the two scopes agreeing at this placement. **Two reviewers are cutting folder assignments this wave.** Move one member of any of the six to another folder and `MRG-9` goes green while the collision survives. `A7` is general for exactly this, and the window is open right now | **RED** — 6 findings. The vacuous-pass risk is live, not theoretical |
+| **MRG-11** | **5 rows with `rev > 1`, 0 of them with an empty `basis`.** Append-only discipline held | **green** |
+| **MRG-12** | No merge command exists | **RED** — Owner: The Engineer, 2.5 |
+
+**Three green, one human gate, eight red — and `SLT-7` is discharged for the four rows that had
+something to run against.** `MRG-3`, `MRG-6` and `MRG-11` were observed passing and `MRG-1`, `MRG-2`,
+`MRG-4`, `MRG-9`, `MRG-10` were observed failing on real data, dated 2026-08-28, before 2.5 runs.
+**The four that assert on the merge COMMAND — `MRG-7`, `MRG-8`, `MRG-12` and half of `MRG-5` — remain
+undischarged**, because the command does not exist, and I am not recording them as proved.
+
+**`MRG-4` needs a ruling and it is not mine to make.** Either the pair primary is a column of this
+table, or it is a `DUP-xx` register field and `MRG-4` must assert on the register instead. His design
+is defensible — *"this table never adjudicates a pair"* — and my row was written on the brief's
+phrase "the primary/secondary call", which turns out to name two different things. Routed to The
+Manager in `## Not mine`; **I have not rewritten `MRG-4` to fit whichever answer is convenient**, and
+it stays red until somebody rules.
+
+**Criterion changes made by this fill, declared here so `SLT-4` sees them.** `SLT-4` forbids
+narrowing a criterion while filling a slot, and it is asserted on the criterion strings, so three
+strings changed and every one must be accounted for:
+
+| Row | Change | Weakened? |
+|---|---|---|
+| `FLD-7` | Grep scoped to executable code; a `FIELDS.tsv` mutation assertion added | **No — strengthened.** The old string would have gone red on a generated cache. Two clauses now hold where one did |
+| `FLD-11` | Three columns → four | **No — strengthened.** One more column must hold. My three-column form was wrong against the landed generator specification |
+| `PDF-2` | Status corrected: four open probe paths → five | **No — corrected upward.** The pass criterion now names all eight probes. The old cell understated my own measurement |
+
+Nothing was narrowed, nothing moved RED to green, nothing was deleted. `PTH-9` stays RED and gained
+`PTH-12`, `PTH-13`, `PTH-14` rather than being closed by the ruling that resolved its question.
 
 ---
 
@@ -426,3 +652,24 @@ It does not run. `oracle/tests/` is outside every declared scan root, no runner 
 `merge-gate` trigger two of its load-bearing rows name has no dispatcher. §0.2 states that and routes
 it to 2.20. Until then this is a contract that a person applies, and saying so is cheaper than
 discovering it at the gate.
+
+**And after the Wave 1 fill it still does not run, which is now worse rather than the same.** At 148
+tests nothing invoked, this was a document. At 175, with `SLOT-A`'s twelve rows standing between the
+disposition table and the merge and `SLOT-C`'s nine standing between the hook and the corpus, it is a
+document that three sub-steps are relying on as a gate. Two specific holes, both already routed and
+neither mine to close:
+
+- `oracle/tests/corpus_suite.md` **has no `oracle/MANIFEST.tsv` row.** `tools/manifest.js --unlisted`
+  reports it, along with `tools/check_registers.js` and `tools/manifest.js` itself. `AMC-3` requires
+  every amendment target to be a manifest row, so an amendment against this file has nowhere to be
+  recorded — which is `AM-129`'s pattern and `AM-144` is its first instance to block a row rather
+  than merely be noted. `MANIFEST.tsv` is not my write set; routed.
+- **`SLT-7` cannot be discharged for `SLOT-A`.** It requires every assertion observed RED against a
+  deliberately broken fixture, dated, before 2.5 runs. There is nothing to break: the artifact does
+  not exist. The twelve rows are RED for the honest reason and not for the asserted one, and the
+  difference matters — a test red because its subject is missing has never been shown able to go
+  green, so it has never been shown to be a test. `SLT-9` is the row that makes this state visible in
+  the fill cell rather than only here.
+
+A suite nobody invokes is a document. I have said that about somebody else's row, I said it about
+mine at 148, and adding 27 tests did not change it.

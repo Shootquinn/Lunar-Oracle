@@ -147,7 +147,7 @@ exist, and a path existing is not evidence that the content this project reads i
 
 Four groups, in order:
 
-1. **Configuration.** BC-6 through BC-9. Idempotent writes, asserted every session.
+1. **Configuration.** BC-6 through BC-9, and BC-20. Idempotent writes, asserted every session.
 2. **Currency.** BC-10, BC-11. Fetch explicitly, then record three refs per working copy.
 3. **Content.** BC-12 through BC-16. Markers inside files, never the files alone.
 4. **Shelves.** BC-17, BC-18, BC-19.
@@ -239,7 +239,7 @@ assertion, and what a failure does. `<copy>` ranges over `cr-agents` and `lsei`.
 | BC-4 | Node is available. | `node --version` | — | Record; consumed by §6 — origin `app` is unavailable without it |
 | BC-5 | The repository root fits the allowance: `abspath(root).length <= 150 [Q-ROOT-ALLOWANCE]`, measured on the **long-name** form of the path, never the 8.3 short form. | `node -p "path.resolve('.').length"` run from the root | A clone succeeding into a root over the allowance, or failing on path length inside it. Either falsifies the budget, not the assertion. | Record; gates Phase 3 |
 
-**BC-5 runs every session**, which is a deliberate strengthening of `literature/NAMING.md` A4's
+**BC-5 runs every session**, which is a deliberate strengthening of `oracle/NAMING.md` A4's
 "once, at bootstrap." A repository directory can be moved or renamed between sessions and a check
 that ran once cannot notice. It costs one string length.
 
@@ -255,7 +255,7 @@ The bootstrap writes local git configuration and nothing else. The set of keys i
 |---|---|---|---|---|
 | BC-6 | Push is disabled on each working copy. | `git -C <copy> remote set-url --push origin DISABLED` then `git -C <copy> remote -v` shows `DISABLED (push)` | A working copy whose push URL is live at the start of any session after the first. | Report; retry once; if it will not take, mode `present-but-wrong` |
 | BC-7 | `core.longpaths` is set on this repository and on each working copy. | `git config core.longpaths true`; same with `-C <copy>` | A clone or fetch into a root inside the allowance failing on path length **with the setting on** — which falsifies the budget. A run in which the setting changes no outcome inside the allowance falsifies the clause's usefulness and it is deleted. | Report only |
-| BC-8 | `core.hooksPath` on **this repository** points at the committed hook directory. | `git config core.hooksPath tools/githooks` | A committed check that does not fire on the event the check register says it fires on. | Report; the check register's mechanisms are unwired until it takes |
+| BC-8 | `core.hooksPath` on **this repository** points at the committed hook directory, **and that directory holds executable hooks**. | `git config core.hooksPath tools/githooks`, then `git hook run pre-commit` for the resolver and `git ls-files -s tools/githooks/` for the modes | A committed check that does not fire on the event the check register says it fires on. **Two ways this happens with the config value set correctly, both measured:** the directory is absent or empty, in which case `git config` exits 0, reads back correctly, and the next commit fires nothing; or the hooks are committed at `100644`, in which case they run here (`core.filemode` is `false` on the authoring machine) and are inert on a Linux clone. | Report; the check register's mechanisms are unwired until it takes |
 | BC-9 | `core.hooksPath` is **not** set on either working copy. | `git -C <copy> config --get core.hooksPath` returns empty | A borrowed repository running this project's scripts. | Unset it; report |
 
 BC-6 and BC-7 are the only keys written into a working copy. They are local configuration, not
@@ -272,6 +272,23 @@ committed script under `tools/`, and `core.hooksPath` is how a clone acquires th
 contract states the wiring; the check register enumerates what is wired; a later sub-step installs it.
 **A contract is not an installation**, and BC-8 asserting successfully is not evidence that any check
 exists.
+
+**THE LATER SUB-STEP WAS 2.14, AND IT HAS NOW RUN.** `tools/githooks/pre-commit` (`CHK-10`) and
+`tools/githooks/post-commit` (`CHK-11`) are committed, both at mode `100755`, and `core.hooksPath` is
+set. The paragraph above stays exactly as it was written, because it is still true and it is the
+reason the installation is checkable at all: what changed is the state of the world, not the contract.
+
+Three things were measured on the day it landed, and each is the kind that passes on the authoring
+machine and fails elsewhere. **First**, both hooks were staged at `100644` on the first `git add` —
+`core.filemode` is `false` here — and would have run in this working tree and been inert on a Linux
+clone, with every assertion *about* the wiring still green. `git update-index --chmod=+x` is the fix
+and HK-2 is the assertion. **Second**, `core.autocrlf` is `true` here and there is no
+`.gitattributes`: the staged blobs are LF today only because of one contributor's local setting, and
+a `#!/usr/bin/env node` shebang stored with CRLF fails on Linux with `bad interpreter`. That is the
+same trap as the mode, one layer down, and closing it needs a `.gitattributes` this sub-step does not
+own. **Third**, the first execution of HK-1 was **red**, and for none of the five reasons HK-1 lists:
+the resolver worked perfectly and a dispatched row failed on accepted repository state. See
+`check_register.md` §5 HK-1 and the `CHK-14` authority cell.
 
 ### Phase 4, group 2: currency
 
@@ -311,6 +328,24 @@ input.
 | BC-17 | The summary shelf holds conforming files. | count of `literature/*/*.md` matching `NAMING.md`'s summary regex is greater than zero | A `literature/` holding only a `README.md`, passing a non-empty test, and holding no corpus. | Origin `literature` unavailable (§6) |
 | BC-18 | The findings shelf holds conforming files, when it exists. | count of `findings/*.md` matching `NAMING.md`'s findings regex is greater than zero | A shelf assertion satisfied by a non-conforming file the retrieval layer cannot reach. | Origin `findings` unavailable (§6) |
 | BC-19 | Whether source PDFs are present in this install. | `test -d literature/_pdf` and it holds at least one file | — | Recorded as a fact, not a failure |
+
+### Phase 4, group 5: the bypass ledger
+
+| Id | Asserts | Command | Falsified by | On failure |
+|---|---|---|---|---|
+| BC-20 | Whether any commit in this working copy bypassed the pre-commit hooks. | `test -s .git/hooks-bypassed`; when non-empty, report the line count and the most recent entry | A commit made with `--no-verify` that nobody ever learns about. The ledger is **per install and never cloned** — it lives under `.git/` — so a bypass is visible only to the install that made it, and only if something reads the file. | Report; never blocks. The commits already exist |
+
+BC-20 exists because `check_register.md` HK-3 obliges the bootstrap to report a non-empty
+`.git/hooks-bypassed`, and **until 2.14 no `BC-` assertion said so.** HK-3 is implemented by `CHK-11`,
+which writes the ledger; the reading half was specified in one document and owned by another, and an
+obligation stated in the register about the bootstrap is not an obligation the bootstrap performs.
+That is the same shape as E1 one level up: the mechanism existed and nothing invoked it.
+
+**It reports and never blocks, and the reason is not squeamishness.** By the time anything reads this
+file the commits it names are in the history. Blocking a later session for an earlier session's
+bypass punishes the wrong run. What the report is for is that `--no-verify` is a legitimate operation
+with an illegitimate failure mode: it skips *every* `pre-commit` row at once, so one deliberate
+bypass of one inconvenient check silently carries the containment check out with it.
 
 BC-17 failing on a fresh clone means the clone of Lunar Oracle is broken, and the report says so
 rather than blaming the bootstrap. **The bootstrap did not fail; it found a repository missing its own

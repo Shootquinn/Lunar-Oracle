@@ -54,10 +54,18 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+/* Bumped whenever a clause's PATTERN or POPULATION changes, because a figure taken under
+ * one version is not comparable with a figure taken under another and nothing else in the
+ * output records which version ran. 2.19-1 is the first stamped version and carries the
+ * M13 and M15 changes of AM-137/138/141. */
+const TOOL_VERSION = '2.19-1';
 
 const ROOT = process.env.QJS_ROOT ? path.resolve(process.env.QJS_ROOT) : process.cwd();
 const argv = process.argv.slice(2);
 const has = f => argv.indexOf(f) !== -1;
+const argVal = f => { const i = argv.indexOf(f); return i === -1 ? null : argv[i + 1]; };
 
 const OPT = {
   check: has('--check'),
@@ -109,6 +117,36 @@ function declaredFileSet() {
   const outp = [];
   for (const f of files) { const r = rel(f); if (!seen[r]) { seen[r] = 1; outp.push(r); } }
   return outp.sort();
+}
+
+/* ---------------------------------------------------------------- read-digest
+ * COUNTING_RULE.md section 3 rule 11 requires a failure count to carry its command. It did
+ * not require the count to carry its MOMENT, and that is the hole this closes.
+ *
+ * Measured, not hypothetical: across Step 2 Cycle A the hard-failure count of this very
+ * tool was reported as 12, then 13, then 14, then 12 again, by three seats and the
+ * orchestrator. Every one was a correct measurement. Every one was of a different declared
+ * file set, because the seats were writing into that set while measuring it -- disjoint
+ * WRITE sets are not disjoint READ sets, since this tool walks the whole declared set and
+ * not the caller's write set. Not one figure carried its moment and no two can be
+ * reconciled from what is written.
+ *
+ * So: every run prints the count of files it read and a digest over (path, size, mtime) of
+ * exactly that set. Two figures carrying different digests are NOT COMPARABLE, and
+ * --compare <digest> makes the tool say so rather than a person.
+ *
+ * mtime is in the digest deliberately. A half-written file that is later completed to the
+ * same byte length would otherwise digest identically, and the 12-13-14-12 sequence was
+ * produced by exactly that: reading a colleague's file mid-write. */
+function readDigest(relPaths) {
+  const h = crypto.createHash('sha256');
+  for (const r of relPaths.slice().sort()) {
+    let st;
+    try { st = fs.statSync(path.join(ROOT, r)); }
+    catch (e) { h.update(r + ' MISSING\n'); continue; }
+    h.update(r + ' ' + st.size + ' ' + st.mtimeMs + '\n');
+  }
+  return h.digest('hex').slice(0, 16);
 }
 
 /* ---------------------------------------------------------------- parsing */
@@ -217,6 +255,24 @@ const FAIL = m => { hardFail++; out.push('FAIL ' + m); };
 
 const files = declaredFileSet();
 if (OPT.filesOnly) { console.log(files.join('\n')); process.exit(0); }
+
+/* The moment this run was taken. Printed before any clause runs, so the stamp exists even
+ * if a clause throws. */
+const READ_DIGEST = readDigest(files);
+const FLAGSTR = argv.filter(a => /^--/.test(a) && a !== '--compare').sort().join(' ') || '(none)';
+say('NOTE', 'tools/quantities.js version ' + TOOL_VERSION + ' flags ' + FLAGSTR);
+say('NOTE', 'read-digest ' + READ_DIGEST + ' over ' + files.length +
+  ' files (path,size,mtime); this digest is the moment, and a figure from this run is ' +
+  'comparable only with a figure carrying the same digest');
+{
+  const prior = argVal('--compare');
+  if (prior) {
+    if (prior === READ_DIGEST) say('NOTE', 'COMPARABLE: --compare ' + prior + ' equals this run\'s read-digest');
+    else say('NOTE', 'NOT COMPARABLE: --compare ' + prior + ' is a different declared file set from ' +
+      READ_DIGEST + '. Two counts across these two digests are two correct measurements of ' +
+      'two different moments and must not be reconciled, differenced, or quoted as one figure.');
+  }
+}
 
 function markerRanges(lines) {
   const r = [];
@@ -756,33 +812,75 @@ function m5() {
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
   'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
   'eighteen', 'nineteen', 'twenty'];
-function m13() {
-  let k = 0;
-  for (const b of blocks) {
+/* AM-137 (contract, The Designer, applied at COUNTING_RULE.md section 9 M13) and AM-138
+ * (this tool, mine). Three changes, and they are deliberately separable so that fixing the
+ * tool does not read as reopening the ruling.
+ *
+ * AM-137, the POPULATION: literature/star-star/*.md leaves M13's scan, unconditionally, not
+ * behind a flag. M13 returned 43 findings over the staged merged corpus and the precision
+ * was 0 of 43. The cut is the CLAUSE and not the FILES: M8, M9, M14 and M15 each returned
+ * zero over the same 176 files, so excluding the tree from LINT would remove four clauses
+ * from a population that produces nothing from them. A corpus summary is our file holding
+ * somebody else's prose; the apparatus we write into it is governed, the transcribed body
+ * is not, because its numerals predate this project's quantities.
+ *
+ * AM-138 defect 1, the VALUE ADMISSION: parseInt("7.73") returns 7, so Q-REG-IDF-LOSS-FULL
+ * -- a percentage with two decimal places -- entered an integer-keyed comparison at a value
+ * it does not have, and every one of its 43 findings descends from that. Admit only a value
+ * that is an INTEGER AS WRITTEN.
+ *
+ * AM-138 defect 2, the WORD BOUNDARY: \b sits between "." and "7", so \b(seven|7)\s+percent
+ * matched the tail of any decimal ending in .7 -- "an average cost overrun of 44.7 percent"
+ * was 36 of the 43. Refuse a numeral whose preceding character is a decimal point.
+ *
+ * The regression fixture is REG-M13-1 in oracle/tests/corpus_suite.md and it must produce
+ * NOTHING: Q-REG-IDF-LOSS-FULL at value 7.73 against the line "an average cost overrun of
+ * 44.7 percent". It is checked below, in this file, by --selftest. */
+const M13_EXCLUDE = /^literature\/.*\.md$/;
+function m13Sites(fileLines2, blocks2, sayFn) {
+  let k = 0, scanned = 0, admitted = 0;
+  for (const b of blocks2) {
     if (!/^fixed\b/.test(String(b.fields.class || '').trim())) continue;
-    const v = parseInt(String(b.fields.value || '').trim(), 10);
+    /* AM-138 defect 1: integer as written, not parseInt's prefix. */
+    const raw = String(b.fields.value || '').trim();
+    if (!/^-?\d+$/.test(raw)) continue;
+    const v = parseInt(raw, 10);
     if (!isFinite(v) || v < 0 || v > 20) continue;
     const noun = String(b.fields.unit || '').split(/[,;(]/)[0].trim().split(/\s+/).slice(0, 3).join(' ');
     if (!noun) continue;
+    admitted++;
     const nounRe = noun.split(/\s+/).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+');
     let re;
     try { re = new RegExp('\\b(' + WORDS[v] + '|' + v + ')\\s+' + nounRe, 'gi'); } catch (e) { continue; }
-    for (const fl of fileLines) {
+    for (const fl of fileLines2) {
       if (fl[0] === b.file) continue;
+      if (M13_EXCLUDE.test(fl[0])) continue;            /* AM-137 */
       for (let i = 0; i < fl[1].length; i++) {
         const l = fl[1][i];
         re.lastIndex = 0;
         let m;
         while ((m = re.exec(l))) {
+          /* AM-138 defect 2: a numeral whose preceding character is a decimal point is the
+           * tail of a decimal, not a governed numeral. Checked on the character before the
+           * numeral itself, which is m.index because the numeral is the first group. */
+          if (m.index > 0 && l.charAt(m.index - 1) === '.' && /^[0-9]/.test(m[0])) continue;
           if (l.slice(m.index, m.index + 200).indexOf('[' + b.id + ']') !== -1) continue;
           k++;
-          say('LINT', 'M13 ' + fl[0] + ':' + (i + 1) + ' bare "' + m[0] + '" for ' + b.id +
+          if (sayFn) sayFn('LINT', 'M13 ' + fl[0] + ':' + (i + 1) + ' bare "' + m[0] + '" for ' + b.id +
             ' in a second file (W2-2; not in the contract as written)');
         }
       }
     }
   }
-  say('NOTE', 'M13 ' + k + ' bare-governed-numeral findings (W2-2\'s unmechanized lint)');
+  for (const fl of fileLines2) if (!M13_EXCLUDE.test(fl[0])) scanned++;
+  return { findings: k, scanned: scanned, admitted: admitted };
+}
+function m13() {
+  const r = m13Sites(fileLines, blocks, say);
+  const excluded = fileLines.length - r.scanned;
+  say('NOTE', 'M13 ' + r.findings + ' bare-governed-numeral findings over ' + r.scanned +
+    ' files, ' + excluded + ' excluded as literature/**/*.md per COUNTING_RULE.md section 9 M13; ' +
+    r.admitted + ' blocks met the integer-as-written value trigger');
 }
 
 
@@ -822,11 +920,38 @@ function m14() {
 /* COUNTING_RULE.md section 3 rule 12 and section 9 M15: the two boundaries that are files.
  * A relayed numeral in the accumulator or the gameplan carries its tag, or the seat that
  * wrote it did not run the operation. The other three boundaries are H7. */
-const RELAY_FILES = ['accumulator.md', 'lunar-oracle-gameplan.md'];
+/* AM-140 (contract) / AM-141 (this tool). The population was a two-element list in this
+ * source -- const RELAY_FILES -- which is exactly the thing somebody must remember to
+ * extend, and therefore the defect class arm 2a exists to remove. A LONGER HARD-CODED LIST
+ * REPEATS IT AT A LARGER SIZE, so the remedy is not three more strings.
+ *
+ * COUNTING_RULE.md section 9 M15 at version 3: the population is COMPUTED FROM A PATH RULE
+ * and is never enumerated here. The rule is accumulator.md, lunar-oracle-gameplan.md,
+ * cr_scratch/relay/star-star/*.md, oracle/VERIFIED.tsv. VERIFIED.tsv is in because The
+ * Manager's remedy names the verification record explicitly.
+ *
+ * Measured before it was specified, in a staged root: two relay files gives six findings;
+ * the computed set scans seven and gives six; the computed set with the relayed number
+ * minted as a block gives eight, and two of the new ones are live arm-2a relay errors in
+ * Wave 1 spawn prompts. Under the two-file population they do not appear at all.
+ *
+ * The relay directory may not exist yet. That is not an error and it is not a pass either:
+ * the census below reports the file count, so a population that quietly shrank to two is
+ * visible in the output rather than inferable from it. The Manager's close item 19 test is
+ * exactly that: if M15's file list at the Step 2 close is still two, arm 2a's remedy was
+ * never applied. */
+function m15Population(paths) {
+  return paths.filter(p =>
+    p === 'accumulator.md' ||
+    p === 'lunar-oracle-gameplan.md' ||
+    p === 'oracle/VERIFIED.tsv' ||
+    /^cr_scratch\/relay\/.*\.md$/.test(p));
+}
 function m15() {
   let k = 0, scanned = 0;
+  const pop = new Set(m15Population(fileLines.map(fl => fl[0])));
   for (const fl of fileLines) {
-    if (RELAY_FILES.indexOf(fl[0]) === -1) continue;
+    if (!pop.has(fl[0])) continue;
     scanned++;
     for (const b of blocks) {
       const cls = String(b.fields.class || '').split(/[\s;,]/)[0];
@@ -847,7 +972,14 @@ function m15() {
       }
     }
   }
-  say('NOTE', 'M15 ' + k + ' untagged relays across ' + scanned + ' relay files');
+  const declaredButUnread = m15Population(files).filter(p => !pop.has(p));
+  say('NOTE', 'M15 ' + k + ' untagged relays across ' + scanned +
+    ' relay files, computed from the section 9 M15 path rule and not enumerated in this source' +
+    (declaredButUnread.length ? '; ' + declaredButUnread.length + ' population paths were not parsed as text: ' +
+      declaredButUnread.join(' ') : ''));
+  if (scanned <= 2) say('LINT', 'M15 population is ' + scanned + ' files. The Manager close item 19: ' +
+    'if this is still two at the Step 2 close, cr_scratch/relay/ was never used and arm 2a\'s ' +
+    'remedy was specified but not applied. The clause is correct and the practice is not.');
 }
 
 /* ---------------------------------------------------------------- run */
@@ -869,8 +1001,57 @@ if (OPT.census) {
   }
   process.exit(0);
 }
+/* ---------------------------------------------------------------- --selftest
+ * AM-138's regression fixture, run rather than described. A fixture that lives only in a
+ * markdown table is a fixture nobody applies; MUT-2 of the corpus suite says a test whose
+ * mutation has never been run is unrun, not green, and that applies to my own remedy.
+ *
+ * Three cases, all in memory, touching no file:
+ *   S1  the AM-138 case itself: value 7.73 against "44.7 percent" -> must find NOTHING.
+ *       It fails on BOTH defects independently, so S2 and S3 isolate them.
+ *   S2  defect 1 alone: a non-integer value must never be admitted at its parseInt prefix.
+ *   S3  defect 2 alone: an integer value 7 must not match the tail of "44.7 percent",
+ *       but MUST still match a genuine bare "7 percent".
+ * S3's second half is the one that matters: a fix that suppressed the false positive by
+ * suppressing the clause would pass S1 and S2 and is caught only here. */
+if (has('--selftest')) {
+  const mk = (id, value, unit) => ({ id: id, file: 'FIXTURE.md', startLine: 1,
+    fields: { id: id, class: 'fixed', value: value, unit: unit } });
+  const line = t => [['OTHER.md', [t]]];
+  const cases = [
+    ['S1 AM-138 the filed case: 7.73 against "44.7 percent"',
+      [mk('Q-REG-IDF-LOSS-FULL', '7.73', 'percent, mean IDF loss')],
+      line('an average cost overrun of 44.7 percent'), 0],
+    ['S2 defect 1 alone: a non-integer value is not admitted at its parseInt prefix',
+      [mk('Q-X', '7.73', 'percent, mean IDF loss')],
+      line('a clean bare 7 percent with no tag'), 0],
+    ['S3a defect 2 alone: integer 7 does not match the tail of a decimal',
+      [mk('Q-Y', '7', 'percent, mean IDF loss')],
+      line('an average cost overrun of 44.7 percent'), 0],
+    ['S3b the clause still fires: integer 7 matches a genuine bare "7 percent"',
+      [mk('Q-Y', '7', 'percent, mean IDF loss')],
+      line('the loss was 7 percent across the corpus'), 1],
+    ['S4 AM-137: the same genuine hit inside literature/ is not scanned',
+      [mk('Q-Y', '7', 'percent, mean IDF loss')],
+      [['literature/isru-processing/x.md', ['the loss was 7 percent across the corpus']]], 0]
+  ];
+  let bad = 0;
+  for (const c of cases) {
+    const got = m13Sites(c[2], c[1], null).findings;
+    if (got === c[3]) console.log('OK ' + c[0] + ' -> ' + got + ' finding(s), expected ' + c[3]);
+    else { bad++; console.log('FAIL ' + c[0] + ' -> ' + got + ' finding(s), expected ' + c[3]); }
+  }
+  console.log('NOTE selftest ' + (cases.length - bad) + ' of ' + cases.length +
+    ' cases pass, tool ' + TOOL_VERSION);
+  process.exit(bad ? 1 : 0);
+}
+
 if (OPT.check) { m1(); m2(); m3(); m4(); m4pending(); m4derived(); m10(); m11(); m12(); m6m7(); }
 if (OPT.lint) { m5(); m8(); m9(); m13(); m14(); m15(); }
-say('NOTE', 'hard failures: ' + hardFail);
+/* The count carries its command AND its moment on the same line. Section 3 rule 11 required
+ * the first; the 12-13-14-12 sequence is what the second exists to prevent. A figure lifted
+ * off this line without the digest is not a figure, it is a number. */
+say('NOTE', 'hard failures: ' + hardFail + ' @ read-digest ' + READ_DIGEST +
+  ' over ' + files.length + ' files, tool ' + TOOL_VERSION + ', flags ' + FLAGSTR);
 console.log(out.join('\n'));
 process.exit(OPT.check && hardFail > 0 ? 1 : 0);

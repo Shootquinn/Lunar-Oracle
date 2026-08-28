@@ -1,5 +1,16 @@
 # NAMING.md — the filename and source-identifier contract
 
+> **RELOCATED at 2.20, 2026-08-28, by author ruling (PTH-9).** This file was `literature/NAMING.md`
+> and is now `oracle/NAMING.md`, beside the other contracts. It did not move for tidiness. The
+> retrieval walker returns every `.md` under the corpus root, so while it sat there it WAS a
+> retrievable literature source: after the merge it would have been one document among 176, the only
+> one whose content is rules rather than findings, and a question about naming or provenance could
+> resolve to it and be traced as if it were evidence. Measured before the move:
+> `check_corpus_collisions.js` reported `1 summaries` and the one was this file. After: `0 summaries`.
+> **It was moved and not renamed**, deliberately — the leaf name is cited in 177 places and only the
+> 84 that spell the full old path break, which is the difference between a routable debt and an
+> impossible sweep. Do not move it back, and do not "fix" the name to match its neighbours.
+
 **Status:** frozen at Step 1, sub-step 1.7. **Basis:** measured 2026-08-26 against the 152-file
 `lsei/literature/` working copy plus the 119-file `_intake/japanese-miracle/lit/`, a 176-name union
 under §1, plus the 19-file FA shelf. Counts here are provisional until sub-step 2.1 re-measures;
@@ -289,11 +300,74 @@ The filename is **never** the dedup key. It is not a unique address for a source
 one paper are two filenames, and the corpus has no mechanism that notices.
 
 ```
-1.  DOI                      the printed DOI, lowercased, "10." onward, no resolver prefix
-2.  publisher article URL    scheme and "www." stripped, query string and fragment removed
-3.  (identity, year, title)  normalized lead-author or issuer surname; four-digit year;
+1.   DOI                     the printed DOI, lowercased, "10." onward, no resolver prefix.
+                             NOT a mirror-minted DOI -- see clause (b)
+2A.  publisher article URL   scheme and "www." stripped, query string and fragment removed.
+                             MUST CARRY A PATH -- see clause (a)
+2B.  agency or grant number  an identifier printed in the artifact and issued by the body that
+                             published or funded it: NASA/TP-20250010956, ESDMD-001,
+                             NP-2026-04-6806-HQ, NTRS accession 20220004165, NASA grant
+                             80NSSC19K0964. Uppercased, internal whitespace removed -- clause (d)
+3.   (identity, year, title) normalized lead-author or issuer surname; four-digit year;
                              first six words of the title, lowercased, stopwords removed
 ```
+
+**WHY 2A AND 2B RATHER THAN A RENUMBERING.** Level 2B is new at 2.20 and it is inserted *between*
+the old levels 2 and 3, which is where The Engineer's 2.12 identity run found the hole. The obvious
+edit is to make the agency identifier level 3 and push the weak key to level 4. **That edit is
+forbidden here, and the reason is worth stating because it will be proposed again.** "Level 3" is
+cited across this corpus and across five Step 1 and Step 2 deliverables, and in every one of those
+citations it means *the weak key, whose match is a candidate*. Renumbering would leave every one of
+those sentences syntactically intact and semantically inverted: a document saying a pair "resolves at
+level 3" would, after the edit, be claiming a confirmation where it had recorded a candidate. **A
+silent inversion of an existing citation is a worse defect than an inelegant number**, and it is the
+same reasoning by which `AM-143` declined the 143-site check rename. Level 1 and level 3 are
+untouched. Every sentence written about "level 2" before today remains true of 2A.
+
+**The four clauses, and where they came from.** All four are The Engineer's, produced by the 2.12
+identity run over the 176-name union and routed to this section because §7 is not his to amend. They
+are supplied rather than debated: he was already writing in the empty slot, and an invention is
+evidence of demand.
+
+**(a) A level-2A URL must carry a path.** A bare host is not an address of a document; it is an
+address of a publisher. `merge_identity.js` already rejects a site root, and doing so removed **4 of
+9** false identifier collisions in its first run. The clause belongs beside "not a PDF-hosting
+mirror" because it fails for the same reason: neither string identifies the publication.
+
+**(b) A mirror-minted DOI is not a level-1 identifier.** ResearchGate's `10.13140/` prefix mints a
+DOI over somebody else's uploaded copy, so the string has the shape of a level-1 key and none of its
+authority. One live instance in this corpus, `colozza-2020`, whose **own citation block says the
+identifier is not publisher-registered** — the file knew, and the precedence did not. A mirror-minted
+DOI is refused at level 1 for exactly the reason a PDF-hosting mirror is refused at level 2A, and the
+resolver-URL clause already established the general form: **a string that looks like a higher key but
+was minted by someone other than the publisher hides the key that is genuinely absent.** Registrant
+prefixes are a list, not a rule, and the list is `10.13140/` today.
+
+**(c) An identifier held by more than one key is a candidate, not a confirmation.** This is the rule
+level 3 already carries, lifted to where it turns out also to be needed. The instrument cannot
+distinguish `nasa.gov/moontomarsarchitecture` used as an article address from the same string used as
+a **programme landing page**, and it over-merged once in six on exactly that: `nasa-data-gaps-acr25`
+prints the programme page and is a different document, a four-page white paper. So the test is not
+what the string looks like, it is **how many documents hold it**: any level-2A or level-2B identifier
+held by more than one union key drops to candidate and goes to a person. A confirmation is a claim
+that two files are one document, and no automatic rule may make that claim from a shared address.
+
+**(d) Level 2B exists because agency identifiers confirm, and there was nowhere to put them.** A
+report or grant number is printed in the artifact, is issued by the publishing or funding body, and
+is unique to the document — every property that makes a DOI a confirmation, minus the registrar.
+Placing it below the publisher URL is deliberate: a URL addresses one document at one publisher,
+while a grant number can cover a programme that emitted several artifacts, so it confirms **only when
+clause (c) holds**. Two of the eight same-source pairs in the 2.12 run were confirmed by such a
+number and both had to be hand-adjudicated because the precedence had no slot for them.
+`sowers-2019`'s NIAC pair is confirmable **only** this way: no DOI, no publisher URL, a level-3 match
+that is explicitly a candidate, and grant `80NSSC19K0964` printed in both members. Under the old
+precedence that pair was unresolvable by rule and resolvable by eye, which is the definition of a
+missing level.
+
+**What this does not change.** Precedence is still per-pair, not per-file: two files are compared at
+the highest level where **both** carry a key, and 2A and 2B are two ways of being at level 2 rather
+than an ordering between them — a pair carrying one of each is compared at level 3. Clause (c)
+applies to both. A level-3 match remains a candidate and the merge still does not act on it.
 
 Read from the file's `## Citation` block. `## Citation` is the dominant header across both corpora;
 where a file carries `## Provenance` or `## Metadata` instead, read that. The DOI field appears in
