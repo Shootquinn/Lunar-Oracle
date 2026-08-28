@@ -23,7 +23,7 @@ This file is the plan for building it.
 - `_intake/japanese-miracle/lit/` (119 summaries, 112 source PDFs, 3 treaty texts)
 
 **Date:** 2026-08-26 (revised same day after author feedback)
-**Current step:** 1 (closed, at the author's gate) — Step 2 opens on approval
+**Current step:** 2 (open, Cycle A running). Step 1 approved by the author at the gate 2026-08-28
 **lit_review:** yes
 
 > **This gameplan is deliberately incomplete.** It carries Step 0 and nothing after it. Steps 1
@@ -124,8 +124,8 @@ gameplan, per A.6.2.
 | # | Step | Assigned To | Status |
 |---|------|-------------|--------|
 | 0 | Draft, review, and land the operating gameplan. Sub-steps 0.1 through 0.8 below. | The Manager (bookends), Wave 1 (five), register wave (two), Wave 2 (two) | **Complete.** Closed at the author's gate 2026-08-26 |
-| 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 15 sub-steps, 1.0 through 1.14. | The Systems Engineer, The Software Engineer, The Engineer, The Designer, The Fact-Checker, The Manager (both prompts) | **Complete.** Closed by The Manager 2026-08-27 after two refusals and a revision pass; at the author's gate |
-| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. 18 sub-steps, 2.1 to 2.18. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer | Not started |
+| 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 15 sub-steps, 1.0 through 1.14. | The Systems Engineer, The Software Engineer, The Engineer, The Designer, The Fact-Checker, The Manager (both prompts) | **Complete and approved by the author at the gate, 2026-08-28.** Closed by The Manager 2026-08-27 after two refusals and a revision pass |
+| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. **20 sub-steps, 2.1 to 2.20** — the ratified 18, plus 2.19 and 2.20 added by The Manager at the open and approved by the author the same day. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer, The Software Engineer, The Designer, The Fact-Checker | **In progress.** Opened 2026-08-28. Six cycles; Cycle A running |
 | 3 | **The app boundary and retrieval.** Objective 3. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Manager (economics prompt) | Not started |
 | 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Manager (economics prompt), The Space Resources Engineer | Not started |
 | 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | Not started |
@@ -279,6 +279,47 @@ Fifteen sub-steps, 1.0 through 1.14. Counting rule: rows in this table, measured
 | 1.13 | E8 | **The check register.** Every committed check: what it asserts, what invokes it, when it fires, what a failure does, its authority. Closed register row E8. | The Systems Engineer (write), The Software Engineer (review) | `step1_13_systems_engineer_check_register.md, step1_5_13_software_engineer_review.md` | **Complete.** 24 rows; one specifies a self-invoking loop, owed |
 | 1.14 | R-5 | **ADDED at the Step 1 close by The Manager**, as the revision item that turns fifteen frozen specifications into files. Promote the marked blocks to their target paths; build `oracle/MANIFEST.tsv`, which joins a specified path to the file holding its text, and `oracle/AMENDMENTS.tsv`, which holds the amendments owed against frozen documents and computes their collisions; build `tools/quantities.js`. | The Engineer | `step1_14_engineer_promotion_and_registers.md` | **Complete.** `oracle/` and `literature/` exist; every lift verified byte-for-byte. The checker reproduces The Designer's hand measurement clause by clause |
 
+### Step 2 sub-steps
+
+Twenty sub-steps, 2.1 through 2.20. Counting rule: the eighteen ratified at the Step 0 close, whose
+detail lives in `cr_scratch/step0_integration_draft.md` section 2 and is not duplicated here, plus
+2.19 and 2.20 added by The Manager at the Step 2 open and approved by the author 2026-08-28.
+Measured 2026-08-28 at the open.
+
+**Read two files before touching this step.** `cr_scratch/step2_manager_open.md` is the operating
+plan — six cycles, the write set for every spawn, the TDD ruling, fourteen named risks, and the
+Wave 1 spawn prompts written out to be pasted. `cr_scratch/step2_orchestrator_baseline.md` is the
+independent measurement taken before any agent ran, and it is the known-answer test for every count
+this step emits. It exists because The Manager's Step 1 close found the dominant defect class to be
+a seat running an operation with an instrument it wrote and never tested, so the baseline's author
+is deliberately not the seat that produces Step 2's numbers.
+
+**Two counting rules are live in this step and they do not agree.** Under raw filenames the union is
+185 with 86 overlaps; under `normalize()` as `literature/NAMING.md` section 1 defines it, the union
+is 176 with 95 overlaps. Both are correct and the difference is exactly nine named files. **The
+normalized figures are operative**, because `normalize()` is the merge key. A figure quoted without
+saying which rule produced it is not quotable here.
+
+| # | Added | Sub-step | Owner | Status |
+|---|---|---|---|---|
+| 2.1–2.18 | Step 0 | The ratified eighteen. Detail in `step0_integration_draft.md` §2. | The Engineer owns or co-owns twelve; the critical path is 2.1 → 2.2 → 2.4 → 2.5 | In progress |
+| **2.19** | **Step 2 open** | **The arm-2 process changes.** Move spawn prompts and verdict sentences into the declared file set so `M15` covers them by construction; give `oracle/MANIFEST.tsv` an accessor so a hand-typed filter has nothing to be typed instead of; rename the `AM-` namespace so checks `AM-1`..`AM-5` and rows `AM-01`..`AM-135` stop sharing a prefix. | The Software Engineer (tool half), The Designer (contract half) | **Approved by the author 2026-08-28.** The Manager's Step 1 close named all three as Step 2 work with an owner; none of the eighteen carried them, and his own falsifier F1 presumes Step 2 does the first two — a falsifier whose antecedent nothing schedules cannot fire |
+| **2.20** | **Step 2 open** | **Check-register reconciliation for the three new instruments.** `CHK-13` names `tools/check_no_sources.js` while 2.14 says `oracle/`; `oracle/verify_corpus.js` has no row at all and `oracle/**/*.js` is a declared scan root, so it fails `CL-1` the day it lands; and `CHK-01` and `CHK-04` fire on a `merge-gate` trigger that nothing installs, while `CHK-10` dispatches `pre-commit` only. 2.5 is the merge. | The Systems Engineer, in Cycle F after 2.17 exists | **Approved by the author 2026-08-28.** Found by measurement, not by reading: the register's own `H` row declares `27 13 12 2` and the parse agrees, so the known-answer test passes and the three defects sit inside a register that is internally consistent |
+
+**The cycle structure, from The Manager's open.** Within a cycle, agents run in parallel and their
+write sets are disjoint; between cycles the orchestrator integrates.
+
+| Cycle | What runs | The constraint that shapes it |
+|---|---|---|
+| A | TDD gate (the corpus suite), 2.1, 2.3 draft, 2.19 contract half | Four spawns. Two are the same persona on two disjoint files, which the rule permits because it is about files rather than seats |
+| B | 2.2, the two taxonomy reviews, 2.19 tool half, suite review | The lunar and economics reviewers write separate files and their A.9 tension is not resolved at this gate |
+| C | **2.4 → gate → 2.5 → 2.6** | **One seat, exclusive lock on `literature/`, nothing else runs.** The merge is single-writer and its failure mode is silent |
+| D | 2.7, 2.8, 2.10–2.12 serially; 2.13–2.14; 2.15 | 2.7, 2.8, 2.11 and 2.16 all edit `## Provenance` blocks in the same files and never run concurrently |
+| E | 2.16; 2.9 recommendation to the author | |
+| F | 2.17 split across two files, then 2.18 and 2.20 | 2.17 is two seats, so it is two files: one publishes the interface, the other builds against it |
+
+---
+
 ## Context recipes
 
 | Sub-step | Agent | Files / Excerpts |
@@ -305,6 +346,9 @@ only statement of which entry supersedes which.
 
 | Step | Date | Notes |
 |---|---|---|
+| 2 open | 2026-08-28 | **Step 2 opened. Twenty sub-steps, six cycles.** The Manager's open is `cr_scratch/step2_manager_open.md`, 887 lines: the TDD ruling, the wave structure with a declared write set per spawn, the Wave 1 spawn prompts written to be pasted, fourteen named risks and five counting-rule mechanisms. He ruled the **TDD precondition fires** — not on user-facing prose but on the corrected rule his own falsifier forced at Step 1, that a specification whose form other agents write against is reader-facing, and Step 2 imposes three such forms on ~176 files. The suite is `oracle/tests/corpus_suite.md`, authored by a seat that owns no merge output. He ruled the four assertions-first sub-steps are **not** the suite: 2.4's assertions and 2.5's merge are the same seat, which is arm 2b by construction, so they become named amendment slots instead. **Cycle C takes an exclusive lock on `literature/` and nothing runs beside it.** Writing wave skipped, with the reason recorded. His first spawn died on a connection error mid-response and was resumed from its own context rather than restarted, so nothing was re-measured. |
+| 2 baseline | 2026-08-28 | **The orchestrator measured both corpora before any agent ran**, so Step 2's counts have a known-answer test whose author is not the seat producing them — The Manager's own remedy from the Step 1 close, applied rather than described. `cr_scratch/step2_orchestrator_baseline.md`. **Two counting rules are live and both are correct**: raw filenames give union 185 and 86 overlaps, `normalize()` gives 176 and 95, and the difference is exactly nine named files. The normalized figures are operative because `normalize()` is the merge key. **A7 is nine, not one** — `GDP.md` is the only member whose difference is case alone, and the other eight differ by separator, coexist on every filesystem, and would land as eight duplicate pairs with no collision reported, so 2.4 must assert normalized-key collision rather than case-insensitive collision. **Of 86 exact-name overlaps, 81 are byte-identical**, so 2.2's same-name adjudication set is five files. Four findings routed to sub-steps: loose end A3 contradicts itself; The Engineer's Part 2 specifies no field label though B3, 2.3 and a `FIELDS.tsv` slot held open since 1.1 all require one; 2.14 inherits Step 1's owed `CHK-10` self-invoking loop; and 2.10 asserts a bare "250 MB" whose SI and binary readings differ by 10 MB. **The economics half of the corpus has no upstream** — its provenance ref resolves in this repository as an unrelated Step 1 commit tracking zero files under a gitignored directory, and neither `_intake/` nor the tree it came from is a git repository, so 2.17's divergence check and 2.18's policy both assume something that exists on one half only. Two things went the other way: The Engineer's Part 2 folder counts reconcile with the measurement to zero residue once the six A3 deletions are placed, and his Part 9 estimate of 52 PDFs for the pull is exact. |
+| 1 gate | 2026-08-28 | **The author approved Step 1 and opened Step 2**, and ruled on the two sub-steps The Manager added at the open. **2.19 approved** — the three arm-2 process changes his Step 1 close named as Step 2 work with an owner, which none of the eighteen carried and which his own falsifier F1 presumes. **2.20 approved** — check-register reconciliation for the three instruments Step 2 builds, whose three defects sit inside a register whose known-answer test passes, which is why reading it did not find them. Step 2 is twenty sub-steps. |
 | 0.4, 0.5 | 2026-08-26 | Register wave and Wave 2 closed. The Writer's register specification and The Editor's standing prohibition landed at 0.4. All three Wave 2 reviewers returned: The Systems Engineer ruled the three falsifiers (one fired, caught at 0.3) and added five plan defects; The Designer returned the echo-site catalogue and the structural damage list; The Fact-Checker returned 29 supported, 6 unsupported and 11 contradicted claims. Applied at 0.6. |
 | Setup rev. 3 | 2026-08-26 | Author closed Open Questions 2, 6 and 7: public repository; FA1 through FA8 come over (19 files to `_intake/japanese-miracle/fa/`); both corpus copies stay until the merge lands. Three live defects found by The Systems Engineer at 0.2 fixed immediately rather than scheduled, being safety rather than project work: `.gitignore` inverted to deny-by-default under `literature/` and verified against seven cases including `.txt`, `.PDF` and `.docx`; push URLs disabled on both working copies; `CLAUDE.md` path split from `deps/` repaired. |
 | 1.0-1.14 | 2026-08-27 | **Step 1 executed. Fifteen sub-steps, five ordered groups, one cycle plus a revision pass.** Counting rule: rows in the Step 1 sub-step table, measured 2026-08-27 after the re-close; fourteen at the open plus 1.14, added by The Manager at the first close as revision item R-5. All fifteen have a deliverable on disk: fourteen are persona deliverables under `cr_scratch/step1_*.md`, and 1.2's is `cr_scratch/step1_author_rulings.md`, the author's own ruling, the sub-step having no work by its own row. Plus four addenda and three reviews. The orchestrator re-ran every load-bearing empirical claim; verdicts and the commands that produced them are in `cr_scratch/step1_orchestrator_verification.md`, which is the file a cold session should read first. **Promoted to real paths at 1.14**, where nothing had been: `oracle/` holds twelve files and `literature/` holds `NAMING.md`. The answer contract, the bootstrap contract, the install state record, the currency policy, the register schema, the check register, the answering-loop suite, both register halves, `MANIFEST.tsv`, `AMENDMENTS.tsv` and `VERIFIED.tsv` are files rather than marked blocks; `COUNTING_RULE.md` and `QUANTITIES.md` sit at the root. Also landed: the corrected `.gitignore`, whose acceptance criterion is 1.1's own 24-row `git check-ignore` fixture list and not the 18 ad-hoc probes the orchestrator first ran; eight checks and harnesses under `tools/`; and three new directory-map rows. |
