@@ -88,6 +88,64 @@ the reasoning is A4's own from loose end A1: an allow-list naming only `*.pdf` w
 these `.txt` files, which is why the enforcement layer went deny-by-default in the first place. The
 same three files have now caused a defect at 1.1 and nearly caused a second at 2.5.
 
+### A2 — The Engineer, the source-identity table (2.1)
+
+| Claim | Verdict | Command and result |
+|---|---|---|
+| The superseded `azami-2024` and the `_intake` copy are byte-identical, so dedup deleted a file the merge is about to re-import | **CONFIRMED AND WORSE — it is three files, not one** | See below |
+| `sowers-2019` holds four members | **CONFIRMED** | Four `.md` under the prefix: `-psr-ice-mining`, `-thermal-mining-ice`, `-thermal-mining-niac`, `-thermal-mining-niac-report`. Two `.pdf` also carry the prefix and are not members of the summary cluster |
+| Baseline known-answer test, 7 for 7 | **CONFIRMED** | His figures are the baseline's own: 152, 119, overlap 95, lsei-only 57, intake-only 24, union 176, zero intra-corpus collisions. The baseline was written before he ran and by a different seat |
+| "91 with / 85 without" reproduces exactly and is one definition plus its complement | **CONFIRMED by arithmetic** | 91 + 85 = 176, the normalized union. A figure that partitions the population exactly is a definition and its complement, not two rival measurements. It was never wrong, only unstated |
+| "79 of 182" reproduces under none of seven candidate definitions; withdrawn by its author | **NOT RE-RUN.** The withdrawal is by the seat that produced it, against seven tabulated alternatives, and a withdrawn figure needs no independent confirmation to stop being quotable | — |
+| B4 settled: 16 is the group count and 17 the surplus-file count of substantially the same clustering | **NOT RE-RUN in full** — it requires his five clusterings over two bases. The structural claim is checkable and holds: a group count and a surplus count over one clustering are different quantities, so two seats reporting 16 and 17 were answering different questions. **This is the resolution B4 said was impossible as posed**, and it arrives by supplying the counting rules neither original figure stated | — |
+
+**The re-import hazard, confirmed and generalized.** `md5sum` over each of the six retained
+superseded files against its twin in `_intake/japanese-miracle/lit/`:
+
+| Superseded file | Twin in `_intake/lit/` | Result |
+|---|---|---|
+| `azami-2024-lunar-manufacturing-review.md` | same name | **byte-identical** (`c4f06184…`) |
+| `csank-2022-powering-the-moon-2.md` | `csank-2022-powering-the-moon.md` | **byte-identical** |
+| `poston-2020-krusty-reactor-design-CANONICAL-superseded.md` | `poston-2020-krusty-reactor-design.md` | **byte-identical** |
+| `metzger-2013-bootstrapping-space-industry-2.md` | same name | differs |
+| `metzger-2021-aqua-factorem-2.md` | — | no twin |
+| `speyerer-2013-persistently-illuminated-regions-2.md` | — | no twin |
+
+**Three of the six files Step 0 deleted as superseded are sitting in `_intake/` awaiting re-import,
+byte for byte.**
+
+And they are not scattered: cross-referenced against the baseline's five differing same-name pairs,
+**those three are three of the five.** The set decomposes cleanly:
+
+- **Already adjudicated at Step 0, decision recorded** — `azami-2024`, `csank-2022`,
+  `poston-2020`. The merge is not meeting a new conflict here; it is meeting a resolved one, and the
+  `_intake` member is in every case the copy that *lost*.
+- **Genuinely new** — `barro-2004` (differs by 6 bytes) and `falcon-heavy-wikipedia` (28 bytes).
+
+**`poston-2020` is the one to be careful with.** `step0_dedup_decisions.md` records it as the pair
+that *refused* size-based selection: the kept summary is the **smaller** file, chosen on content, and
+the file's own entry enumerates what the 19,230-byte loser carried that the winner lacks. The
+byte-identical copy now queued for import is that loser. A 2.2 that re-adjudicates these three
+without reading the Step 0 record — or that resolves ties by size, the rule Poston exists to
+refute — silently reverses a documented decision and reverses it in the direction the record
+explicitly rejected. This is loose end D7's "deferred union, not a resolved tie" arriving with names
+and hashes attached.
+
+**His own hand sample found one classification error in his own instrument**, recorded under
+`sampled:` rather than fixed quietly: `colozza-2020` took a ResearchGate-minted DOI where the file's
+own block says it "is not a publisher-registered identifier." The mirror prefix is now excluded. An
+instrument whose author sampled it, found a defect, and published the defect rather than the
+correction is the opposite of the arm-2b pattern.
+
+**A3's disposition, executed rather than deferred.** He rebuilt the 158-file pre-dedup corpus from
+`lsei/literature/` plus the six retained superseded members — the reconstruction this baseline argued
+was possible — and ran unmodified `searchLiterature()` over twelve questions. Two results: the "no
+longer exists in the working tree" clause is **struck as false, on evidence produced by using the
+population it says is gone**; and the retrieval claim is **8 of 12, not universal**, with walk order
+deciding the eight and `confirmInText()` breaking the tie on the other four. `step0_dedup_decisions.md`
+says "every time / never" and needs one word changed. He routed that rather than editing another
+seat's file.
+
 ---
 
 ## Standing corrections carried into Cycle B
@@ -98,3 +156,11 @@ same three files have now caused a defect at 1.1 and nearly caused a second at 2
    a strict superset, so the narrowing cannot be reintroduced quietly.
 2. **The merge glob is `*.md`, never `*`.** Owed to 2.5's assertion list via `SLOT-A`.
 3. **Disjoint write sets are not disjoint read sets.** Owed to The Manager.
+4. **Three of 2.2's five same-name pairs are re-imports of Step 0 deletions, and `poston-2020` is a
+   documented content adjudication that a size rule reverses.** 2.2 reads `step0_dedup_decisions.md`
+   before it adjudicates anything, and any tie broken by size on those three is wrong by
+   construction. Owed to 2.2 and to `SLOT-A`.
+5. **Superseded figures now replaced, with their successors.** `182 sources` → **168 distinct
+   sources**; the `162 to 173` range → 168; `79 of 182 carry a DOI` → **withdrawn by its author**,
+   replaced by **89 of 176** under a stated definition, with `91 with / 85 without` retained as a
+   different and equally valid definition rather than a rival. Loose end B5 closes on these.
