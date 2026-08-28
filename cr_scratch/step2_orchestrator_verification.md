@@ -30,6 +30,19 @@ agrees, and the re-run found more than the claim), **REFUTED**, or **NOT RE-RUN*
 
 **All seven verified. Zero refuted.** Every quantitative claim A1 made reproduced to the byte.
 
+**His suite passes its own size declaration.** `oracle/tests/corpus_suite.md` declares 148 tests with
+the counting rule "rows in the twelve tables of §§1–12 whose first cell matches" a test id. Counted
+independently: **148 rows.** By group: REG 18, PRV 17, PDF 16, NAM 16, CRP 13, FLD 12, PTH 11, DUP
+11, CNT 11, NRM 9, SLT 8, MUT 6 — twelve groups summing to 148. The header, the per-group table and
+the file agree. This is The Designer's `H`-row device applied to a test suite, and `SLT-5` asserts it
+stays true as the four slots fill.
+
+**A fifth item routed to 2.20.** A1 reports the suite is wired to a trigger that does not exist:
+`CHK-01` and `CHK-04` name `merge-gate`, `CHK-10` dispatches `pre-commit` only, and any runner placed
+under `oracle/` additionally fails `CL-1` on landing. 2.20 was approved on three defects; it now
+carries four. He applied his own standing judgement to his own deliverable — a suite nothing invokes
+is a document — and wrote that into §14 in the suite's own voice rather than leaving it in a verdict.
+
 **One claim NOT re-run, and why.** A1 reports his `--check` run went from 12 hard failures to 13, and
 attributes the thirteenth to `COUNTING_RULE.md:4` quoting version 3 against a block value of 2 —
 A4's in-flight edit, not his. Not re-run at this point because A4 was still writing and a
