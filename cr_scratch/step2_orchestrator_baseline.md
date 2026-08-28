@@ -257,6 +257,70 @@ the hook **with nothing staged**. Every hook wired this way must be correct on a
 is a real design constraint on `oracle/check_no_sources.js` — a containment check that reads the
 staged set and finds it empty must exit 0 rather than treating emptiness as a pass it did not earn.
 
+## 2.16 is not a path rebind, and the registers already answer two open failures
+
+2.16 says to "rebind LUNAR-2's and ECON-1's rows from `lsei/literature/` paths to `literature/`
+paths." Measured against the promoted files, **there are no paths to rebind.** Neither register
+contains the string `lsei/literature/` at all.
+
+Both files declare their base directory once, in the `H` row:
+
+```
+REGISTER.lunar.tsv   H  lsei/literature              2026-08-27  7f97983  15  81
+REGISTER.econ.tsv    H  _intake/japanese-miracle/lit 2026-08-27  c42a217  18  53
+```
+
+Every member row carries a **bare filename**. Counted: 0 of 81 lunar `M` rows and 0 of 53 econ `M`
+rows contain a `/`. Resolution is base-plus-search, not a stored path.
+
+Two consequences, pulling in opposite directions, and 2.16 needs both.
+
+**The base rebind is two edits, not 134.** Change one field in each `H` row.
+
+**The filenames are the fragile part, and 2.2 is what breaks them.** 2.2 assigns semantic filenames
+to same-source pairs. Every such rename silently invalidates any member row naming the old file, and
+because the lunar base is already foldered while every member row is bare, resolution today is a
+*recursive walk* — the register finds `colaprete-2010-lcross-water.md` under `lunar-ice-and-geology/`
+without being told the folder. After the merge that walk spans eleven folders and 185 files instead
+of eight and 152, and the A7 pair is a live ambiguity on any filesystem that keeps both members.
+This is B4's failure mode reached by a second route: not a ranker returning the wrong cluster member,
+but a bare name resolving to the wrong file outright. 2.15's assertion that "every register path
+resolves" must therefore also assert that it resolves **uniquely**.
+
+Measured now, as the pre-merge known-answer test:
+
+| Register | `M` rows | distinct names | resolve | missing | ambiguous |
+|---|---|---|---|---|---|
+| `REGISTER.lunar.tsv` | 81 | 59 | 59 | 0 | 0 |
+| `REGISTER.econ.tsv` | 53 | 30 | 30 | 0 | 0 |
+
+Counting rule: distinct values of field 4 over rows whose field 1 is `M`, 2026-08-27; resolved for
+lunar by `find lsei/literature -type f -name <n>` and counted ambiguous at more than one hit, and for
+econ by `test -f _intake/japanese-miracle/lit/<n>` since that base is flat. Both registers resolve
+completely and unambiguously today. **That is the number 2.15 has to still be able to produce after
+the merge**, and it is the cheapest test in this step.
+
+### Two of the twelve open counting-rule failures are decidable from the registers themselves
+
+This is The Manager's own remedy from the Step 1 close — every register declares its own size in an
+`H` row, so use it as a known-answer test — applied rather than described.
+
+- **`Q-ECR-AXES`, 17 against 18.** `QUANTITIES.md` and `step1_10_manager_economics_register.md` say
+  17; the addendum says 18. The promoted register holds **18 `A` rows**, and its own `H` row declares
+  **18**. The file and its self-declaration agree. 18 is right, and 17 is the pre-ECR-18 figure.
+- **`Q-LCC15-DISTINCT-LEAVES`, 58 against 59.** `QUANTITIES.md` and the 1.9 file say 58; the
+  addendum says 59. Distinct member filenames across the 15 lunar axes in the promoted register:
+  **59**. The addendum is right.
+
+In both cases the stale value is in `QUANTITIES.md` and the current value is in the addendum, which
+is the expected direction — the addenda are what moved the numbers.
+
+**Not amended here.** These are governed quantities and `oracle/AMENDMENTS.tsv` is the process for
+changing them; an orchestrator editing a governed quantity directly is the arm-2b pattern wearing a
+different hat. Recorded, with the measurement and its rule, and routed to whoever The Manager assigns
+the amendment to. The point of running it now is that it demonstrates the remedy works: two figures
+that had been contested across four files were settled in one command against the artifact itself.
+
 ## What is in `_intake/` that is not corpus and that no sub-step names
 
 `_intake/japanese-miracle/` holds `JM-gameplan.md` (158,635 bytes) and `JM-accumulator.md` (53,945
