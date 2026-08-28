@@ -91,6 +91,61 @@ directory with no field scoping, and `idf()` reads that single table. B2's two a
 written as well — line 214 is `frac >= 0.45`, and the comment above line 128 says in the tool's own
 words "run against the shipped 156-file corpus rather than the original 57."
 
+## Reconciled with The Manager's open: both figure sets are right, and A7 is nine, not one
+
+The Manager's open reports normalized overlap **95**, `lsei`-only **57**, `_intake`-only **24**,
+union **176**. This baseline reports **86 / 66 / 33** and union **185**. Neither is wrong and neither
+supersedes the other — they are the same population under two counting rules, and the difference is
+exactly nine files.
+
+Verified rather than assumed, by implementing `normalize()` from `literature/NAMING.md` §1 verbatim
+(strip one trailing `.md` case-insensitively, lowercase, collapse runs of underscore-or-space to a
+single hyphen, collapse runs of two-or-more hyphens, trim leading and trailing hyphens) and running
+it over both trees:
+
+```
+A 152 files, 152 distinct normalized     B 119 files, 119 distinct normalized
+normalized overlap 95   A-only 57   B-only 24   union 176
+```
+
+His three figures reproduce to the file. So do the raw ones: 86 + 9 = 95, 66 − 9 = 57, 33 − 9 = 24,
+185 − 9 = 176. **Use the normalized figures.** `normalize()` is the merge key `NAMING.md` defines,
+so 95 and 176 are the operative numbers and the raw ones are only the before-picture.
+
+**Zero intra-corpus normalization collisions.** Both trees map 152 and 119 files to 152 and 119
+distinct keys. No file in either corpus collides with another in its own corpus under the merge key.
+
+### The nine, named — and A7 is one of them
+
+| `lsei/literature` | `_intake/japanese-miracle/lit` |
+|---|---|
+| `bea-depreciation-rates.md` | `BEA_depreciation_rates.md` |
+| `jones-superheavylift-final20260614.md` | `Jones_SuperHeavyLift_FINAL20260614.md` |
+| `take-or-make-in-space.md` | `Take or Make in space.md` |
+| `473486main-iss-atcs-overview.md` | `473486main_iss_atcs_overview.md` |
+| `ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update.md` | `IEEE 2022 Paper SH TCS Architecture and Technical Challenges Update.md` |
+| `isnps-tech-report-103.md` | `ISNPS_Tech_Report_103.md` |
+| `isnps-tech-report-97.md` | `ISNPS_Tech_Report_97.md` |
+| `gdp.md` | `GDP.md` |
+| `statistical-review-of-world-energy.md` | `Statistical Review of World Energy.md` |
+
+Every one is the same pattern: the `lsei` copy was normalized at some earlier pass and the
+`_intake` copy kept its original spaces, underscores and capitals.
+
+**This resizes A7.** The section below is correct as written — names differing *solely by case* are a
+population of exactly one — but that framing sizes the fix for one file when the defect class has
+nine members, and `GDP.md` is simply the only member whose difference happens to be case alone. A
+merge that de-duplicates on a case-insensitive filesystem catches the `gdp` pair and **misses the
+other eight**, which differ by separator rather than by case and therefore coexist happily on every
+filesystem — landing eight duplicate pairs into the merged corpus with no collision reported
+anywhere.
+
+**2.4's assertion must be normalized-key collision, not case-insensitive collision.** A7's own
+wording — "collide on a case-insensitive filesystem" — is what would have scoped it too narrowly, and
+the sub-step inherits that wording. The correct assertion is that the merge emits no two files whose
+`normalize()` keys are equal, which subsumes the case rule and catches all nine. The keys are already
+computed; this is a cheaper assertion than the one 2.4 currently names, not a more expensive one.
+
 ## A7 is a population of exactly one, and both members are the same file
 
 The only pair of names differing solely by case, across the whole prospective union:
