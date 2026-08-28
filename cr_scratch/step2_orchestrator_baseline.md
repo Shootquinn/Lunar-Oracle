@@ -321,6 +321,58 @@ different hat. Recorded, with the measurement and its rule, and routed to whoeve
 the amendment to. The point of running it now is that it demonstrates the remedy works: two figures
 that had been contested across four files were settled in one command against the artifact itself.
 
+## The economics half of the corpus has no upstream, and 2.17 and 2.18 both assume one
+
+The two registers' `H` rows each carry a ref. They are not the same kind of thing.
+
+`REGISTER.lunar.tsv` names **`7f97983`**. It resolves in the `lsei` working copy, it is the commit
+"README: correct the literature layout and the oracle tool count," and the files the register
+describes are tracked in it. That is a correct upstream provenance ref.
+
+`REGISTER.econ.tsv` names **`c42a217`**. Measured:
+
+- It does **not** resolve in `lsei` or in `cr-agents` (`fatal: Not a valid object name`).
+- It resolves in **this** repository, as the commit "Step 1.11 reconciled to contract v2, and two
+  holes the reconciliation found," dated 2026-08-26. That is a Lunar Oracle working commit about the
+  answering-loop suite, unrelated to the corpus.
+- It tracks **zero** files under `_intake/` — `git ls-tree -r --name-only c42a217 | grep -c '^_intake/'`
+  returns 0, and `git ls-files _intake` returns 0 at HEAD, because `.gitignore` excludes the
+  directory at line 26.
+
+So the econ register's provenance names a commit, of a repository that does not contain the files
+the register describes, chosen because it was HEAD when the register was written. It is not an
+upstream ref. It is a timestamp with a hash on it.
+
+**The gap is deeper than the field.** Following the chain back: `_intake/` is not its own repository
+(`git -C _intake rev-parse --git-dir` returns Lunar Oracle's own `.git`), and the tree the Japanese
+Miracle corpus came from — `CSA_LSEI_Workshops/context/reference/lit/` — is not a git repository at
+all. **There is no versioned authority for the economics half of the corpus anywhere in the chain.**
+
+This is not a defect in the register. It is a structural asymmetry that the plan has not named: the
+lunar half of the merged corpus has a cloned, ref-pinned, push-disabled upstream that a divergence
+check can interrogate, and the economics half has a directory on one machine.
+
+Two sub-steps are written as though both halves behave like the lunar half:
+
+- **2.17 (MERGE-11)** builds the upstream divergence check as "the comparison of upstream filename
+  set and content hashes against the provenance digest held in ARCH-3's state record." On the
+  economics half there is no upstream filename set to compare against.
+- **2.18 (ARCH-5)** is "the rule that provenance names an upstream ref." Half the corpus cannot
+  satisfy that rule as written.
+
+**This is not a reason to stop.** The honest resolutions are all cheap, and choosing between them is
+The Systems Engineer's call at 2.18 with the author ruling if it changes what ships: pin the
+economics provenance to a content digest rather than a ref, since a hash over the file set is
+exactly as falsifiable and needs no upstream; or declare the economics half **terminally landed** —
+this repository *is* its authority, which is what "this folder is the new Japanese Miracle folder"
+already says — and have the divergence check report `no-upstream` as a first-class state rather than
+a failure. What must not happen is 2.18 landing a policy that half the corpus silently violates,
+which is how a rule becomes a preference.
+
+Flagged for the Wave 2 conceptual-integrity review as well as for 2.18. This is precisely the "one
+thing or three projects wearing a trenchcoat" question The Systems Engineer was held to at 0.5,
+reappearing at the layer where it has teeth.
+
 ## What is in `_intake/` that is not corpus and that no sub-step names
 
 `_intake/japanese-miracle/` holds `JM-gameplan.md` (158,635 bytes) and `JM-accumulator.md` (53,945
