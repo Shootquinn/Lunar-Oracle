@@ -2,7 +2,7 @@
 
 # QUANTITIES
 
-**64 blocks.** fixed 57; live 6; provisional 1.
+**97 blocks.** fixed 87; live 6; provisional 3; superseded 1.
 
 | id | value | unit | class | at | birth file | superseded |
 |---|---|---|---|---|---|---|
@@ -12,8 +12,21 @@
 | Q-C4-SOURCE-LINES | 328 | lines of JavaScript between the fences of... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |
 | Q-CARD-KWH-PER-KG | 63 to 93 inclusive | kWh of thermal energy per kg of oxygen | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
 | Q-CHECK-ROWS | 27 | C rows in oracle/check_register.md's mark... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
-| Q-COUNTING-RULE-VERSION | 2 | the version integer of this contract | fixed | 2026-08-27 | COUNTING_RULE.md | 1 |
+| Q-COUNTING-RULE-VERSION | 3 | the version integer of this contract | fixed | 2026-08-28 | COUNTING_RULE.md | 2 |
 | Q-CURRENCY-VERDICTS | 11 | verdict values across the two closed axis... | fixed | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
+| Q-D219-AMC-SITES | 159 | occurrences of an unpadded single-digit A... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-AMC-SITES-MINE | 16 | occurrences inside this sub-step's declar... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-AMC-SITES-OWED | 26 | occurrences owed forward to another seat ... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-CHECK-FAILURES | 12 | hard failure lines reported by the counti... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-FILESET-POST | 252 | files in the declared file set after the ... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-FILESET-PRE | 76 | files in the declared file set of COUNTIN... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-LINT-POST | 107 | soft findings reported by the counting-ru... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-LINT-PRE | 64 | soft findings reported by the counting-ru... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-M13-CORPUS | 43 | M13 findings landing inside the staged li... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-M13-DECIMAL | 36 | of the corpus M13 findings whose matched ... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-M13-TRIGGER-BLOCKS | 30 | blocks that meet M13's value trigger in t... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-M15-WIDE-FILES | 7 | relay files scanned by M15 under the comp... | fixed | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
+| Q-D219-STAGED-CORPUS | 176 | summaries in the normalized union staged ... | provisional | 2026-08-28 | cr_scratch/step2_designer_file_set.md | 0 |
 | Q-DEGRADED-MODES | 5 | degraded modes in the closed set at §5 of... | fixed | 2026-08-27 | oracle/bootstrap_contract.md | 1 |
 | Q-ECON-REFS-ABBREV | 18 | distinct source references in the sevente... | fixed | 2026-08-26 | cr_scratch/step1_8_software_engineer_register_schema.md | 0 |
 | Q-ECR-AXES | 17 | A rows in the economics namespace of the ... | fixed | 2026-08-27 | cr_scratch/step1_10_manager_economics_register.md | 0 |
@@ -48,6 +61,15 @@
 | Q-LSEI-HEAD | 7f97983 | the short commit ref at the head of the l... | live | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-LSEI-PUSHED-COMMITS | 3 | commits this project pushed to the Scenar... | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 1 |
 | Q-LUWEX-KWH-PER-KG | 15 to 44 inclusive | kWh per kg of water recovered | fixed | 2026-08-27 | cr_scratch/step1_9_space_resources_engineer_register_rows.md | 0 |
+| Q-MERGE-A3-CSANK-8OF12 | 8 | questions of 12 on which the two `csank-2... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-AY-LEADTOKEN-16 | 16 | author-year clusters holding more than on... | superseded | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 1 |
+| Q-MERGE-AY-STRICT-9 | 9 | author-year clusters holding more than on... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-DOI-89 | 89 | union keys whose source identifier is a DOI | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-DOI-ANYWHERE-91 | 91 | union keys whose file body contains a DOI... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-NOID-39 | 39 | union keys carrying no source identifier ... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-SAMESOURCE-8 | 8 | same-source merges among the 176 [Q-MERGE... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
+| Q-MERGE-SOURCES-168 | 168 | distinct sources in the prospective merge... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 2 |
+| Q-MERGE-UNION-176 | 176 | distinct normalized filenames across the ... | fixed | 2026-08-28 | cr_scratch/step2_engineer_identity.md | 0 |
 | Q-OVERLAP-95 | 95 | filename pairs whose normalized basenames... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 0 |
 | Q-PAIR-IDENTICAL | 87 | overlapping filename pairs whose two file... | fixed | 2026-08-27 | cr_scratch/step1_r4_designer_counting_rule_v2.md | 1 |
 | Q-PATH-BUDGET-108 | 108 | characters of repository-relative path al... | fixed | 2026-08-26 | cr_scratch/step1_14_engineer_promotion_and_registers.md | 0 |
@@ -67,6 +89,17 @@
 | Q-STATE-CONSUMERS | 4 | components that read at least one field o... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
 | Q-STATE-FACTS | 4 | facts about this install held in /.oracle... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
 | Q-STATE-KEYS | 19 | distinct JSON paths in the schema at §3 o... | fixed | 2026-08-27 | oracle/install_state.md | 0 |
+| Q-TAX-ALSO-73 | 73 | corpus files carrying a non-empty second-... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-ALSO-CROSSFIELD-6 | 6 | second-membership lines whose target fold... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-FA-SHELF-19 | 19 | markdown files on the FA shelf | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-FIELD-ECON-44 | 44 | corpus files whose folder maps to field e... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-FIELD-LUNAR-132 | 132 | corpus files whose folder maps to field l... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-FIELD-SEPARATION | 0.7710 | cosine similarity between the two fields'... | provisional | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-FOLDERS-11 | 11 | top-level folders in literature/ | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-IDF-CAPITAL-ERROR | 0.97 | natural-log units of IDF error on the ter... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-PLACED-176 | 176 | corpus summary files assigned a primary f... | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
+| Q-TAX-SIZE-MAX-31 | 31 | files in the largest folder | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 1 |
+| Q-TAX-SIZE-MIN-5 | 5 | files in the smallest folder | fixed | 2026-08-28 | cr_scratch/step2_engineer_taxonomy.md | 0 |
 | Q-TOOLS-MODE-644 | 10 | files under tools/ committed at index mod... | live | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 1 |
 | Q-TOOLS-TOKENIZER-MIRRORS | 4 | files under tools/ holding a hand-copy of... | fixed | 2026-08-27 | cr_scratch/step1_13_systems_engineer_check_register.md | 0 |
 | Q-VERIFIED-ROWS | 5 | bump rows in oracle/VERIFIED.tsv | live | 2026-08-27 | cr_scratch/step1_6_systems_engineer_currency_policy.md | 0 |

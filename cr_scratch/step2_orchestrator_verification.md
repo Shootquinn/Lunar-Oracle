@@ -146,6 +146,85 @@ deciding the eight and `confirmInText()` breaking the tie on the other four. `st
 says "every time / never" and needs one word changed. He routed that rather than editing another
 seat's file.
 
+### A4 — The Designer, 2.19 contract half
+
+| Claim | Verdict | Command and result |
+|---|---|---|
+| `--check` is 14, not 12, and the two gained are `M6`/`M7` | **CONFIRMED** | Run with nothing writing: exit 1, 14 `FAIL` lines. The two beyond the standing twelve are `M6 QUANTITIES.md differs from the regenerated index` and `M7 the index declares 64 blocks; 97 were emitted` |
+| 33 blocks were minted this cycle by three seats | **CONFIRMED by arithmetic** | 97 emitted − 64 declared = **33**, exactly |
+| No `FAIL` line names a file he wrote | **CONFIRMED** | His write set is `step2_designer_file_set.md`, `COUNTING_RULE.md`, `oracle/AMENDMENTS.tsv`. None appears in any of the 14 `FAIL` lines |
+| `check_registers.js` exits 0 | **CONFIRMED** | exit 0 |
+
+**The premise correction is his and it is worth keeping.** The Manager's open — and the spawn prompt
+the orchestrator pasted from it — asserted the corpus is "dense with exactly the tokens M8 and M13
+key on." A4 staged the full 176-name normalized union and measured instead of accepting it: **true of
+M13, false of M8, which returns zero findings over 176 files** because M8 requires the literal string
+"N lines above". Ruling from the unmeasured premise would have pulled four clauses out of a
+population that produces nothing from them. **The staging reproduced this baseline's figures —
+152/119/95/24/176 — before anything was measured against it**, which is the known-answer test working
+in the direction it was built for.
+
+His `--lint` result: 64 → 107, **all 43 new findings are M13, all one id, zero true positives**, and
+36 of the 43 are a word boundary between `.` and `7` inside "44.7 percent". `--check`'s FAIL set is
+line-for-line identical with and without the corpus staged, both diffs empty — **the corpus costs the
+check nothing**, which is what made "stays in CHECK unconditionally" rulable rather than arguable.
+
+**He caught a live relay error in a Wave 1 spawn prompt, and the prompt was the orchestrator's.**
+Extracting the four Cycle A prompts to the declared relay path and running the widened `M15`
+population produced `step2_cycleA_A4.md:29 relays 176 summaries without a tag` — the sentence "the
+merge lands roughly 176 summaries into `literature/`", which the orchestrator wrote into A4's own
+brief. A governed quantity relayed bare. **2.19's mechanism fired on the orchestrator inside the
+cycle that created it**, which is the strongest available evidence that the remedy is mechanical
+rather than a rule someone must remember.
+
+**Two limits on that mechanism, neither in The Manager's close, both now recorded as H7.** `M15`
+fires only on an *already governed* numeral, so an ungoverned relay is invisible until someone mints
+the block. And **a relayed number that is simply wrong is invisible** — his probe at 76 did not fire
+on a prompt saying "75 files". Six of arm 2a's errors were wrong numbers. The channel is now covered;
+the correctness of what flows through it is not.
+
+**He ran his own defect-token test unscoped and it failed against him**, flagging fifteen lines of his
+own deliverable, all of them the passage explaining the rename. Demoted and scoped rather than
+argued. And `M13` fired fourteen more times on the documents explaining that `M13` misfires, rising
+from 13 to 14 while he wrote the paragraph about it — the fourth recorded instance in this project of
+an author producing the defect hardest while writing its countermeasure.
+
+### Integration: the index regenerated, and what that exposed
+
+`M6`/`M7` are a cycle-boundary action and A4 correctly refused to take it while other seats held
+writes. Taken here, with all four agents finished and nothing writing:
+
+```
+node tools/quantities.js --index --write   ->  wrote QUANTITIES.md: 97 blocks  (73 -> 106 lines)
+node tools/quantities.js --check           ->  exit 1, 12 hard failures
+                                               OK M6 the committed index equals the regenerated index
+                                               OK M7 the index declares its own size correctly (97)
+```
+
+**Back to the standing twelve.** Cycle A added no durable failure.
+
+**But regeneration entrenched a disagreement rather than resolving one, and this is the finding.**
+Eight of the twelve are `M2` duplicate ids, every one an original-file block re-declared in that
+file's addendum. The indexer resolves a duplicate by taking the first, which is the **original**. So
+the regenerated index now carries:
+
+| Id | Index of record says | The promoted register holds |
+|---|---|---|
+| `Q-ECR-AXES` | **17** | **18** `A` rows, and `REGISTER.econ.tsv`'s own `H` row declares 18 |
+| `Q-LCC15-DISTINCT-LEAVES` | **58** | **59** distinct member filenames in `REGISTER.lunar.tsv` |
+
+**`QUANTITIES.md` is a generated file that now asserts two values its own promoted authorities
+contradict.** Not introduced by the regeneration — the pre-regeneration index carried 17 and 58 at
+lines 21, 24, 25 and 42, and they merely moved to 34, 37, 38 and 52. The regeneration made it legible
+by putting a correct `M7` beside two wrong values.
+
+The mechanism is worth stating because it will recur: **an addendum that re-declares an id instead of
+superseding it does not update the index, it forks it**, and the fork resolves silently in favour of
+the stale copy. `COUNTING_RULE.md` has carried the `superseded:` form since R-4, which is the form
+these blocks should have used. Owners are the seats that wrote the addenda — The Manager under the
+economics prompt for `Q-ECR-*`, The Space Resources Engineer for `Q-LCC15-*`. Both spawn in Cycle B.
+**This is the cheapest close available in the step**: two amendments settle three of the twelve.
+
 ---
 
 ## Standing corrections carried into Cycle B

@@ -1,11 +1,15 @@
 
 # The counting rule
 
-**Contract version: 2 [Q-COUNTING-RULE-VERSION].** Closes loose end E16. Version 1 was frozen at
-sub-step 1.12 and promoted at 1.14. Version 2 is the R-4 amendment pass: it closes W2-1 through
-W2-10, takes the two further amendments R-2 and R-3 filed against it while it was open, adopts The
-Manager's §8 ruling, and moves the mechanized clause list into this file. §11 lists every change
-with its amendment id.
+**Contract version: 3 [Q-COUNTING-RULE-VERSION].** Closes loose end E16. Version 1 was frozen at
+sub-step 1.12 and promoted at 1.14. Version 2 was the R-4 amendment pass: it closed W2-1 through
+W2-10, took the two further amendments R-2 and R-3 filed against it while it was open, adopted The
+Manager's §8 ruling, and moved the mechanized clause list into this file. §11 lists every change
+with its amendment id. **Version 3 is sub-step 2.19**, ruled before the corpus merge landed rather
+than after it: it rules `literature/` into the declared file set and out of M13, moves two of §3
+rule 12's boundaries into files at declared paths, makes M15's population computed rather than
+enumerated, and records two measured limits of M15 in H7. §12 lists every change with its
+amendment id.
 
 This file governs numbers and measured observations that this project asserts. Every term below is
 closed. A value outside a closed set is a failure, not a variant.
@@ -229,9 +233,12 @@ referent. Without them the numeral is a string that happens to match.
     the author, into a summary table, into the gameplan, into the accumulator. Where the number is
     derived from other numbers, the relay names them. This is The Manager's standing rule from the
     Step 1 close §4, and it is `operation:` and `derived-from:` pointed at the traffic *between*
-    documents rather than at the traffic inside one. Two of the five boundaries — the gameplan and
-    the accumulator — are files in §8's declared set, so M15 checks them; the other three are not
-    files and are H7.
+    documents rather than at the traffic inside one. **At version 3, four of the five boundaries are
+    files.** The gameplan and the accumulator always were. The spawn prompt and the verdict sentence
+    become files at §8's declared relay paths, which is arm 2a's remedy — the artifact changes
+    location and the existing tool covers it, so nobody has to remember anything. M15 checks all
+    four. The fifth, the spoken summary, is not a file and is H7, and H7 states two measured limits
+    on how much of arm 2a M15 actually reaches.
 
 **An id written bare, outside brackets, is a mention, not a quotation.** `Q-OVERLAP-95` names the id;
 `95 [Q-OVERLAP-95]` quotes its value. M2 and M3 read only the bracketed form. This is how a report
@@ -352,6 +359,96 @@ and this contract does not govern their contents. Quantities measured *over* the
 repository and carry their refs in `at`. `_intake/` is not in the set either: the set is these five
 globs and nothing else.
 
+### `literature/` — ruled at 2.19, before the merge landed
+
+**`literature/**/*.md` stays in the CHECK population, unconditionally.** It is **in** the LINT
+population for M5, M8, M9, M14 and M15, and **out of M13's population, unconditionally.**
+
+Measured, not estimated, on a staged copy of the prospective merged corpus. **Sampling rule: no
+sample.** The whole population was staged — the 176-name normalized union of `lsei/literature/**/*.md`
+and `_intake/japanese-miracle/lit/*.md`, keyed by `normalize()` as `literature/NAMING.md` §1 states
+it, copied into a scratch root and checked through `QJS_ROOT`. The staging reproduced the
+orchestrator's baseline to the file before anything was measured against it: 152 and 119 sources, 95
+normalized collisions, 24 `_intake`-only, union 176 [Q-D219-STAGED-CORPUS] — provisional until
+sub-step 2.1 emits the identity-keyed count.
+
+| | before the merge | after the merge | delta |
+|---|---|---|---|
+| declared file set | 76 [Q-D219-FILESET-PRE] files | 252 [Q-D219-FILESET-POST] files | +176 |
+| `--check` FAIL lines | 12 [Q-D219-CHECK-FAILURES] | 12 [Q-D219-CHECK-FAILURES] | **0** |
+| `--check` LINT lines | 39 | 39 | **0** |
+| blocks parsed / tag sites | 72 / 132 | 72 / 132 | **0** |
+| `--lint` findings | 64 [Q-D219-LINT-PRE] | 107 [Q-D219-LINT-POST] | **+43 [Q-D219-M13-CORPUS]** |
+| the +43, by clause | — | M13, 43 [Q-D219-M13-CORPUS] of 43 [Q-D219-M13-CORPUS] | — |
+| the +43, by id | — | `Q-REG-IDF-LOSS-FULL`, 43 of 43 | — |
+| the +43, true positives | — | **0** | — |
+
+**The corpus costs the check nothing.** The FAIL set and the check-mode LINT set are line-for-line
+identical before and after — `diff` over both reports returns empty — because a corpus summary
+carries no quantity block and no quotation tag. Excluding `literature/` from CHECK would buy nothing
+and would exempt, in advance, every block and tag Step 2 is about to write into those files: the
+`## Provenance` records, the machine-readable field labels, and any count a summary states about the
+corpus itself. A merged corpus that silently *left* the declared set is the same defect as one that
+silently entered it, and leaving is the direction nobody was watching.
+
+**The corpus costs the lint 43 [Q-D219-M13-CORPUS] findings and every one of them is noise.**
+36 [Q-D219-M13-DECIMAL] of the 43 are a numeral
+whose preceding character is a decimal point — `44.7 percent`, `7.5 percent` — matched because a word
+boundary sits between the `.` and the `7`. The other 7 are a genuine "7 percent" in a source document
+about German industrial output, or resource rents, or incumbent re-election. None of the 43 is a
+relay of any quantity this project asserts. The precision of M13 over `literature/` is **0 of 43**.
+
+**Why the ruling is M13 and not `literature/`.** M8, M9, M14 and M15 each returned **zero** findings
+over the 176 staged files. The prediction carried into this sub-step was that corpus prose is dense in
+the tokens M8 and M13 key on; **that is true of M13 and false of M8**, whose pattern requires the form
+"N lines above" and never fires on ordinary prose. Excluding the whole tree from LINT would therefore
+remove four clauses from a population that produces nothing from them, and would remove them from the
+very files Step 2 turns into carriers of provenance records and taxonomy placements. The rule this
+project has adopted is to demote the *check* that produces findings no author was working around, not
+the *files*: the finding-producing clause is M13 and only M13.
+
+**Why the corpus is not `lsei/`.** The `lsei/` exclusion is about files this project does not own.
+These files are ours. The distinction this contract did not have, and needs, is that **a corpus
+summary is our file holding somebody else's prose.** The apparatus we write into it — blocks, tags,
+provenance, field labels — is governed. The transcribed body is not, because its numerals were
+written before this project's quantities existed and cannot be quotations of them. That distinction
+needs no new machinery today, and the reason is worth stating: **M13 is the only clause that reads
+free prose and fires.** M8 and M9 read prose and measure zero; every other clause reads only blocks
+and tags, which exist only where we put them.
+
+**The residual, measured rather than assumed.** M13 false-positives when a block's `unit` field, cut
+at its first comma, semicolon or parenthesis, is a short common noun. Of the 30
+[Q-D219-M13-TRIGGER-BLOCKS] blocks that meet
+M13's value trigger today, exactly one has that property — `Q-REG-IDF-LOSS-FULL`, whose `unit` reads
+`percent, mean relative loss of idf…` and whose `value` is 7.73, truncated to 7 by the clause's own
+integer parse. A probe block carrying `unit: years, the span…` added **5** corpus findings on its own.
+Step 2 mints corpus-population blocks whose natural nouns are `files`, `summaries`, `sources` and
+`folders`. **43 is a floor, not a ceiling,** which is why this is a population clause rather than a
+wait-and-see.
+
+**A corpus summary that needs to assert one of this project's quantities still writes the tag.** The
+exclusion is from M13's *scan*, not from §3. Rule 1 binds a summary exactly as it binds any other
+file in the set; it is enforced there by H6 and by the reviewing persona rather than by a script, and
+that is stated here rather than left to be discovered.
+
+### The relay paths — §3 rule 12's file boundaries, at declared locations
+
+Two of rule 12's five boundaries become files, and the files have declared paths:
+
+```
+cr_scratch/relay/spawn/<step>_<cycle>_<seat>.md     a spawn prompt, written BEFORE the agent runs
+cr_scratch/relay/verdict/<step>_<seat>_<date>.md    a verdict sentence, written BEFORE it is spoken
+```
+
+**These paths add nothing to the five globs above.** `cr_scratch/**/*.md` already covers them, and
+claiming otherwise would be claiming a mechanism change that was not made. They are named here
+because a reader of this section could not otherwise tell that a spawn prompt is governed at all. The
+mechanism change is in §9's M15 row, and it is a change to M15's *population*, not to this set.
+
+The ordering words are the clause. A spawn prompt written after the agent ran is a transcript, and a
+verdict sentence written after it was spoken is a minute. Neither is a boundary artifact, and neither
+is what arm 2a moves.
+
 **A block may be moved between files in the declared set; its id does not change.** When a birth file
 is superseded its blocks move rather than being rewritten. **A block may not be edited into a different
 quantity:** a different population or a different operation is a different id.
@@ -404,9 +501,9 @@ and it is corrected by moving the table here.
 | M10 | Range arithmetic closes | For a `value` that is a range with a membership word, compute the span; if the block or a derived block states a length, assert equality. | 1 |
 | M11 | `cmd:`/`script:` operations declare a `cwd` and its length | Assert `conditions` contains `cwd:` followed, before the next sentence break, by a character count, or by the token `length-independent:`; or `inherits: Q-<id>`, in which case follow the edge and check the parent. | 1 |
 | M12 | Ids are not markdown link targets | Assert no bracketed id is immediately followed by an opening parenthesis, outside the `Q-EG-` namespace. | 1 |
-| M13 | **No bare governed numeral in a second file** | For each `fixed` block, key a spelled-out or digit numeral to the `unit` noun of the block; report any site outside the birth file that states it without the tag. This is §5's third row, which version 1 promised and did not implement. | 0 with findings |
+| M13 | **No bare governed numeral in a second file** | For each `fixed` block, key a spelled-out or digit numeral to the `unit` noun of the block; report any site outside the birth file that states it without the tag. This is §5's third row, which version 1 promised and did not implement. **Population at version 3: §8's declared set less `literature/**/*.md`**, per §8's corpus ruling — 43 of 43 findings there were false positives on the staged merge, and the exclusion is unconditional, not a flag. | 0 with findings |
 | M14 | Two ids for one quantity | Report any two blocks whose `unit` strings are equal after case and whitespace normalization, or whose `population` strings are. A proxy, not a proof; the ruling is H8's. | 0 with findings |
-| M15 | Relayed numerals carry their tag | §3 rule 12 over the two boundaries that are files: `accumulator.md` and `lunar-oracle-gameplan.md`. M13's comparison restricted to those two files, where relay traffic is dense and a false positive is cheap to disposition. | 0 with findings |
+| M15 | Relayed numerals carry their tag | §3 rule 12 over the boundaries that are files. M13's comparison restricted to the relay population, where relay traffic is dense and a false positive is cheap to disposition. **The population is computed from a path rule and is never enumerated in the tool's source:** `accumulator.md`, `lunar-oracle-gameplan.md`, `cr_scratch/relay/**/*.md`, `oracle/VERIFIED.tsv`. A hard-coded list of relay files is a thing somebody must remember to extend, which is the defect class this clause exists to remove; a longer hard-coded list would repeat it at a larger size. | 0 with findings |
 
 M3, M4 and M6 are the three that matter. M3 removes the failure mode behind all seven of the two-file
 disagreements found at 1.0; M4 removes the class where a parent moves and its children do not; M6
@@ -416,7 +513,24 @@ cut from the lints.
 **M1 through M15 run over §8's declared file set and must not walk `lsei/` or `cr-agents/`.** Those
 trees hold 152 and several hundred markdown files, none of them ours, and a checker that walks them
 produces a wall of findings about somebody else's documents on its first run and is switched off on
-its second.
+its second. **M13 additionally does not walk `literature/`**, for the reason §8 measures: the same
+wall, in files that are ours, produced entirely by numerals somebody else wrote.
+
+**M15's widened population was tested before it was specified, and the test is reproducible.** The
+four Wave 1 spawn prompts of the Step 2 open were extracted verbatim to
+`cr_scratch/relay/spawn/` in a staged root, and M15 was run over that root under both populations.
+
+| Population | relay files scanned | findings |
+|---|---|---|
+| the two files, as at version 2 | 2 | 6 |
+| the computed set above | 7 [Q-D219-M15-WIDE-FILES] | 6 |
+| the computed set, with the relayed number minted as a block | 7 | **8** |
+
+The third row is the result that matters. With a block minted for the corpus union, M15 reports
+`cr_scratch/relay/spawn/step2_cycleA_A4.md relays 176 summaries without a tag` — a live arm-2a relay
+error, in a Wave 1 spawn prompt written this session, caught by the existing tool with no change
+beyond the population. Under the version-2 population that finding does not appear at all. The
+remedy works, and the measurement isolates exactly what it depends on.
 
 **The tool's own failure prefix is `FAIL ` at column 0**, nothing else is printed at column 0 with
 that prefix, and the header of `tools/quantities.js` says so. That is a requirement on the tool under
@@ -432,7 +546,7 @@ that prefix, and the header of `tools/quantities.js` says so. That is a requirem
 | H4 | `sampled` describes a sample that happened | Unverifiable by construction. |
 | H5 | The rule is the right rule | A wrong classifier computes a clean number. |
 | H6 | Whether a Tier 3 numeral has become governed | Test G1 is mechanical *after* the second file exists; the person writing the second file decides in advance. |
-| H7 | A number relayed into a spawn prompt, a message to the author, or a summary that is spoken rather than written | §3 rule 12's three non-file boundaries. All seven of Step 1's relay errors happened here and no script can reach them, because the artifact the number lands in is not a file in any declared set. The check is that the relaying seat ran the operation. |
+| H7 | A number relayed into a message to the author, or into a summary that is spoken rather than written; and any relayed number that is not already a governed quantity, wherever it lands | §3 rule 12's remaining non-file boundary, plus the two limits of M15 measured at 2.19 and stated below. All seven of Step 1's relay errors happened at boundaries no script could reach. The check is that the relaying seat ran the operation. |
 | H8 | Whether two blocks M14 pairs are one quantity | Two measurements can share a unit and a population and still answer different questions. Only the owner of both can say. |
 
 **H1 through H5 are the contract's honest surface.** They are what the reviewing persona checks at the
@@ -444,6 +558,30 @@ script cannot see do not happen.
 contract did not cover at version 1 and still cannot mechanize. Listing it as H rather than as M is
 the point: a rule with no form is the defect this version exists to amend, and a rule given a form it
 cannot have would be the same defect wearing a check number.
+
+**H7 grew at version 3 rather than shrinking, and the growth was measured.** Arm 2a's remedy moves
+two boundaries into files, and §9 shows M15 catching a real relay error in one of them. It does not
+follow that arm 2a is closed, and two limits found while testing it say why.
+
+**Limit 1 — M15 fires only on a numeral that is already a governed quantity.** It compares a relayed
+value against the `value` of an existing block. Every numeral in the four Wave 1 spawn prompts is
+ungoverned: no block exists for the declared file set's size, for the corpus union, or for the lint
+volume, so the widened M15 found nothing in them until a block was minted by hand. Moving the
+artifact into the population is necessary and it is not sufficient. A spawn prompt relaying a number
+nobody ever minted is invisible in its new home exactly as it was in its old one.
+
+**Limit 2 — a relayed number that is WRONG is invisible to M15.** The clause keys on the value. A
+probe block minted at 76 for the declared file set did not fire on the A4 spawn prompt's sentence
+"the declared file set is 75 files", because 75 is not 76. M15 detects an untagged relay of a
+*correct* value; it is silent on an incorrect one. That is uncomfortable to state about the only
+mechanism arm 2 has, and it is the reason for stating it: the theory under the tag requirement is
+that writing the tag forces the lookup, and the lookup is where the wrong number would be caught.
+That is a forcing function on a person, not an assertion by a script.
+
+**What follows for The Manager's falsifier F1.** F1 tests the *channel* — whether errors of this
+family persist once the artifacts are in a declared file set. The measurement above supports moving
+them and does not support the stronger claim that the move closes arm 2a. F1 should be read as
+testing the channel only, and its antecedent is satisfied by the move regardless of the outcome.
 
 ## 11. Version 2 — what changed
 
@@ -475,21 +613,55 @@ amended here; the result is in that report.
 ```quantity
 id:            Q-COUNTING-RULE-VERSION
 class:         fixed
-value:         2
+value:         3
 unit:          the version integer of this contract, COUNTING_RULE.md
 population:    the version declaration at the head of this file, and every site that states which
                version of the counting rule it was written against
-operation:     manual: The Designer at R-4; bumped from 1 on applying the seventeen amendments
-               listed above; 1 item inspected
+operation:     manual: The Designer at sub-step 2.19; bumped from 2 on applying the five
+               amendments listed in section 12; 1 item inspected
 conditions:    none. The integer is a decision of this project, not a measurement.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     COUNTING_RULE.md is at contract version 2, which is version 1 plus the R-4
-               amendment pass listed in section 11.
+at:            2026-08-28; lsei 7f97983; cr-agents f0c976b
+predicate:     COUNTING_RULE.md is at contract version 3, which is version 2 plus the sub-step
+               2.19 amendment pass listed in section 12.
 derived-from:  none
 sampled:       n/a — this is a decision, not a classification
-superseded:    1 (The Designer, sub-step 1.12, 2026-08-26) — the version frozen at 1.12 and
-               promoted at 1.14, before W2-1 through W2-10 were amended
+superseded:    2 (The Designer, R-4, 2026-08-27) — the version that ruled literature/ into the
+               declared set without measuring it and enumerated M15's population as two files.
+               1 (The Designer, sub-step 1.12, 2026-08-26) — the version frozen at 1.12 and
+               promoted at 1.14, before W2-1 through W2-10 were amended.
+               tools/quantities.js implements version 2 until AM-137, AM-138 and AM-141 land;
+               its header states which version it implements and that is not a defect.
 ```
 
 This block exists because §1 now says a version integer of a document this project owns is governed,
 and a rule whose author exempts his own document is not a rule.
+
+---
+
+## 12. Version 3 — what changed
+
+Sub-step 2.19, the contract half. Each row is owed against a row of `oracle/AMENDMENTS.tsv` and each
+is applied in this file. The rows whose state is `owed` are the tool half and belong to other seats;
+they are listed in §6 of `cr_scratch/step2_designer_file_set.md`, not here, because this table is
+what changed in *this* file.
+
+| Amendment | Finding | Section changed |
+|---|---|---|
+| AM-136 | The corpus was about to enter the declared file set with nobody having measured what it costs | §8 — the `literature/` ruling, with the staged measurement |
+| AM-137 | M13 returns 43 findings over the corpus and none is a true positive | §9 M13 — population excludes `literature/**/*.md` |
+| AM-139 | A spawn prompt was governed by a glob and by no sentence a reader could find | §8 — the relay paths, with the ordering words |
+| AM-140 | M15's population was a two-element list in the tool's source, which is the thing somebody must remember to extend | §9 M15 — a computed path rule, and the enumeration forbidden |
+| AM-142 | Arm 2a's remedy was tested and two limits were found that its own falsifier does not carry | §3 rule 12, §10 H7 — the two limits, and F1 scoped to the channel |
+
+**What version 3 does NOT claim.** It does not claim arm 2a is closed. §9's measurement shows M15
+catching a live relay error in a Wave 1 spawn prompt once the artifact is in its population, and H7's
+two limits say what it still cannot see: a numeral that was never minted as a block, and a numeral
+relayed at the wrong value. Both were found by running the widened clause rather than by reading the
+specification for it, which is the third time on this project that has been the difference.
+
+**One defect found while writing this version, and it is not in this file.** Check `AMC-3` requires
+every amendment target to be a row in `oracle/MANIFEST.tsv`, and `tools/check_registers.js` has no
+manifest row. A correction to it therefore has nowhere to be recorded. That is `AM-129`'s third live
+instance and the first one to block a row rather than merely be noted.
+
+
