@@ -177,6 +177,52 @@ the merge. What is owed either way is that A3 stops saying two incompatible thin
 re-run, record the result; if it is not, the Finding cell's "no longer exists in the working tree"
 clause is struck, because it is false and it is the reason the row was closed as unverifiable.
 
+## The 2.11 PDF pull: the source tree is reachable and the population is exactly 52
+
+Verified before the sub-step opens, because 2.10 and 2.11 both assume a tree nobody has looked at
+this session. `~/onedrive/projects/cc/CSA_LSEI_Workshops/context/reference/lit/` is present and
+holds **163** PDFs. Distribution, counted 2026-08-27 by `find -type f -iname '*.pdf'` per
+first-level subdirectory:
+
+| Subdirectory | PDFs |
+|---|---|
+| `japanese miracle lunar economy lit` | 111 |
+| `scenario_undercarriage_sources` | 46 |
+| `fission_program_primaries` | 1 |
+| loose at the top level | 5 |
+| `_extracted` | 0 |
+| `_QUARANTINED_prior_art` | 0 |
+
+111 + 46 + 1 + 5 = 163.
+
+**The quarantine exclusion is a no-op here, and that was checked rather than assumed.** Excluding
+`_QUARANTINED_prior_art` leaves the count at 163, which is the shape of a filter that silently did
+nothing — the failure that produced a wrong verdict in Step 1. Checked directly: the directory holds
+**26 files, all `.md` summaries, zero PDFs.** The populations are genuinely disjoint. The rule that
+The Engineer stays out of that tree still stands for its 26 summaries; it just removes no PDFs.
+
+**The pull population is 52 and The Engineer's Part 9 estimate was exact.** Excluding the Japanese
+Miracle directory, whose PDFs are already landed, leaves 46 + 1 + 5 = **52** PDFs — the figure Part 9
+predicted for net-new.
+
+**The Japanese Miracle PDF move is already complete.** All 111 source PDFs are present in
+`_intake/japanese-miracle/lit/`, which holds 112. The one extra is
+`gott-2024-card-gas-analysis-subsystem.pdf`, present in `_intake/` and absent from the source tree —
+consistent with loose end A4, which records that the `gott-2024` fix lives only in `_intake/`. Zero
+PDFs are in the source tree and missing from `_intake/`.
+
+### A unit trap in 2.10's threshold
+
+2.10 asserts the pull lands at "**250 MB**" or under, and Part 9 estimates "**224 MB**." Measured,
+the 52 PDFs total **224,042,382 bytes**.
+
+That is 224.0 MB in SI megabytes and **213.7 MiB** in mebibytes. Part 9's 224 is SI and matches to
+four significant figures. The assertion passes under either reading, so nothing is at risk this
+time — but a contractual threshold whose unit is unstated is exactly what `COUNTING_RULE.md` exists
+to prevent, and the gap between the two readings here is 10 MB. **2.10 should assert bytes**, with
+the SI or binary reading named, rather than a bare "MB". Raised as a fix to the assertion, not to
+the estimate: the estimate was right.
+
 ## What is in `_intake/` that is not corpus and that no sub-step names
 
 `_intake/japanese-miracle/` holds `JM-gameplan.md` (158,635 bytes) and `JM-accumulator.md` (53,945
