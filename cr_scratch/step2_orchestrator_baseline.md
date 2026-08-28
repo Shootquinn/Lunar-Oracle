@@ -373,6 +373,48 @@ Flagged for the Wave 2 conceptual-integrity review as well as for 2.18. This is 
 thing or three projects wearing a trenchcoat" question The Systems Engineer was held to at 0.5,
 reappearing at the layer where it has teeth.
 
+## The enforcement layer admits 2.5's output shape, tested before 2.5 runs
+
+If `.gitignore` were wrong here the merge would land an untracked corpus and report success, so it
+was worth testing the target shape rather than the current one. `git check-ignore` over twelve
+prospective paths, 2026-08-27:
+
+| Path | Result | Wanted |
+|---|---|---|
+| `literature/growth-theory/solow-1956-….md` | tracked | tracked |
+| `literature/development-and-industrial-policy/beason-1996-….md` | tracked | tracked |
+| `literature/isru-processing/schreiner-2016-….md` | tracked | tracked |
+| `literature/INDEX.tsv` | tracked | tracked |
+| `literature/FIELDS.tsv` | tracked | tracked |
+| `literature/NAMING.md` | tracked | tracked |
+| `literature/_pdf/isru-processing/schreiner-2016.pdf` | ignored | ignored |
+| `literature/isru-processing/rogue.pdf` | ignored | ignored |
+| `literature/isru-processing/rogue.PDF` | ignored | ignored |
+| `literature/isru-processing/rogue.txt` | ignored | ignored |
+| `literature/growth-theory/notes.docx` | ignored | ignored |
+
+Twelve for twelve. The new eleven-folder taxonomy is admitted at depth, the `_pdf/` tree is excluded,
+and the four rogue extensions are excluded at depth including the uppercase variant.
+
+### One brittleness worth naming, and one corroboration
+
+**The `.tsv` whitelist names exactly two files.** `literature/REGISTER.tsv` comes back **ignored**.
+The rule admits `INDEX.tsv` and `FIELDS.tsv` by name and nothing else, so any further index this step
+decides to emit under `literature/` — a cluster table, a provenance table, a collision ledger —
+silently fails to commit. It will be on disk, every local check will pass, and it will be absent from
+a fresh clone. That is the same shape as the untracked-corpus failure this test was written to catch,
+one level down. Either the emitting sub-step adds a whitelist line at the moment it invents the file,
+or the rule changes to admit `*.tsv` at the `literature/` root. **2.4's merge assertions are the right
+place to catch it**: assert that every file the merge emits under `literature/` is tracked, rather
+than enumerating the ones we happen to remember.
+
+**`FIELDS.tsv` is already whitelisted, and nothing writes it.** The enforcement layer landed at 1.1
+provisions a field table by name. Nothing in The Engineer's Part 2 emits one, and 2.3's hard
+requirement for a machine-readable field label has no named artifact. Three sources now point at the
+same hole from three directions: B3 says the field label is required to fix the pooled-IDF break, 2.3
+says it is a hard requirement rather than a preference, and `.gitignore` has been holding a slot open
+for the file since 1.1. Part 2 is the only one of the four that does not mention it.
+
 ## What is in `_intake/` that is not corpus and that no sub-step names
 
 `_intake/japanese-miracle/` holds `JM-gameplan.md` (158,635 bytes) and `JM-accumulator.md` (53,945
