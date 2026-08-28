@@ -225,6 +225,42 @@ these blocks should have used. Owners are the seats that wrote the addenda — T
 economics prompt for `Q-ECR-*`, The Space Resources Engineer for `Q-LCC15-*`. Both spawn in Cycle B.
 **This is the cheapest close available in the step**: two amendments settle three of the twelve.
 
+### A relayed figure the orchestrator could not reproduce, and did relay
+
+**Claim:** "The Engineer's own T4 tier is 22 summaries with no candidate PDF anywhere," from The
+Manager's open, used there to argue that 2.12 closes loose end A6 to a residual rather than to zero.
+**The orchestrator relayed this to the author in a status table as a bare fact before running it.**
+That is the relay-without-measurement pattern, and recording it is the point of this file.
+
+**Status: NOT REPRODUCED. Not refuted either — the instruments differ, and mine is the cruder one.**
+
+Measured 2026-08-28 over the 152 `lsei/literature` summaries against all 275 candidate PDFs (the 163
+in `CSA_LSEI_Workshops/context/reference/lit/` plus the 112 in `_intake/`), under a deliberately
+strict pairing rule: exact basename match, else leading token plus the first `19xx`/`20xx` in the
+basename.
+
+| Result | Count |
+|---|---|
+| Summary has a candidate PDF | **100** |
+| Summary has **no** candidate PDF under this rule | **42** |
+| Summary basename yields no author-year key at all | **10** |
+
+**Why this does not refute 22.** The rule above is tier T1 plus T2 only. The Engineer's specification
+carries a **T3/T4 hand queue** resolved against each summary's own citation block via
+`pdftotext -l 1`, which pairs files whose names do not share a token — and the ten keyless names are
+precisely the population that rule exists for (`bea-depreciation-rates`, `falcon-heavy-wikipedia`,
+`nasa-moon-to-mars-doc`, `statistical-review-of-world-energy` and six others; several of these are
+also members of the nine-file normalization-collision class, so a same-name PDF may well exist).
+
+So **52 is an upper bound on the unmatched population under a name-only rule**, and 22 is a claim
+about what survives the hand queue. Both can be true. What cannot be said is that 22 has been
+independently checked, because it has not.
+
+**Disposition.** The real number is produced by 2.11's orphan list and consumed by 2.12, and it is
+the number the author's A6 ruling should rest on. **The ruling waits for the measurement.** Recorded
+here so that if 2.11 returns a residual materially different from 22, the discrepancy is visible as a
+discrepancy rather than absorbed silently.
+
 ---
 
 ## Standing corrections carried into Cycle B
