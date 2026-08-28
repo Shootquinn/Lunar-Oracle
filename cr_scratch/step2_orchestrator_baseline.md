@@ -223,6 +223,40 @@ to prevent, and the gap between the two readings here is 10 MB. **2.10 should as
 the SI or binary reading named, rather than a bare "MB". Raised as a fix to the assertion, not to
 the estimate: the estimate was right.
 
+## 2.14 inherits an owed defect from Step 1, and it is not the one the sub-step names
+
+2.14 says the containment mechanism is "installed via `core.hooksPath` by the bootstrap." Read
+against Step 1's measurements, **that is still correct and was not superseded.** What Step 1
+overturned was the *assertion*, not the mechanism. Recorded so nobody re-litigates it:
+
+- Setting `core.hooksPath` to a directory that does not exist exits 0 and reads back correctly, and
+  a commit then succeeds with no hook firing. Asserting the config is set proves nothing.
+- `test -d` on the target is inert too: an existing but empty directory also passes and also fires
+  nothing.
+- The assertion Step 1 landed instead is `git hook run pre-commit`, which exercises resolution,
+  directory existence, filename and executability in one call. Verified present in this
+  environment: git 2.55.0.windows.1 carries `git hook run`.
+
+Current preconditions, measured: `tools/githooks` does not exist, and `core.hooksPath` is unset on
+this repository (`git config --get` exits 1). Both correct — 2.14 creates the first and sets the
+second, and BC-8 is *supposed* to fail until it does.
+
+**The owed item.** `oracle/check_register.md` records that `CHK-10` as specified is a self-invoking
+loop: `CHK-10` ran `CHK-09`, `CHK-09` ran `git hook run pre-commit`, and that re-entered `CHK-10`.
+The register notes that `git hook run` has **no reentrancy guard and sets no environment marker**,
+so nothing in git breaks the cycle — the only thing that stopped it was the reviewer's own counter.
+The gameplan's Step 1 row carries this as "one specifies a self-invoking loop, owed."
+
+**2.14 is the sub-step that installs `CHK-10`.** It therefore inherits the defect, and the sub-step
+text does not mention it. Whoever writes 2.13's assertions needs the loop in scope, because an
+assertion suite that installs the hook and then invokes `git hook run` to prove it fires is the
+shape that reproduces the cycle.
+
+One further constraint from the same file, easy to miss and cheap to honour: `git hook run` invokes
+the hook **with nothing staged**. Every hook wired this way must be correct on an empty stage, which
+is a real design constraint on `oracle/check_no_sources.js` — a containment check that reads the
+staged set and finds it empty must exit 0 rather than treating emptiness as a pass it did not earn.
+
 ## What is in `_intake/` that is not corpus and that no sub-step names
 
 `_intake/japanese-miracle/` holds `JM-gameplan.md` (158,635 bytes) and `JM-accumulator.md` (53,945
