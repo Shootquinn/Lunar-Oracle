@@ -1,5 +1,5 @@
 # Accumulator: Lunar Oracle
-## Last updated: 2026-08-27, at the Step 1 final close. Entries written by The Manager.
+## Last updated: 2026-08-28, at the Step 2 Wave 1 close. Entries written by The Manager.
 
 > Created at 0.1 from `cr-agents/templates/accumulator.md`. The template's ten sections, plus The
 > Writer and The Fact-Checker, who are on the standing roster (A.12.11, A.12.12) and both ran at
@@ -130,6 +130,57 @@
   the orchestrator reads 1.0's defect list before group 2, and never said who applies the fixes, so
   nobody did until the Wave 2 review re-found the same defect.
 
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 open (2026-08-27).** Ruled the TDD precondition FIRES, against his own Step 0 exemption,
+  on the corrected rule his own falsifier produced: a specification whose form other agents must
+  write against is reader-facing. Added 2.19 and 2.20 — obligations his Step 1 close had named with
+  an owner and no address — and the author approved both the same day. Refused conditional-close
+  language in advance, by name, in five forms.
+- **The author rejected the six-cycle shape after Cycle A. He conceded it without defending it**,
+  which was the instruction, and then found four defects in his own plan that the restructure fixes.
+  The sharpest was his: he had scheduled The Fact-Checker's A.10 step 2 source gate in Wave 2, after
+  the suite it gates had been the contract for the entire step — the gate firing after the thing it
+  gates. He also found that his own arm-2b split had been placed on every pairing except the one
+  that most needed it, and that three of the four assertion slots were owned by the seat running the
+  operation they gate.
+- **The rewave.** Three waves, with the boundaries at the two points where the corpus stops being
+  cheap to un-do rather than where the schedule runs out. The staged merge — build into
+  `cr_scratch/_stage/`, promote in one move on another seat's stated exit code — is the read-set
+  problem solved rather than managed. He adopted The Software Engineer's read-digest remedy
+  **verbatim** rather than inventing a Manager's version of it, and said why.
+- **The seam call was pre-registered before the datum existed**, with the statistic, the checkpoint,
+  the threshold, the reason for the threshold, and the resolution if the measurement cannot be taken
+  (split, automatically). Measured at the wave: churn 5/59 = 8.47%, side condition live and clean.
+  W1 stayed whole on measurement rather than on preference.
+- **Two rulings he took rather than carried**, both routed to him from Cycle A: the 143-site `AM-`
+  rewrite declined permanently, because 107 of the 143 sites are frozen deliverables of four other
+  seats and rewriting them would make the record say something it did not say on the day it was
+  written; and `QUANTITIES.md` regeneration made a wave-boundary action of the orchestrator's, never
+  a seat's.
+- **A correction he made against himself at the Wave 2 open.** His own brief stated that 11 of the
+  15 standing hard failures were one fork. Re-run at the boundary: **10.** `M3 Q-DEGRADED-MODES` is
+  a different id in a different pair of files and is the `AM-132` supersession theorem, not the
+  ECR/LCC15 fork. The wrong figure was his and it was plausible.
+- **Wave 2 open — the instrument freeze, and the honest answer to the author's question.** Wave 1
+  was correct and it did not move the ball. `literature/` held zero files at the Step 2 open and
+  holds zero files now, while the apparatus governing it grew this wave by 27 tests, 10 check rows,
+  8 amendment rows, one contract version and six quantity ids. He declined to state that as "too
+  much enforcement" — every addition answered a real defect — and stated it as ratio and sequencing:
+  **the enforcement layer has never been executed as a system, and we have been adding to it instead
+  of running it.** Two Wave 1 findings prove it and both were accidents. Wave 2 therefore carries a
+  four-number apparatus ledger per seat with a stated allowance, and falsifier `H6`: if Wave 2 ends
+  with `literature/` still empty, the freeze was not the binding constraint and the Provenance chain
+  splits by force in Wave 3.
+- **Three rulings, each stated in a form someone can execute.** `MRG-4` — the column splits into
+  `byte_source` and `pair_primary`, on the `CHK-13` precedent from this same wave, with `MRG-4b`
+  added to cover the one row where the merge writes bytes present in neither corpus copy. The fork
+  collapse — executed by the seat that measured each half, with that seat's write set widened to its
+  own Step 1 files, because the alternative is a third seat editing two deliverables it did not
+  write against values it did not measure, which is arm 2b in its pure form. Clauses 8 and 9 —
+  rewritten, and **the structural half taken on himself**: arm 2a is discharged at the wave open or
+  not at all, so from Wave 2 every spawn prompt lands on disk before any seat runs.
+
 ### The Loftsman
 - (no entries; no geometry in this project)
 
@@ -217,6 +268,52 @@
   remit by The Manager, and **were never applied.** All four are `owed` at the re-close and `AM-01` is
   verified live in the promoted text. **The review was right and the system lost it**, which is a
   finding about the boundary between seats rather than about either seat.
+
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-2): `SLOT-A`, `SLOT-C`, 2.19(b), the read-digest.** All accepted. The suite
+  went 148 to 175 tests and `SLT-5` held — header, per-group list and rows agree, verified by the
+  command printed in the header. He applied his own simplicity gate to his own additions and refused
+  to give each of `PDF-14`'s five fixtures its own row when one assertion covers the property they
+  leave open: nine `CON` rows instead of fourteen.
+- **`MRG-10` is the load-bearing half of his own pair and he said so.** `MRG-9` is dedup-key
+  collision within a folder; put the two colliding rows in different folders and it passes correctly
+  while the corpus carries one source twice under one key. He wrote the general assertion rather
+  than a test of the one known pair, in the wave where two reviewers were moving folders.
+- **He reported `SLT-7` PARTLY discharged and named which part.** Eight `SLOT-A` rows were observed
+  able to fail or pass against real data; four assert on a merge command that does not exist and are
+  recorded as not proved. A test that has never been shown able to go green has never been shown to
+  be a test.
+- **He raised an alarm against his own deliverable rather than letting an empty list read as a clean
+  one.** The Manager's seam statistic carries a side condition on rows he has asserted against;
+  while his `asserted_against` list was empty that condition was vacuously true and could not fire,
+  which is half the detection the Manager specified. He said so, then populated it — all 176 rows at
+  their committed `rev` — and reported the two inputs without making the call.
+- **`MRG-4`: he found a contract collision and refused to resolve it by rewriting his own test.**
+  `primary_secondary` means *which corpus copy supplies the bytes* to The Engineer and *which member
+  of the pair is primary* to him; 8 pair groups, 0 with one primary — correct under his reading,
+  vacuous under The Engineer's. He declined to fit the test to either answer and routed the ruling.
+  **That was right, and the Manager ruled it a split.** It is `CHK-13`'s defect class caught before
+  the merge rather than after.
+- **THE PROCESS FINDING OF CYCLE A RECURRED TO HIM, INSIDE THE DELIVERABLE THAT FIXES IT, and he
+  reported it against himself.** The hard-failure count went 12 to 15 while he worked; all three new
+  failures are in a file he does not write. A count-difference would have assigned three defects to
+  him. Third independent instance in the project.
+- **He measured arm 2a against himself on mtimes and found it undischarged.**
+  `tools/check_no_sources.js` at 13:49:44; his `SLOT-C` relay to its builder at 13:52:46. The
+  receiving seat built three minutes before the brief existed, and the same holds for his relay to
+  The Engineer. His conclusion is the structural one and the Manager adopted it: **standing clause 8
+  is unsatisfiable as written between same-wave peers**, and no care inside one seat can fix an
+  ordering requirement placed on a structure that has no ordering.
+- **Corrections routed to him and carried into Wave 2**, none of them refutations of a verdict:
+  `CRP-10` and `CRP-11` name five same-name disagreements where there are eight, and one of the
+  three missing is `CRP-5`'s own worked example sitting in `_intake/` right now; `PDF-3` was marked
+  green and was red; `PDF-14`'s five fixtures are four on a case-insensitive filesystem; `PTH-13`'s
+  live set omits `oracle/AMENDMENTS.tsv`; and `PRV-13` needs a third outcome for "the source prints
+  no DOI", which The Fact-Checker measured at 16 of 30 openable sources.
+- **Live position, unchanged, and now the argument for Wave 2's shape:** a suite nothing invokes is
+  a document. At 148 tests that was a remark; at 175, with three sub-steps relying on it as a gate,
+  it is why the runner is his first Wave 2 item rather than his last.
 
 ### The Systems Engineer
 - **Step 0.2 (Wave 1) and 0.5 (Wave 2). He is the persona whose predictions are worth loading.** At
@@ -357,6 +454,57 @@
   visibly partial. The second is the answer to the first, and the obligation-count rule is what makes
   the difference cheap to detect next time.
 
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-3): 2.14 containment, 2.20 register reconciliation, `NAMING.md` §7, `AM-145`.**
+  All accepted. **The enforcement layer executed on a real commit for the first time in this
+  project's history**, and it declared its debts rather than reporting green: 3 of 7 pre-commit rows
+  dispatched, four named as missing artifacts.
+- **The finding of the wave, and it was found by running rather than by reading.** The check
+  register was internally consistent, its `H` row agreed with its parse, and it passed its own
+  known-answer test — and it had never been executed. The first execution returned exit 1, because
+  `CHK-14` had been blocking every commit since 1.13. A register that passes every check available
+  to a reader and fails on first contact is the argument for executing an instrument rather than
+  inspecting it, stated better than anyone has stated it in prose here.
+- **`CHK-13` was two checks under one id — the ninth instance of this repository's
+  container-versus-content pattern.** He found it from the mechanisms side; The Software Engineer
+  found it independently from the paths side, in the same wave, by a different route. Neither saw
+  the whole of it alone, and that is the strongest evidence the project has produced that the A.9
+  seam is where it should be.
+- **He wrote that his three quantity blocks "were verified to add zero hard failures," then ran the
+  verification, and the sentence was false. He corrected it in place rather than deleting it.** The
+  blocks are clean; minting them staled the index, which is two hard failures he caused, and he
+  reported the count going 15 to 17 on his own action. He then **declined to regenerate the index**
+  with the one command in front of him, because `QUANTITIES.md` is not in his write set and he had
+  just spent three paragraphs holding other seats to that line.
+- **`.gitignore` E1 is closed on eight carrier extensions** and the five paths that committed a PDF
+  cleanly at 2.1 are all ignored. Residual, routed by the orchestrator and not hidden: `xls`, `xlsx`
+  and `zip` still commit while `docx` and `pptx` do not, and `xlsx` and `docx` are the same
+  container format.
+- **`NAMING.md` §7 gained level 2B — an agency or grant number — inserted between the old levels 2
+  and 3 rather than renumbered**, and his reason is the part worth keeping: "level 3" is cited
+  across this corpus and five deliverables meaning *the weak key whose match is a candidate*, and
+  renumbering would leave every one of those sentences syntactically intact and semantically
+  inverted. A silent inversion of an existing citation is worse than an inelegant number. All four
+  clauses were The Engineer's, supplied rather than debated, and they unblock 35 rows of the merge
+  plan.
+- **His A.9 disagreements with The Software Engineer are on the record and unsmoothed** — `PDF-3`'s
+  stale status cell, `PDF-14`'s unrunnable fixture set, §0.2's false `CL-1` claim, `PTH-13`'s
+  omission of `oracle/AMENDMENTS.tsv` — and so is what he agreed with, by name: `PDF-16`'s
+  empty-stage clause is the single most valuable assertion in the set and he built the check around
+  it.
+- **His highest-priority routed item is a coupling, and the Manager ruled it his to execute in one
+  edit.** `oracle/MANIFEST.tsv:24` and four `oracle/AMENDMENTS.tsv` rows all name
+  `literature/NAMING.md`, which he moved; `AM-3` joins them and **fails if either is fixed alone**.
+  Verified at the Wave 2 open: `MF-1` red, four amendment rows on the old path, `AMC-3` green only
+  because both halves are wrong together.
+- **The conceptual-integrity finding carried to Wave 3 by ruling, not by drift.** Four instruments
+  walked this repository within one minute and reported 100 / 71 / 17 / 89 files; no two agree and
+  none is wrong, because each derives the declared file set privately. He asked for one owner and
+  one declaration. The Manager deferred it to Wave 3 on his own logic: Wave 2 moves the set from 101
+  files to roughly 280 by landing the corpus, and changing the definition in the same wave gives one
+  movement two independent causes and makes the digest unreadable.
+
 ### The Designer
 - **Step 0.5 (Wave 2), the gameplan as a designed artifact.** Two verdicts, both negative and both
   correct: **works as a briefing, fails as a worklist** for a cold-restart reader; and **fails** for
@@ -442,6 +590,48 @@
   in the empty slot, because the invention is the evidence of demand; demote or delete when the check
   produces findings no author was working around.** W2-2 was the first case and `AM-1` was the second,
   and he got both right without a rule.
+
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-7): `COUNTING_RULE.md` §3 rule 11 amended to require the moment as well as the
+  command. Version 3 to version 4.** Accepted, and **the mechanism is live and self-demonstrating**:
+  `--check` now emits `NOTE hard failures: N @ read-digest H over K files, tool 2.19-1`, a line that
+  did not exist that morning.
+- **The wave proved the amendment's premise while the amendment was being written.** Today's
+  hard-failure series is 12 → 17 → 15 over 88 → 90 → 95 → 97 → 99 → 101 files. Every figure was
+  correct and no two were comparable until his digest landed mid-wave. Before it, the only available
+  reading of the series was that a seat's amendments broke five checks, which is false. Three seats
+  and the orchestrator all published correct, non-comparable counts on one day.
+- **He made his own document unable to move the count, by force.** Version 4 mints no quantity block
+  and changes no value, because any block edit stales the regenerated index and moves the number —
+  written by the seat whose whole deliverable is that the number keeps moving. Every numeral the
+  document introduces is stated in exactly one file.
+- **He audited the four amendments owed to him against their recorded states and found one stale in
+  his own favour, then declined to change it.** `AM-141` reads `owed` and the work is done — `M15`'s
+  computed population is implemented and running — so the state should read `applied`. It is another
+  seat's row, so he flagged it and left it. `AM-138` and `AM-144` are genuinely still owed and he
+  said so rather than accepting the appearance of completion from a tool that prints the right
+  strings.
+- **He overturned his own prior ruling on the strength of one measurement**, which is the entry
+  worth loading: the relocation of the naming contract leaves thirty-one hard-coded paths rather
+  than a broken glob, and the glob he had been defending is fine. He fixed the one reference inside
+  his own write set and recorded the rest as frozen record with a count and a test in `AM-153`.
+- **The clause collision he escalated to the Manager by name, and how he resolved it in the
+  meantime.** Standing clause 8 requires a relay artifact at `cr_scratch/relay/spawn/`; clause 9
+  forbids writing outside a declared write set that does not include it. He resolved **toward clause
+  9** — the explicit constraint — and relayed through an amendment row instead, which is in his
+  write set, is in the declared file set, is what the implementer acts on, and is what `M15` can
+  see. Two other seats resolved the same collision the other way. **The Manager has now ruled both
+  clauses rewritten**, and the fact that three competent seats resolved one collision three ways is
+  the evidence that it was a defect in the clauses rather than in any of them.
+- **Live position, unchanged and now carried into the Wave 2 close condition:** an omitted section
+  is invisible and an empty one is falsifiable. That argument, his, is why `## Not mine` is a
+  required section, why `none` is mandatory in a quantity field, and why the Wave 2 apparatus ledger
+  is four numbers on every deliverable rather than a note when something changed.
+- **Wave 2 note, decided at the open:** he is deliberately **not spawned in Wave 2.** His remit
+  there was echo-site replacement over a repository whose corpus is about to change wholesale, which
+  means doing it twice. He spawns at the Wave 3 open, after the tree lands, when 176 files are a
+  real population rather than a projected one.
 
 ### The Engineer
 - **Step 0.2 (Wave 1), the corpus merge. Objective 1, the primary assignment, and the one Wave 1
@@ -532,6 +722,56 @@
   specification said "promote the file" and defined the lift as a marker range, and said nothing about a
   block outside it — that gap is The Manager's, not his.
 
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-1): the merge disposition table, 2.2 and the 2.3 landing.** Accepted, and the
+  orchestrator re-ran every figure in it: 176 rows by 17 columns, Block 1 = 117, Block 2 = 59, the
+  five-way composition, the churn, the `id_in_source` census, the four `cr_scratch/`-bearing intake
+  files, the 115 non-`.md` intake entries. **Exact, all of them.** This table is the wave's product
+  and it is what 2.5 executes.
+- **He refuted both of his brief's premises with arithmetic and named the unit error in one.** P1
+  counted its first term in pairs and its other two in keys; restated in keys and deduplicated the
+  contested population is **59 rows, not 52**. P2 was false on both halves.
+- **The load-bearing correction: there are eight differing same-key pairs, not five.** The other
+  three match their twins only after `normalize()`, and one of them —
+  `BEA_depreciation_rates.md` against `bea-depreciation-rates.md` — is the corpus suite's own
+  *hypothetical* failure mode for `CRP-5`, sitting in `_intake/` right now. An instrument comparing
+  raw filenames reports five; the merge writes to the normalized key, so eight governs.
+- **He opened all five non-Step-0 differing pairs rather than reasoning from byte deltas**, and they
+  are one edit class: in every case the lsei copy is the intake copy with a cross-repository
+  `cr_scratch/` reference stripped. Measured tree-wide: 4 of 119 intake files carry it, all four
+  have a scrubbed lsei twin, 0 of 152 lsei files and 0 of the 24 intake-only files do. The
+  disposition rests on that evidence rather than on size.
+- **`poston-2020` disarmed with a hash instead of a promise.** He read `step0_dedup_decisions.md`
+  before adjudicating, found that the kept summary is the *smaller* file chosen on content, and
+  built the disposition on a sha256 match against the superseded set so the byte count never enters
+  it. Each of the three rows carries `SIZE MUST NOT BREAK THIS TIE` in the data, where the merge
+  will read it.
+- **He published a defect his own instrument produced rather than the corrected number.** A first
+  probe of citation-repair exposure returned 27 rows; twenty-six were his own case-sensitivity
+  fault. The corrected figure is 1 — `azami-2024`, which records a DOI printed only in the copy the
+  merge does not import — and he recorded that the wrong figure was his and was plausible.
+- **He read The Software Engineer's file before writing his own, which is what neither of them did
+  in Cycle A, and withdrew his own contract.** `INDEX-1`…`INDEX-5` is absorbed into the `FLD` group;
+  two of his rows survive under new names because there was no `FLD` equivalent. The technical call
+  was made on evidence inside the other seat's file, not on seniority, and the surviving contract is
+  the one written by the seat that does not run the merge.
+- **Corrections routed to him and carried into Wave 2:** three malformed quantity blocks in his own
+  deliverable — `class: measured` outside the closed set of five, and two `cmd:` operations naming
+  no `cwd` — flagged independently by four seats and unrepaired at the wave close; `kiyota-2013`'s
+  level-2 identifier addresses an index rather than the paper; `metzger-autry-2023`'s `also` cell;
+  and the measured IDF cost of retaining near-duplicates, which bears on his `HOLD-PAIR`
+  disposition.
+- **Two of his own routings were ruled at the Wave 2 open.** `tools/merge_plan.js` as a fourth
+  instrument: **declined** — `--plan` shares `normalize()` and `identify()` with the identity table
+  and splitting them creates two authorities on what a key is, which is the defect the whole step
+  exists to prevent. And `literature/FIELDS.tsv`, a required deliverable missing since the Step 1
+  gate with no check naming it: **pulled forward to 2.5** rather than left owed at 3.7.
+- **Live position, in one line to the assertion author, and it is the merge's sharpest constraint:**
+  the merge glob is `*.md`, never `*`. `_intake/japanese-miracle/lit/` holds 234 entries of which
+  115 are not summaries, and three of those are UN treaty texts that would out-score the summaries
+  of the same documents in a layer scoring on filename tokens.
+
 ### The Editor
 - **Step 0.4, second pass.** Audited The Writer's register specification and wrote the standing
   prohibition on epistemic theater. Made sixteen cuts, flagged twenty-four dashes without applying
@@ -617,6 +857,47 @@
   the axis reported. It was re-scoped and re-verified before the Step 1 close finished, and her gate
   is the only reason it was found.
 
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-6): the A.10 step 2 source-verification gate on `PRV-13` and `PRV-15`.**
+  Accepted, and **both rows DO NOT CLEAR.** Two of the suite's 175 rows are therefore outside the
+  contract until they are repaired — the gate returning a negative, which is the first time in this
+  project it has.
+- **She refuted her brief's third premise and the refutation is a fact about the whole step.** 112
+  PDFs, all in `_intake/`; `lsei/` holds zero; `literature/_pdf/` does not exist. Of 271 corpus
+  summaries only **30** have an openable paired source. The gate is runnable on a minority of the
+  corpus, and she stated that as a fact about today rather than as a defect in the suite.
+- **`PRV-13`: the claim is true and the pass criterion is contradicted.** Zero altered DOIs in a
+  full census of 30 openable sources — nothing is fabricated, and the corpus is cleaner than the row
+  assumes. But **16 of the 30 sources print no DOI at all**, so the row goes red on sixteen correct
+  values. It needs a third outcome and a named non-source authority for it.
+- **`PRV-15`: contradicted on the instrument.** Both label classes are empty, so the row is
+  vacuously green and cannot be gated as written; and the tool the row names returns zero findings
+  on a population of eight because of a heading regex it cannot see past. She re-ran with the regex
+  relaxed and nothing else changed, which is what makes the underlying measurement sound rather than
+  merely different.
+- **The escalation that goes to the author, not into a wave.** Four files that Step 0 Part 8
+  described as carrying transcribed abstracts measure **0.0% today** with plain headings, and Part
+  8's description of one file's markup does not match the file. Either the four were rewritten or
+  the original measurement was of something else. She flagged it and did not resolve it, which is
+  the correct disposal of a question about a frozen record.
+- **A count corrected against her, and the finding under it got worse rather than better.** Her
+  `DUP-5` line count of 14 is exact; "across 8 sources" does not reproduce — 14 paths, 11 distinct
+  basenames, 11 distinct DOI targets. The stronger measured statement is that **twelve of the
+  fourteen carry no `DOI:` line at all**, so the two populations are complementary rather than
+  overlapping: for twelve files the DOI exists in the corpus and is filed under a field named
+  `Publisher URL:`. Any check keyed on `DOI:` scores those twelve as having no identifier while the
+  identifier sits one line away — which lands directly on `PRV-13` and makes it fail for one more
+  reason than she gave.
+- **She obeyed the narrower of two conflicting standing clauses and flagged the conflict rather than
+  resolving it privately.** Her write set forbade the relay path; clause 8 required it. She wrote no
+  relay file and said who must. **The Manager has now ruled the clauses and the relay path is in
+  every seat's write set by construction.**
+- **Live position, sharpened by this wave and stated in her own words:** every DOI in this corpus is
+  correctly cited, and the failure she found is not a fabricated source but **two contracts asking
+  sources to say things sources do not say**. Internal agreement would not have found either. Only
+  opening the PDF did.
+
 ### The Space Resources Engineer
 - **Step 0.2 (Wave 1), the lunar question surface.** Delivered the ten question classes, the app
   boundary drawn class by class (Manager F1 addendum), the ten thin patches where an answer would be
@@ -669,6 +950,51 @@
 - **Live position, unchanged and now carried as data rather than as argument.** His A.9 tension with
   The Manager (economics prompt) is intact through 1.8, 1.9 and 1.10, and `register_class` is what
   carries it. It must survive 2.16's merge without being collapsed.
+
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-4): review of the lunar half of the disposition table.** Accepted. Placement
+  **ACCEPTED** with one `also` refused, and the arithmetic verified mechanically rather than read:
+  11 of 11 folder counts exact, 176 placed, 176 distinct, zero missing, zero unplaced, 176 of 176
+  origin tags correct.
+- **He refuted his brief's first premise and the refutation reframed the review split.**
+  `space-economy-and-markets` is a lunar-corpus folder of 26 files; `lsei/literature` has eight
+  folders totalling 152 and all eight are the lunar corpus. "Seven" was the *review* split, not the
+  field label — which is exactly the distinction The Engineer put in two separate columns, and it
+  held under an independent reader.
+- **The mechanical explanation of the forked quantity id, and it is the sharpest thing in the
+  wave.** `REGISTER.lunar.tsv`'s `H` row pins axes and member rows and has **no distinct-leaves
+  field**. So `Q-LCC15-MEMBER-ROWS` could not drift and `Q-LCC15-DISTINCT-LEAVES` had nothing
+  holding it. One id forked in value and one only in id, and the cause is a missing header field
+  rather than anyone's carelessness.
+- **He confirmed The Engineer's treaty-text disposition and refuted the stated reason for it.** The
+  glob is harmless; the actual mechanism is that `normalize()` strips only a trailing `.md` and then
+  appends `.md` unconditionally, so `un-1967-outer-space-treaty.txt` becomes
+  `un-1967-outer-space-treaty.txt.md` — a property of the naming contract, not of any glob. And both
+  declared enforcement points pass clean on the poisoned corpus.
+- **He measured the cost of retaining near-duplicates rather than arguing it.** Adding three
+  duplicates to 152 moved `un-1967` from 4.60 to 4.35 IDF and `un-1972` from 11.40 to 10.99 while
+  unrelated files rose. The finding is general across all nine known near-duplicate pairs — a
+  measured argument about `HOLD-PAIR`, supplied to the seat who adjudicates it, with the explicit
+  statement that he holds no position on which member wins.
+- **He refused to make a schema change inside his own register, with the file in his write set**,
+  because a schema change written by one register's owner into one register is exactly the fork this
+  project keeps producing. He proposed the seventh `H` field and routed it.
+- **He declined to execute the supersession he was sent to execute, and was right.** Executing it in
+  his write set would have made `M2` worse; he settled the value at 59, verified it three ways —
+  register measurement, the addendum's own operation re-run, and all 59 resolving on disk — and
+  routed the parent-file edit with the exact line numbers. **The Manager has now ruled that edit
+  his, with his write set widened to his own Step 1 files.**
+- **`register_class` handed to `SLOT-D` as four assertable properties rather than as prose**, and
+  `D-4` names the single `match_keys` collision in the entire 33-axis data: `distribution`, carried
+  by `LCC-03` and `ECR-15`, both `two_sided`. The one possible key collision between the two
+  registers lands on the axis written to hold the A.9 tension, and a class-equality guard cannot see
+  it *because the classes are equal*.
+- **A correction routed to him and unreconciled:** he reported measuring "all 106 of my files."
+  The seven non-econ lunar folders sum to 126 and the eight sum to 152; 106 reproduces under neither
+  population the orchestrator could construct, and his §4A also speaks of 11 folders, which is the
+  merged placement table rather than the lunar tree. Two populations under one word. It touches no
+  verdict of his.
 
 ### The Topologist
 - (no entries; no geometry in this project)
@@ -782,6 +1108,55 @@ have.**
 - **Structural item owed at the merge.** The two row sets carry two pre-merge `basis_root` values and
   the header has one field. The two headers cannot be spliced unchanged; nothing breaks at answer time
   because the join key is the leaf.
+
+**Step 2, Wave 1 (2026-08-28). Written by The Manager at the Wave 2 open, per A.4 step 7.**
+
+- **Step 2 Wave 1 (W1-5): review of the four economics folders, the `Q-ECR-AXES` fork, and the 2.9
+  recommendation.** Accepted. The register's known-answer test passes exactly both ways: the `H` row
+  reads `18 53` and the file holds 18 `A` rows and 53 `M` rows.
+- **The finding that should govern how this project handles briefed remedies.** His brief told him
+  to supersede the fork with `class: superseded`. He staged a copy of the declared file set,
+  reproduced the baseline at 12, applied each candidate remedy and re-counted **before touching the
+  repository**. The briefed remedy makes it **worse — 12 to 13** — because `class: superseded`
+  removes neither the duplicate id nor the quotation sites and stales the index on top. Collapsing
+  the fork instead is **12 to 6**. He verified the mechanism inside the tool rather than inferring
+  it: `--include-superseded` is a *promotion* exclusion over `cr_scratch/` marker ranges and has
+  nothing to do with `class: superseded`. The flag is misnamed.
+- **He generalized a colleague's finding into a theorem and supplied the second instance,
+  prospectively.** The Systems Engineer's `AM-132` proved after the fact that a supersession of a
+  quoted id is permanently red from the moment the correction lands; he proved it on `Q-ECR-AXES`
+  **before** touching anything, which is the only reason his deliverable does not contain an edit
+  that raised the count.
+- **The sharpest consequence, and it sharpens the Manager's own boundary ruling.** With the edit
+  made and the index not regenerated, the failure still fires — because `QUANTITIES.md` is itself a
+  quotation site. **The index of record is a quoting site, so the boundary regeneration is not
+  tidying up after the correction; it is half of the correction.** A seat's edit alone cannot close
+  a forked id, whoever owns the file.
+- **He declined to widen his own write set to reach a number he wanted**, minted the successor in
+  his own file where the counting rule permits it, left the two failures firing by design rather
+  than by omission, and asked for one line of ruling with the price attached both ways. **The
+  Manager has ruled: widen, execute, both halves at one boundary.**
+- **A retraction he made before it could do damage**, and it disciplines the rest of his review: he
+  withdrew a placement recommendation whose basis he could not reproduce. He also recorded
+  `ryan-2000-self-determination-theory` as the live falsifier on the two-value field set rather than
+  as an awkward case to be argued past.
+- **`ECR-12` has an unregistered third side sitting in the corpus** —
+  `imf-1963-appraisal-japan-double-income`, Fujioka writing eighteen months into the Income Doubling
+  Plan, whose reading is neither of the axis's two: the binding constraint was the balance of
+  payments, not the arithmetic of the target. Its `match_keys` guarantee it will be retrieved, and
+  it will arrive unclassified beside a two-sided axis. **He did not add it**, because adding an `M`
+  row moves the `H` row's field 6 and therefore one of the five forked ids — landing a correct
+  enrichment on top of an open fork adds a divergence to the id he was sent to close.
+- **One axis spans both `field` values and must be scored from the pooled table**, measured at up to
+  2.02 nats of asymmetry on its own keys. Without that, the field label silently adjudicates by
+  arithmetic the one disagreement this project has deliberately refused to adjudicate — and his
+  instruction to `SLOT-D` was to assert the value 3.7 rules, not the value it holds today.
+- **2.9 (Denison and Chung): branch C recommended, B standing, A declined — and it goes to the
+  author, not into a wave.** He landed the half of branch B's hard block that is true under all
+  three branches, which is the right shape for a recommendation whose ruling is not his.
+- **Live position, unchanged:** the A.9 tension with The Space Resources Engineer is carried in
+  `register_class` and in `ECR-15`/`ECR-16`, which state both positions and mark neither correct.
+  2.16 can flatten it without anyone noticing.
 
 ### [Recruited] Corpus curation and retrieval — NOT RECRUITED
 *Gap named by The Manager at 0.1, declined by The Recruiter at 0.1b, and the disagreement stands

@@ -484,3 +484,34 @@ another seat.** Not currently firing; W1-3 is mid-edit.
 **All three new failures are in The Engineer's file; zero are mine.** Had I differenced counts I
 would have assigned myself three defects." That is Cycle A's near-miss, in the deliverable
 implementing its remedy, to the seat who filed it. Three independent instances now.
+
+---
+
+## W1-3's file-set divergence: orchestrator re-run at a later moment (2026-08-28)
+
+He reported four instruments walking this repository within one minute and returning
+**100 / 71 / 17 / 89**. Re-run at `HEAD 7cd5eb3`, after the boundary regeneration and two commits:
+
+| Instrument | Count |
+|---|---|
+| `quantities.js` declared file set | **101** |
+| `git ls-files` | **107** |
+| `find`, excluding `.git/`, `lsei/`, `cr-agents/`, `_intake/` | **107** |
+| `manifest.js` `D` rows | **20** |
+
+**His numbers did not reproduce, and that is not a refutation — it is the finding restated.**
+The set moved between his run and mine. Had either of us published a bare count, the only
+available reading would be that the other measured wrong. Both are correct at their own digest.
+This is the second independent vindication of the read-digest today, on evidence neither he nor
+The Designer had to construct.
+
+**What reproduces exactly is the structure.** No two instruments agree; none is wrong; every
+disagreement is definitional. `git` and the filesystem agree at 107, which is worth stating
+because it means nothing is untracked and nothing ignored-but-present in that scope — the
+divergence is entirely among the *project's own* instruments, not between the project and git.
+
+Six tracked files sit outside the quantity-governed set, and twenty of 107 carry a manifest row.
+Nothing in the repository reconciles 101 against 107 against 20, because **no artifact defines
+"the set of files this repository considers its own."** His ruling — build it at `tools/`, forbid
+it from deriving its own file set, and make the declared set content with one owner — is the
+right shape, and it is Wave 2's to execute. Verdict: **CONFIRMED AS A STRUCTURE, NUMBERS MOVED.**

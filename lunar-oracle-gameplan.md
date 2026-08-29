@@ -23,12 +23,73 @@ This file is the plan for building it.
 - `_intake/japanese-miracle/lit/` (119 summaries, 112 source PDFs, 3 treaty texts)
 
 **Date:** 2026-08-26 (revised same day after author feedback)
-**Current step:** 2 (open). **Wave 1 closed 2026-08-28 — all seven seats, every claim re-run.** Wave 2 shape awaiting author ruling on the enforcement freeze. Step 1 approved by the author at the gate 2026-08-28
+**Current step:** 2 (open). **Wave 1 closed 2026-08-28** at `ef7cc20`, all seven seats. **Wave 2 is open and unspawned**; The Manager's roster and prompts are at `cr_scratch/step2_manager_w2_open.md`. The instrument freeze is **ratified by the author, 2026-08-28**.
 **lit_review:** yes
 
-> **This gameplan is deliberately incomplete.** It carries Step 0 and nothing after it. Steps 1
-> through N are the deliverable of Step 0, drafted by the team and approved by the author at the
-> Step 0 close gate (A.4 step 8, A.6.4). Do not invent Step 1 before Step 0 closes.
+---
+
+## Executive abstract
+
+**What this is.** Lunar Oracle answers questions about lunar ISRU and industrial-catch-up economics
+from one merged literature corpus, with the Lunar Scenario Explorer app as the authority on every
+quantity it models. Built by a Collaborative Reasoning team of specialist agents inside Claude Code.
+
+**Where the project stands, 2026-08-28.**
+
+| | |
+|---|---|
+| Step | **2 of 7**, open. Wave 1 of 3 closed; Wave 2 open and unspawned. |
+| The corpus | **`literature/` holds zero files.** 176 names wait to merge, from two trees of 152 and 119. |
+| Ready to move | **117 files** (Block 1 of `cr_scratch/merge_plan.tsv`, verified row by row). |
+| Contested | **59 files**, of which 35 cannot be dispositioned from committed data yet. |
+| True distinct sources | **168**, invariant to the dedup basis. DOI coverage 89 of 176. |
+| Enforcement layer | 37 check rows, 153 amendment rows, 175 suite tests (**173 in contract**), counting rule v4, 111 governed quantities. |
+| Hard failures | **15**, at read-digest `ac74373c4556b46c` over 101 files. **10 of the 15 are one fork.** |
+| Pushed | Nothing. 40+ commits local by design; the author pushes when the work is done. |
+
+**The problem the project keeps finding, in one sentence.** Container-versus-content: an artifact
+that is internally consistent, passes its own checks, and is not the thing it claims to be. Nine
+instances so far. Wave 1 produced the sharpest: **the check register agreed with its own `H` row,
+passed its own known-answer test, and had never been executed. Its first run returned exit 1,
+because `CHK-14` had been blocking every commit since sub-step 1.13.** Consistency was never
+evidence of executability.
+
+**The second-order version, named by The Manager at the Wave 1 close.** The enforcement layer has
+never been run as a system, and the project has been *adding* to it instead of running it. Every
+addition was individually a correct response to a real defect, which is exactly why nothing in the
+process could see the aggregate: 37 check rows and 175 tests over an empty tree. Common cause, not
+seven special causes.
+
+**The remedy, ratified by the author 2026-08-28.** Wave 2 carries an **instrument freeze**: no seat
+adds a net-new check row, amendment row, quantity id, test or contract clause unless it is required
+for the merge to execute or discharges something already owed. Every deliverable ends with a
+four-number apparatus ledger. The Manager applied it first to his own best proposal and declined it.
+
+**Two standing mechanisms that came out of measured failures.**
+
+- **The read-digest.** Every count carries the file set it was taken over. Today's failure series
+  reads 12, 17, 15 over 88 to 101 files; every figure was correct and none was comparable. Disjoint
+  write sets are not disjoint read sets.
+- **The known-answer test.** Every register declares its own size in an `H` row, so any count can be
+  checked against the artifact rather than against memory. Wave 1's `Q-LCC15` diagnosis turned on
+  the absence of exactly this field.
+
+**What Wave 2 does.** Six seats, eight spawns, disjoint write sets, a mid-wave staging gate where
+nothing is promoted. Its close condition is the first in this project's history to be files in the
+corpus: `literature/` holding the promoted tree, with `INDEX.tsv` and `FIELDS.tsv` present and zero
+PDFs.
+
+**Owed to the author, not to a wave.** Sub-step 2.9 (The Manager recommends the Denison and Chung
+chapter route), sub-step 2.12 (Open Question 8 audits and reports, it does not act), A6's residual
+(waits on 2.11's orphan list rather than an estimate), and The Fact-Checker's Part 8 escalation
+(four files described as carrying transcribed abstracts measure 0.0% today with plain headings).
+
+---
+
+> **Compacted 2026-08-28 at the Wave 1 close**, 1,024 lines to about 700. Status cells were reduced
+> to a verdict plus a pointer; nothing was deleted that does not survive in a `cr_scratch/`
+> deliverable or in this file's git history. Steps 1 through 7 were drafted at Step 0 and approved
+> by the author at its close gate.
 
 ---
 
@@ -173,85 +234,10 @@ zero cycles, zero unrewritten IDs.
 
 ### Wave 1 deliverable specifications (sub-step 0.2)
 
-Each agent writes to `cr_scratch/step0_{persona}_{purpose}.md` and returns a verdict of under 50
-lines to the orchestrator (A.3.5). Each drafts *gameplan steps*, not implementations: numbered,
-ordered, specific enough to execute without clarification, with the persona assignments named.
-
-**The Engineer, the corpus merge. This is the primary assignment and it is his to specify.**
-Empirical, and he runs the counts himself rather than trusting the inventory in the design notes
-below. The merge layout: the taxonomy (the Scenario Explorer's 8 topic folders are a candidate but
-they have no home for Japanese economic history or organizational theory), where provenance is
-recorded, and whether the merge is a build step that re-runs or a one-time landing. How a source
-present in both corpora is resolved when the two summaries disagree, which is a real risk given
-that they were written at different times by different passes of the same method. What happens to
-the PDFs: they land on disk beside their summaries and never push, per the directory map, and he
-specifies the mechanism that keeps a stray PDF from being committed. **The Scenario Explorer's own
-source PDFs are recoverable and the pull is his to specify:** they are at
-`OneDrive/PROJECTS/CC/CSA_LSEI_Workshops/context/reference/lit/`, and they pair to their summaries
-by directory adjacency rather than by filename, which recovers 143 of 158 (pre-dedup) against 92 by name match.
-See the design note below. He writes the adjacency rule as a step someone else could execute, and
-he stays out of `_QUARANTINED_prior_art/`. What breaks in
-`lsei/oracle/lib/literature_search.js` when the corpus grows past 180 files and a meaningful share
-of the new filenames are Japanese economic history rather than author-year lunar papers. And the
-question that decides whether this is a step or a project: does the merge need a summary rewrite
-pass to bring both corpora into one house format, or do the two formats already agree?
-
-**The Systems Engineer, repository and bootstrap architecture.** The bootstrap contract: what
-`CLAUDE.md` does on a clean clone, in what order, and what it does when a working copy is missing,
-offline, or has moved on. Whether the working copies are pinned to a commit or float on main, and
-what the tradeoff costs in each direction. How the app stays the authority without being pushed,
-and what "the app" means when the local clone is a week stale. The directory map above is the
-author's ruling on what ships; his job is to find where it breaks, particularly the case where
-`lsei/literature/` gains a source after our merge has landed and the two corpora silently diverge.
-**First-run state is his (Manager F3):** "the opening sequence plays once" is a state question
-before it is a copy question, and nobody owned it. Where does the flag live, what happens when it is
-absent, and what does a second clone on a second machine do. **He states his conceptual-integrity
-position at 0.2 and is held to it at 0.5 (Manager F4):** whether this repository is one thing or
-three projects wearing a trenchcoat cannot honestly be judged before the integrated draft exists,
-so the judgment moves to Wave 2 and only the position is taken here.
-
-**The Software Engineer, the answering loop and the TDD front end.** The loop from question to
-delivered answer, expressed as gameplan steps. What the prototype's `oracle/*.js` (the router, the
-five verdicts, the address resolver, the manifest and figure verifiers, the literature search)
-contributes, what it costs to extend, and what should be rebuilt rather than extended. Where the
-CR-Agents team fits inside a loop that must return an answer in a conversation rather than over a
-multi-day session; a full-roster wave per question is not obviously the right shape and the
-alternative is his to name. (The "nine personas" quoted at 0.2 and in Open Question 4 has no
-authority anywhere: the CR-Agents roster is twelve standing personas plus The Recruiter, and the
-author's ruling at the gate added no fourteenth: the economics work is The Manager under a second
-prompt, so the roster is unchanged. Nine is neither the roster nor a defined wave size, and whether
-there is a default wave size at all is part of what he is being asked.) Then the TDD front end: what an acceptance suite for a Lunar Oracle
-*answer* asserts, per `tdd_method.md`, and which gameplan step builds it. The `lit_review: yes` flag
-is set, so tests asserting quantitative or technical facts must name the primary source they
-validate against. **One invariant is assigned to him by The Recruiter's finding:** a claim on the
-contested-claims register cannot be answered from one side of the pair. The suite returns both or
-refuses. **And Objective 4's enforcement is his (Manager F2):** The Writer and The Editor can say
-what the register prohibition says, but neither can say where it is enforced. A rule that lives
-only in a prompt is a preference. He specifies the mechanism that makes the haiku boundary and the
-no-theater boundary testable.
-
-**The Space Resources Engineer, the lunar question surface.** What classes of question a lunar
-Oracle must answer, drawn from what the app models and what the Scenario Explorer corpus covers.
-**Say explicitly which classes the app already answers (Manager F1 addendum):** that boundary is
-what Open Question 5 turns on, and it cannot be drawn by someone who has not read the app's claim
-structure. Where the corpus is thin and an answer would be a guess wearing a citation. Which of the
-app's 10 excluded nodes are the ones users will ask about first. How TRL and evidence-gate
-discipline enter an answer that a user reads in a chat window rather than in a reviewed document.
-Plus the lunar-side **contested-claims register**, the counterpart to the economist's.
-
-**The Manager (economics prompt), the economics question surface.** The counterpart deliverable. What the
-Japanese Miracle corpus makes answerable that the Scenario Explorer corpus alone does not: growth
-accounting, capital deepening, technology absorption, industrial policy and its debunkings, quality
-and process control, the developmental state literature and its critics. How an economics question
-binds to a lunar question, and where the transfer is legitimate rather than analogy. What a
-grown-up answer contains that the prototype's answer does not. Plus the **contested-claims
-register** for the economics side: the pairs this corpus deliberately carries on both sides
-(Miwa against the received keiretsu account, Wade against the myth-of-MITI literature, Otsu
-against the developmental-state reading; **not** Beason against Henderson, see loose end B6), which is the mechanism that stops the
-Oracle from returning a confident one-sided answer that passes every other check in the plan.
-
----
-
+Collapsed at the Step 2 Wave 1 compaction. These specifications were written at 0.2 and have
+been superseded by the sub-step tables above and by the artifacts themselves. Full text is in
+the git history of this file and in `cr_scratch/step0_engineer_corpus_merge.md`,
+`cr_scratch/step0_integration_draft.md` and `cr_scratch/step0_dedup_decisions.md`.
 
 ### Step 1 sub-steps
 
@@ -288,9 +274,10 @@ detail lives in `cr_scratch/step0_integration_draft.md` section 2 and is not dup
 2.19 and 2.20 added by The Manager at the Step 2 open and approved by the author 2026-08-28.
 Measured 2026-08-28 at the open.
 
-**Read two files before touching this step.** `cr_scratch/step2_manager_open.md` is the operating
-plan — six cycles, the write set for every spawn, the TDD ruling, fourteen named risks, and the
-Wave 1 spawn prompts written out to be pasted. `cr_scratch/step2_orchestrator_baseline.md` is the
+**Read two files before touching this step.** `cr_scratch/step2_manager_w2_open.md` is the current
+operating plan — the Wave 1 close, the three rulings, the instrument freeze, the disposition of all
+44 routed items, and the Wave 2 roster with spawn prompts written out to be pasted. (The superseded
+six-cycle plan is `step2_manager_open.md`; the three-wave replacement is `step2_manager_rewave.md`.) `cr_scratch/step2_orchestrator_baseline.md` is the
 independent measurement taken before any agent ran, and it is the known-answer test for every count
 this step emits. It exists because The Manager's Step 1 close found the dominant defect class to be
 a seat running an operation with an instrument it wrote and never tested, so the baseline's author
@@ -399,267 +386,101 @@ Reverse-chronological: the newest row is first. Every row is dated 2026-08-26, s
 only statement of which entry supersedes which.
 
 | Step | Date | Notes |
-|---|---|---|
-| 2 open | 2026-08-28 | **Step 2 opened. Twenty sub-steps, six cycles.** The Manager's open is `cr_scratch/step2_manager_open.md`, 887 lines: the TDD ruling, the wave structure with a declared write set per spawn, the Wave 1 spawn prompts written to be pasted, fourteen named risks and five counting-rule mechanisms. He ruled the **TDD precondition fires** — not on user-facing prose but on the corrected rule his own falsifier forced at Step 1, that a specification whose form other agents write against is reader-facing, and Step 2 imposes three such forms on ~176 files. The suite is `oracle/tests/corpus_suite.md`, authored by a seat that owns no merge output. He ruled the four assertions-first sub-steps are **not** the suite: 2.4's assertions and 2.5's merge are the same seat, which is arm 2b by construction, so they become named amendment slots instead. **Cycle C takes an exclusive lock on `literature/` and nothing runs beside it.** Writing wave skipped, with the reason recorded. His first spawn died on a connection error mid-response and was resumed from its own context rather than restarted, so nothing was re-measured. |
-| 2 rewave | 2026-08-28 | **The author rejected the six-cycle structure and The Manager replaced it with three waves.** The ask was for a synergistic team-based wave approach that delivers the rest **while improving quality**, not trading quality for speed. He was told not to defend his own plan out of authorship and **did not**: six cycles was three cycles of work and three of waiting, and he found four defects in it that the restructure fixes — the Fact-Checker's A.10 gate scheduled to fire after the suite it gates had been the contract all step; the check register reconciled two cycles after an instrument was built against a guess of it; containment sitting after a merge that pulls 224,042,382 bytes with no repository-wide `*.pdf` rule in existence; and **three of four assertion slots owned by the seat that runs the operation they gate**, where he had named one. Where he says the author is wrong: the work plays off other work in its findings, not its writes, so the waves collapse the conversation and leave the write lock intact. **Two author rulings**: reassign all three slots, and the W1 seam is The Manager's call at the wave open resting on a volatility measurement rather than pre-committed. **What he refused to collapse, stated with its cost**: the merge stays single-writer, the provenance chain stays one seat, and rewaving does not shorten The Engineer's serial path — recorded as unfixed rather than dressed up. |
-| 2 Cycle A | 2026-08-28 | **Cycle A closed. Four spawns, four deliverables, every quantitative claim re-run by the orchestrator and zero refuted.** The corpus acceptance suite landed at `oracle/tests/corpus_suite.md` — 148 tests in twelve groups, declaring its own size and holding exactly 148, with four amendment slots declared **empty by id** so a slot that never fills is visible as a slot rather than an absence. 2.1 replaced every figure in loose end B5 and **settled B4, the row that said it could not be settled as posed**: 16 and 17 are the group count and the surplus count of one clustering, and neither seat measured wrong. 2.3 filled the field-label hole in its own author's Step 0 spec and produced **B3's first measured numbers, which correct B3's own emphasis** — `targeting` errs least of the three tokens the row names. 2.19's contract half ruled the corpus into CHECK unconditionally and out of `M13`, on a staging of the full union that reproduced the orchestrator's baseline before anything was measured against it. **Four register rows closed or resolved (A3, B4, B5, D7), three overtaken (A7, B3, E1).** Integration regenerated the quantities index, a cycle-boundary action correctly refused by the seat that found it while other seats held writes; `--check` returns to the standing twelve failures, so Cycle A added no durable debt. **Three findings the cycle produced about itself:** 2.19's mechanism fired on the orchestrator's own spawn prompt within the cycle that created it; disjoint write sets are not disjoint read sets, because every instrument here walks the declared file set rather than the caller's write set; and the index of record asserts two values its own promoted registers contradict, because an addendum that re-declares an id forks the index rather than updating it, and the fork resolves silently in favour of the stale copy. |
-| 2 baseline | 2026-08-28 | **The orchestrator measured both corpora before any agent ran**, so Step 2's counts have a known-answer test whose author is not the seat producing them — The Manager's own remedy from the Step 1 close, applied rather than described. `cr_scratch/step2_orchestrator_baseline.md`. **Two counting rules are live and both are correct**: raw filenames give union 185 and 86 overlaps, `normalize()` gives 176 and 95, and the difference is exactly nine named files. The normalized figures are operative because `normalize()` is the merge key. **A7 is nine, not one** — `GDP.md` is the only member whose difference is case alone, and the other eight differ by separator, coexist on every filesystem, and would land as eight duplicate pairs with no collision reported, so 2.4 must assert normalized-key collision rather than case-insensitive collision. **Of 86 exact-name overlaps, 81 are byte-identical**, so 2.2's same-name adjudication set is five files. Four findings routed to sub-steps: loose end A3 contradicts itself; The Engineer's Part 2 specifies no field label though B3, 2.3 and a `FIELDS.tsv` slot held open since 1.1 all require one; 2.14 inherits Step 1's owed `CHK-10` self-invoking loop; and 2.10 asserts a bare "250 MB" whose SI and binary readings differ by 10 MB. **The economics half of the corpus has no upstream** — its provenance ref resolves in this repository as an unrelated Step 1 commit tracking zero files under a gitignored directory, and neither `_intake/` nor the tree it came from is a git repository, so 2.17's divergence check and 2.18's policy both assume something that exists on one half only. Two things went the other way: The Engineer's Part 2 folder counts reconcile with the measurement to zero residue once the six A3 deletions are placed, and his Part 9 estimate of 52 PDFs for the pull is exact. |
-| 1 gate | 2026-08-28 | **The author approved Step 1 and opened Step 2**, and ruled on the two sub-steps The Manager added at the open. **2.19 approved** — the three arm-2 process changes his Step 1 close named as Step 2 work with an owner, which none of the eighteen carried and which his own falsifier F1 presumes. **2.20 approved** — check-register reconciliation for the three instruments Step 2 builds, whose three defects sit inside a register whose known-answer test passes, which is why reading it did not find them. Step 2 is twenty sub-steps. |
-| 0.4, 0.5 | 2026-08-26 | Register wave and Wave 2 closed. The Writer's register specification and The Editor's standing prohibition landed at 0.4. All three Wave 2 reviewers returned: The Systems Engineer ruled the three falsifiers (one fired, caught at 0.3) and added five plan defects; The Designer returned the echo-site catalogue and the structural damage list; The Fact-Checker returned 29 supported, 6 unsupported and 11 contradicted claims. Applied at 0.6. |
-| Setup rev. 3 | 2026-08-26 | Author closed Open Questions 2, 6 and 7: public repository; FA1 through FA8 come over (19 files to `_intake/japanese-miracle/fa/`); both corpus copies stay until the merge lands. Three live defects found by The Systems Engineer at 0.2 fixed immediately rather than scheduled, being safety rather than project work: `.gitignore` inverted to deny-by-default under `literature/` and verified against seven cases including `.txt`, `.PDF` and `.docx`; push URLs disabled on both working copies; `CLAUDE.md` path split from `deps/` repaired. |
-| 1.0-1.14 | 2026-08-27 | **Step 1 executed. Fifteen sub-steps, five ordered groups, one cycle plus a revision pass.** Counting rule: rows in the Step 1 sub-step table, measured 2026-08-27 after the re-close; fourteen at the open plus 1.14, added by The Manager at the first close as revision item R-5. All fifteen have a deliverable on disk: fourteen are persona deliverables under `cr_scratch/step1_*.md`, and 1.2's is `cr_scratch/step1_author_rulings.md`, the author's own ruling, the sub-step having no work by its own row. Plus four addenda and three reviews. The orchestrator re-ran every load-bearing empirical claim; verdicts and the commands that produced them are in `cr_scratch/step1_orchestrator_verification.md`, which is the file a cold session should read first. **Promoted to real paths at 1.14**, where nothing had been: `oracle/` holds twelve files and `literature/` holds `NAMING.md`. The answer contract, the bootstrap contract, the install state record, the currency policy, the register schema, the check register, the answering-loop suite, both register halves, `MANIFEST.tsv`, `AMENDMENTS.tsv` and `VERIFIED.tsv` are files rather than marked blocks; `COUNTING_RULE.md` and `QUANTITIES.md` sit at the root. Also landed: the corrected `.gitignore`, whose acceptance criterion is 1.1's own 24-row `git check-ignore` fixture list and not the 18 ad-hoc probes the orchestrator first ran; eight checks and harnesses under `tools/`; and three new directory-map rows. |
-| 1 gate | 2026-08-27 | **Three findings that changed work rather than describing it.** `verify_report.js` was not missing: 328 lines of it are a fenced block inside `lsei/report-generator-prompt.md`, and the author ruled the dependency dropped anyway. Register row E14's diagnosis was wrong — the long filename never broke a clone, the root length did — and the path budget's derivation was stated backwards. And `core.hooksPath` can be set to a directory that does not exist, or to an empty one, and git exits 0 and fires nothing either way, so register row E1's own remedy was silently inert. |
-| 2 W1 | 2026-08-28 | **Wave 1 closed: seven seats in parallel, `ef7cc20`.** Every quantitative claim re-run by the orchestrator against the command that produced it; **nothing refuted**, two counts routed back (The Fact-Checker's “8 sources” is 11; The Space Resources Engineer's “106 files” reproduces under no population I can construct). **The finding of the wave: the check register was internally consistent, passed its own known-answer test, and had never been executed — running it for the first time returned exit 1, because `CHK-14` had been blocking every commit since 1.13.** Consistency was never evidence of executability. **Second: four instruments walked this repository within one minute and reported 100 / 71 / 17 / 89 files; no two agree and none is wrong** — the set of files this repository considers its own has no owner. **Delivered:** `cr_scratch/merge_plan.tsv`, 176 rows × 17 columns, verified to the row — **Block 1 is 117 files ready to merge**, Block 2 is 59 contested, churn 5/59 = **8.47%** against the pre-registered 15%, so the seam call rests on measurement. **E1 closed:** the five paths that committed a PDF cleanly at 2.1 are all ignored; eight carrier extensions covered; residual flagged, `xls`/`xlsx`/`zip` open while `doc`/`docx`/`ppt`/`pptx` are covered, and `xlsx` and `docx` are the same container format. **The enforcement layer executed on a real commit for the first time** and declared its own debts rather than reporting green: 3 of 7 rows dispatched, four named as missing artifacts. **The read-digest is live in `quantities.js` and vindicated itself inside the cycle built to fix it** — today's series is 12 → 17 → 15 over 88 → 101 files, every figure correct and no two comparable; the same near-miss recurred independently to three seats. `QUANTITIES.md` regenerated at the boundary: 111 blocks, **17 → 15 hard failures** @ `ac74373c4556b46c` over 101 files, of which **eleven are one fork** that two seats diagnosed independently and neither could fix from inside its write set. **Open, undecided, and a genuine A.9 instance rather than an error: `MRG-4`** — `primary_secondary` means *which corpus copy supplies the bytes* to The Engineer and *which pair member is primary* to The Software Engineer; 8 pair groups, 0 with one primary; correct under one reading, vacuous under the other, and neither seat rewrote the test to fit. **`literature/` holds zero files; the corpus has not moved.** |
-| 1 revision | 2026-08-27 | **The Manager refused to close, twice, and the refusals were correct.** The first refusal returned six revision items, because A.4's revision stage had not run and Wave 2 had returned three blocking defects inside frozen contracts, sixteen live counting-rule failures, roughly forty-five unheld amendments and fifteen target paths with no files behind them. The pass added sub-step 1.14, which promoted everything, built `oracle/MANIFEST.tsv` and `oracle/AMENDMENTS.tsv`, and built `tools/quantities.js` — whose first result was to reproduce The Designer's hand measurement clause by clause. The second refusal found that the pass had discharged three of seven blocking findings and that the index of record had no row for its own fifteenth sub-step. Both discharged. **Final state, measured with nothing writing: `quantities --check` exit 1, 12 failure lines, all twelve carrying an amendment row; `check_registers.js` exit 0.** |
-| 1 close | 2026-08-27 | **Step 1 closed and sent to the author.** Unconditional, nothing deferred. The Manager revised his own common-cause ruling at the close: what he had called one arm is two, and the second — a seat running an operation with an instrument it wrote and never tested — accounts for seven of the nine relay errors and for every wrong verdict produced this step. **He withdrew the claim that either standing rule is a remedy**, keeping both as definitions of conformance, on the ground that a rule a person must remember to apply is not a process fix. The evidence he ruled on: the orchestrator wrote the rule against filters-from-memory and broke it one measurement later, then wrote a figure from memory into the very sentence added to stop it. His proposed remedy is mechanical — every register declares its own size in an `H` row, so use it as a known-answer test. |
-| 1 gate | 2026-08-27 | **The orchestrator's own relay errors this step: nine, recorded because the counting-rule contract landed this step requires it and because The Manager's close rules them one common cause.** Counting rule: distinct instances recorded in `cr_scratch/step1_orchestrator_verification.md`, counted 2026-08-27 at the close. Four of the nine produced a wrong verdict. Selected instances follow. Relayed an agent's uncounted figure, "ten of nineteen", into an author ruling; the true figure is 14. Reported the lunar register rows as passing when a strict re-run returns FAIL and exit 1 — the checker used cannot exit nonzero, and a `grep -v` written to extract the summary deleted the failure line before it was read. Pushed a third commit to the Scenario Explorer without sweeping register row E10, which is the row about not being able to tell who moved the authority. All three are in the verification log with the commands that establish them. |
-| 0.8 | 2026-08-26 | **Step 0 closed at the author's gate.** Three rulings: the recruited economics seat dissolved into The Manager under a separate economics prompt, with the role-conflict question dismissed and two spawns being the whole mechanism; Step 7 kept; the FA deliverables given their own shelf, closing D1 and unblocking the merge taxonomy at 2.1. |
-| 0.3 renumber | 2026-08-26 | Author ruled the numbering: phases are steps, steps are sub-steps. Integration draft rewritten in place to Steps 1 to 7 with `N.M` sub-steps and an `Origin ID` column preserving traceability to the five Wave 1 files. Count 73 to 72: `GATE-1` dissolved into Step 4's closing statement as a boundary gate carrying no work of its own; `GATE-2` kept as 6.15 because it carries the clearing work that sub-step 2.12 explicitly declines to do. Dependency validator: zero dangling, zero forward, zero cycles, zero unrewritten IDs. |
-| 0.3 | 2026-08-26 | Integration closed. Returned as 73 steps in 7 phases at `cr_scratch/step0_integration_draft.md`; renumbered the same day to 72 sub-steps in 7 steps (see the `0.3 renumber` row). Step-ID collision resolved onto ARCH/LOOP/MERGE/LUNAR/ECON prefixes with an old-to-new mapping table. Twelve ordering constraints found. New gate added (GATE-1): the loop is not pointed at `literature/` until the register, retrieval rebuild, classifier and three-class invariant land, because the corpus existing and the corpus being safe to answer from are two different dates and no Wave 1 draft named the second one. The Systems Engineer's falsifier 2 **half-failed and was caught**: the ref record and first-run flag were already consolidated by him, but the drift record was specified twice (ARCH-5 and MERGE-11) as the same computation with two owners; consolidated. The same failure shape was found outside the falsifier's scope, three encodings of the contested-claims register from three agents, also consolidated. |
-| Abstracts | 2026-08-26 | Open Question 8 re-measured with `tools/audit_abstract_overlap.js`: four files, not thirteen, and three of the four were already marked as quotation. All four rewritten as original prose; re-audit returns zero at or above the 10 percent threshold, down from four. Markers removed. The three with LSEI copies are byte-identical across both corpora. |
-| Dedup | 2026-08-26 | Author directed the duplicate-summary defect be fixed rather than scheduled. Six tokenization collisions found in `lsei/literature/` (Japanese Miracle corpus clean, zero). All six the same source twice, confirmed by DOI or NTRS ID; none referenced by filename in `index.html`. Four decided on a size gap: 4.6x, 5.1x, 3.0x and 1.67x. The fourth is Speyerer 2013 (26,400 against 15,836), and 1.67x sits 0.17 above the 1.5x line the same decisions file sets as the point below which a gap is not evidence; it is a size call made close to its own threshold and it is recorded that way rather than banded with the other three. The two closest (1.08x, 1.37x) were adjudicated by a separate reviewer reading all four files, which reversed the size call on Poston 2020. Corpus 158 to 152. Superseded files retained at `_intake/superseded-duplicates/`. Decisions recorded at `cr_scratch/step0_dedup_decisions.md`; enforced by `tools/check_corpus_collisions.js`, tested in both directions. |
-| 0.2 | 2026-08-26 | Wave 1 closed, all five. The Engineer's merge audit corrected two orchestrator claims (PDF pairing rule, pull size) and answered Open Question 8 in the affirmative. His classification of that answer was overstated and was corrected the same day: Open Question 8 **does not gate the public release** (see the `Abstracts` row and loose end A4). Step-ID collision noted for integration: The Software Engineer and The Systems Engineer both numbered their steps SE-1 onward. |
-| 0.1 rev. 1 | 2026-08-26 | The Manager closed rev. 1 of the open. Five Wave 1 prompts rewritten for the new layout; A2 restated as a ruling rather than an assumption; The Engineer promoted to first of five with an eight-part brief. Wave 1 spawned. |
+| --- | --- | --- |
+| Setup | 2026-08-26 | Repository initialized. CR-Agents (`f0c976b`) and LSEI (`f788ea2`, since advanced to `7f97983`) cloned as working copies and gitignored. `cr_scratch/` created. |
+| Setup rev. 1 | 2026-08-26 | Author feedback. Working copies flattened from `deps/` to `cr-agents/` and `lsei/` at root. |
+| Setup rev. 2 | 2026-08-26 | Author identified the Scenario Explorer's origin folder, `CSA_LSEI_Workshops` (4.1 GB), with instructions to survey it shallowly. Surveyed. |
 | 0.1b | 2026-08-26 | The Recruiter closed. Recruited The Manager (economics prompt), anchored to Moses Abramovitz. Ruled against a second recruit. Pending author approval at the 0.8 gate. |
-| Setup rev. 2 | 2026-08-26 | Author identified the Scenario Explorer's origin folder, `CSA_LSEI_Workshops` (4.1 GB), with instructions to survey it shallowly. Surveyed. 163 unique PDFs at `context/reference/lit/`, paired to summaries by directory adjacency rather than filename: 143 of 158 (pre-dedup) recoverable that way against 92 by name. **Both the rule and the pull size were corrected by The Engineer at 0.2; see Design notes.** Recorded in Design notes; the pull assigned to The Engineer at 0.2. |
-| Setup rev. 1 | 2026-08-26 | Author feedback. Working copies flattened from `deps/` to `cr-agents/` and `lsei/` at root. Japanese Miracle corpus copied to `_intake/japanese-miracle/lit/` (119 summaries, 112 PDFs, 3 treaty texts, 363 MB). Directory map added. Corpus integration promoted to Objective 1. Open Question 1 closed by the author's ruling. |
-| Setup | 2026-08-26 | Repository initialized. CR-Agents (`f0c976b`) and LSEI (`f788ea2`, since advanced to `7f97983`) cloned as working copies and gitignored. `cr_scratch/` created. Gameplan seeded with Step 0 only. The LSEI ref was `c8274e6` at seed and is `f788ea2` now: two commits were authored through this working copy during Step 0 (the abstract rewrites at `d7889e1`, the dedup at `f788ea2`) and both are on `origin/main`. `f788ea2` is the ref every LSEI figure in this document was measured against. |
-
----
+| 0.1 rev. 1 | 2026-08-26 | The Manager closed rev. 1 of the open. Five Wave 1 prompts rewritten for the new layout; A2 restated as a ruling rather than an assumption; |
+| 0.2 | 2026-08-26 | Wave 1 closed, all five. The Engineer's merge audit corrected two orchestrator claims (PDF pairing rule, pull size) and answered Open Question 8 in the affirmative. |
+| Dedup | 2026-08-26 | Author directed the duplicate-summary defect be fixed rather than scheduled. Six tokenization collisions found in `lsei/literature/` (Japanese Miracle corpus clean, zero). |
+| Abstracts | 2026-08-26 | Open Question 8 re-measured with `tools/audit_abstract_overlap.js`: four files, not thirteen, and three of the four were already marked as quotation. |
+| 0.3 | 2026-08-26 | Integration closed. Returned as 73 steps in 7 phases at `cr_scratch/step0_integration_draft.md`; renumbered the same day to 72 sub-steps in 7 steps (see the `0.3 renumber` row). |
+| 0.3 renumber | 2026-08-26 | Author ruled the numbering: phases are steps, steps are sub-steps. Integration draft rewritten in place to Steps 1 to 7 with `N.M` sub-steps and an `Origin ID` column preserving traceability... |
+| 0.4, 0.5 | 2026-08-26 | Register wave and Wave 2 closed. The Writer's register specification and The Editor's standing prohibition landed at 0.4. |
+| Setup rev. 3 | 2026-08-26 | Author closed Open Questions 2, 6 and 7: public repository; FA1 through FA8 come over (19 files to `_intake/japanese-miracle/fa/`); both corpus copies stay until the merge lands. |
+| 0.8 | 2026-08-26 | **Step 0 closed at the author's gate.** Three rulings: the recruited economics seat dissolved into The Manager under a separate economics prompt, |
+| 1.0-1.14 | 2026-08-27 | **Step 1 executed. Fifteen sub-steps, five ordered groups, one cycle plus a revision pass.** Counting rule: rows in the Step 1 sub-step table, measured 2026-08-27 after the re-close; fourteen at the open plus 1.14, added by The Manager at the first close as revision item R-5. |
+| 1 revision | 2026-08-27 | **The Manager refused to close, twice, and the refusals were correct.** The first refusal returned six revision items, because A.4's revision stage had not run and Wave 2 had returned three blocking defects inside frozen contracts, sixteen live counting-rule failures, |
+| 1 close | 2026-08-27 | **Step 1 closed and sent to the author.** Unconditional, nothing deferred. The Manager revised his own common-cause ruling at the close: what he had called one arm is two, |
+| 1 gate (errors) | 2026-08-27 | **The orchestrator's own relay errors this step: nine**, recorded because the counting-rule contract requires it and because The Manager's close rules them one common cause. Four of the nine produced a wrong verdict. **Arm 2b -- a seat running an operation with an instrument it wrote and never tested -- accounts for seven of the nine and every wrong verdict.** Instances in `cr_scratch/step1_orchestrator_verification.md`. A tenth landed at 2.1 and an eleventh at W1-4: the `FIELDS.tsv` cell that said the fix had landed for a file that does not exist. |
+| 1 gate (findings) | 2026-08-27 | **Three findings that changed work rather than describing it.** `verify_report.js` was not missing: 328 lines of it are a fenced block inside `lsei/report-generator-prompt.md`, and the author ruled the dependency dropped anyway. |
+| 1 gate (approved) | 2026-08-28 | **The author approved Step 1 and opened Step 2**, and ruled on the two sub-steps The Manager added at the open. **2.19 approved** — the three arm-2 process changes his Step 1 close named as Step 2 work with an owner, |
+| 2 open | 2026-08-28 | **Step 2 opened. Twenty sub-steps, six cycles.** The Manager's open is `cr_scratch/step2_manager_open.md`, 887 lines: the TDD ruling, the wave structure with a declared write set per spawn, the Wave 1 spawn prompts written to be pasted, |
+| 2 rewave | 2026-08-28 | **The author rejected the six-cycle structure and The Manager replaced it with three waves.** The ask was for a synergistic team-based wave approach that delivers the rest **while improving quality**, not trading quality for speed. |
+| 2 baseline | 2026-08-28 | **The orchestrator measured both corpora before any agent ran**, so Step 2's counts have a known-answer test whose author is not the seat producing them — The Manager's own remedy from the Step 1 close, applied rather than described. `cr_scratch/step2_orchestrator_baseline.md`. |
+| 2 Cycle A | 2026-08-28 | **Cycle A closed. Four spawns, four deliverables, every quantitative claim re-run by the orchestrator and zero refuted.** The corpus acceptance suite landed at `oracle/tests/corpus_suite.md` — 148 tests in twelve groups, declaring its own size and holding exactly 148, with four amendment slots declared **empty by id** so a slot that never fills is visible as a slot rather than an absence. |
+| 2 W1 | 2026-08-28 | **Wave 1 closed: seven seats in parallel, `ef7cc20`.** Every quantitative claim re-run by the orchestrator; **nothing refuted**, two counts routed back. **The finding: the check register was internally consistent, passed its own known-answer test, and had never been executed. First run returned exit 1 -- `CHK-14` had blocked every commit since 1.13.** Second: four instruments walked this repository within one minute and reported 100/71/17/89 files; no two agree, none is wrong. **Delivered `cr_scratch/merge_plan.tsv`**, 176 rows x 17 columns, verified to the row: **Block 1 is 117 files ready to merge**, Block 2 is 59 contested, churn **8.47%** against a pre-registered 15%. E1 closed. The enforcement layer ran on a real commit for the first time and declared its debts rather than reporting green. `QUANTITIES.md` regenerated at the boundary: 111 blocks, **17 to 15 hard failures** at digest `ac74373c4556b46c` over 101 files, **10 of 15 being one fork**. Open: `MRG-4` is a genuine contract collision, not an error. **`literature/` holds zero files.** |
+| 2 W2 open | 2026-08-28 | **The Manager closed Wave 1, ruled three times, and opened Wave 2. Accumulator entries written for all seven seats** (A.4 step 7, overdue since the wave). **He answered the author's question -- are we keeping our eye on the ball -- with No, not on this wave**, and diagnosed the cause as aggregate rather than anybody's: the enforcement layer has never been executed as a system and the project has been adding to it instead of running it. He would strike no individual addition. **Remedy: the instrument freeze, ratified by the author.** He applied it first to his own strongest proposal -- an assertion that every required deliverable exists, which would have caught `FIELDS.tsv` four sub-steps ago -- and declined to take it, on the ground that a freeze that spares its author's favourite item is decoration. **Rulings.** (1) `MRG-4`: the column splits into `byte_source` and `pair_primary` on the `CHK-13` precedent; neither seat was wrong and `pair_primary` reads `unadjudicated` on all 16 pair members because a merge gate cannot read a field that does not exist until 2.16. (2) The fork collapses at the wave open before any other write, executed by the seat that measured each half, predicted **15 to 5 to 2** with both survivors named in advance. (3) Standing clauses 8 and 9 rewritten; **the structural half he took himself -- arm 2a is discharged at the wave open or not at all**, so all eight Wave 2 prompts are written before any seat runs. **He corrected the orchestrator: 10 of the 15 failures are the fork, not 11** -- `Q-DEGRADED-MODES` is the `AM-132` theorem. Confirmed. **Wave 2 reshaped:** 2.17 and 2.18 out to Wave 3 (building half a tool a wave before its other half is the defect that justified collapsing six cycles into three); 2.7, 2.8, `FIELDS.tsv`, the suite runner and the merge-gate dispatcher in; The Designer deliberately not spawned. All 44 routed items carry a disposition with an owner and a wave. **An A.10 negative stands: `PRV-13` and `PRV-15` do not clear, so 173 of 175 tests are the contract**, and both repairs are Wave 2 close conditions. |
+| 2 compact | 2026-08-28 | **This file compacted at the author's direction**, 1,024 lines to 720 and 148,363 bytes to 82,877. Register status cells reduced to a verdict plus a pointer into the `cr_scratch/` deliverable holding the evidence; the progress log reordered chronologically and its three rows all labelled `1 gate` disambiguated; design notes and open questions squeezed to one paragraph each, with the author's directory-map table kept verbatim because it is the push policy; the 0.2 deliverable specifications collapsed to a pointer. **Nothing was deleted that does not survive in a `cr_scratch/` deliverable or in this file's git history.** An executive abstract was added at the head. Two stale pointers fixed: the Step 2 read-first still named the superseded six-cycle plan, and the header still carried the Step 0 disclaimer saying this file holds nothing after Step 0. |
 
 ## Design notes
 
 **The Manager's rulings at open, 0.1.** Full text at `cr_scratch/step0_manager_open.md`.
 
-The Manager ruled Step 0 a **nine** sub-step contract rather than eight: 0.1b is spawn-bearing and
-carries its own deliverable, so it counts. It also returned five findings against the seed as the
-author approved it. F2 through F5 are folded into the sub-step table and the Wave 1 briefs above.
-F1 is recorded here so nobody re-litigates it: **the TDD precondition (A.4) does not fire on Step
-0.** Step 0's deliverable is an operating contract, not a document with a reader. The condition
-still stands downstream, and the drafted gameplan must schedule TDD stages as explicit ordered
-steps for every later step that produces prose.
+The Manager ruled Step 0 a **nine** sub-step contract rather than eight: 0.1b is spawn-bearing and carries its own deliverable, so it counts. It also returned five findings against the seed as the author approved it. F2 through F5 are folded into the sub-step table and the Wave 1 briefs above.
 
-The Manager also fixed five **standing drafting assumptions**, stated verbatim in every Wave 1
-prompt, on the grounds that the real integration risk at 0.3 is five agents each guessing
-differently: the repository is public; the corpus summaries ship and the 112 PDFs do not; the
-working copies float on main for drafting purposes; Claude Code only; and each agent says which
-assumption it used wherever the answer depends on one.
+The Manager also fixed five **standing drafting assumptions**, stated verbatim in every Wave 1 prompt, on the grounds that the real integration risk at 0.3 is five agents each guessing differently: the repository is public; the corpus summaries ship and the 112 PDFs do not;
 
-**Two personas disagree about the second recruit, and the disagreement is on the record.** The
-Recruiter ruled corpus curation "a real problem, not a person-shaped gap" at 182 filename-distinct
-sources (158-file pre-dedup basis; 176 on the 152-file basis) and
-assigned the artifact instead of the seat. The Manager ruled it "a real gap, wrong time," which
-concedes the timing but not the principle, and named a trigger: recruit when the merge step opens,
-or immediately if The Engineer reports at 0.2 that the 95 overlapping pairs disagree substantively.
-Not resolved here. The trigger is the operative part either way.
+**Two personas disagree about the second recruit, and the disagreement is on the record.** The Recruiter ruled corpus curation "a real problem, not a person-shaped gap" at 182 filename-distinct sources (158-file pre-dedup basis;
 
-**The recruited persona, 0.1b.** The Recruiter returned **The Manager (economics prompt)**, anchored to Moses
-Abramovitz (1912-2000): NBER from 1938, economic adviser on the Allied Commission on Reparations in
-1946, Stanford, AEA President 1980. The anchor publications are "Resource and Output Trends in the
-United States since 1870" (1956), where he produced the growth residual and called it "a measure of
-our ignorance," and "Catching Up, Forging Ahead, and Falling Behind" (1986), which gives the team
-**social capability** and **technological congruence**. Full specification at
-`cr_scratch/step0_recruiter_persona_spec.md`.
+**The recruited persona, 0.1b.** The Recruiter returned **The Manager (economics prompt)**, anchored to Moses Abramovitz (1912-2000): NBER from 1938, economic adviser on the Allied Commission on Reparations in 1946, Stanford, AEA President 1980.
 
-The selection argument is the part that matters: Abramovitz is the only candidate whose published
-apparatus is a *test of transferability* rather than a description of an episode. Jorgenson,
-Denison, Young and Gerschenkron were considered and rejected on the record. He arrives with hard
-findings rather than a method: catch-up requires a technological leader and the Moon has none, so
-Kiyota's technology-absorption mechanism has no lunar counterpart; congruence says terrestrial
-technique was selected under a factor-price vector the Moon inverts; Lewis needs a subsistence
-labour reserve that does not exist.
+The selection argument is the part that matters: Abramovitz is the only candidate whose published apparatus is a *test of transferability* rather than a description of an episode. Jorgenson, Denison, Young and Gerschenkron were considered and rejected on the record.
 
-**New productive tension (A.9), to be added to the roster if the author approves:** *The Growth
-Economist vs. The Space Resources Engineer.* Necessary conditions from opposite directions. The
-Space Resources Engineer asks whether anyone has built it and at what TRL. The Manager (economics prompt)
-asks whether an economy holding it would compound. A process can be TRL 6 and economically inert; a
-growth mechanism can be well-evidenced and have no hardware. Do not resolve. A secondary tension
-runs against The Fact-Checker: she catches fabrication, he catches valid and correctly cited
-sources doing work they were never licensed to do. That second one is this project's actual failure
-mode.
+**New productive tension (A.9), to be added to the roster if the author approves:** *The Growth Economist vs. The Space Resources Engineer.* Necessary conditions from opposite directions. The Space Resources Engineer asks whether anyone has built it and at what TRL.
 
-**No second recruit.** The Recruiter ruled that corpus curation is a real problem but not a
-person-shaped gap at 182 filename-distinct sources (158-file pre-dedup basis), and assigned the
-artifact rather than the seat: a
-contested-claims register produced by the two domain personas, turned into a retrieval invariant by
-The Software Engineer and into merge structure by The Engineer. The named trigger to revisit is a
-Fact-Checker finding of one-sided retrieval on a registered claim at 0.5.
+**No second recruit.** The Recruiter ruled that corpus curation is a real problem but not a person-shaped gap at 182 filename-distinct sources (158-file pre-dedup basis), and assigned the artifact rather than the seat: a contested-claims register produced by the two domain personas,
 
-**Verified inventory, 2026-08-26.** Counted from the trees on disk this session, and **re-verified
-by The Fact-Checker at 0.5**, whose corrections are applied here: the LSEI ref, the corpus size, the
-`oracle/` file count, and the standing of the generated map. Stated here so a wrong number is caught
-rather than inherited.
+**Verified inventory, 2026-08-26.** Counted from the trees on disk this session, and **re-verified by The Fact-Checker at 0.5**, whose corrections are applied here: the LSEI ref, the corpus size, the `oracle/` file count, and the standing of the generated map.
 
-*CR-Agents*, `github.com/Shootquinn/CR-Agents`, main at `f0c976b`. Operational guide (750 lines),
-TDD method, prompt0, twelve standing personas plus The Recruiter, the writing guides, the docx
-toolkit.
+*CR-Agents*, `github.com/Shootquinn/CR-Agents`, main at `f0c976b`. Operational guide (750 lines), TDD method, prompt0, twelve standing personas plus The Recruiter, the writing guides, the docx toolkit.
 
-*Lunar Scenario Explorer*, `github.com/Shootquinn/lsei-lunar-scenario-explorer`, main at `7f97983`,
-which is also what `origin/main` reads. The app is `index.html`, one self-contained page of 894,127
-bytes, holding 20 Claims across 66 sections, 86 slugs, 76 modeled nodes and 10 excluded ones, with a
-data island publishing `KNOB_DATA`. Alongside it: `literature/` (152 summaries in 8 topic folders;
-152-file basis, post-dedup, 158 pre-dedup), `oracle/` (13 `.js` files plus one JSON fixture, 3,002
-lines, the prototype this project grows up from), `lunar-scenario-explorer-map.md`,
-`report-generator-prompt.md`, and five vendored writing guides.
+*Lunar Scenario Explorer*, `github.com/Shootquinn/lsei-lunar-scenario-explorer`, main at `7f97983`, which is also what `origin/main` reads.
 
-**The generated map is not current with the app, and the five app figures are correct anyway.** Two
-facts, and they have to be recorded together because the second is only true because the first was
-not trusted. The map's own provenance table records 895,544 bytes, md5 `a1acb7c4…` and data-island
-pin `ca689ef3`; `lsei/index.html` on disk is 894,127 bytes, md5 `16caa330…`, pin `e2989bf6`.
-`index.html` has been byte-identical since `c8274e6`, so the drift is the map's and it was committed
-already drifted. The map names `tools/build_map.js` as its generator and `--check` as its proof, and
-`lsei/tools/` does not exist, so the check that would have caught this cannot be run.
-**Re-checked at the Step 1 close against the container-versus-content pattern, and the note stands.**
-That pattern made this project wrong twice about `verify_report.js`, whose 328-line source turned out
-to be a fenced block inside `lsei/report-generator-prompt.md`. `build_map.js` is not the same case: a
-content search finds it named in `lunar-scenario-explorer-map.md` lines 10 and 17 to 19, but only its
-invocations are documented and its source is embedded nowhere. It is genuinely absent, so the map
-cannot be regenerated or proved from this repository and the drift above cannot be closed here. The five
-figures above — 20 Claims, 66 sections, 86 slugs, 76 modeled, 10 excluded — were **re-derived at 0.5
-by evaluating the data island out of `index.html` directly** rather than read off the map, and all
-five verify against the artifact. The map is what must not be cited for them. Sub-step 3.1
-(LUNAR-7) re-derives them again against whatever the app is on that date.
+**The generated map is not current with the app, and the five app figures are correct anyway.** Two facts, and they have to be recorded together because the second is only true because the first was not trusted.
 
-*Japanese Miracle corpus*, now at `_intake/japanese-miracle/lit/`: 119 summaries, 112 source PDFs,
-3 treaty texts, 363 MB. Copied rather than moved, so the original folder at
-`onedrive/projects/CC/Japanese Miracle Lit Review` is intact and still holds that project's
-finished work.
+*Japanese Miracle corpus*, now at `_intake/japanese-miracle/lit/`: 119 summaries, 112 source PDFs, 3 treaty texts, 363 MB. Copied rather than moved, so the original folder at `onedrive/projects/CC/Japanese Miracle Lit Review` is intact and still holds that project's finished work.
 
-**What is local-only, and what a fresh LSEI clone actually restores.** The dedup and the abstract
-rewrites are **not** local-only. `origin/main` reads `7f97983`, the same ref this working copy is on,
-so a fresh clone of LSEI gets 152 summaries, zero `-2` duplicate files, zero transcription markers in
-the four rewritten summaries, and the corrected licence sentence in `README.md`. Checked at 0.6 with
-`git -C lsei ls-remote origin main` against `git -C lsei rev-parse HEAD`. Three things are genuinely
-local-only and each rots without warning:
+**What is local-only, and what a fresh LSEI clone actually restores.** The dedup and the abstract rewrites are **not** local-only. `origin/main` reads `7f97983`, the same ref this working copy is on, so a fresh clone of LSEI gets 152 summaries, zero `-2` duplicate files,
 
-- **The `gott-2024` abstract fix.** `gott-2024` is Japanese-Miracle-unique, so it has no LSEI copy;
-  the rewrite lives only in `_intake/`, in a repository that has **no commits at all** (loose end E9).
-  It exists on one disk.
-- **The `--push DISABLED` settings** on both working copies. They live in each copy's `.git/config`
-  and do not survive a re-clone. `CLAUDE.md`'s idempotent `set-url --push` assertion is the only
-  durable half of loose end A2, which is why loose end E7 (the assertion sitting on the acquire path
-  rather than the verify path) mattered.
-- **The `CSA_LSEI_Workshops` survey** — 4.1 GB, 163 PDFs, the 111/46/5/1 split, the 26 quarantined
-  `.md` files. No repository tracks that folder, it syncs, and it belongs to a different project.
-  Nothing will ever tell this project when the survey stops being true.
+- **The `gott-2024` abstract fix.** `gott-2024` is Japanese-Miracle-unique, so it has no LSEI copy; the rewrite lives only in `_intake/`, in a repository that has **no commits at all** (loose end E9). It exists on one disk. - **The `--push DISABLED` settings** on both working copies.
 
-Two consequences for how figures are written down. The app figures and the CR-Agents figures are
-snapshots of working copies that float on `main`, so every one of them carries the ref it was
-measured against (`7f97983`, `f0c976b`) rather than a bare number. And "FIXED" in the loose ends
-register below means fixed and verified; where the fix lives outside this repository's history the
-row says where.
+Two consequences for how figures are written down. The app figures and the CR-Agents figures are snapshots of working copies that float on `main`, so every one of them carries the ref it was measured against (`7f97983`, `f0c976b`) rather than a bare number.
 
-**The merge is smaller than it looks, and the part that is new is the important part.** Comparing
-summary filenames after normalizing case and separators, on the 158-file pre-dedup basis: 95 sources
-appear in both corpora, 63 are unique to the Scenario Explorer, and 24 are unique to the Japanese
-Miracle review. The union is 182 distinct **filenames**, which is not a source count — see loose end
-B5. On the 152-file post-dedup basis the same arithmetic gives 176 and 57, both provisional until
-sub-step 2.1 (MERGE-2) measures them. The Scenario Explorer corpus already absorbed most of the Japanese Miracle
-corpus, which is expected given the shared lineage. What it did not absorb is the Japan-specific
-economic and organizational spine, and that is exactly the adult this project is asking for:
+**The merge is smaller than it looks, and the part that is new is the important part.** Comparing summary filenames after normalizing case and separators, on the 158-file pre-dedup basis: 95 sources appear in both corpora, 63 are unique to the Scenario Explorer,
 
-```
-acemoglu-2020-robots-and-jobs               kiyota-2005-foreign-technology-acquisition
-aoki-2009-government-tfp-growth             kiyota-2013-import-quota-removal
-beason-1996-targeting-japan                 may-1977-how-japans-economy-grew-so-fast-review
-beckley-2018-americas-role-japan-miracle    miwa-2002-fable-of-the-keiretsu
-christiano-1989-japan-saving-rate           nakamura-1989-postwar-japanese-economy
-dingman-1993-dagger-and-gift-korean-war     otsu-2007-neoclassical-postwar-japan
-esri-2016-japan-high-growth-economic-plans  pritchett-2000-hills-among-plateaus
-esteban-pretel-2009-postwar-japan-policy    ryan-2000-self-determination-theory
-gott-2024-card-gas-analysis-subsystem       simonis-1979-denison-boltho-review
-hoshi-1991-corporate-structure-liquidity-investment  spear-1999-decoding-tps-dna
-jorgenson-2005-industry-origins-japan       trist-1951-longwall-coal-getting
-kawagoe-1999-japan-land-reform              wade-2018-developmental-state-dead-or-alive
-```
+``` acemoglu-2020-robots-and-jobs               kiyota-2005-foreign-technology-acquisition aoki-2009-government-tfp-growth             kiyota-2013-import-quota-removal beason-1996-targeting-japan                 may-1977-how-japans-economy-grew-so-fast-review beckley-2018-americas-role-japan-miracle...
 
-Note what is in that list beyond growth accounting: the Toyota Production System, sociotechnical
-systems design from the Tavistock coal-getting study, and self-determination theory. The adult
-knows how work is organized, not only how output is measured.
+Note what is in that list beyond growth accounting: the Toyota Production System, sociotechnical systems design from the Tavistock coal-getting study, and self-determination theory. The adult knows how work is organized, not only how output is measured.
 
-**Where the Scenario Explorer's source PDFs live, and why the pairing is not by filename.** The
-author identified the origin folder for the Scenario Explorer work:
-`OneDrive/PROJECTS/CC/CSA_LSEI_Workshops`. It is 4.1 GB and holds a great deal that is not relevant
-to this project. Surveyed shallowly, by the author's instruction, and the relevant part is
-`context/reference/lit/`, which holds 163 unique PDFs across a few subfolders.
+**Where the Scenario Explorer's source PDFs live, and why the pairing is not by filename.** The author identified the origin folder for the Scenario Explorer work: `OneDrive/PROJECTS/CC/CSA_LSEI_Workshops`. It is 4.1 GB and holds a great deal that is not relevant to this project.
 
-**This note was written by the orchestrator on a shallow survey and The Engineer corrected it at
-0.2. The corrected version is what governs.** The orchestrator's original claim was that PDFs pair
-to their summaries by directory co-location, recovering 143 of 158 (pre-dedup) against 92 by filename. The
-observation was right and the rule was wrong.
+**This note was written by the orchestrator on a shallow survey and The Engineer corrected it at 0.2. The corrected version is what governs.** The orchestrator's original claim was that PDFs pair to their summaries by directory co-location, recovering 143 of 158 (pre-dedup) against 92 by filename.
 
-*Co-location is not a rule a machine can follow.* `scenario_undercarriage_sources/` holds 46 PDFs
-against 44 summaries, which is 2,024 candidate pairings, and adjacency alone has no way to choose
-among them. The Engineer implemented it as a tier and it matched `un-1967-outer-space-treaty` to
-`deming-1967-japan-quality-control.pdf`. The real pattern is a shared **author-plus-year token
-across two naming conventions**, of which co-location is a symptom rather than the mechanism. His
-tiered rule is exact filename (92), then unique author-year (44), then a hand queue (22) resolved
-by reading the PDF's first page against the summary's own citation title: **148 of 182
-(158-file pre-dedup basis) deterministic, 81%.**
+*Co-location is not a rule a machine can follow.* `scenario_undercarriage_sources/` holds 46 PDFs against 44 summaries, which is 2,024 candidate pairings, and adjacency alone has no way to choose among them.
 
-*The pull is smaller than the orchestrator reported.* Not 163 PDFs and 601 MB but **52 PDFs and 224
-MB**, because `japanese miracle lunar economy lit/` (111 PDFs, 377 MB) **is** the origin of what is
-already at `_intake/`, verified by name with zero files in it we do not already hold. The net-new
-comes from `scenario_undercarriage_sources/` (46), the `lit/` root (5), and
-`fission_program_primaries/` (1).
+*The pull is smaller than the orchestrator reported.* Not 163 PDFs and 601 MB but **52 PDFs and 224 MB**, because `japanese miracle lunar economy lit/` (111 PDFs, 377 MB) **is** the origin of what is already at `_intake/`, verified by name with zero files in it we do not already hold.
 
-*The quarantine warning was moot.* `_QUARANTINED_prior_art/` holds 26 `.md` files and **zero PDFs**,
-so a PDF-only pull cannot touch it and the prohibition enforces itself. It still should not be read
-into the corpus without establishing why it was quarantined.
+*The quarantine warning was moot.* `_QUARANTINED_prior_art/` holds 26 `.md` files and **zero PDFs**, so a PDF-only pull cannot touch it and the prohibition enforces itself. It still should not be read into the corpus without establishing why it was quarantined.
 
-**Numbering convention, ruled by the author 2026-08-26.** Integration returned its plan as seven
-"phases" containing 73 "steps." That is one level off from this method's numbering and it breaks the
-one-step gate, which fires after every step: 73 gates is not a cadence anybody can work at.
+**Numbering convention, ruled by the author 2026-08-26.** Integration returned its plan as seven "phases" containing 73 "steps." That is one level off from this method's numbering and it breaks the one-step gate, which fires after every step: 73 gates is not a cadence anybody can work at.
 
-**The phases are the steps. The steps are the sub-steps.** The plan is Steps 1 through 7, each
-holding sub-steps numbered `N.M`, exactly as Step 0 itself ran with 0.1 through 0.8. The one-step
-gate (A.4 step 8) then fires seven times, at boundaries where the decision is genuinely the author's:
-after the rulings land, after the corpus merges, after retrieval is rebuilt, and so on. Sub-steps
-inside a step run as continuous working-loop cycles without stopping.
+**The phases are the steps. The steps are the sub-steps.** The plan is Steps 1 through 7, each holding sub-steps numbered `N.M`, exactly as Step 0 itself ran with 0.1 through 0.8.
 
-Each sub-step keeps its agent-origin tag (`ARCH-n`, `LOOP-n`, `MERGE-n`, `LUNAR-n`, `ECON-n`) in its
-own column. That tag is the only route back to the Wave 1 file that authored it, and those five files
-stay on disk and get read again. The mapping table in the integration draft is three-column:
-original agent ID, integration prefix ID, final `N.M`.
+Each sub-step keeps its agent-origin tag (`ARCH-n`, `LOOP-n`, `MERGE-n`, `LUNAR-n`, `ECON-n`) in its own column. That tag is the only route back to the Wave 1 file that authored it, and those five files stay on disk and get read again.
 
-Roughly 20 of the 75 sub-steps are not independent work but mandated TDD stages (test suite, outline,
-write, revise) split into ordered sub-steps rather than folded into one "build" row. Those are the
-last thing to cut if the count is reduced: the Japanese Miracle project's Phase 7 deliverable failed
-audience acceptance because exactly those stages were skipped, and that project's own gameplan says
-so in its own words.
+Roughly 20 of the 75 sub-steps are not independent work but mandated TDD stages (test suite, outline, write, revise) split into ordered sub-steps rather than folded into one "build" row.
 
-**The 72 is not yet ruled on for granularity.** Integration declined to prune, correctly, on the
-ground that dropping rows to hit a number belongs to the scope-holder. The Manager gets it as an
-explicit question at 0.7: is this the honest decomposition, or five specialists each writing at their
-own preferred resolution with nobody normalizing? Step 2 at 18 sub-steps against Step 5 at 3 suggests
-at least some of the latter. Anything The Manager wants to cut arrives at the author's gate as a
-list, per the guide's rule that an unnecessary sub-step is removed with author approval rather than
-quietly dropped.
+**The 72 is not yet ruled on for granularity.** Integration declined to prune, correctly, on the ground that dropping rows to hit a number belongs to the scope-holder.
 
-**The corpus counts in this section were measured before deduplication and are now provisional.**
-Every overlap and union figure Wave 1 worked from was measured against a 158-file Scenario Explorer
-corpus. The six duplicate removals executed on 2026-08-26 left 152, so the union by filename is
-152 + 119 - 95 = **176, not 182**. Both figures stay, each with its basis: 182 is a measurement over
-the 158-file listing and 176 is arithmetic over a changed input. Both are marked PROVISIONAL in the
-echo site registry, and sub-step 2.1 (MERGE-2) produces the measured replacement. A second count is
-contested: the number of author-year clusters holding more than one summary is 16 by The Space
-Resources Engineer and 17 by The Engineer, and neither stated the clustering rule, so the contest is
-not adjudicable as posed — a strict rule (leading author token, optional single hyphenated surname,
-then a 19xx/20xx year) returns 9 over the 176 union. This matters because the retrieval invariant in
-loose end B4 is built on that list; what B4 actually rests on, `sowers-2019` holding four members, is
-verified.
+**The corpus counts in this section were measured before deduplication and are now provisional.** Every overlap and union figure Wave 1 worked from was measured against a 158-file Scenario Explorer corpus.
 
-**The 86 exact-name matches are not automatically identical files.** Nine more pairs match only
-after normalization (`GDP.md` against `gdp.md`, `ISNPS_Tech_Report_97.md` against
-`isnps-tech-report-97.md`, and so on). Two summaries of the same source, written at different times
-by different passes of the same method, can disagree. Resolving that is a merge decision, assigned
-to The Engineer at 0.2 and not settled here.
+**The 86 exact-name matches are not automatically identical files.** Nine more pairs match only after normalization (`GDP.md` against `gdp.md`, `ISNPS_Tech_Report_97.md` against `isnps-tech-report-97.md`, and so on).
 
-**Directory map: what gets pushed and what does not.** This was the author's ruling at seed time and
-it is recorded here rather than at the front because it is a design note.
+**Directory map: what gets pushed and what does not.** This was the author's ruling at seed time and it is recorded here rather than at the front because it is a design note.
 
-The `.gitignore` in this repository enforces this map. If the two ever disagree, this table is the
-statement of intent and the `.gitignore` is the bug.
+The `.gitignore` in this repository enforces this map. If the two ever disagree, this table is the statement of intent and the `.gitignore` is the bug.
 
 | Path | Pushed | What it is |
 |---|---|---|
@@ -679,25 +500,13 @@ statement of intent and the `.gitignore` is the bug.
 | `cr-agents/` | no | Working copy of `github.com/Shootquinn/CR-Agents`. Cloned at bootstrap. |
 | `lsei/` | no | Working copy of `github.com/Shootquinn/lsei-lunar-scenario-explorer`. Cloned at bootstrap. The app inside it is an authority, and an authority is never copied into a repository that would then have to keep it current. |
 | `_intake/` | no | Staging. Material on its way into `literature/`. Empties as the merge lands. |
-
 Two consequences worth stating plainly, because they are the reason the map looks like this.
 
-*The PDFs stay and the PDFs never ship.* A person who clones Lunar Oracle gets the merged corpus and
-no PDFs. That corpus is **176 summaries by arithmetic on the 152-file basis and has never been
-measured**, because the merge has not run; the measurement lands at sub-step 2.1 (MERGE-2). It is not
-119: 119 is the intake half. The no-PDF posture is the one the Scenario Explorer takes and for the
-same reason: each summary identifies its source by citation and DOI, so a reader reaches the original
-through its publisher. The author's local disk keeps the PDFs because the team reads them when a summary is
-not enough.
+*The PDFs stay and the PDFs never ship.* A person who clones Lunar Oracle gets the merged corpus and no PDFs. That corpus is **176 summaries by arithmetic on the 152-file basis and has never been measured**, because the merge has not run; the measurement lands at sub-step 2.1 (MERGE-2).
 
-*The corpus is pushed and the app is not.* These look inconsistent and are not. The corpus is this
-project's own writing, static, and the thing being built. The app is somebody else's live artifact
-that recomputes on every slider move, and the moment a copy of it sits in this repository there are
-two answers to every quantitative question.
+*The corpus is pushed and the app is not.* These look inconsistent and are not. The corpus is this project's own writing, static, and the thing being built.
 
-**Provisional `CLAUDE.md`.** The `CLAUDE.md` currently in this repository is a session-recovery stub
-written at seed time. It is not the deliverable. The real one is drafted in a step the team defines
-at 0.2, and it is the file that carries the bootstrap contract and the first-run sequence.
+**Provisional `CLAUDE.md`.** The `CLAUDE.md` currently in this repository is a session-recovery stub written at seed time. It is not the deliverable. The real one is drafted in a step the team defines at 0.2, and it is the file that carries the bootstrap contract and the first-run sequence.
 
 ---
 
@@ -777,70 +586,70 @@ fired); ACCEPTED LIMIT (known, not fixable at this layer, documented where it bi
 
 | # | N.M | Finding | Evidence | Status |
 |---|---|---|---|---|
-| A1 | 1.1 | `.gitignore` allowed non-`.md` files under `literature/`. Three UN treaty `.txt` files, and any `.docx` or `.PDF`, would have shipped. | `git check-ignore` over seven probe paths: `literature/x.pdf`, `x.PDF`, `x.txt`, `x.docx` and `sub/y.pdf` are ignored; `literature/x.md` and `literature/sub/y.md` are not. | **FIXED**, verified both directions. 1.1 turns the seven probes into the standing fixture list |
-| A2 | 1.4 | Both working copies could push to their upstreams. "Never pushed" was enforced by nothing. | `git remote -v` shows `origin … DISABLED (push)` on both; `CLAUDE.md` carries the idempotent `git remote set-url --push origin DISABLED` assertion with its rationale. | **FIXED**, and the assertion is in `CLAUDE.md`. The `.git/config` half does not survive a re-clone, so the `CLAUDE.md` assertion is the only durable half — see Design notes, what is local-only, and E7 |
-| A3 | 2.2 | Six tokenization collisions in `lsei/literature/`, same source twice in every case. **One sentence of this row is unverified:** that `csank-2022` resolved to the 7,637-byte summary every time and the 23,190-byte one never. That is the tool's own comment rather than a measurement anyone could repeat — the pre-dedup corpus no longer exists in the working tree. The collision, both byte sizes and the same-source identity all verify. | `tools/check_corpus_collisions.js`; DOI or NTRS match per pair (`csank-2022`: NTRS 20220004165); none of the six dropped basenames is referenced in `index.html`. | **FIXED**, corpus 158 to 152, and **pushed**: `origin/main` reads `f788ea2`. Superseded members retained at `_intake/superseded-duplicates/`. **The self-contradiction is resolved at 2.1, 2026-08-28.** The Finding cell's clause “the pre-dedup corpus no longer exists in the working tree” is **struck as false**, and struck on evidence produced by using the population it said was gone: `lsei/literature/` (152) plus the six retained superseded members reconstructs the 158-file corpus exactly. The retrieval claim was then re-run over that reconstruction with unmodified `searchLiterature()` across twelve questions, and it is **8 of 12, not universal**. On the eight, score and full-text fraction tie exactly and directory-walk order decides — `-` sorts before `.`, so the shorter summary wins by default. On the other four, `confirmInText()` breaks the tie and the 23,190-byte file wins. Both mechanisms are live. `cr_scratch/step0_dedup_decisions.md` says “every time / never” and needs one word changed; routed, not edited, because it is another seat's file |
-| A4 | 2.12 | Four summaries reproduced their source's printed abstract: `gott-2024` 79.8%, `schreiner-2016` 44.0%, `romer-1990` 38.4%, `turyshev-2026` 11.9%. **Four is the corrected count.** The earlier count of thirteen included transcription markers in citation fields, which are a different thing. This row is the single account of that error; Open Question 8 points here rather than restating it. **The four percentages are no longer reproducible**: the files were rewritten at `d7889e1` and in `_intake/`, so the measured inputs are gone. Flagged rather than deleted. | `tools/audit_abstract_overlap.js` over **103** PDF-paired summaries, median 0.0%; re-run at 0.5 against the same population with the same result. The **108** quoted inside Open Question 8's retained original wording is a second denominator for the same audit; nobody could rule which population it counted, and it is unreconciled. | **FIXED.** All four rewritten as original prose, markers removed, re-audit returns 0 at threshold. The three with LSEI copies are pushed at `d7889e1`; the `gott-2024` fix lives only in `_intake/`, in a repository with no commits (E9) |
-| A5 | 6.13 | The LSEI README claimed "No third-party PDF, page image or extracted source text is in this repository." Not true of its own corpus. | The superseded string is the one quoted here, with the "or extracted source text" clause present. `lsei/README.md` now reads "No third-party PDF or page image is in this repository," committed at `d7889e1`. Cite the string, not a line number: the line has moved once already. | **FIXED** and pushed at `d7889e1`. Lunar Oracle's own corpus licence statement at 6.13 must not copy the original sentence |
-| A6 | 2.12 | **57** Scenario-Explorer-unique summaries have no local PDF and were never tested for A4. (63 was the 158-file pre-dedup figure; 57 is the 152-file basis and is provisional until 2.1 measures it.) | The Engineer, part 8 scope limit. | OPEN. The 52-PDF pull at 2.11 supplies PDFs for some of them; 2.12 re-runs the audit over the rest and is the only thing that closes this row. Owner: The Engineer |
-| A7 | 2.4 | `GDP.md` and `gdp.md` collide on a case-insensitive filesystem. A naive merge silently drops one file on Windows and not on Linux. | The Engineer. | **RESIZED at the Step 2 open and answered at 2.1. The population is nine, not one.** Under a case-only rule A7 is exactly one pair, and both members are **byte-identical** — `gdp.md` and `GDP.md`, 6,787 bytes, md5 `07dc3e6d…` — so a merge that loses one **loses nothing and reports success**, which makes the defect invisible in precisely the case that exists. Under `normalize()` per `NAMING.md` §1 the collision class has **nine members**, all named in `cr_scratch/step2_orchestrator_baseline.md`; `GDP.md` is merely the only one whose difference is case alone, and **the other eight differ by separator** — spaces and underscores against hyphens — so they coexist on every filesystem and a case-insensitive check catches none of them. A case-insensitive assertion lands eight duplicate pairs with no collision reported. **2.4 asserts normalized-key collision**, which subsumes the case rule, catches all nine, and is cheaper. Landed in the corpus suite as `CRP-4`/`CRP-5` at two scopes, with `CRP-7` running both rules and asserting the normalized one catches a strict superset so the narrowing cannot be reintroduced quietly. Also measured: **zero intra-corpus normalization collisions** in either tree, which `CRP-6` turns into a post-condition |
-| A8 | — | **Two errors in `lsei/README.md`, found at 0.5 and fixed at the Step 1 open.** Line 12 says `literature/` is "all at one level with no subfolders"; it has eight topic folders. Line 46 says `oracle/` "holds three command-line tools" and then describes four. | The Fact-Checker at 0.5, read against the tree: eight directories under `lsei/literature/`; four top-level scripts in `lsei/oracle/` (`answer_question.js`, `render_figure.js`, `verify_answers.js`, `verify_figure.js`). | **CLOSED, 2026-08-26.** Fixed and pushed as `lsei` `7f97983`. Three corrections: the eight topic folders are named; "three command-line tools" reads four; and the usage block gained `verify_answers.js` while `answer_question.js` gained the `--log` flag that writes the file it reads, so the block runs end to end. No sub-step in this plan owns another repository's README, which is why the address column is a dash. |
+| A1 | 1.1 | `.gitignore` allowed non-`.md` files under `literature/`. Three UN treaty `.txt` files, and any `.docx` or `.PDF`, would have shipped. | `git check-ignore` over seven probe paths: `literature/x.pdf`, `x.PDF`, `x.txt`, | FIXED, verified both directions. 1.1 turns the seven probes into the standing fixture list. |
+| A2 | 1.4 | Both working copies could push to their upstreams. "Never pushed" was enforced by nothing. | `git remote -v` shows `origin … DISABLED (push)` on both; | FIXED; the assertion is in `CLAUDE.md`. The `.git/config` half does not survive a re-clone. |
+| A3 | 2.2 | Six tokenization collisions in `lsei/literature/`, same source twice in every case. | `tools/check_corpus_collisions.js`; DOI or NTRS match per pair (`csank-2022`: NTRS 2022000... | FIXED, corpus 158 to 152, pushed `f788ea2`. **Self-contradiction struck at 2.1**: the retrieval claim is **8 of 12, not universal**; on the eight, score and full-text fraction tie and directory-walk order decides. See `cr_scratch/step2_orchestrator_baseline.md` |
+| A4 | 2.12 | Four summaries reproduced their source's printed abstract: `gott-2024` 79.8%, `schreiner-2016` 44.0%, `romer-1990` 38.4%, `turyshev-2026` 11.9%. | `tools/audit_abstract_overlap.js` over **103** PDF-paired summaries, median 0.0%; | FIXED. Four rewritten as original prose, markers removed, re-audit returns 0. |
+| A5 | 6.13 | The LSEI README claimed "No third-party PDF, page image or extracted source text is in this repository." Not true of its own corpus. | The superseded string is the one quoted here, with the "or extracted source text" clause p... | FIXED, pushed `d7889e1`. |
+| A6 | 2.12 | **57** Scenario-Explorer-unique summaries have no local PDF and were never tested for A4. | The Engineer, part 8 scope limit. | **OPEN.** Waits on 2.11's orphan list rather than an estimate. To the author. |
+| A7 | 2.4 | `GDP.md` and `gdp.md` collide on a case-insensitive filesystem. A naive merge silently drops one file on Windows and not on Linux. | The Engineer. | **ANSWERED at 2.1. The population is NINE, not one.** `GDP.md` is the only case-only member and its pair is byte-identical, so a merge that loses one reports success. **The other eight differ by separator**, coexist on every filesystem, and no case rule catches them. 2.4 asserts normalized-key collision; landed as `CRP-4`/`CRP-5`/`CRP-7`. See `cr_scratch/step2_orchestrator_baseline.md` |
+| A8 | — | **Two errors in `lsei/README.md`, found at 0.5 and fixed at the Step 1 open.** Line 12 says `literature/` is "all at one level with no subfolders"; | The Fact-Checker at 0.5, read against the tree: eight directories under `lsei/literature/`... | CLOSED 2026-08-26, pushed `lsei 7f97983`. Another repository's README; no sub-step owns it, hence the dash. |
 
 ### B. Defects the merge would create or expose
 
 | # | N.M | Finding | Evidence | Status |
 |---|---|---|---|---|
-| B1 | Step 4 gate (2.16, 3.7, 3.8, 4.1, 4.2) | **The single most important finding of Step 0.** The merge converts an honest refusal into a confident one-sided answer. "Did MITI targeting raise TFP, and does it transfer to lunar capital deepening?" returns `REFUSE` against the 158-file (pre-dedup) corpus and `beason-1996` against the merged one, with Henderson absent from the candidate list entirely. It fires before any register exists. **The defect is real and the illustration is weaker than it reads:** see B6. Beason and Henderson agree, so this is a refusal becoming a confident single-source answer rather than a refusal becoming a one-sided answer on a contested claim. The threshold and IDF causes in B2 and B3 are unaffected. A genuinely contested pair is needed to re-run the probe. | The Engineer, run against a merged probe corpus rather than reasoned about. | OPEN. Owners: The Software Engineer and The Engineer. The containment is the Step 4 closing statement, which absorbed the dissolved corpus-live gate |
-| B2 | 3.7 | The 0.45 confirmation threshold was tuned on a **156-file** single-field corpus and has no standing at the merged size. Set it from a fixture set, not by feel. 156 is a third corpus basis alongside 158 and 152, and it is the tool's own: it counts what had shipped when the tool was written, not either of this project's trees. | The Software Engineer; The Engineer part 7. Both halves re-read at source at 0.5: `literature_search.js` line 214 is `frac >= 0.45`, and line 128 says in the tool's own words "run against the shipped 156-file corpus rather than the original 57." | DEFERRED. Owner: The Software Engineer. 3.6 (LOOP-4t) builds the labelled question set the new threshold is set against |
-| B3 | 2.3, 3.7 | The IDF table is pooled across two fields with different vocabulary distributions, so "policy", "capital" and "targeting" get a weight wrong for both halves. The fix needs field-scoped IDF, which makes **a machine-readable field label per file a hard requirement on the taxonomy**, not a preference. | The Software Engineer. | **MEASURED for the first time at 2.3, 2026-08-28, and this row's own emphasis is wrong.** **The fix is SPECIFIED and UNBUILT, and this cell said “landed”, which was the orchestrator's error, caught at W1-4 on 2026-08-28.** `find . -name FIELDS.tsv` returns nothing and `literature/` holds zero files. What 2.3 produced is the design: `FIELDS.tsv`, folder-to-field, closed value set of exactly two (`lunar`, `economics`), read by `corpusDocFrequency()`/`idf()` through the relative-path first segment. The file is owed at 2.5 and the three-line retrieval change at 3.7 — which the original cell gave away by naming a future step one sentence after claiming the fix had landed. **Second-order and larger: the deliverable table has carried this file as required since the Step 1 gate, its own row explains why a non-`.md` file under `literature/` goes invisible to the enforcement layer, and it then went four sub-steps unnoticed. No assertion anywhere checks that a file listed as required actually exists.** Corrected count for the label scheme: **eight** folders carry `field: lunar`, not seven — `space-economy-and-markets` (26 files) is a lunar-corpus folder that the review split assigned to The Manager, and a `FIELDS.tsv` built from the review split would orphan 26 files. **Of the three tokens this row names, `targeting` errs least** — 0.41 pooled against 0.16 scoped. `capital` errs 1.23 pooled against 0.27 economics-scoped and 2.03 lunar-scoped, wrong for both halves in opposite directions. **The real damage is elsewhere and larger: `moon` errs 2.13, `income` 1.91, `mission` 1.88** — cross-boundary domain vocabulary, up to 2.1 nats against this row's worst of 0.97. Verified at source: `corpusDocFrequency(literatureDir)` builds one table over the whole directory with no field scoping. Owner for the retrieval half remains The Software Engineer at 3.7 |
-| B4 | 2.1, 2.15 | **The cluster count is contested, and this is the one row where the contest is load-bearing.** A filename-overlap ranker returns whichever member of an author-year cluster tokenizes best, not the one carrying the claim, so the register's `sources` field must name every cluster member or the invariant is satisfiable by returning the wrong file. The count is **16 (The Space Resources Engineer) against 17 (The Engineer)**, and it **cannot be settled as posed, because neither states the counting rule**: under a strict rule — leading author token, optional single hyphenated surname, then a 19xx/20xx year — the same trees return 9. What the invariant actually rests on is verified independently of the count: **`sowers-2019` holds four members** (`-psr-ice-mining`, `-thermal-mining-ice`, `-thermal-mining-niac-report`, `-thermal-mining-niac`). | The Space Resources Engineer (16); The Engineer (17); The Fact-Checker at 0.5 for the missing rule and for `sowers-2019`. | **CLOSED at 2.1, 2026-08-28, and the row was right that it could not be settled as posed.** It was settled by supplying the counting rules neither figure stated. **16 and 17 are both correct and they measure different quantities**: 16 is the *group* count on the 182 basis under a lead-token-plus-year rule, and 17 is the *surplus-file* count of substantially the same clustering under four of five rules. Neither seat measured wrong; they answered different questions. The Engineer's own Step 0.2 figure of “17 groups and 20 surplus” is refuted in the same pass — the 17 was the surplus mislabelled and the 20 reproduces under nothing. **Operative figure: 9 groups / 11 surplus, strict rule, 176 basis.** The invariant is verified independently of every count: `sowers-2019` holds **4 members over 2 sources**, confirmed by prefix enumeration, by opening all four blocks, and by the orchestrator |
-| B5 | 2.1 | "182 sources" is a filename count. DOI deduplication finds 7 confirmed duplicate pairs plus 2 unconfirmable preprints; true distinct sources is about 162 to 173. **The DOI coverage figure needs restating with its basis and cannot be reproduced as written.** "Only 79 of 182 carry a DOI at all" was measured on the 182 population under a definition the register never stated — a confirmed DOI field rather than any DOI string. A regex for a resolvable DOI anywhere in the file, over the 176-file union, returns **91 with and 85 without**. **Echo site.** | The Engineer; the re-measurement by The Fact-Checker at 0.5. | **CLOSED at 2.1, 2026-08-28.** Every figure in this row is replaced. **True distinct sources: 168**, computed as the 176-name normalized union minus 8 same-source merges, and it computes to 168 from the 182 basis too (182 − 11 − 3), so the count is invariant to the dedup. That replaces “182 sources” and the “162 to 173” range everywhere. **DOI coverage: 89 of 176** under a stated definition — a DOI accepted as that source's own identifier — with seven candidate definitions tabulated on both bases so the chosen one can be checked against the six rejected. **“79 of 182” reproduces under none of the seven and is withdrawn by its own author.** **“91 with / 85 without” reproduces exactly**, and 91 + 85 = 176: it was one definition and its complement rather than a rival measurement, never wrong, only unstated. One source pair (`nasa-moon-to-mars-doc` against `nasa-2025-moon-to-mars-architecture-add-revc`, both NASA/TP-20250010956 Rev C) shares no filename token with its twin, so no filename rule could ever have caught it |
-| B6 | 1.10 | **The exemplar contested pair is not contested.** `beason-1996-targeting-japan` and `henderson-2008-myth-of-miti` were quoted throughout Step 0 as the model two-sided pair. Read on disk they are on the same side: Beason tests the conventional targeting narrative across 13 sectors and finds against it; Henderson argues MITI's causal role "has been greatly exaggerated" and is carried mainly for its Denison and Chung decomposition. Returning Beason without Henderson is returning one of two agreeing sources, not one side of a dispute. **The corpus already says so about itself:** Henderson's own Topic mapping section reads "Also relevant to the **MITI-skeptic thread alongside Beason 1996** and Kiyota 2013." The two sources are filed as co-belligerents by the summaries themselves. | The Writer found it; orchestrator confirmed from both abstracts; The Fact-Checker upheld it at 0.5 by reading both files in full and quoting the Topic mapping line. | OPEN. It is a `false_pair` in The Manager (economics prompt)'s own taxonomy, which already anticipated the category. Reclassify at 1.10. **Every downstream use of this pair as an illustration needs re-checking, including loose end B1's worked example.** |
-| B7 | 1.10 | **The corpus has no primary pro-targeting source, and that is a systematic bias rather than a gap.** Johnson 1982, *MITI and the Japanese Miracle*, is in neither corpus. Beason's abstract names it as the narrative he is testing, so the affirmative industrial-policy position survives in this corpus only as reported speech inside its critics. Asked whether industrial policy worked, this Oracle can currently only answer no, and it will sound well-sourced doing it. **Two corrections from 0.5.** Wade 2018 **is** affirmative on the developmental state — his abstract argues it better explains the catch-up decades, and rebuts the conversion claim — and is merely silent on *sectoral targeting*; "neither makes the targeting claim" is right, "nearest affirmative source" undersells him, and that distinction is the one a retrieval layer will blur. And Johnson 1982 is not merely absent, it is **already registered**: `_intake/japanese-miracle/fa/FA1-source-list.md` entry 14 carries the slug `johnson-1982-miti-japanese-miracle`, a full citation, "PDF route: library or Internet Archive", and the note "Read against Beason and Weinstein." | Orchestrator, from the corpus listings and three abstracts. Upheld at 0.5 by four independent searches for the absence: filename, full-text author name, exact title, and the abstracts of the four plausible affirmative sources. | **OPEN, and re-scoped at the Wave 2 gate and R-6. The finding is now sharper than the row.** Wade is not silent on Japanese targeting: he reports Lane 2017 finding Korean HCI-targeted industries grew faster in output and productivity, persisting after the policy ended in 1979, and he records that comparable studies for Japan and Taiwan **have not been conducted**. **So the affirmative position is not absent from this corpus, it is absent from Japan** — and the axis had been asserting the former. ECR-01 is re-scoped to Japanese sectoral targeting as a three-sided `false_pair`; the Korean finding gets its own axis, ECR-18, one member, recorded as reported speech inside Wade with Lane not on disk, which is this row's own shape pointing the other way. Measured: a country-less question puts identical mass on both axes, so they fire or fail together and the Japan answer cannot come back alone. **Acquisition target: Johnson 1982**, spec in `FA1-source-list.md` entry 14; acquiring it flips ECR-01 in one recorded edit |
+| B1 | Step 4 gate (2.16, 3.7, 3.8, 4.1, 4.2) | **The single most important finding of Step 0.** The merge converts an honest refusal into a confident one-sided answer. | The Engineer, run against a merged probe corpus rather than reasoned about. | OPEN. Owners: The Software Engineer, The Engineer. Step 4 closing state. |
+| B2 | 3.7 | The 0.45 confirmation threshold was tuned on a **156-file** single-field corpus and has no standing at the merged size. | The Software Engineer; The Engineer part 7. Both halves re-read at source at 0.5: `literat... | DEFERRED. Owner: The Software Engineer. 3.6 builds the labelled question set the threshold is set against. |
+| B3 | 2.3, 3.7 | The IDF table is pooled across two fields with different vocabulary distributions, so "policy", | The Software Engineer. | **SPECIFIED AND UNBUILT, and this cell said landed, which was the orchestrator's error, caught at W1-4.** `FIELDS.tsv` does not exist; owed at 2.5, the three-line retrieval change at 3.7. Pooled IDF's real damage is elsewhere: `moon` errs **2.13 nats**, against this row's worst of 0.97. **Eight folders carry `field: lunar`, not seven**, so a map built from the review split orphans 26 files. See `cr_scratch/step2_orchestrator_verification.md` |
+| B4 | 2.1, 2.15 | **The cluster count is contested, and this is the one row where the contest is load-bearing.** A filename-overlap ranker returns whichever member of a... | The Space Resources Engineer (16); The Engineer (17); | **CLOSED at 2.1.** 16 and 17 are both correct and measure different quantities, groups against surplus files. Operative: **9 groups / 11 surplus**, strict rule, 176 basis. `sowers-2019` holds 4 members over 2 sources. See `cr_scratch/step2_orchestrator_baseline.md` |
+| B5 | 2.1 | "182 sources" is a filename count. DOI deduplication finds 7 confirmed duplicate pairs plus 2 unconfirmable preprints; | The Engineer; the re-measurement by The Fact-Checker at 0.5. | **CLOSED at 2.1. True distinct sources: 168**, invariant to the dedup basis. **DOI coverage 89 of 176** under a stated definition, with seven candidates tabulated. The 182 figure and 79-of-182 are withdrawn; 91/85 was one definition and its complement. See `cr_scratch/step2_orchestrator_baseline.md` |
+| B6 | 1.10 | **The exemplar contested pair is not contested.** `beason-1996-targeting-japan` and `henderson-2008-myth-of-miti` were quoted throughout Step 0 as the... | The Writer found it; orchestrator confirmed from both abstracts; | OPEN. A `false_pair` in the economics taxonomy, which already anticipates it. |
+| B7 | 1.10 | **The corpus has no primary pro-targeting source, and that is a systematic bias rather than a gap.** Johnson 1982, *MITI and the Japanese Miracle*, | Orchestrator, from the corpus listings and three abstracts. | **OPEN, re-scoped.** The affirmative position is not absent from the corpus, it is **absent from Japan**; Wade reports Lane 2017 on Korea in his own voice. `ECR-01` three-sided; `ECR-18` minted. Acquisition target: **Johnson 1982**. |
 
 ### C. Defects in the prototype Oracle
 
 | # | N.M | Finding | Evidence | Status |
 |---|---|---|---|---|
-| C1 | 3.2 | `app_model.js` extracts `model()` but not `valueModel()`. The app's entire economic half (`r_prop`, `margin_*`, `Dstar_prop`, `ranking`) is unreachable by any APP verdict. It fails silently: the router does not refuse, it answers an app question from a literature summary. That is the inherited authority rule being violated by the mechanism built to enforce it. | The Space Resources Engineer, verified by grep returning zero across `app_model.js` and `address.js`. | **OPEN, and confirmed live at the Wave 2 gate with evidence the row did not have.** The Fact-Checker verified FIX-10 and found it worse than the test claimed: `valueModel` is not merely absent from `app_model.js`'s return tail, it lives in the `VALUE-CORE` island at `lsei/index.html` 7797–8448 and `app_model.js` reads only three other islands, never opening that one. `margin_prop` is not among `model()`'s 26 output keys. **She ran the router: the question returns `LITERATURE`/`ANSWERED` from a summary with a resolving trace**, so the Oracle answers from literature a question the app was believed to own. The suite fixture was marked green while failing its own stated invariant; it is RED at R-3 with its own run as the close condition. Owner: The Space Resources Engineer |
-| C2 | 3.2 | `model()` returns 26 keys; `OUTPUT_LEXICON` names 8. `cap`, `Wpower`, `Wthr`, `mPwr`, `Rcap` and `regime` are unreachable, and they are the outputs a resources person actually asks for. | Same. | OPEN |
-| C3 | 2.18 | `answer_question.js` `DEFAULT_LIT` resolves to `lsei/literature/`, not the merged corpus. Run in place it silently answers from the wrong corpus, defeating Objective 1 at the point of use. Every invocation must pass `--lit` and the suite must assert which corpus was used. | The Systems Engineer. | OPEN. Owner: The Systems Engineer; 2.18 carries the `--lit` requirement |
-| C4 | 1.6 | **This row has now been wrong twice, and the second correction reverses the first.** `verify_report.js` is named as an unlisted dependency of three of The Software Engineer's mechanisms. The 0.5 finding said it is in neither working copy and concluded there is nothing to vendor and nothing to pin. **The file is not missing.** Its complete 328-line source is embedded as a fenced `javascript` block in `lsei/report-generator-prompt.md`. Counting rule: the opening fence is line 357 and the closing fence is line 686, so the block spans 330 lines inclusive and the source between the fences is 328 lines. The heading `## The verifier` is at line 352, introduced by the instruction "Write this out as `verify_report.js` and run it. It is the same file the proofs in step 5 were run against." The Fact-Checker's `find` is correct as run and the conclusion drawn from it is not: a filename search cannot see a file that exists as content inside another file. Both options C4 declared unavailable are available again, and a third has appeared — extract it at bootstrap from the pinned prompt document, which is the upstream's own instruction. **The Manager's common cause at the Step 1 open: this project's searches look for containers and its dependencies live as content** — summaries inside files, the model inside `index.html`, source inside a prompt document, a mirrored tokenizer instead of an import. That reasoning is passed to 1.13. Seven lines above the opening fence, at line 349, the upstream file states that its register property "rests on a vendored copy read at generation time and a human eye, and if that step is skipped nothing downstream will notice" — which is E8's sentence, written upstream, about this dependency. | The Software Engineer, disagreement (d), for the dependency. The Fact-Checker at 0.5 for the `find` result, which stands; her conclusion from it does not. The Manager at the Step 1 open for the location, verified by the orchestrator: one fenced block, 357–686, 328 lines. | **RULED by the author, 2026-08-26: drop the dependency.** The three mechanisms are rewritten without `verify_report.js`. Not extracted, not vendored. Being able to acquire something is not a reason to depend on it. The cost is one reimplementation and nothing else: The Software Engineer had already made the answer contract independent of it at 1.3, restating the claim-bearing definition in the contract's own words rather than by reference. 1.6 records the ruling; its charge shrinks back to the currency policy. **Open onward:** the three mechanisms need a replacement post-condition and no sub-step owns that work. Flag at the Step 1 close. The container-versus-content finding survives the ruling and goes to 1.13 as scheduled. |
-| C5 | 3.4 | EXCLUDED-BUT-ADJACENT has no mechanism. `propellant-mass-leverage` is excluded while `net-value-identity` is modeled, so the app resolves an address into the wrong one and returns a number. Three adjacency pairs identified and shipped as data. | The Space Resources Engineer; the forcing case re-verified at 0.5 against the app's own exclusion set. | DEFERRED. Owner: The Space Resources Engineer. 3.4 (LUNAR-4) extends the exclusions matcher to three outcomes |
+| C1 | 3.2 | `app_model.js` extracts `model()` but not `valueModel()`. The app's entire economic half (`r_prop`, `margin_*`, `Dstar_prop`, | The Space Resources Engineer, verified by grep returning zero across `app_model.js` and `a... | **OPEN, confirmed live with evidence the row lacked.** `valueModel` lives in an island `app_model.js` never opens; the router returns `LITERATURE`/`ANSWERED`, so the Oracle answers from literature a question the app was believed to own. RED at R-3. Owner: The Space Resources Engineer. |
+| C2 | 3.2 | `model()` returns 26 keys; `OUTPUT_LEXICON` names 8. `cap`, `Wpower`, `Wthr`, `mPwr`, `Rcap` and `regime` are unreachable, | Same. | OPEN |
+| C3 | 2.18 | `answer_question.js` `DEFAULT_LIT` resolves to `lsei/literature/`, not the merged corpus. | The Systems Engineer. | OPEN. Owner: The Systems Engineer; 2.18 carries the `--lit` requirement. |
+| C4 | 1.6 | **This row has now been wrong twice, and the second correction reverses the first.** `verify_report.js` is named as an unlisted dependency of three of... | The Software Engineer, disagreement (d), for the dependency. | **RULED by the author 2026-08-26: drop the dependency.** Being able to acquire something is not a reason to depend on it. **Open onward:** the three mechanisms need a replacement post-condition and no sub-step owns that work. |
+| C5 | 3.4 | EXCLUDED-BUT-ADJACENT has no mechanism. `propellant-mass-leverage` is excluded while `net-value-identity` is modeled, | The Space Resources Engineer; the forcing case re-verified at 0.5 against the app's own ex... | DEFERRED. Owner: The Space Resources Engineer, 3.4. |
 
 ### D. Structural decisions still owed
 
 | # | N.M | Question or finding | Position(s) taken, or evidence | Status |
 |---|---|---|---|---|
-| D1 | 1.2 | Are the FA1-FA8 deliverables the same kind of object as a summary? | The Manager (economics prompt): **no.** A summary's warrant is that every claim resolves to one source; an FA deliverable is a cross-source adjudication with a verdict column and arithmetic present in no source (FA2 says outright that its net-MPK threshold is "the summarizer's calibration"). Merging them breaks the resolution-grade guarantee silently, for files that look identical to their neighbours, and the Oracle will cite a verdict as a finding. Recommendation: two corpora, two contracts. | **CLOSED by the author, 2026-08-26. Separate shelf.** Two directories, two retrieval contracts, two trace grades; an answer says which shelf it drew from. See Author rulings above. Sub-step 2.1 writes the taxonomy against this ruling. |
-| D2 | 1.8, 3.8 | Is the contested-claims register consulted at classification time or after retrieval? | The Software Engineer: **at classification time**, as a third retrieval mode, the register being an address space rather than a filter. He declined the exception to the inherited rule, on the ground that a post-retrieval check can only fire on what retrieval already returned, so implementing it requires issuing a second search and combining, which is the forbidden shape. Residual hole named: `match_keys` matching is heuristic and can miss. His fallback can only emit REFUSE plus a `MISCLASSIFIED` log row and is structurally incapable of reconciling. | POSITION TAKEN, reviewed at 0.5 and upheld. The Systems Engineer records that the same rule was reached from the other side, with neither agent citing the other |
-| D3 | 3.1 | Does the app remain sole computational authority? | Three personas, three compatible positions, no conflict. The Systems Engineer: yes, and the boundary must be **mechanically enumerable**; a corpus number crossing into a lunar answer is a **transfer**, not a fact, and carries the burden of naming why the transfer is legitimate. The Space Resources Engineer: yes, and **a coefficient's status field is part of what the app computes**, so an APP verdict carries the status of every coefficient on the path (forcing case: `captureEff` = 1 against LUWEX at 50-73%). The Manager (economics prompt): yes, and the app's authority should get *smaller and sharper*; he opposes promoting the corpus to a second calculator and wants the ten excluded nodes promoted to first-class answers. | **AUTHOR** ruling wanted, Open Question 5. 3.1 audits the boundary against the artifact before it becomes a routing contract |
-| D4 | 1.6 | Pinned or floating working copies? | The Systems Engineer: **neither as stated.** Record the ref, float the checkout, compare at bootstrap, report drift, automate nothing. A hard pin makes staleness invisible the same way floating makes breakage invisible, and trading one invisible failure for another is not a decision. He adds that drafting assumption A3 must not survive into the answering loop: an answer that cannot name the model it was computed against is not traced. | **AUTHOR** ruling wanted, Open Question 3. 1.6 is the policy |
-| D5 | 0.5 | Does the project need a second recruited persona for corpus curation? | The Recruiter: gap dissolved, assign the artifact not the seat. The Manager: gap deferred, not dissolved. Two live triggers were set. **The Engineer's has now fired negative:** the overlap is cosmetic. The figure is **87 of 95 byte-identical, 8 differing** — corrected from 89 of 95 at 0.5 by pairing the two corpora on the retrieval tokenizer's key and comparing bytes. Three of the eight differ because of this session's own dedup. **The correction does not reopen the trigger:** the differences are still cosmetic, so the closure survives it. | **NARROWED, NOT CLOSED** (The Manager at 0.7). His trigger fired negative on a number stated three ways, and the corrected figure is **87 of 95 byte-identical, 8 differing**, not 89 of 95. The verdict survives the correction; the reasoning does not. Byte-identical is a proxy for agreement, and differing is not a proxy for substantive disagreement. Three of the eight differ because of this project's own deduplication; five differ for reasons nobody has read. The trigger narrows to those eight and stays armed until sub-step 2.2 reads them, which 2.2 does anyway, so it costs nothing and buys an answer instead of a proxy. **Neither The Recruiter nor The Manager has been shown wrong.** |
-| D6 | 1.1 | Where do pulled PDFs land? | The Engineer recommends `literature/_pdf/<taxonomy>/` rather than interleaved with summaries, and flagged that this reads against the directory map's wording rather than taking the variance himself. | **AUTHOR**, small. 1.1 adds the map row that resolves it |
-| D7 | 2.2 | The two adjudicated duplicate pairs are a deferred merge, not a resolved tie. Both losers carry content the winner lacks, and the pattern is systematic: files with the richer `## Metadata` format carry the verifiability apparatus, files without it carry more raw quantity. | Recorded in `cr_scratch/step0_dedup_decisions.md`. All six superseded files retained at `_intake/superseded-duplicates/` so the union stays possible without re-fetching. | **CONFIRMED with names and hashes at 2.1, 2026-08-28, and it is three pairs rather than two.** `md5sum` over each retained superseded file against its twin in `_intake/japanese-miracle/lit/`: **`azami-2024`, `csank-2022` and `poston-2020` are byte-identical to files the merge is about to re-import.** `metzger-2013` differs; `metzger-2021` and `speyerer-2013` have no twin. Cross-referenced against the baseline's five differing same-name pairs, those three **are** three of the five, so 2.2's adjudication set decomposes into three already-resolved conflicts and two genuinely new ones (`barro-2004`, 6 bytes; `falcon-heavy-wikipedia`, 28 bytes). **In all three the `_intake` member is the copy that lost.** `poston-2020` is the dangerous one: it is the pair Step 0 used to *refuse* size-based selection — the kept summary is the smaller file, chosen on content, with the loss enumerated — and the byte-identical copy queued for import is that documented loser. **A 2.2 that breaks ties by size reverses a recorded decision in the direction the record explicitly rejected.** 2.2 reads `step0_dedup_decisions.md` before adjudicating anything |
+| D1 | 1.2 | Are the FA1-FA8 deliverables the same kind of object as a summary? | The Manager (economics prompt): **no.** A summary's warrant is that every claim resolves t... | CLOSED by the author 2026-08-26. Separate shelf: two directories, two retrieval contracts. |
+| D2 | 1.8, 3.8 | Is the contested-claims register consulted at classification time or after retrieval? | The Software Engineer: **at classification time**, as a third retrieval mode, | POSITION TAKEN, reviewed at 0.5 and upheld. |
+| D3 | 3.1 | Does the app remain sole computational authority? | Three personas, three compatible positions, no conflict. | **AUTHOR** ruling wanted, Open Question 5. 3.1 audits the boundary first. |
+| D4 | 1.6 | Pinned or floating working copies? | The Systems Engineer: **neither as stated.** Record the ref, float the checkout, | **AUTHOR** ruling wanted, Open Question 3. 1.6 is the policy. |
+| D5 | 0.5 | Does the project need a second recruited persona for corpus curation? | The Recruiter: gap dissolved, assign the artifact not the seat. | **NARROWED, NOT CLOSED.** Corrected figure: **87 of 95 byte-identical, 8 differing**, not 89. Byte-identity is a proxy for agreement and differing is not a proxy for disagreement, so the trigger narrows to those eight and stays armed until 2.2 reads them. Neither persona has been shown wrong. |
+| D6 | 1.1 | Where do pulled PDFs land? | The Engineer recommends `literature/_pdf/<taxonomy>/` rather than interleaved with summari... | **AUTHOR**, small. 1.1 adds the map row. |
+| D7 | 2.2 | The two adjudicated duplicate pairs are a deferred merge, not a resolved tie. | Recorded in `cr_scratch/step0_dedup_decisions.md`. | **CONFIRMED at 2.1, three pairs rather than two.** `azami-2024`, `csank-2022`, `poston-2020` are byte-identical to files the merge re-imports. **`poston-2020` is the pair Step 0 used to refuse size-based selection**, so a size tie-break reverses a recorded decision in the direction the record rejected. **Disarmed at W1 with sha256, not size**; each row carries SIZE MUST NOT BREAK THIS TIE. See `cr_scratch/step2_orchestrator_verification.md` |
 
 ### E. Process and mechanism
 
 | # | N.M | Finding | Evidence | Status |
 |---|---|---|---|---|
-| E1 | 1.4, 2.14 | **A git pre-commit hook is not a mechanism**, because hooks are not cloned. Any check must be a committed script that the bootstrap wires via `core.hooksPath`. This is a dependency of A1 and A3 staying fixed. | The Systems Engineer at 0.2 and 0.5. | **CONFIRMED LIVE at 2.1, 2026-08-28, and the gap is wider than this row states.** `.gitignore` contains **no `*.pdf` pattern anywhere**; the only PDF line is the directory rule `/literature/_pdf/`. PDFs are excluded under `literature/` solely as a side effect of the deny-by-default `/literature/**` rule. `git check-ignore -q` over `x.pdf`, `docs/x.pdf`, `oracle/x.pdf`, `tools/x.pdf` and `cr_scratch/x.pdf`: **all five commit cleanly.** 2.14 names the repository-wide rule and is the fix; what is new is that the exposure is live today rather than hypothetical. Two further findings from the suite: Part 5's containment table is stale in the *safe* direction, since `literature/…/x.pdf.bak` **is** ignored after 1.1's rewrite, so a fixture written naively against Part 5 sits inside `literature/` and passes on a rule that is not the one under test; and **the 500 KB size gate cannot discriminate at any value** — the largest summary is 84,767 bytes and the smallest PDF is 81,677, the populations overlap, and 29 of 112 PDFs sit under the threshold. It is a backstop, not a gate, and the suite makes it print its own coverage |
-| E2 | — | Step-ID collision. The Software Engineer numbered his steps SE-1 to SE-11 and The Systems Engineer numbered his SE-1 to SE-9. | The three-column mapping table at §7 of the integration draft; the origin tag is retained in its own column on every sub-step row; both gate rows resolve as this gameplan says. Re-verified at 0.5. | **FIXED** at 0.3 onto ARCH/LOOP/MERGE/LUNAR/ECON prefixes, then renumbered again to `N.M` sub-steps under the author's numbering ruling |
-| E3 | 1.5, 6.6 | Nothing owns machine-generated state. The first-run flag's default is to be committed, which would suppress the opening sequence for every subsequent cloner. Per-install, at root, gitignored, recording timestamp, schema version and bootstrap-completed. **A degraded bootstrap leaves it unset.** | The Systems Engineer. His rationale, which belongs beside the rule rather than inside it: whimsy in front of a system about to refuse every question burns the one first impression. | POSITION TAKEN. 1.5 defines the record, 6.6 reads it |
-| E4 | 1.1 before 2.5 | **The enforcement-layer fix must land before the merge executes.** The merge moves files into `literature/`; the `.gitignore` and hook work is what makes `literature/` safe to move files into. | The Systems Engineer; carried into the integration draft's ordering constraints at 0.3. | **FIXED** as an ordering constraint: 1.1 sits in Step 1 and 2.5 in Step 2, and the one-step gate fires between them. The row is kept because the constraint is the thing a re-plan would silently drop |
-| E5 | 3.7 | `tools/check_corpus_collisions.js` mirrors the upstream tokenizer. If that tokenizer changes upstream, the check goes stale silently. This is the one failure mode it cannot catch about itself. | Documented in the file, in the comment block above `STOPWORDS`; verified at 0.5. | ACCEPTED LIMIT — but see E13, which turns the risk into a certainty on a date already in this plan |
-| E6 | 1.6 | **Nothing fetches.** The word `fetch` does not occur anywhere in the integrated plan. A local clone that has not fetched cannot distinguish an upstream that has not moved from an upstream it has not looked at. Demonstrated live: `ls-remote` read `f788ea2` while the local tracking ref still read `c8274e6`. The plan would have noticed this session's upstream change only because those commits went through our own working copy; had the author pushed from his own clone, HEAD, the tracking ref and the corpus digest would all read equal while the authority had moved. | The Systems Engineer at 0.5. Bootstrap stub in `CLAUDE.md` **FIXED**; the plan-level fix is still owed. | **CLOSED at 1.6.** The plan-level fix is a precondition rather than another command: both currency axes are defined only over post-fetch refs, and a failed fetch yields `unknown` rather than silence. `--prune` is required rather than forbidden — without it a branch deleted upstream keeps resolving and the comparison returns a clean verdict against a branch that no longer exists |
-| E7 | 1.4, 6.1 | **`CLAUDE.md` disabled push only on the acquire path.** The two `set-url` lines sat inside the "if either is missing, clone it" block, so a working copy present with push still enabled never got disabled. The Systems Engineer attributed the error to his own 0.2 text, which put it under Acquire when it belongs under Verify. | `CLAUDE.md` now splits Acquire from Verify; the push assertion and the fetch run every session, idempotently. | **FIXED.** 1.4 states it and 6.1 asserts it against an already-present working copy |
-| E8 | 1.13 | **Nothing invokes the checks.** `tools/` appeared nowhere in the 72 sub-steps as drafted. `check_corpus_collisions.js` and `audit_abstract_overlap.js` exist and nothing runs them. This is E1 restated with evidence: a check nothing wires up is not a mechanism. | The Systems Engineer at 0.5; 2.14's `core.hooksPath` installation covers `oracle/check_no_sources.js` only. | **CLOSED at 1.13.** The check register: 24 rows, 7 live, 15 specified, 2 retiring. A row is one artifact and one consequence rather than one assertion, because roughly 260 assertions are specified across this step and a 260-row register is an index of claims, which this project already has — it is the test suite. **Closed rather than merely complete:** the complement is computed from two declared scan roots, so a new file under `tools/` fails an assertion instead of needing someone to remember it. Verified by adding an unregistered file and watching the assertion fail |
-| E9 | — | **"Committed" is aspirational throughout this register.** This repository has zero commits. Every row describing something as committed describes an intention. | The Systems Engineer at 0.5; `git log` reports no commits on `main`. | **CLOSED at 1.13. Expired by fact:** this repository has commits. The row was true when written |
-| E10 | 1.6 | **The drift report cannot tell "the authority moved" from "we moved the authority."** This project has pushed **three** commits to the Scenario Explorer, so the distinction is not hypothetical. Counting rule: commits reachable from `lsei` HEAD but not from `c8274e6`, the ref this project first cloned, counted 2026-08-27 — `d7889e1`, `f788ea2`, `7f97983`. **Corrected from two**, which was true when the row was written at Step 0 and went stale the moment the orchestrator pushed the third at the Step 1 open without sweeping this row. The row about not being able to tell who moved the authority failed to record that we moved it again. **A further defect found at 1.6, and it is in the fix rather than the row:** `merge-base --is-ancestor origin/main HEAD` is reflexive, so on a session where local and upstream are equal — the normal case — it exits 0 and the unguarded rule reads that as "we moved the authority." Verified today: `lsei` HEAD and `origin/main` both `7f97983`, `is-ancestor` exits 0. The discriminator needs the equality guard 1.6 adds to it. A drift report that cannot name the direction of a change invites the wrong response to it. | The Systems Engineer at 0.5. | **CLOSED at 1.6.** The status cell said this waited on E6; E6 closed in the same sub-step, and 1.6 named E10 among the rows it closes. The discriminator is `git -C <copy> merge-base --is-ancestor origin/main HEAD` **with an equality guard**, because it is reflexive: on a session where local and upstream are equal, the normal case, it exits 0 and the unguarded form reads that as “we moved the authority” and reports the push-disable defeated. Verified on the live working copy. Since push is disabled, a true result on a genuinely diverged copy additionally reports that the push-disable was defeated between sessions |
-| E11 | 2.17, 2.18 | **Upstream withdrawal has no verdict.** The plan handles an upstream that gains content. Six summaries were deleted from the Scenario Explorer corpus during Step 0, which is exactly the case with no defined behaviour. | The Systems Engineer at 0.5. | **RULED at 1.6, and split along the layer boundary.** The ref half closes: withdrawal becomes its own verdict rather than being folded into `unrelated`, which 1.4 had given one verdict for two states. **The content half is demonstrably unownable at this layer** — an upstream that deleted two files produced a clean `upstream-ahead` verdict, blind to the deletion — and goes to 2.18 with the measurement attached. That is the shape of the six summaries deleted during Step 0 |
-| E12 | 1.5 | **The verified-against ref is content, and the plan files it as ignored per-install state.** That violates the Systems Engineer's own rule from 0.2. His fix is a tracked ref plus an ignored one, which he confirms does not reopen falsifier 2. | The Systems Engineer at 0.5, against his own 0.2 text. | **CLOSED at 1.5, and the correction went inward.** The author found E12 applies to the corpus provenance digest as well as to the ref record, which nobody had noticed: a fresh clone with a gitignored baseline reports agreement, the same failure shape as the empty-directory divergence check. The record now holds only what this install last observed, for both refs and digest; the compared-against values are content, in `oracle/VERIFIED.tsv`. No new store. A corrupt state file can now make an adjective wrong, never hide a divergence |
-| E13 | 3.7 | **E5 goes stale from our own side.** `check_corpus_collisions.js` mirrors the upstream tokenizer, and sub-step 3.7 rebuilds that tokenizer. The documented staleness risk was written as an upstream hazard and is in fact scheduled work in this plan. | The Systems Engineer at 0.5. | OPEN. 3.7 gains the re-point as a post-condition, and the check imports the tokenizer rather than mirroring it |
-| E14 | 1.4, 1.7, 2.3 | **The diagnosis in this row was wrong and correcting it changes the fix.** The row said Windows long paths break a fresh clone and cited `literature/power-and-thermal/ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update.md` failing to check out. **That file is not the problem and it checks out fine.** It is on disk in this working copy now at 160 absolute characters with `core.longpaths` unset. The Step 0 clone that failed was made into the session scratchpad, whose root is 147 characters in its 8.3 form; the repository root here is 55. **The observation was recorded without the conditions under which it was observed**, and a successor reading the original row would have shortened the leaf and left the cause. The real constraint is a two-ended path budget, not a filename-length rule, and it does not depend on `core.longpaths`. The Engineer bisected the limit at 1.7: 259 absolute characters pass, 260 fails. **Still unpinned:** three different figures are on record for the scratchpad root (158 from The Engineer, ~147 from The Manager, 147 measured by The Designer and again by the orchestrator) and none states which path form it measured. The orchestrator measures 147 for the 8.3 form and 151 for the long-username form, neither of which is 158. Against 147 the budget holds with slack; against 158 it is over before a filename is written. **RESOLVED at 1.7's addendum: 147, 151 and 158 are the same directory measured three ways.** 158 was `path.resolve` from inside two probe subdirectories of the bisection harness; 151 is what `process.cwd()` returns for the scratchpad in long-name form; 147 is the same path reached through the 8.3 short form. Nobody was wrong about the directory and everybody was silent about the rule. The budget does not move, but its derivation was stated backwards: 259 is measured, 108 is chosen from the corpus, and 150 is the remainder `259 - 1 - 108`. No observed root was ever evidence for it. **The Engineer withdraws his §8 claim** that 158 was the environment E14 was observed in: corrected, a clone fails when the repository root reaches 155, and no root anyone can observe reaches it — the long-name scratchpad measures 256 total against the 259 ceiling and passes with three characters to spare. **He recommends this row is not closed on his §8, and that recommendation is accepted.** The mechanism is established by the bisection at 259 pass / 260 fail and the successful re-clone at 168; the original instance is not reproduced. Three characters of margin is not a comfortable place to leave it. | Original claim observed on a fresh clone during Step 0, conditions unrecorded. Corrected by The Engineer at 1.7 by bisection and re-clone; the residual conflict found by The Designer at 1.12; both re-verified by the orchestrator. | OPEN, **and reopened wider than it was.** 1.7 pins the root figure and the budget; 1.4 still sets `core.longpaths` in the bootstrap, now as belt-and-braces rather than as the fix. **Instance 9 of the E16 class**, extended from counts to measurements |
-| E15 | 1.4, 6.6 | **The first-run sequence plays against an enumerated list, not against "fully succeeded."** Ruled at 0.5: the sequence plays when every load-bearing path verified and no mode is in force that makes an answer refuse. Three of the six degraded modes block — *offline*, *present but wrong*, *partially acquired* — because in each of them the system cannot answer. Two do not block — *moved on* and *dirty or locally diverged* — because a system that works and is a week stale still works, and the condition is reported rather than hidden. *Missing but recoverable* resolves to success or to offline and is never itself a state at that phase. Order: sequence first, then the status line on its own plain line, never folded into the haiku. | The Systems Engineer at 0.5, adopting The Writer's reading with one change: the blocking set is a **named, enumerated list of modes in the bootstrap contract**, so 6.1 can assert it by construction — dirty the working copy and assert the sequence plays; make `origin` unreachable and assert it does not. A gate phrased "fully succeeded" cannot be tested, which is how it acquired the defect. | **Half closed at 1.4**, which carries the enumerated blocking-mode list. The list was then corrected twice: the 1.4 review found one mode unassignable because an earlier phase resolves it, and C-1 landed the fix — five modes, not six, with the blocking predicate restated over the live population and both quantities carrying `superseded` entries. **The consuming half is still owed**: 6.6 consumes the enumeration and 6.7 still asserts the sequence plays only after a fully successful bootstrap, which the degraded modes contradict |
-| E16 | 1.12 | **This project generates counts faster than it records their counting rules.** Three of the Fact-Checker's six UNSUPPORTED findings are numbers stated without the rule that produced them, and a fourth is a denominator nobody can reconcile. The Manager ruled at 0.7 that this is one common cause rather than four incidents. The echo site registry has a "what exactly is counted" column; it is not where counts are born, so a number reaches the prose before it reaches the registry. Demonstrated by the registry itself: it still read `89 / 6` after the gameplan had been corrected to 87 of 95. | The Manager at 0.7, from the Fact-Checker's UNSUPPORTED class. | **CLOSED at 1.12.** The counting-rule contract: twelve required fields, six of which may read `none`, because an omitted field is invisible while `none` is falsifiable. The diagnosis went past this row — the cause is that this project's numerals have no referent, so two matching numbers are two independent strings that happen to agree and nothing can sweep them. Hence the second half, a mandatory name at every quotation. Scorecard stated at six of nine prevented, three partial, no instance adjusted to fit |
-| E17 | 1.0 | **The gameplan becomes a cold session's operating contract when Step 1 opens, and nothing schedules a re-read against that reader.** The Manager holds his F1 ruling that the TDD precondition did not fire on Step 0, and names what it cost: the Designer's "works as a briefing, fails as a worklist" is exactly the defect an audience-comprehension test would have caught before the document reached 806 lines. He declines to reopen F1 as retroactive ceremony. | The Manager at 0.7, against his own ruling. | **CLOSED at 1.0.** A 121-test audience-comprehension suite, run cold against the operating contract, returning 22 failures, 8 blocking, each with a fix. The blocking one was that the plan file did not contain Step 1's own sub-step list. Applied first because the others were its consequences |
+| E1 | 1.4, 2.14 | **A git pre-commit hook is not a mechanism**, because hooks are not cloned. Any check must be a committed script that the bootstrap wires via `core.ho... | The Systems Engineer at 0.2 and 0.5. | **CLOSED at W1 (2.14).** Was live at 2.1: `x.pdf`, `docs/`, `oracle/`, `tools/`, `cr_scratch/` all committed cleanly. All five ignored now, eight carrier extensions covered. **Residual: `xls`, `xlsx`, `zip` are open while `doc`/`docx`/`ppt`/`pptx` are covered**, and `xlsx` and `docx` are the same container format. The 500 KB gate is a backstop, not a gate: populations overlap at 81,677 against 84,767 and it prints its own blindness. See `cr_scratch/step2_orchestrator_verification.md` |
+| E2 | — | Step-ID collision. The Software Engineer numbered his steps SE-1 to SE-11 and The Systems Engineer numbered his SE-1 to SE-9. | The three-column mapping table at §7 of the integration draft; | FIXED at 0.3, then renumbered to `N.M` sub-steps. |
+| E3 | 1.5, 6.6 | Nothing owns machine-generated state. The first-run flag's default is to be committed, | The Systems Engineer. His rationale, which belongs beside the rule rather than inside it:... | POSITION TAKEN. 1.5 defines the record, 6.6 reads it. |
+| E4 | 1.1 before 2.5 | **The enforcement-layer fix must land before the merge executes.** The merge moves files into `literature/`; | The Systems Engineer; carried into the integration draft's ordering constraints at 0.3. | FIXED as an ordering constraint: 1.1 in Step 1, 2.5 in Step 2. |
+| E5 | 3.7 | `tools/check_corpus_collisions.js` mirrors the upstream tokenizer. If that tokenizer changes upstream, the check goes stale silently. | Documented in the file, in the comment block above `STOPWORDS`; verified at 0.5. | ACCEPTED LIMIT, but see E13, which turns the risk into a certainty on a date already in this plan. |
+| E6 | 1.6 | **Nothing fetches.** The word `fetch` does not occur anywhere in the integrated plan. | The Systems Engineer at 0.5. Bootstrap stub in `CLAUDE.md` **FIXED**; | CLOSED at 1.6. The plan-level fix is a precondition rather than another command. |
+| E7 | 1.4, 6.1 | **`CLAUDE.md` disabled push only on the acquire path.** The two `set-url` lines sat inside the "if either is missing, clone it" block, | `CLAUDE.md` now splits Acquire from Verify; the push assertion and the fetch run every ses... | FIXED. 1.4 states it, 6.1 asserts it against an already-present working copy. |
+| E8 | 1.13 | **Nothing invokes the checks.** `tools/` appeared nowhere in the 72 sub-steps as drafted. | The Systems Engineer at 0.5; 2.14's `core.hooksPath` installation covers `oracle/check_no_... | **CLOSED at 1.13, and reopened in fact at W1, which is the finding of that wave.** The register was internally consistent, its `H` row agreed with its parse, it passed its own known-answer test, **and it had never been executed.** First run returned exit 1: `CHK-14` had been blocking every commit since 1.13. **Consistency was never evidence of executability.** Now 37 rows with the dispatcher live: 3 of 7 pre-commit rows dispatched, 4 named as debts rather than passes. See `cr_scratch/step2_orchestrator_verification.md` |
+| E9 | — | **"Committed" is aspirational throughout this register.** This repository has zero commits. | The Systems Engineer at 0.5; `git log` reports no commits on `main`. | CLOSED at 1.13. Expired by fact: this repository has commits. |
+| E10 | 1.6 | **The drift report cannot tell "the authority moved" from "we moved the authority."** This project has pushed **three** commits to the Scenario Explor... | The Systems Engineer at 0.5. | CLOSED at 1.6. The discriminator needs an **equality guard**: `merge-base --is-ancestor` is reflexive, so the unguarded form reports the push-disable defeated on every normal session. |
+| E11 | 2.17, 2.18 | **Upstream withdrawal has no verdict.** The plan handles an upstream that gains content. | The Systems Engineer at 0.5. | RULED at 1.6, split along the layer boundary. The ref half closes; **the content half is unownable at this layer** and goes to 2.18 with the measurement attached. |
+| E12 | 1.5 | **The verified-against ref is content, and the plan files it as ignored per-install state.** That violates the Systems Engineer's own rule from 0.2. | The Systems Engineer at 0.5, against his own 0.2 text. | CLOSED at 1.5, and the correction went inward: it applies to the corpus provenance digest as well as the ref record. A corrupt state file can make an adjective wrong, never hide a divergence. |
+| E13 | 3.7 | **E5 goes stale from our own side.** `check_corpus_collisions.js` mirrors the upstream tokenizer, and sub-step 3.7 rebuilds that tokenizer. | The Systems Engineer at 0.5. | OPEN. 3.7 gains the re-point as a post-condition. |
+| E14 | 1.4, 1.7, 2.3 | **The diagnosis in this row was wrong and correcting it changes the fix.** The row said Windows long paths break a fresh clone and cited `literature/p... | Original claim observed on a fresh clone during Step 0, conditions unrecorded. | OPEN, and reopened wider than it was. |
+| E15 | 1.4, 6.6 | **The first-run sequence plays against an enumerated list, not against "fully succeeded."** Ruled at 0.5: the sequence plays when every load-bearing p... | The Systems Engineer at 0.5, adopting The Writer's reading with one change: the blocking s... | Half closed at 1.4. Corrected twice: **five blocking modes, not six.** The consuming half is still owed; 6.7 asserts a sequence the degraded modes contradict. |
+| E16 | 1.12 | **This project generates counts faster than it records their counting rules.** Three of the Fact-Checker's six UNSUPPORTED findings are numbers stated... | The Manager at 0.7, from the Fact-Checker's UNSUPPORTED class. | CLOSED at 1.12. Twelve required fields, six of which may read `none`, **because an omitted field is invisible while none is falsifiable.** Diagnosis went past the row: the numerals had no referent, hence a mandatory name at every quotation. |
+| E17 | 1.0 | **The gameplan becomes a cold session's operating contract when Step 1 opens, | The Manager at 0.7, against his own ruling. | CLOSED at 1.0. A 121-test audience-comprehension suite run cold against the operating contract. |
 
 ### F. Conceptual integrity falsifiers
 
@@ -883,141 +692,30 @@ integrity defect.
 
 ## Open questions
 
-Answers are wanted at the 0.8 gate. None of them block Step 0 from running. Each changes what Steps
-1 through N look like, so the team drafts against a stated assumption and says which assumption it
-used.
+Answers are wanted at the 0.8 gate. None of them block Step 0 from running. Each changes what Steps 1 through N look like, so the team drafts against a stated assumption and says which assumption it used.
 
-1. ~~**How does the Japanese Miracle corpus reach a clean clone?**~~ **Closed by the author,
-   2026-08-26.** The corpus comes here. Summaries are pushed as this repository's own work; the 112
-   source PDFs stay on the author's disk and are never pushed. See the directory map.
-2. ~~**Is Lunar Oracle public?**~~ **Closed by the author, 2026-08-26. Yes, public.** The directory
-   map already assumed it and does not change. Three consequences now fixed rather than assumed:
-   the README is written for a stranger who cloned the repository, not for the author; the merged
-   corpus needs a licence statement of the kind `lsei/NOTICE.md` carries, stating that the
-   dedication covers this project own summaries and cannot cover the sources they describe; and
-   Open Question 8 (extracted source text in any summary) was expected to become load-bearing here.
-   It did not: the answer was measured and then corrected, and **it does not gate the public
-   release** — see Open Question 8 and loose end A4. One inherited constraint
-   dissolves: `signs_of_ai_writing.md` is CC BY-SA 4.0 and cannot sit under a public-domain
-   dedication, but it lives in `cr-agents/`, which is a working copy and is never pushed, so this
-   repository does not inherit the problem the Scenario Explorer NOTICE file exists to solve.
-3. **Are the working copies pinned or floating? ANSWERED IN THE PLAN at sub-step 1.6; the author
-   ratifies rather than decides from scratch.** The Systems Engineer ruled "neither as stated":
-   record the ref, float the checkout, compare at bootstrap, report drift, automate nothing. What
-   follows is the reasoning he ruled on.
+1. ~~**How does the Japanese Miracle corpus reach a clean clone?**~~ **Closed by the author, 2026-08-26.** The corpus comes here. Summaries are pushed as this repository's own work; the 112 source PDFs stay on the author's disk and are never pushed. See the directory map. 2.
 
-    Floating on main means the app is always current
-   and an upstream change can break the Oracle silently. Pinning means a commit to bump, which is
-   the re-committing the author asked to avoid, though it is one line rather than a 900 KB file.
-   The Systems Engineer argues both sides at 0.2.
-4. **How much team does one question buy? ANSWERED IN THE PLAN at sub-step 3.9.** The Software
-   Engineer's rule is that the verdict selects the wave: an app-computed answer or a refusal buys
-   zero personas, because a refusal must stay cheaper than an answer or the system learns to answer;
-   a literature answer buys one, chosen by field label; a contested claim buys exactly two, briefed
-   on one side each, because a single agent handed both sides will synthesize and synthesis is the
-   arbitration the register exists to prevent. What follows is the question as originally posed.
+Floating on main means the app is always current and an upstream change can break the Oracle silently. Pinning means a commit to bump, which is the re-committing the author asked to avoid, though it is one line rather than a 900 KB file. The Systems Engineer argues both sides at 0.2. 4.
 
-    Running the full roster in three waves for every user
-   question is the method applied literally. (The "nine personas" quoted at 0.2 has no authority
-   anywhere: the CR-Agents roster is twelve standing personas plus The Recruiter, and The Growth
-   Economist makes fourteen. Nine is neither the roster nor a defined wave size, and whether there
-   is a default wave size at all is part of what is being asked here.) It is probably wrong for a
-   question typed into a chat window. The Software Engineer proposes the shape at 0.2: a tiered loop, a default wave, or
-   something else.
-5. **Does the app remain the sole computational authority once the corpus is larger than it?
-   ANSWERED IN THE PLAN at sub-step 3.1, and three personas agree.** Yes, and the boundary must be
-   mechanically enumerable rather than asserted; a coefficient's status field is part of what the app
-   computes; and the app's authority should get smaller and sharper rather than larger. See loose end
-   D3, where all three positions are recorded. What follows is the question as originally posed.
+Running the full roster in three waves for every user question is the method applied literally. (The "nine personas" quoted at 0.2 has no authority anywhere: the CR-Agents roster is twelve standing personas plus The Recruiter, and The Growth Economist makes fourteen.
 
-    The
-   prototype's rule is that a question the app can answer is answered from the app. The merged
-   corpus contains economics the app does not model at all. The boundary needs restating for the
-   grown-up version. A Systems Engineer question with The Manager (economics prompt)'s input.
-6. ~~**Does the rest of the Japanese Miracle folder follow the corpus here?**~~ **Closed by the
-   author, 2026-08-26.** The FA1 through FA8 deliverables and their source lists come over; they are
-   now at `_intake/japanese-miracle/fa/` (19 files, including `FA1-mechanism-table.md`, which The Manager
-(economics prompt) reports is the existing draft of the transfer test this project was about to
-   rebuild from scratch). The rest stays: the New Space article, the model versions, the old
-   `cr_scratch`. **The 19 files verify; "the rest stays" does not, from here.** What remains in the
-   Japanese Miracle folder cannot be checked from this repository, and two files that did come over
-   — `_intake/japanese-miracle/JM-gameplan.md` and `JM-accumulator.md` — appear in neither list
-   above. The inventory of what came and what stayed is owed. **What remains open is not whether but how.** The Manager (economics prompt) ruled at 0.2
-   that an FA deliverable is not the same kind of object as a summary: a summary's warrant is that
-   every claim resolves to one source, while an FA deliverable is a cross-source adjudication with a
-   verdict column and arithmetic present in no source. Merging them into `literature/` breaks the
-   resolution-grade guarantee silently, for files that look identical to their neighbours. His
-   recommendation is two corpora with two contracts. That is a taxonomy decision and it belongs to
-   The Engineer at integration.
-7. ~~**Copy or move?**~~ **Closed by the author, 2026-08-26.** Both copies stay until the merge
-   lands and `literature/` is verified. Revisit then. The known-good original is worth 363 MB of
-   sync while the merge is still being designed.
-8. **Do any corpus summaries contain extracted source text? ANSWERED, AND THE FIRST ANSWER WAS
-   OVERSTATED. It does not gate the public release.** The Engineer's measurement is sound and his
-   classification of it was not, and the orchestrator repeated the classification without checking
-   it. Corrected on 2026-08-26 by reading the flagged files.
+The prototype's rule is that a question the app can answer is answered from the app. The merged corpus contains economics the app does not model at all. The boundary needs restating for the grown-up version. A Systems Engineer question with The Manager (economics prompt)'s input. 6.
 
-   **What is true:** four summaries reproduce verbatim text from their source's printed abstract.
-   Four is the corrected count, and loose end A4 carries the single account of how an earlier count
-   of thirteen was arrived at; it is not restated here. **What is false:** that those four pass the
-   text off as the project's own writing. Three of the four are explicitly marked as quotation at
-   the point of use. `gott-2024` carries the passage in quotation marks and closes it "(abridged, as
-   printed on p.1)". `schreiner-2016` opens "(Transcribed from the paper.)". `romer-1990` opens
-   "Author's own abstract (as printed):". Only `turyshev-2026` carries no marker, and at 12 percent
-   overlap that is within what shared technical vocabulary produces without copying.
+**What is true:** four summaries reproduce verbatim text from their source's printed abstract. Four is the corrected count, and loose end A4 carries the single account of how an earlier count of thirteen was arrived at; it is not restated here.
 
-   **The convention is established and already public**, in a repository that has shipped under the
-   Unlicense. How many summaries use it is not settled: the figure given at 0.2 was thirty-nine of
-   the 152, and a grep at 0.5 for the four marker forms this entry itself names — "as printed",
-   "transcribed from", "author's own abstract", "abridged, as printed" — returns **46**. Neither
-   number is checkable, because neither was stated with its counting rule. What is not in doubt is
-   that the convention is in use and public. A short attributed quotation of an abstract is ordinary
-   scholarly practice, and the dedication does not reach it: the Scenario Explorer's own licence
-   section already says the dedication "does not extend to the sources those summaries describe, and
-   cannot."
+**The convention is established and already public**, in a repository that has shipped under the Unlicense. How many summaries use it is not settled: the figure given at 0.2 was thirty-nine of the 152, and a grep at 0.5 for the four marker forms this entry itself names — "as printed",
 
-   **What survives, and it is small.** The Scenario Explorer README's licence section ended "No
-   third-party PDF, page image or extracted source text is in this repository," and that sentence was
-   not accurate about its own corpus. It has since been corrected upstream (loose end A5), and Lunar
-   Oracle must not copy the original. The corpus licence statement this project writes should say
-   what is actually true: the summaries are this project's own work, they quote their sources where
-   they say they do, and the dedication covers the former and not the latter. `turyshev-2026` gets a
-   marker or a rewrite. **The Engineer's untested-summaries scope limit still stands** — 57 on the
-   152-file basis, 63 on the 158-file pre-dedup basis, loose end A6 — as ordinary diligence rather
-   than as a gate. It closes at 2.12.
+**What survives, and it is small.** The Scenario Explorer README's licence section ended "No third-party PDF, page image or extracted source text is in this repository," and that sentence was not accurate about its own corpus.
 
-   **Original wording, 1 of 2. The Engineer's report at 0.2, superseded by the correction above and
-   retained as the record of the error.**
+**Original wording, 1 of 2. The Engineer's report at 0.2, superseded by the correction above and retained as the record of the error.**
 
-   > The Engineer ran `pdftotext` plus 10-gram shingle overlap across all 108 testable PDF-paired
-   > abstracts, using the 9 self-declared transcriptions as a control. The control fired correctly
-   > (Prettyman 100%, Levin 95.6%, McLeod 74%). Census: median 0.0%, twelve files at or above 10%,
-   > of which **four are not self-labelled** (`gott-2024` at **79.8%**, `schreiner-2016` at 44%,
-   > `romer-1990` at 38%, `turyshev-2026` at 12%). **Thirteen files reproduce a third-party printed
-   > abstract.** Key-findings sections top out at 1.9%, so the body prose is this project's own; the
-   > contamination is in the abstracts. Scope limit: **the 63 Scenario-Explorer-unique summaries
-   > have no local PDF and were not tested.** The Engineer's recommendation is to rewrite the
-   > thirteen rather than grow a NOTICE file, and his ordering is non-negotiable: the untested 63
-   > get tested, then the contaminated set is cleared, **then** the repository goes public.
-   > Escalated to the author.
+> The Engineer ran `pdftotext` plus 10-gram shingle overlap across all 108 testable PDF-paired > abstracts, using the 9 self-declared transcriptions as a control. The control fired correctly > (Prettyman 100%, Levin 95.6%, McLeod 74%).
 
-   (The 108 in that paragraph is a second denominator for the same audit; the tool re-run at 0.5
-   tests 103. Which population the 108 counted is unreconciled — see loose end A4.)
+(The 108 in that paragraph is a second denominator for the same audit; the tool re-run at 0.5 tests 103. Which population the 108 counted is unreconciled — see loose end A4.)
 
-   **The Systems Engineer's earlier partial finding, which stands.** He found three files carrying
-   full third-party source text from the directory listing alone, before anybody opened a summary:
-   `un-1967-outer-space-treaty.txt`, `un-1972-liability-convention-space-objects.txt` and
-   `un-1979-moon-agreement.txt`. The enforcement hole is closed (see the progress log and loose end
-   A1), so they cannot ship. Treaty texts are a benign instance, since UN treaty text is not under
-   copyright, but the finding stands: the corpus carries non-summary source material and the
-   allow-list did not know about it. His finding's own closing line — that The Engineer's sample of
-   the summaries was still outstanding — was superseded by the audit above and is not carried
-   forward.
+**The Systems Engineer's earlier partial finding, which stands.** He found three files carrying full third-party source text from the directory listing alone, before anybody opened a summary: `un-1967-outer-space-treaty.txt`,
 
-   **Original wording, 2 of 2. The question as first posed, retained as the record.**
+**Original wording, 2 of 2. The question as first posed, retained as the record.**
 
-   > Raised by The Manager, and it is the one question that could stop a public release. The
-   > Scenario Explorer's licence is explicit that a public-domain dedication covers this project's
-   > own summaries and cannot cover the sources those summaries describe. If any summary reproduces
-   > source text rather than summarizing it, that file is not ours to dedicate. Assigned to The
-   > Engineer at 0.2 as part of the merge audit; escalates to the author at 0.8 if the answer is yes.
+> Raised by The Manager, and it is the one question that could stop a public release. The > Scenario Explorer's licence is explicit that a public-domain dedication covers this project's > own summaries and cannot cover the sources those summaries describe.
