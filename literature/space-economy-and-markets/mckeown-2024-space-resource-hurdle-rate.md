@@ -8,6 +8,10 @@ investment hurdle rate for commercial space resource development projects? *Spac
 
 Publisher URL: https://www.sciencedirect.com/science/article/pii/S0265964624000213
 
+## Metadata
+
+Authors: McKeown, B., Coulton, J., Saydam, S., & Dempster, A. G. · Year: 2024 · DOI: 10.1016/j.spacepol.2024.101630 · Publisher URL: https://www.sciencedirect.com/science/article/pii/S0265964624000213 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Practitioner-oriented economics article deriving a hurdle-rate range for commercial space
@@ -316,8 +320,15 @@ risk being resolved, without itself resolving or pricing it).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/mckeown-2024-space-resource-hurdle-rate.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:a941152244f662877df871263da2b8ed4a94a825d077504ced5c0f977f7b42a7` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.spacepol.2024.101630
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the hurdle-rate range is the authors' own derivation. CAUTION for retrieval: method (1) is "a survey of hurdle-rate and discount-rate proxies ... reported in the terrestrial mining, oil and gas, aerospace and venture-capital" literature, so the INPUT proxies are reported speech while the derived range is the paper's.
+
+## Contested
+- LCC-12 C

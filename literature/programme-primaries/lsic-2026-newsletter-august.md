@@ -101,8 +101,11 @@ A newsletter/bulletin, not a technical report; content is predominantly announce
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/lsic-2026-newsletter-august.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:6f4aad8052cfe88eb6ccb05b3deb71cb84f9ad716a8a8a9a3d8f43dc8ff61bdc` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|lunar-surface-innovation-consortium|2026|lsic-newsletter-vol — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `2026-08` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation "(2026, August) ... (Vol. 7, Issue 4)"; Metadata "Publication date: August 2026". No masthead or cover feature is named as the carrier. No paired PDF on disk. Content floor: an Aug. 20 telecon is announced as upcoming.

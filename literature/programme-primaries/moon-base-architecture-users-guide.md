@@ -1,7 +1,5 @@
 # NASA 2026 - Moon Base User's Guide: Architecture Resources
 
-## Comprehensive Technical Summary
-
 ## Citation
 
 National Aeronautics and Space Administration. (2026, April). *Moon base user's guide: Architecture resources* (NP-2026-04-6806-HQ). NASA Headquarters, Washington, DC. https://www.nasa.gov/architecture
@@ -257,8 +255,12 @@ This document is a primary demand-signal source for the LSEI workshop series. Se
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/moon-base-architecture-users-guide.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:44c472470a61d167ec6703165af202aeb050d11133141303bb2b421fa6a1eaea` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|nasa.gov/architecture
 - **Field:** lunar · **Folder:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `2026-04` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation block states outright that "The April 2026 publication date is inferred from the NP-YYYY-MM series convention embedded in the report number and no explicit publication date is printed in the document." Report number NP-2026-04-6806-HQ is printed verbatim on the back cover, PDF p.16 of 16 (citation verification 2026-08-06). A convention-decoded date, not a printed one. The March 24, 2026 "Ignition" announcement is printed in the body and is a content floor.

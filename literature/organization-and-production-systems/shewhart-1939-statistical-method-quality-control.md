@@ -6,6 +6,10 @@ Shewhart, W. A. (1939). *Statistical method from the viewpoint of quality contro
 
 Publisher URL: Not stated in the source document. The PDF is a scanned USDA Graduate School archive copy (marked "Historic, Archive Document") with a National Agricultural Library ownership stamp; no DOI or web address appears anywhere in the file.
 
+## Metadata
+
+Authors: Shewhart, W. A. · Year: 1939 · Publisher URL: Not stated in the source document. The PDF is a scanned USDA Graduate School archive copy (marked "Historic, Archive Document") with a National Agricultural Library ownership […] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Transcript of four lectures Shewhart delivered in March 1938 at the Graduate School of the U.S. Department of Agriculture, edited for publication by W. Edwards Deming.
@@ -258,8 +262,12 @@ Some Comments on Symbols and Nomenclature (pp. 152–155): discussion of the ind
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/shewhart-1939-statistical-method-quality-control.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:60b3104863173acd744f417c551745ed34b05622737a2786a8de4b8a29eea8a0` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|shewhart|1939|statistical-method-viewpoint-quality-control-w — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** organization-and-production-systems
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: the 1939 USDA Graduate School lectures, the author's own text; Deming is the editor, not an intermediary reporting it.

@@ -6,6 +6,10 @@ Matthews, J. (2026). *Establishing a self-sustaining lunar data economy through 
 
 Publisher URL: https://doi.org/10.1109/AERO66936.2026.11519879
 
+## Metadata
+
+Authors: Matthews, J. · Year: 2026 · DOI: 10.1109/AERO66936.2026.11519879" · Publisher URL: https://doi.org/10.1109/AERO66936.2026.11519879 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Conference paper arguing that the binding constraint on lunar surface exploration is the cost of data, not the cost of launch. It models how surviving the lunar night with Radioisotope Power Systems (RPS) collapses cost-per-gigabyte from over $2M/GB toward under $10K/GB by amortizing fixed infrastructure across many customers, and it prescribes a shift from single-buyer government procurement to a two-sided commercial data marketplace.
@@ -38,8 +42,12 @@ Sections of the paper: (1) Introduction; (2) Survive-the-Night Technology Soluti
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/matthews-2026-lunar-data-economy.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:aeb515c79b5684c64a5e8943e74e83306de00cb483fbe3d05b8a1827a414d932` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1109/aero66936.2026.11519879
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the cost-per-gigabyte model is the paper's own.

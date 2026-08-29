@@ -10,6 +10,10 @@ Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/00945765749
 
 (Paper presented at the Fifth Lunar International Laboratory (LIL) Symposium, Vienna, 10 October 1972, per the Elsevier record — held in conjunction with the 23rd International Astronautical Congress, Vienna, October 1972; received 1 August 1973. Author affiliation as printed: North American Rockwell Corp., Downey, California, USA — Chief Scientific Advisor, Space Systems and Applications, Space Division.)
 
+## Metadata
+
+Authors: Ehricke, K. A. · Year: 1974 · DOI: 10.1016/0094-5765(74 · Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/009457657490023X · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A conceptual position paper arguing that industrial operations should be extended off Earth, using the Moon as the first extraterrestrial industrial base. It defines an "open-world" development model in which pollution-heavy and resource-intensive processes migrate to the "dead" lunar environment, and the bulk transport flow runs Moon-to-Earth rather than Earth-to-Moon. Scope spans lunar geochemistry (from Apollo/Surveyor/Luna returns), resource-extraction concepts, nuclear- and solar-powered processing, manufacturing techniques favored by vacuum, and nuclear-pulse interorbital transport economics. Method is qualitative synthesis plus order-of-magnitude engineering estimates; no new empirical data are collected.
@@ -79,8 +83,12 @@ Cross-cutting themes: lunar geochemistry from Apollo-era sampling; in-situ resou
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/ehricke-1974-lunar-industries.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:da1766a99904cec51d4dc4778083ac40bce7a819feec333e5255dfe29e5c4827` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/0094-5765(74)90023-x
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "Method is qualitative synthesis plus order-of-magnitude engineering estimates; no new empirical data are collected." The estimates are the document's own, which is the test that separates it from downing-2005.

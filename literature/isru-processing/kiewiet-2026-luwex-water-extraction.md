@@ -1,7 +1,5 @@
 # Kiewiet et al. 2026 - LUWEX: Demonstration of an Integrated Lunar Water Extraction and Capturing System
 
-## Comprehensive Technical Summary
-
 ## Citation
 
 Kiewiet, L., Fälker, S., Rejón López, M., & Zabel, P. (2026). Demonstration of integrated lunar water extraction and capturing system: Overview of results from the LUWEX project. Advances in Space Research, 77, 6368-6389. https://doi.org/10.1016/j.asr.2026.01.041
@@ -197,8 +195,15 @@ Section 6 (Conclusions, pp. 6386-6387) addresses the overall feasibility finding
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/kiewiet-2026-luwex-water-extraction.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:ce0c49c8dbce9140f38c88d2e16cb967f06a60ab1f9f90a35448cfeb4922d6ac` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.asr.2026.01.041
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- LCC-04 B
+- LCC-05 A

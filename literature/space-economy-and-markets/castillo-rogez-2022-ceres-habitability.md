@@ -63,12 +63,15 @@ This paper contains substantial **in situ instrument and sample-acquisition** en
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/castillo-rogez-2022-ceres-habitability.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:9e4eaa0489b38cb59501612ecde3506ca8770b705e6047fc9467bac42b92a160` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.3847/psj/ac34ee
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** lunar-ice-and-geology
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; ## Provenance names document type "Peer-reviewed journal article (mission concept study)", PSJ 3, Article 41. The only row of the 70 whose depth was read off a ## Provenance block rather than a ## Citation block.

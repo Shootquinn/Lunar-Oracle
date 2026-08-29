@@ -1,5 +1,4 @@
 # NASA 2025 - Architecture-Driven Moon to Mars Data Gaps
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -87,8 +86,12 @@ The paper's substantive content is (a) one fully worked catalog entry and (b) a 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/nasa-data-gaps-acr25-wp-data-gaps-v3.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:44bf9819747e7f0295b4df3456f914b7457551db431bf273b640778833f6ea2e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-FALSEMERGE (a landing mode, not a gate)
 - **Dedup key:** L3|national-aeronautics-and-space-administration|2025|architecture-driven-moon-mars-data-gaps
 - **Field:** lunar · **Folder:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `2025` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation gives "(2025)" and a bracketed descriptor "[2025 Moon to Mars Architecture Concept Review white paper]"; brackets mark it as the summariser's description, not quoted source text. No printed date feature named. Excerpted from ADD Rev C Appendix E, so 2025-12-12 is the plausible true value, but I do not stamp a value the file does not carry.

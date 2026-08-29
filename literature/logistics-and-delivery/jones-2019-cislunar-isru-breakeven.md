@@ -6,6 +6,10 @@ Jones, C. A., Klovstad, J. J., Komar, D. R., & Judd, E. L. (2019). Cost breakeve
 
 Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2019-1372
 
+## Metadata
+
+Authors: Jones, C. A., Klovstad, J. J., Komar, D. R., & Judd, E. L. · Year: 2019 · DOI: 10.2514/6.2019-1372 · Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2019-1372 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Parametric cost model comparing six architectures for delivering hydrogen and oxygen propellant to a cis-lunar aggregation point, three of which launch the propellant from Earth and three of which produce it on the Moon by in-situ resource utilization (ISRU) and deliver it with a reusable lander. Propellant demand and duration are drawn from the Evolvable Mars Campaign, 59 tonnes per year for 14 years. Cost per kilogram of delivered propellant is computed for each architecture under baseline parameter values, then swept across sensitivity ranges for lander mass fraction, ISRU power plant specific mass, propellant plant specific mass, ISRU specific power, sparing rate, propellant demand, and campaign duration. Reports which architecture is cheapest at baseline, what single-parameter and joint-parameter improvements would be required for a lunar ISRU architecture to reach cost parity with Earth-launched propellant, and the time horizon at which lunar ISRU breaks even under baseline assumptions.
@@ -88,8 +92,14 @@ The Introduction and Previous Studies sections state the paper's research questi
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/jones-2019-cislunar-isru-breakeven.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:738c7e7c9bed1052767a27d72660d741b5345ca45be20d5851935b031f8686c4` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.2514/6.2019-1372
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+
+## Contested
+- LCC-12 B

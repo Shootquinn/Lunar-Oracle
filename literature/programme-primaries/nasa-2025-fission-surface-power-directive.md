@@ -1,5 +1,4 @@
 # NASA 2025 - Directive on Fission Surface Power (FSP) Development
-## Comprehensive Technical Summary
 
 Page attributions below were fully re-audited 2026-08-22 against the source PDF's own three extracted pages. All 42 page-attribution instances in this file were checked; 23 were corrected and 19 were already right. The prior warning header is retired because the count it named as unchecked is now zero.
 
@@ -99,8 +98,15 @@ A three-page memorandum from NASA's Acting Administrator directing the agency to
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/nasa-2025-fission-surface-power-directive.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:135e55b25d3fdfa539beb534b3eacf0e1be49b5ea5395518905643fd983bbd7e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`, `normalize-eol-to-lf`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|national-aeronautics-and-space-administration|2025|directive-fission-surface-power-fsp-development — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** programme-primaries · **Also:** power-and-thermal
 - **Plan row rev:** 1
+- **Stated as of:** `2025-08-04` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Metadata names the carrier: "Publication/signature date: August 4, 2025", a signed internal memorandum from the Acting Administrator (Sean Duffy). Page attributions in this file were re-audited 2026-08-22 against the source PDF's three extracted pages.
+
+## Contested
+- LCC-10 A

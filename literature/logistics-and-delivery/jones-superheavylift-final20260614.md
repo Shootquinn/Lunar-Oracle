@@ -21,6 +21,10 @@ extraction mangles. Printed page numbers are used in the text; the rendered imag
 are offset by three (printed page 3 is image page_06.png, printed page 11 is image
 page_14.png, printed page 12 is image page_15.png).
 
+## Metadata
+
+Authors: Jones, Karen L.; Arredondo, Alberto; Anderson, Matthew A.; and Goldenberg-Hart, Aidan · Year: 2026 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A policy white paper examining whether modern super heavy lift (SHL) launch vehicles, defined
@@ -312,8 +316,15 @@ pays). Cite as "Karen Jones (Aerospace Corporation)," distinct from Harry W. Jon
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/jones-superheavylift-final20260614.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f387f6e2c916e83e78532690f2a58648f8e0dfb2a84c1eb88e06d82bcc85ff36` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|csps.aerospace.org/papers/super-heavy-lift-launch-unlocking-future-space
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Stated as of:** `unknown` · date authority `unknown` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED, AND THE CLAIMED DATE DOES NOT VERIFY. Citation asserts "June 14, 2026". pdftotext over the whole PDF returns NO publication date; page 1 (the cover, where a CSPS report prints its date) extracts ZERO text because it is a raster. The only corroboration of 2026-06-14 anywhere on disk is the filename token FINAL20260614, and a filename-derived date is exactly what this table forbids. Latest date printed in the extractable body is June 8, 2026 (a Starship durability event) -- a content floor consistent with the claim, not the claim. UNSUPPORTED, not contradicted. One 200-dpi render of page 1 settles it; the summariser demonstrably rendered pages 6/14/15 and did not record the cover.
+
+## Contested
+- LCC-11 A

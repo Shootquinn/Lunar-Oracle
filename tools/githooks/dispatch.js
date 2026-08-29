@@ -22,6 +22,21 @@
  * CL-8(b): each caller names its own row id and passes it in; this file prints it. The join
  * stays bidirectional -- the register names the hook, the hook names its row.
  *
+ * THIS FILE'S OWN ROW IS CHK-39, added at 2.18 because it did not have one. CL-1 was RED on it
+ * from the day it landed: tools/** is a declared scan root, this file is under it, and it was the
+ * ONE uncovered file of the twenty in the two roots. The engine that decides what every trigger
+ * dispatches was itself outside the closed list, which is the register's own failure mode --
+ * a list is closed only while its complement is computed, and nothing computed it, because
+ * tools/checks.js (CHK-09) does not exist. The row is kind `library`, and CL-8(b) is why the id
+ * appears in this comment: the join must be bidirectional for every file under this directory.
+ *
+ * THE ROW'S MARKER IS LUNAR_ORACLE_HOOK_DEPTH, and the choice is not arbitrary. CL-6 asserts that
+ * a library's marker occurs in the library and in NO consumer. The reentrancy guard's environment
+ * key is exactly the thing a hook must never hold its own copy of: a per-trigger guard bounds
+ * pre-commit inside pre-commit and leaves pre-commit -> merge-gate -> pre-commit unbounded, so a
+ * mirrored guard is not a weaker guard, it is no guard at all. If that key ever appears in
+ * pre-commit or merge-gate, CL-6 goes red and it is right to.
+ *
  * THE 100644 TRAP (HK-2). core.filemode is false on the authoring machine, so a file committed
  * here at mode 100644 is executable in this working tree and INERT on a Linux clone. This file
  * is require()d rather than executed, so its own mode does not matter -- but the hooks that

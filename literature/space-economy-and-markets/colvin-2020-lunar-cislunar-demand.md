@@ -17,6 +17,10 @@ Publisher URL: https://www.ida.org/research-and-publications/publications/all/d/
 > report's own title-page date. "IDA Document D-13219" and "Log: H 20-000201" are printed
 > verbatim on the title page. No DOI is printed (an IDA report); a publisher/stable URL is used.
 
+## Metadata
+
+Authors: Colvin, T. J., Crane, K. W., Lindbergh, R., & Lal, B. · Year: 2020 · Publisher URL: https://www.ida.org/research-and-publications/publications/all/d/de/demand-drivers-of-the-lunar-and-cislunar-economy · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 An IDA Science and Technology Policy Institute (STPI) report prepared for NASA, assessing
@@ -150,8 +154,12 @@ funding of lunar activity.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/colvin-2020-lunar-cislunar-demand.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:30d5cd04aa7933e03d414aabca45d3a842d3d80a9b6345522e4a48e7d56a4914` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|ida.org/research-and-publications/publications/all/d/de/demand-drivers-of-the-lunar-and-cislunar-economy
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** logistics-and-delivery
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the team "built a database of lunar companies, conducted interviews, derived cost models" -- the report's own work.

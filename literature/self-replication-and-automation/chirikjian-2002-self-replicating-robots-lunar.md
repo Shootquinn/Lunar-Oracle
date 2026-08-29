@@ -8,6 +8,10 @@ https://doi.org/10.1109/TMECH.2002.806232
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: Chirikjian, G. S., Zhou, Y., & Suthakorn, J. · Year: 2002 · DOI: 10.1109/TMECH.2002.806232 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Reviews the concept of self-replicating robots (SRRs) and analyzes the feasibility of a
@@ -209,8 +213,14 @@ discussion.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/chirikjian-2002-self-replicating-robots-lunar.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:0fd04bb423aae6b2c47a1dd55f7c6af084b9e44a30e32cb2e3604a8387aace7e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1109/tmech.2002.806232
 - **Field:** lunar · **Folder:** self-replication-and-automation
 - **Plan row rev:** 1
+
+## Contested
+- ECR-16 A

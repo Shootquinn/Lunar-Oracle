@@ -7,6 +7,10 @@ Publishing, Paris. https://doi.org/10.1787/fa5494aa-en
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: OECD. · Year: 2023 · DOI: 10.1787/fa5494aa-en · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Second edition (following a 2019 first edition) of the OECD Space Forum's flagship statistical
@@ -369,8 +373,13 @@ without corresponding running-text totals.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/oecd-2023-space-economy-in-figures.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:c81f0d2cc95385a51ad2c358059878413bf4dd8fd9e933971bac81b821cffa06` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1787/fa5494aa-en
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Stated as of:** `2024-09` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED, AND THE FILE'S OWN KEY IS STALE. The imprint page prints "Revised version, September 2024" (extraction line 25) directly under the suggested citation "OECD (2023), The Space Economy in Figures ... https://doi.org/10.1787/fa5494aa-en". The summary's Citation gives "(2023)" only and nowhere records the revision. The bytes on disk are the September 2024 revised version; stamping this 2023 would print a currency the on-disk artifact does not have. The key and title stay as they are (they are the merge key); stated_as_of is 2024-09.
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "flagship statistical report ... Compiles indicators on government space budgets, launch activity, satellite populations, private investment, patents" -- a compilation of indicators produced elsewhere.

@@ -7,6 +7,10 @@ Wade, R. H. (2018). The developmental state: Dead or alive? *Development and Cha
 
 Publisher URL: https://onlinelibrary.wiley.com/doi/10.1111/dech.12381
 
+## Metadata
+
+Authors: Wade, R. H. · Year: 2018 · DOI: 10.1111/dech.12381 · Publisher URL: https://onlinelibrary.wiley.com/doi/10.1111/dech.12381 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Essay-length "Debate" contribution closing a *Development and Change* Forum on
@@ -259,8 +263,18 @@ questions for middle-income countries and global economic governance.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/wade-2018-developmental-state-dead-or-alive.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:aee10c28326e0db69649691dbccc3416c976e8d47d98f1dadc7263e7d0e92695` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1111/dech.12381
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `via_review` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Development and Change 49(2), a review essay. Measured at the A.10 gate: its affirmative targeting content is Lane 2017 in reported speech at lines 150-157, and line 230 records that the study which would settle the Japanese case has not been conducted. This corpus's only affirmative targeting finding lives inside it as reported speech, which is exactly what this column exists to mark.
+
+## Contested
+- ECR-05 C
+- ECR-13 C
+- ECR-14 A
+- ECR-18 A

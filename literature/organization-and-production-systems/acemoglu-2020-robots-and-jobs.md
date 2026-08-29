@@ -18,6 +18,10 @@ periods, or table numbering; this summary was produced from the working-paper PD
 attempt was made to verify or reconcile its figures against the published JPE version. See
 Limitations for further detail on this distinction.
 
+## Metadata
+
+Authors: Acemoglu, D., & Restrepo, P. · Year: 2017 · DOI: 10.1086/705716 · Publisher URL: http://www.nber.org/papers/w23285 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Estimates the equilibrium effect of the 1990-2007 rise in industrial robot use on US local labor
@@ -321,8 +325,15 @@ economy-wide employment, wage, and GDP magnitudes.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/acemoglu-2020-robots-and-jobs.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:435da2a3aac03123fdf03f53420e07fb5dba63c17d4d5cb1191e884dafef5371` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1086/705716
 - **Field:** economics · **Folder:** organization-and-production-systems · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: NBER WP 23285, the authors' own study; the note on version summarized says the summary was produced from the working-paper PDF only.
+
+## Contested
+- ECR-16 B

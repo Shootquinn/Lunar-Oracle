@@ -1,7 +1,7 @@
 
 # The bootstrap contract
 
-**Contract version: 1.**
+**Contract version: 2.** Bumped at sub-step 2.18 by The Systems Engineer: §7 gains the corpus fork verdicts, Phase 5 gains a report line, and BC-16's failure cell names what the absence produces. §10 makes any change to a closed set or a phase a bump, and the verdict set is a closed set. **Nothing reads this integer today** — `CLAUDE.md` is still the seed stub and the acceptance suite is 6.1 — so §10's own rule applies to itself: two of its three readers do not exist, and if 6.1 does not land the field is removed rather than left as decoration.
 
 This file specifies what the bootstrap does, in what order, and what each part of it does when it
 fails. `CLAUDE.md` is prose that implements this specification for a reader. **Where the two
@@ -172,8 +172,10 @@ Write the four facts. Then report, in this order:
 3. The in-force mode set, or the statement that it is empty.
 4. The available-origin set (§6).
 5. Each shelf: present or absent, and its conforming-file count.
-6. Whether source PDFs are present in this install.
-7. Any report lines from Phase 4 that are not modes: an over-allowance root with copies present, a
+6. The corpus fork verdict (§7.2), and the count behind it. `unknown` is reported as `unknown`
+   and never as `equal`.
+7. Whether source PDFs are present in this install.
+8. Any report lines from Phase 4 that are not modes: an over-allowance root with copies present, a
    fetch that could not run, a defeated push-disable.
 
 The report is terse when the outcome is `CLEAN`. It is terse in the same fields when the outcome is
@@ -327,7 +329,7 @@ input.
 | BC-13 | `cr-agents/prompt0.md` is present and non-empty. | `test -s cr-agents/prompt0.md` | — | Mode `present-but-wrong` on `cr-agents` |
 | BC-14 | The app is present and is the app. | `grep -q 'KNOB_DATA' lsei/index.html` | An `index.html` that parses as HTML, holds no model, and satisfies a `test -f`. | Mode `present-but-wrong` on `lsei` |
 | BC-15 | The generated map is present and is the generated map. | `grep -q 'the back of the tapestry' lsei/lunar-scenario-explorer-map.md` | The map hand-edited into something the app did not generate. | Report only; the map is derived and the app settles disagreements |
-| BC-16 | `lsei/literature/` is present, as the upstream corpus the fork check compares against. | `test -d lsei/literature` | — | Report; the corpus divergence check cannot run |
+| BC-16 | `lsei/literature/` is present, as the upstream corpus the fork check compares against. | `test -d lsei/literature` | An install reporting a corpus verdict computed against nothing. **The empty-directory case is the one to fear**: `test -d` passes on an empty `lsei/literature/`, against which every upstream-side comparison is vacuously clean and the fork reads as `equal`. | Report; corpus verdict `unknown` per §7.2, never `equal` |
 
 ### Phase 4, group 4: shelves
 
@@ -470,6 +472,8 @@ mechanism, not a variant of it.
 
 ## 7. Drift reporting, and its direction
 
+### 7.1 The two working copies
+
 For each working copy the report names the local `HEAD`, `origin/main`, the verified-against ref, and
 one verdict:
 
@@ -497,6 +501,47 @@ it is the normal operating mode of a project that borrows a repository its autho
 
 **Report, change nothing.** No verdict triggers a reset, a bump, a merge or a pull.
 
+### 7.2 The corpus fork
+
+`literature/` is a fork of `lsei/literature/`. Both moved on 2026-08-28 and they are divergent copies
+of the same summaries as of that date, so this is a live condition and not a contingency. **The ref
+layer cannot see it**, and that is the finding the currency policy §11 records rather than leaves to be
+discovered: an upstream that deleted two files and one that added two are both one commit ahead on the
+same line, and `CURRENCY upstream-ahead` is returned, clean and blind, for either. The corpus verdict is
+computed against **content**, and it is a second subject with a second verdict set.
+
+**Closed, six.** A condition outside this set is a failure of this contract, not a seventh verdict.
+
+| Verdict | Condition | Falsified by | Finding |
+|---|---|---|---|
+| `equal` | Every merged file's upstream source path resolves, and its content digest equals the merge-time digest its provenance records. | An `equal` reported over a `lsei/literature/` that is absent or empty — vacuously clean. BC-16 is the guard and its failure produces `unknown`. | no |
+| `unmerged` | An upstream file named by no provenance `Source` cell **and** dispositioned by no merge-plan row. | A file reported `unmerged` that a merge-plan row rules out. Measured 2026-08-28: **8 of 8** upstream files with no shelf counterpart are in exactly that position, so a filename-set comparison alone reports 8 findings and is wrong 8 times. | yes |
+| `declined` | An upstream file named by no provenance `Source` cell but dispositioned by a merge-plan row that does not land it. | A `declined` naming no row. The verdict is unusable without the citation, because "we decided not to" and "we never looked" are the same shape at the filename layer and opposite facts. | no |
+| `diverged` | An upstream file's content digest differs from the merge-time digest its provenance records. | Any `diverged` or `equal` computed where no merge-time digest exists. **Today no provenance block carries one**, so this verdict is `unknown` for all 168 files and says so; see below. | yes |
+| `withdrawn` | A provenance `Source` cell naming an upstream path that no longer resolves. | A withdrawal folded into `upstream-ahead`, which is what the ref layer does with it. This is `E11`'s third verdict and this row is where it lands. Measured 2026-08-28: **0 of 144** lsei-sourced files. | yes |
+| `unknown` | BC-16 failed, or the merge-time digest is absent, or `lsei/` is in a degraded mode. | An `unknown` reported as `equal`. The two are not the same claim and the report never collapses them. | reported as a gap |
+
+**`diverged` is `unknown` today, and the report says so in those words.** The provenance blocks landed at
+2.5 record `Landed`, `Source`, `Byte source`, `Disposition`, `Dedup key`, field, folder and plan row
+revision. They record **no upstream ref and no content digest** — checked over all 168 files, zero
+carry either. §1 of `oracle/install_state.md` and its §8 rule 2 both require the merge-time digest to be
+**content**, so it belongs in the provenance block and cannot be moved into `.oracle-state.json` to
+close this faster. The requirement is this contract's; the format is The Engineer's. Until it lands,
+a check reporting `equal` over the content layer would be reporting a comparison it did not make.
+
+**Who computes it.** Not this contract, and not any code inside the bootstrap. §8 rule 7 stands: the
+bootstrap performs no content check on a corpus file. It **dispatches** `tools/corpus_divergence.js` and
+prints what comes back, which is the same shape as BC-8 and the pre-commit trigger — the wiring is the
+bootstrap's, the assertion is a committed script's. Two register rows, one artifact, two consequences:
+`CHK-40` at `session-start` **reports**, `CHK-32` at `substep-gate` **blocks**. They are two rows because
+a divergence must stop a sub-step that is about the corpus and must never stop a session that is not,
+and a single row would have to pick one.
+
+**Report, never resolve, and this is the whole of sub-step 2.18.** No verdict merges, adopts, reverts,
+deletes, renames or re-lands anything. A `diverged` pair is a finding for The Fact-Checker; an
+`unmerged` file is a finding for The Engineer; neither is an instruction to a script. Merging is a step
+with a persona on it, not something a bootstrap does while nobody is looking.
+
 ## 8. What the bootstrap never does
 
 Stated as a closed list, because each item is a thing somebody will propose as a convenience.
@@ -514,7 +559,11 @@ Stated as a closed list, because each item is a thing somebody will propose as a
 6. **Never modifies a working copy's content, branch or index.** It writes two config keys, BC-6 and
    BC-7, and nothing else.
 7. **Never performs a content check on a corpus file.** It wires the trigger, BC-8, and the checks
-   are committed scripts with their own authority.
+   are committed scripts with their own authority. **The corpus fork verdict of §7.2 is not an
+   exception to this rule, it is an instance of it**: the bootstrap dispatches `CHK-40` and prints
+   the result. Nothing in the bootstrap opens a summary. If the day comes that it is convenient to
+   inline the comparison "just to avoid a subprocess", that is this rule being broken and the
+   register losing a row at the same time.
 
 ## 9. Quantities
 

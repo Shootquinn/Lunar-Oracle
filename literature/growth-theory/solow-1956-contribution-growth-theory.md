@@ -10,6 +10,10 @@ DOI: 10.2307/1884513 (confirmed in FA2 ledger)
 Publisher URL: https://academic.oup.com/qje/article-abstract/70/1/65/1903777 (JSTOR
 stable: https://www.jstor.org/stable/1884513)
 
+## Metadata
+
+Authors: Solow, R. M. · Year: 1956 · DOI: 10.2307/1884513 · Publisher URL: https://academic.oup.com/qje/article-abstract/70/1/65/1903777 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 The 1956 QJE printing carries no author abstract (the journal did not use them at the
@@ -282,8 +286,12 @@ argument in the way Rosenstein-Rodan or Murphy-Shleifer-Vishny later formalize i
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/solow-1956-contribution-growth-theory.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:bce89f0cb7ba57f665514aa372b5e8a55102f06f8f036d7ea8c54c0d38a40ff1` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.2307/1884513
 - **Field:** economics · **Folder:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: QJE 70(1), the original growth model.

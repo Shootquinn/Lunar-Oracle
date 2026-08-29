@@ -10,6 +10,10 @@ Publisher URL: https://doi.org/10.1016/j.ijindorg.2005.03.004 (resolves to the S
 
 Note: the issue number (7-8) is not printed in the PDF header, which gives only "23 (2005) 563-586". It is taken from the confirmed FA1 ledger entry, not inferred.
 
+## Metadata
+
+Authors: Kiyota, K., & Okazaki, T. · Year: 2005 · DOI: 10.1016/j.ijindorg.2005.03.004 · Publisher URL: https://doi.org/10.1016/j.ijindorg.2005.03.004 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Firm-level panel study of Japan's foreign-technology-licensing regime, 1957–1970.
@@ -243,8 +247,17 @@ Stock Exchange-listed firms, 1957–1970) during Japan's high-growth period.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/kiyota-2005-foreign-technology-acquisition.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:b83375fec7edc68e383a6a7927b05f62cd71a7cfe2e2246425b5a7874c37585f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.ijindorg.2005.03.004
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: IJIO 23(7-8), the authors' own firm-level estimation.
+
+## Contested
+- ECR-01 B
+- ECR-09 A
+- ECR-10 A

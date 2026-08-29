@@ -18,6 +18,10 @@ October 2021; Received in revised form 9 January 2022; Accepted 20 January 2022,
 postdate the printed volume/issue line "Vol. 1 No. 4 (2021) 31-42." Both are reproduced here as
 printed in the source and are not reconciled.
 
+## Metadata
+
+Authors: Giachino, C., Pucciarelli, F., Bollani, L., Bonadonna, A., & Koo, C. · Year: 2021 · DOI: 10.52255/smarttourism.2021.1.4.5 · Publisher URL: http://strc.khu.ac.kr/ · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 An empirical, cluster-analysis-based study of Generation MZ (Millennials and Generation Z)
@@ -194,8 +198,12 @@ demand figures.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/giachino-2021-space-tourism-frontier.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:c43ebff9da711858a8c7937391a118b48d619ec7de4f6ab581987e925c55ddcf` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.52255/smarttourism.2021.1.4.5
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "an empirical, cluster-analysis-based study ... Based on 2,027 survey responses collected from young adults in North-West Italy in January 2020" -- the authors' own survey.

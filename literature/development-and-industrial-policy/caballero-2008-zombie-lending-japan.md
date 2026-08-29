@@ -17,6 +17,10 @@ DOI: https://doi.org/10.1257/aer.98.5.1943
 
 Publisher URL: https://www.aeaweb.org/articles?id=10.1257/aer.98.5.1943
 
+## Metadata
+
+Authors: Caballero, R. J., Hoshi, T., & Kashyap, A. K. · Year: 2008 · DOI: 10.1257/aer.98.5.1943 · Publisher URL: https://www.aeaweb.org/articles?id=10.1257/aer.98.5.1943 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Proposes a bank-based explanation for Japan's decade-long slowdown after the early-1990s
@@ -287,8 +291,15 @@ can absorb honest losses.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/caballero-2008-zombie-lending-japan.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:cb6ea4ad9053a318d6cd3eef82e89f25d43d939003ab710843fcb0b24365cee7` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1257/aer.98.5.1943
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: AER 98(5); the on-disk copy is NBER WP 12129, the same authors' own text, cross-checked against the published substance in the citation note.
+
+## Contested
+- ECR-14 B

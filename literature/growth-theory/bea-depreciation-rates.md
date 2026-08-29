@@ -22,6 +22,10 @@ pages 8 to 14 the asset-by-asset table). Every rate quoted below was extracted f
 PDF via pdfplumber, page by page, and the machinery cluster central to this review's use was
 cross-checked against the values recorded in the gap register.
 
+## Metadata
+
+Publisher URL: https://apps.bea.gov/national/pdf/BEA_depreciation_rates.pdf · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 The reference table BEA uses to depreciate the U.S. capital stock. It lists, for each type of
@@ -195,8 +199,13 @@ prior draft; the floor is now sourced to a canonical U.S. government dataset rat
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/bea-depreciation-rates.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:2dcf146da948c6a92b1cb1d887409d2cdf0975bd92839386f664266e67399825` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** lsei-primary
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-LSEI-SCRUB (a landing mode, not a gate)
 - **Dedup key:** L2A|apps.bea.gov/national/pdf/bea_depreciation_rates.pdf
 - **Field:** economics · **Folder:** growth-theory · **Also:** space-economy-and-markets
 - **Plan row rev:** 2
+- **Stated as of:** `unknown` · date authority `unknown` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout over all 14 pages returns no publication, revision or "last updated" date anywhere; every year in the document belongs to a cited underlying study. The summary's Citation correctly gives no year -- the right behaviour, and it leaves the file with no currency at all. Content floor: the note discusses "the 2013 comprehensive revision of the NIPAs" as completed, so the document postdates 2013. A floor is not a stamp.
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation states the depreciation patterns are "primarily derived by Barbara M. Fraumeni from estimates made by Charles Hulten and Frank Wykoff" and names Fraumeni 1997 and Hulten-Wykoff 1979/1981 as the primary underlying sources, none of which is on disk. JUDGEMENT: the rates are BEA's published schedule of record, so a reviewer could call this primary; what settles it is whether 2.8 grades the PUBLISHER of a number or its MEASUREMENT. This corpus's only route to delta.

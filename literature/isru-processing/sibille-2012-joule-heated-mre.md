@@ -38,12 +38,17 @@ Molten Regolith Electrolysis (direct electrolysis of molten regolith to metals +
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/sibille-2012-joule-heated-mre.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:0abf33a12df9c432e54106913a423791a735694d1cf891c93993ef8f8664658b` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/20120003037
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- LCC-08 B

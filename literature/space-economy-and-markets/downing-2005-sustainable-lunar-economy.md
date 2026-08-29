@@ -6,6 +6,10 @@ Downing, P., Baxter, M. A., & McCullough, E. D. (2005). *Developing a sustainabl
 
 Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2005-2551 [derived from the DOI above; not printed in document]
 
+## Metadata
+
+Authors: Downing, P., Baxter, M. A., & McCullough, E. D. · Year: 2005 · DOI: 10.2514/6.2005-2551 · Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2005-2551 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A conference position paper arguing that a permanent human presence on the Moon depends on building a commercially viable lunar economy on top of exploration-era infrastructure. It surveys candidate commercial sectors (engineering and construction, energy, materials and manufacturing, transportation, communications, and tourism/advertising/entertainment) and the economic, legal, and institutional framework needed to support them. The treatment is descriptive and forward-looking rather than experimental; it presents no new data, drawing instead on the authors' industry experience (Bechtel, Boeing, the Maguire Energy Institute) and cited prior work. Scope is a policy/architecture rationale for early industry involvement in lunar planning.
@@ -47,8 +51,12 @@ The paper's own sections are: Introduction; Exploration Infrastructure: Foundati
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/downing-2005-sustainable-lunar-economy.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:5bab05843306870b14d71f1dad1dcc85dec794c2322d5c862d20ff54d03687c9` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.2514/6.2005-2551
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `via_review` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; the file's own abstract: "presents no new data, drawing instead on the authors' industry experience (Bechtel, Boeing, the Maguire Energy Institute) and cited prior work."

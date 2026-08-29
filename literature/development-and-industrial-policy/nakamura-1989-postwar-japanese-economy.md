@@ -15,6 +15,10 @@ Note on citation confidence:
 - The volume editor is not specified in the source ledger and is not stated in the extracted text, so it is omitted rather than guessed.
 - Internal evidence on dating: the chapter's own footnotes cite secondary works through 1986 and cite Chalmers Johnson's *MITI and the Japanese Miracle* (1982), consistent with the ledger's 1989 publication date for the volume.
 
+## Metadata
+
+Authors: Nakamura, T. · Year: 1989 · DOI: 10.1017/CHOL9780521223577.011 · Publisher URL: https://www.cambridge.org/core/books/abs/cambridge-history-of-japan/postwar-japanese-economy-19451973/E14CC47851CDC3148B946A9027E6DA7F · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Traces Japan's economic trajectory from wartime collapse (1945) through the end of high-speed growth
@@ -250,8 +254,15 @@ sections map respectively to:
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/nakamura-1989-postwar-japanese-economy.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:89fbcb318408fdbb2eb7c81037f5c784473328e16a3880240d12bd9e8a3f47e2` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1017/chol9780521223577.011
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: a chapter in The Cambridge History of Japan, Vol. 6. The file's own method line: "narrative synthesis of official Japanese statistical series and secondary economic-history scholarship, organized around twenty numbered data tables; no new data collected."
+
+## Contested
+- ECR-05 B

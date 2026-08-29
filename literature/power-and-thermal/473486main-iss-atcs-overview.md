@@ -22,6 +22,10 @@ identifier, not a formal NTRS technical-report number; no DOI or NTRS document I
 the text and none is invented here. The internal system designation on page 1, "EEATCS
 (5A-12A.1)/EATCS (12A.1+)," is reproduced as the document's own subtitle.
 
+## Metadata
+
+Publisher URL: https://www.nasa.gov/wp-content/uploads/2021/02/473486main_iss_atcs_overview.pdf · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 An engineering overview of the International Space Station (ISS) Active Thermal Control System
@@ -231,7 +235,10 @@ usable for any ISS-heritage thermal mass build-up.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/power-and-thermal/473486main-iss-atcs-overview.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:bb829e18b1826ac7028794685ab2357b985d0e487083989ea1c280b6c7bf3da2` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** lsei-primary
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-LSEI-SCRUB (a landing mode, not a gate)
 - **Dedup key:** L2A|nasa.gov/wp-content/uploads/2021/02/473486main_iss_atcs_overview.pdf
 - **Field:** lunar · **Folder:** power-and-thermal

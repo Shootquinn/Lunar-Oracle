@@ -1,5 +1,4 @@
 # Luchsinger 2021 - Water Within a Permanently Shadowed Lunar Crater: Further LCROSS Modeling
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -53,8 +52,14 @@ Re-modeling of the 2009 LCROSS impact into Cabeus crater to constrain the pre-im
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/lunar-ice-and-geology/luchsinger-2021-lcross-water-modeling.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:0c294bb1d1e2266b3c93eaf5166594988b80956d97627c97d5ffaf9c2a47e409` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|arxiv.org/abs/2009.05080
 - **Field:** lunar · **Folder:** lunar-ice-and-geology
 - **Plan row rev:** 1
+
+## Contested
+- LCC-01 C

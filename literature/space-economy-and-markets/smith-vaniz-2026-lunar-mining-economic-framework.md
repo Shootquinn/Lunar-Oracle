@@ -8,6 +8,10 @@ https://doi.org/10.1007/s44461-026-00008-9
 
 Publisher URL: https://doi.org/10.1007/s44461-026-00008-9
 
+## Metadata
+
+Authors: Smith-Vaniz, G., Stähler, S. C., & Kehl, F. · Year: 2026 · DOI: 10.1007/s44461-026-00008-9 · Publisher URL: https://doi.org/10.1007/s44461-026-00008-9 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Proposes a diagnostic economic-structuring framework for lunar mining. Adopts discounted cash
@@ -350,8 +354,12 @@ addressed within the study itself).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/smith-vaniz-2026-lunar-mining-economic-framework.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:1c20e55f4914994c537f7c16951d044b53bb1e3d836a5ea9d3b09b471a91e931` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1007/s44461-026-00008-9
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** isru-processing
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the diagnostic DCF-disaggregation framework is the paper's own.

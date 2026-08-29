@@ -12,6 +12,10 @@ Version note: this is an arXiv preprint (arXiv:1810.03836, submitted 2018). The 
 carries no journal name, volume, issue, or DOI, and no statement that the paper was subsequently
 published in a peer-reviewed venue; it is treated here as preprint-only.
 
+## Metadata
+
+Authors: Hein, A. M., Matheson, R., & Fries, D. · Year: 2018 · Publisher URL: none identified beyond the arXiv listing; the corresponding author's affiliation is the Initiative for Interstellar Studies (Bone Mill, Charfield, United Kingdom). · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Techno-economic model of asteroid mining profitability, built up from a single-mission profit
@@ -228,8 +232,12 @@ of critical mineral sourcing.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/hein-2018-asteroid-mining-technoeconomic.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:676e95a320a43c1939963530bffe71ffb1666c069e1d7c328440846fb7f4353c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|arxiv.org/abs/1810.03836
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** isru-processing
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the profit equation, NPV formulation and supply-demand model are the paper's own. Preprint-only, per the version note; preprint status is a currency question, not a depth question.

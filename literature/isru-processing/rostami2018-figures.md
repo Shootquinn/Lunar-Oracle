@@ -23,6 +23,10 @@ Note: This is a figures/tables-only summary produced from visual analysis of the
 
 Scope found: **6 numbered figures (Figures 1-6). No numbered tables appear in the paper.** Only one figure (Figure 4) is a quantitative plot; the other five are photographs, illustrations, or schematic/classification diagrams. Numeric design values (temperatures, machine dimensions, weights, power) in this paper are stated in the running text rather than in tables or figures.
 
+## Metadata
+
+Authors: Rostami, J., Dreyer, C., & Blair, B. · Year: 2018 · Publisher URL: none in this artifact. · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ---
 
 ## Figure 1 (page 2)
@@ -118,7 +122,10 @@ No numbered tables are present in the paper. Key numeric parameters the running 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/rostami2018-figures.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:5249204a75bd80578477475ecb97c95628b4f6bb5fc9fe960a90f3d4300c23a5` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above, and it does NOT restore it:** the landed body does not reduce to the `byte_source` copy under the 2.6 operation alone. A SECOND, EARLIER, STILL-UNDECLARED body edit sits under this one — the Wave 2 citation repair that `MRG-4b` reported at the Wave 3 open, which added the `## Citation` block. That edit is not mine to declare or revert; it is routed to its author in `cr_scratch/step2_engineer_house_format.md`. 2.6 `insert-metadata` fired on this file ONLY because that edit supplied the `## Citation` block this pass reads; the `byte_source` copy carries none, so on the source this pass is a no-op.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|rostami|2018|lunar-tunnel-boring-machines — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** isru-processing

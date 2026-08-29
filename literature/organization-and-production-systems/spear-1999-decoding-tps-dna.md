@@ -7,6 +7,10 @@ Business Review*, September–October 1999 (Reprint 99509).
 
 Publisher URL: https://www.hbrreprints.org
 
+## Metadata
+
+Authors: Spear, S., & Bowen, H. K. · Year: 1999 · Publisher URL: https://www.hbrreprints.org · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Reports findings from a four-year field study of more than 40 manufacturing and service-support
@@ -262,8 +266,15 @@ unnamed electromechanical-products and injection-molding plants.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/spear-1999-decoding-tps-dna.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:1640c024f026993963052908106638f7cd0042291ab7bc0e8105bdf509a2a12d` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|HBR-REPRINT-99509 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** organization-and-production-systems
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Harvard Business Review, Sept-Oct 1999. Abstract: "Reports findings from a four-year field study of more than 40 manufacturing and service-support operations" -- the authors' own fieldwork, notwithstanding the practitioner venue.
+
+## Contested
+- ECR-11 A

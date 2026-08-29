@@ -1,5 +1,4 @@
 # Jones 2020 - Cost Breakeven Analysis of Lunar In-Situ Propellant Production
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -54,8 +53,14 @@ Parametric cost model comparing two architectures for supplying hydrogen and oxy
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/jones-2020-lunar-propellant-breakeven.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:4289dd0529b4c7b596784e576d8fbaab68020fd95fe4176495261bb5a7fbcb34` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|jones|2020|cost-breakeven-analysis-lunar-situ-propellant — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+
+## Contested
+- LCC-12 B

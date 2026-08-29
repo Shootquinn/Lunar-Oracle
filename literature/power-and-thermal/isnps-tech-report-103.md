@@ -24,6 +24,10 @@ printed page + 8), so the areal-density band defined in the running text sits on
 sheet 18), and the results Table 10 on printed pages 61 to 62 (PDF sheets 69 to 70). Page
 citations below use the report's own printed page numbers.
 
+## Metadata
+
+Authors: El-Genk, M. S., & Schriener, T. M. · Year: 2025 · Publisher URL: https://isnps.unm.edu/reports/ISNPS_Tech_Report_103.pdf · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Final report of a NASA Early-Stage Innovations Phase 1 award to UNM-ISNPS to develop a heat
@@ -203,7 +207,10 @@ floor.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/power-and-thermal/isnps-tech-report-103.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:2b0957cb1aeb7f0fb7a3e549f9225263604763bec3d8ee7dca17040dc1b9202e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|isnps.unm.edu/reports/isnps_tech_report_103.pdf
 - **Field:** lunar · **Folder:** power-and-thermal

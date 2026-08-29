@@ -1,5 +1,4 @@
 # Elvis, Milligan and Krolikowski 2016 - The Peaks of Eternal Light: a Near-term Property Issue on the Moon
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -55,7 +54,10 @@ Sections 1-2 (Introduction; Peaks of Eternal Light) carry the quantitative illum
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/elvis-2016-peaks-eternal-light.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:3df71b570be9ac38c18774d779063c20231689240e34791402a904dd78d1561f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.spacepol.2016.05.011
 - **Field:** lunar · **Folder:** space-law-and-governance · **Also:** power-and-thermal

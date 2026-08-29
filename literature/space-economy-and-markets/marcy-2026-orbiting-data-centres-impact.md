@@ -13,6 +13,10 @@ the submission target (MNRAS Letters). The author's sole affiliation is given as
 Laser Awareness," Santa Rosa, California, described in the acknowledgements as a
 supporting organization rather than a university or observatory department.
 
+## Metadata
+
+Authors: Marcy, G. W. · Year: 2026 · Publisher URL: none in source. The extracted text gives no arXiv subject category, DOI, volume, or page numbers, only the arXiv identifier, the March 29, 2026 version date, and the submission […] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A 7-page astronomy letter that treats AI-driven data-centre power demand only as
@@ -204,8 +208,12 @@ proposed hardware.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/marcy-2026-orbiting-data-centres-impact.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:c013e4dd146456b7fc8e63a991060b65778ea1d8db584d1927305ab969d77d4a` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|arxiv.org/abs/2603.28829
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** power-and-thermal
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the paper "derives the angular size, brightness, and visibility duration" itself, working from published array-area requirements as inputs.

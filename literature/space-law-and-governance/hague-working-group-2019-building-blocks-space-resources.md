@@ -6,6 +6,10 @@ The Hague International Space Resources Governance Working Group. (2019). *Build
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: The Hague International Space Resources Governance Working Group. · Year: 2019 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Twenty-provision non-binding policy instrument drafted by a multi-stakeholder working group hosted at Leiden University. Sets out recommended elements — objective, definitions, scope, principles, priority rights, resource rights, safety zones, environmental/heritage protection, benefit-sharing, registration, liability, dispute settlement, and review — for a possible future international framework governing the search, recovery, and extraction of abiotic space resources. Presented as a groundwork document for international discussion, not as a proposed treaty text, and framed around the principle of incremental, adaptive governance.
@@ -146,7 +150,10 @@ It further addresses: registration, notification, and information-sharing throug
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/hague-working-group-2019-building-blocks-space-resources.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:74f9633f695c5981a377bb7110d5dbb50e282803c7d5b26a5f6821900edb915f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|the-hague-international-space-resources-governance-working-group|2019|building-blocks-development-international-framework-space — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-law-and-governance · **Also:** space-economy-and-markets

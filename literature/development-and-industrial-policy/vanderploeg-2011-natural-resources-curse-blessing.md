@@ -15,6 +15,10 @@ https://doi.org/10.1257/jel.49.2.366
 
 Publisher URL: https://www.aeaweb.org/articles?id=10.1257/jel.49.2.366
 
+## Metadata
+
+Authors: van der Ploeg, F. · Year: 2011 · DOI: 10.1257/jel.49.2.366 · Publisher URL: https://www.aeaweb.org/articles?id=10.1257/jel.49.2.366 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Survey of the theory and evidence on whether natural resource wealth helps or harms economic
@@ -302,8 +306,12 @@ but "not cast in stone" (page 41-42).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/vanderploeg-2011-natural-resources-curse-blessing.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:a447522f6aa1c6cb0c9eeb9ecf528f4925b1c1b850b6f5119e45afaf69736045` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1257/jel.49.2.366
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `via_review` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Journal of Economic Literature 49(2), a survey venue. The file's own abstract opens "Survey of the theory and evidence"; it evaluates eight candidate explanations against evidence published elsewhere.

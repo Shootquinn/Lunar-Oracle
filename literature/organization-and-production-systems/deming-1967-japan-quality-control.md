@@ -10,6 +10,10 @@ Publisher URL: Not stated in the document and not otherwise confirmed.
 
 Ledger note: this is **entry 17** in FA1-source-list.md (slug `deming-1967-japan-quality-control`), cross-tier — numbered 17 by acquisition order, Batch C by content. Its Sub-Q is **7**: tacit knowledge and management-method transfer (training and diffusion via JUSE, statistical quality control, and the Deming Prize), which the ledger defines as a channel distinct from Sub-Q 3's formal, arm's-length licensing. Topic mapping opens `FA1, FA3`; the ledger treats this source as the hinge between those two focus areas, and flags it as load-bearing for the FA3 question of what method transfer becomes when the trainee is a self-reproducing factory. The article states it is based in part on a piece published in *Sankhya* (Calcutta), series B, vol. 28, 1966.
 
+## Metadata
+
+Authors: Deming, W. E. · Year: 1967 · DOI: not recorded in the citation block — No DOI. 1967 print-era house journal, predating DOI registration. DOI exemption granted by Quinn. · Publisher URL: Not stated in the document and not otherwise confirmed. · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 First-person account by W. Edwards Deming of the introduction of statistical quality control
@@ -241,8 +245,15 @@ broader postwar Japanese growth literature.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/deming-1967-japan-quality-control.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:0ef986cad0589ac0875ac33d69bb358dd018fe9daf69457f5a6979de3319e894` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|deming|1967|what-happened-japan-industrial-quality-control — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** organization-and-production-systems · **Also:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Industrial Quality Control 24(2); a first-hand account by the participant. Draws in part on the author's own 1966 Sankhya piece, which is the same hand.
+
+## Contested
+- ECR-11 B

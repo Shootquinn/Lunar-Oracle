@@ -1,5 +1,4 @@
 # Poston et al. 2020 - KRUSTY Reactor Design
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -77,8 +76,14 @@ Section I and II (p. S13-15) cover program history, the SNAP/DUFF precedents, an
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/power-and-thermal/poston-2020-krusty-reactor-design.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:0aa32d07a51d6f0184f1809f27e67894cc7e20c29ac77eb27e378a6258d67890` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** lsei-primary
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT-LSEI-STEP0 (a landing mode, not a gate)
 - **Dedup key:** L1|10.1080/00295450.2020.1725382
 - **Field:** lunar · **Folder:** power-and-thermal
 - **Plan row rev:** 1
+
+## Contested
+- LCC-10 A

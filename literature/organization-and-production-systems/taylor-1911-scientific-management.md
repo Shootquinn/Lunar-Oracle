@@ -13,6 +13,10 @@ given by section and by illustrative case rather than by page.
 
 Publisher URL: https://www.gutenberg.org/ebooks/6435
 
+## Metadata
+
+Authors: Taylor, F. W. · Year: 1911 · Publisher URL: https://www.gutenberg.org/ebooks/6435 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Taylor's founding statement of scientific management. Diagnoses "systematic soldiering," workers'
@@ -225,8 +229,12 @@ drawing the cross-source rebuttal conclusion itself.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/taylor-1911-scientific-management.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:842d326bc64d69d506de809cfc00958c9a263189cd964c074de8e309338b1f26` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|gutenberg.org/ebooks/6435
 - **Field:** economics · **Folder:** organization-and-production-systems
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: the 1911 Harper monograph. The on-disk text is the Project Gutenberg transcription of that edition, which is a reproduction of the primary text and not an intermediary reporting it; the note on the on-disk copy records that locations are given by section because the transcription has no page numbers.

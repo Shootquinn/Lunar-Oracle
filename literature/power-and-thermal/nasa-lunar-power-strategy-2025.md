@@ -1,5 +1,4 @@
 # NASA 2025 - Integrated Lunar Power Strategy Considerations
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -101,8 +100,12 @@ Lunar surface power architecture strategy, pages 1 through 6 throughout. Moon to
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/power-and-thermal/nasa-lunar-power-strategy-2025.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:6c21834bcf85db735173479e4e9a15633e0b805d7f889768059634babc8ebd7c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/20250010948
 - **Field:** lunar · **Folder:** power-and-thermal
 - **Plan row rev:** 1
+- **Stated as of:** `2025-12-12` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Metadata line reads "dated 2025-12-12" with no printed feature named as the carrier, and the same block dissects the printed title block at length without ever quoting a printed date. NTRS accession 20250010948; an NTRS record date is not a printed-in-source date. The abstract's "as of August 2025" (Duffy nuclear-power announcement) is a content event, not the document date. No paired PDF on disk.

@@ -1,5 +1,4 @@
 # Colaprete 2010 - Detection of Water in the LCROSS Ejecta Plume
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -161,9 +160,15 @@ Page 467 carries Table 2 with the nine volatile column abundances and their perc
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/lunar-ice-and-geology/colaprete-2010-lcross-ejecta-water-detection.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:cfaff47209e2d6bdcd8520d701632f047b7b567441703ae2c153ed77901f611b` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-PAIR (a landing mode, not a gate)
 - **Dedup key:** L1|10.1126/science.1186986
 - **Field:** lunar · **Folder:** lunar-ice-and-geology
 - **Plan row rev:** 2
 - **Duplicate pair DUP-01:** this file is the PRIMARY and it landed. The secondary, `colaprete-2010-lcross-water.md`, did not land. Picked under the author rule of 2026-08-28 (a recorded step-0 decision wins, else byte-identical takes either, else the larger file).
+
+## Contested
+- LCC-01 A

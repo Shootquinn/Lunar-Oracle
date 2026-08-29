@@ -1,5 +1,4 @@
 # Shishko, Stoica, Mrozinski 2019 - Business Case Analysis of Lunar Thermal Mining
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -119,8 +118,15 @@ Slide 2 addresses prior BCA literature and its quoted (not Shishko et al.'s own)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/shishko-2019-lunar-thermal-mining-business-case.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:82d95b49b0f68e9e169c91a269652d45b4c39f33e787ace7ddf6e8f45290d1a5` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|shishko|2019|business-case-analysis-lunar-thermal-mining — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** isru-processing
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; the BCA framework and production-rate model are the deck's own. The summary already isolates the reported speech in its own words: the slide-2 literature-review figures "are quoted by Shishko, Stoica, and Mrozinski from these prior authors' own publications; they are not results computed by Shishko et al." That is what a well-formed depth caveat looks like and it is already in the file.
+
+## Contested
+- LCC-12 C

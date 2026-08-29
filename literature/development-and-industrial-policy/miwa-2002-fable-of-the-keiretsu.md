@@ -20,6 +20,10 @@ number, or Harvard Olin Center header anywhere in the file. The document is ther
 typeset article (or a direct reproduction of it), not the Olin working-paper posting the ledger
 anticipated. The citation above is recorded as the version of record regardless.
 
+## Metadata
+
+Authors: Miwa, Y., & Ramseyer, J. M. · Year: 2002 · DOI: not recorded in the citation block — unconfirmed in FA1 ledger (Wiley); not recorded here per no-inferred/unconfirmed-DOI rule. · Publisher URL: onlinelibrary.wiley.com, JEMS vol. 11 issue 2 (per FA1 ledger). · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 The authors argue that the "keiretsu" corporate groups long treated as a defining structural feature
@@ -330,8 +334,15 @@ Lincoln et al. 1996, 1998) cited elsewhere in the literature review.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/miwa-2002-fable-of-the-keiretsu.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:94654f9e926d552ea676cab7ceb058792e1ec4693ec4934ef1bf18461d2173c1` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|miwa|2002|fable-keiretsu — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: JEMS 11(2), the authors' own roster construction and tests; the version note establishes the journal typesetting was the copy read.
+
+## Contested
+- ECR-02 B

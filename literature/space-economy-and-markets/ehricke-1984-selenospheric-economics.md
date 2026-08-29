@@ -7,6 +7,10 @@ Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/00945765849
 
 (Provenance printed on the paper: presented at the 12th International Symposium on Space Economics and Benefits: Socio-Economic Benefits of Space Operations, XXXIIIrd Congress of the International Astronautical Federation, Paris, France, 27 September–20 October 1982. Received 28 April 1983. Author affiliation: Space Global Co., 845 Lamplight Drive, La Jolla, CA; listed as President and General Manager. No IAF/IAC paper number is printed on the article's first page, though the reference list cites the underlying conference paper elsewhere.)
 
+## Metadata
+
+Authors: Ehricke, K. A. · Year: 1984 · DOI: 10.1016/0094-5765(84 · Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/0094576584900031 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 Third installment of the series. Argues that geosocio-economically useful lunar development requires a development strategy that balances investments and returns as attractively as possible. Sets out a systematic approach to generating early and profitable returns through investment strategy and through cislunar and terrestrial market research. Defines five development stages, four strategic principles, and three routes to independence, then surveys market sectors and a market-product-time matrix. Long-term sections outline Soletta space-light engineering and lunar production of helium-3 for terrestrial fusion power plants and of water from fusion products and lunar oxygen. Descriptive strategic and economic study.
 
@@ -53,8 +57,12 @@ The analysis is explicitly forward-looking and staged, with DS-5 not expected be
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/ehricke-1984-selenospheric-economics.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:cebdf0fe5622ee8703e6d19bb00cda362b9d6bd75bf9c0769fb734aafeaa4d6f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/0094-5765(84)90003-1
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "Descriptive strategic and economic study"; the five stages, four principles and market-product-time matrix are the document's own.

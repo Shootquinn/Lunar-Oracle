@@ -12,6 +12,10 @@ A/6431.
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: United Nations General Assembly. · Year: 1966 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Seventeen-article multilateral treaty, annexed to UN General Assembly resolution 2222 (XXI) and
@@ -231,7 +235,10 @@ withdrawal (Article XVI); and authentic-text, deposit, and execution particulars
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/un-1967-outer-space-treaty.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:3435bfc9993a57f763627391dde840ff36b07d562db5927660bc9b850a077b9f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|UNGA-RES-2222-XXI — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-law-and-governance

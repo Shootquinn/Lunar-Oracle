@@ -1,5 +1,4 @@
 # Schorghofer 2026 - Current Theories of Lunar Ice
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -54,8 +53,14 @@ Review of the classical and modern theories of cold-trapped lunar ice, compared 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/lunar-ice-and-geology/schorghofer-2026-current-theories-lunar-ice.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:9f7c496a07df93f24ea525d95d53f84862f85116e45988e2ae6e731d1b2e0fc9` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|arxiv.org/abs/2502.06056
 - **Field:** lunar · **Folder:** lunar-ice-and-geology
 - **Plan row rev:** 1
+
+## Contested
+- LCC-03 C

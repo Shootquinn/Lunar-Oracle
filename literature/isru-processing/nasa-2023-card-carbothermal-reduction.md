@@ -1,7 +1,5 @@
 # NASA 2023 - Carbothermal Reduction Demonstration (CaRD) Project Status
 
-## Comprehensive Technical Summary
-
 ## Citation
 
 National Aeronautics and Space Administration. (2023). *Carbothermal Reduction Demonstration (CaRD) project status* [Slide deck]. DOI: not printed in source.
@@ -69,8 +67,17 @@ The CaRD project scope covers all subsystems needed to determine the performance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/nasa-2023-card-carbothermal-reduction.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f3150ad0e8b4edaabb52a9996dbeaa8ca3548a177daebca65d601feeeedbe63f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|national-aeronautics-and-space-administration|2023|carbothermal-reduction-demonstration-card-project-status — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+- **Stated as of:** `2023` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Metadata names the carrier: "Publication date: 2023, per the title-slide banner ('CaRD Project Status 2023')". CARRIES A PRINTED CONFLICT the summariser already flagged: "every slide footer, however, reads 'GCD FY18 Mid Year Review,' a leftover template footer that conflicts with the 2023 date." Stamp 2023; carry the conflict into Provenance.
+
+## Contested
+- LCC-07 C
+- LCC-08 C
+- LCC-11 B

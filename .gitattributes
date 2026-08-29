@@ -48,3 +48,39 @@ tools/githooks/** text eol=lf
 # per-install configuration.
 literature/** text eol=lf
 cr_scratch/merge_plan.tsv text eol=lf
+
+# THE REGISTERS. Added at 2.18, 2026-08-28, by The Systems Engineer. FIFTH MEMBER OF THE FAMILY
+# ABOVE, and it was measured rather than reasoned about, twice.
+#
+# MEASUREMENT 1, the dispatcher. tools/githooks/dispatch.js reads oracle/check_register.md with
+# no CR normalisation -- `text.split('\n')` -- so the ninth and last field of every C row is the
+# status cell with a carriage return stuck to it. Materialised the file with CRLF in a sandbox
+# and parsed it exactly as the engine does: 38 rows parsed, `status === 'live'` matched ZERO of
+# them and `status === 'specified'` matched ZERO of them. Field 9 of CHK-09 came back as the
+# literal "specified\r". The engine obeys status by string equality, so with CRLF it skips
+# nothing, dispatches every `specified` row, and calls fail() on the first artifact that does not
+# exist. That is LOUD -- it blocks every commit on a fresh clone rather than passing quietly --
+# and it is still a total stop of the pre-commit trigger on any install whose core.autocrlf
+# differs from the authoring machine's. Loud is the better direction and it is not a defence.
+#
+# MEASUREMENT 2, and this one is not hypothetical at all: writing oracle/AMENDMENTS.tsv from a
+# node script during this sub-step, git answered
+#     warning: in the working copy of 'oracle/AMENDMENTS.tsv', LF will be replaced by CRLF the
+#     next time Git touches it
+# core.autocrlf=true is set here, so THIS repository will convert these files on the next
+# checkout that touches them, exactly as it did to two corpus files at the Wave 2 close.
+#
+# WHY THIS SET AND NOT `* text=auto`. The narrowness argument at the top of this file still
+# holds: a blanket rule is a normalisation pass nobody can review. These five paths are the ones
+# a program parses FIELD-WISE, where a carriage return lands inside a value and is compared
+# against a closed set. tools/check_registers.js already normalises (`.replace(/\r\n?/g,'\n')`)
+# and is immune -- verified by running it against CRLF copies of all five, where AMC-1..AMC-5 and
+# both size declarations passed unchanged. It is pinned anyway, because immunity that lives in
+# one consumer is per-consumer configuration, which is the same mistake one layer up: the next
+# parser written against these files will not know it has to strip \r, and CHK-26 and CHK-32 are
+# both specified rows for parsers nobody has written yet.
+oracle/check_register.md text eol=lf
+oracle/AMENDMENTS.tsv text eol=lf
+oracle/MANIFEST.tsv text eol=lf
+oracle/VERIFIED.tsv text eol=lf
+oracle/REGISTER.*.tsv text eol=lf

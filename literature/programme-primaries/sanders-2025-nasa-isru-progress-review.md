@@ -10,6 +10,10 @@ Deputy, NASA STMD.
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: Sanders, G. (Jerry), & Kleinhenz, J. · Year: 2025, May 19 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A NASA STMD status briefing surveying lunar in-situ resource utilization (ISRU) technology
@@ -225,9 +229,19 @@ program.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:d29f98139f2502f1371955de323e43a10efbb155e987383cfc26192f86c0ea93` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-PAIR (a landing mode, not a gate)
 - **Dedup key:** L3|sanders|2025|kleinhenz-j — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** programme-primaries · **Also:** isru-processing
 - **Plan row rev:** 2
 - **Duplicate pair DUP-05:** this file is the PRIMARY and it landed. The secondary, `sanders-2025-nasa-lunar-isru-progress-review.md`, did not land. Picked under the author rule of 2026-08-28 (a recorded step-0 decision wins, else byte-identical takes either, else the larger file).
+- **Stated as of:** `2025-05-19` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout over _intake/japanese-miracle/lit/sanders-2025-nasa-isru-progress-review.pdf, title slide, prints "May 19, 2025" (extraction line 12) beside the mangled title "2019 to 2P0R25ESENTATION TITLE". Luxembourg Space Resources Week.
+
+## Contested
+- LCC-05 A
+- LCC-07 D
+- LCC-08 D
+- LCC-15 A

@@ -16,6 +16,10 @@ Note: the source PDF is a scanned copy with no embedded text layer beyond the ti
 page; this summary was produced from an OCR pass (Tesseract, 300 dpi) over all 27
 pages. Printed pagination runs 29-55, consistent with the FA1 ledger's page range.
 
+## Metadata
+
+Authors: Dingman, R. · Year: 1993 · DOI: not recorded in the citation block — unconfirmed in FA1 ledger (Brill; 10.1163/187656193X00077 cited from a reference list but not verified on the publisher page). Not recorded here per no-inferred/unconfirmed-DOI rule. · Publisher URL: brill.com, Journal of American-East Asian Relations vol. 2 issue 1 (per FA1 ledger). · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Narrative-historical reassessment of the Korean War's (1950-53) impact on Japan,
@@ -316,8 +320,15 @@ War in Japan's postwar trajectory (Conclusion).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/dingman-1993-dagger-and-gift-korean-war.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:4b81ead59939e52dba69b182c660aa072595d2330c17db0b1bad08edc44cd5bd` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1163/187656193x00077
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Journal of American-East Asian Relations 2(1), the author's own archival history.
+
+## Contested
+- ECR-04 A

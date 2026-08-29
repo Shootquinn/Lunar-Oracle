@@ -6,6 +6,10 @@ Zuniga, A. F., Turner, M., Rasky, D., Loucks, M., Carrico, J., & Policastri, L. 
 
 Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2017-5148
 
+## Metadata
+
+Authors: Zuniga, A. F., Turner, M., Rasky, D., Loucks, M., Carrico, J., & Policastri, L. · Year: 2017 · DOI: 10.2514/6.2017-5148 · Publisher URL: https://arc.aiaa.org/doi/10.2514/6.2017-5148 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A NASA Ames concept-study paper proposing "Lunar COTS" (Commercial Operations and Transport Services), an extension of NASA's Commercial Orbital Transportation Services public/private-partnership model to cis-lunar space and the lunar surface. It defines the concept's goals, a three-phase development approach, and a reference lunar architecture (lander, solar/battery power station, communication tower, navigation, thermal control, rovers), then reports quantitative trajectory and mass analyses for delivering that architecture on commercial launch vehicles. Scope covers acquisition strategy, infrastructure element design, a survey of prior lunar surface missions, and delta-V/payload estimates; findings are from conceptual design plus numerical simulation, not flight hardware.
@@ -46,8 +50,12 @@ The paper's own sections are: Nomenclature; Introduction; Lunar COTS Concept; Lu
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/zuniga-2017-lunar-cots-infrastructure.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:898c58c66d525fab6a4cf9daf3cf23b5154eeaf33f3359210a17d2dc49fdda8e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.2514/6.2017-5148
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "findings are from conceptual design plus numerical simulation, not flight hardware" -- the paper's own trajectory and mass analyses.

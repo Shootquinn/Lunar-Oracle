@@ -1,5 +1,4 @@
 # Wittenberg 1992 - A Review of 3He Resources and Acquisition for Use as Fusion Fuel
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -54,8 +53,14 @@ Review of helium-3 (3He) resources and the means to acquire them for use as fuel
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/wittenberg-1992-he3-resources-review.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f98c05b133b73e3d63991c77ba32945dd43a430d1bb4ffcff5b0095ddbb3bad8` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.13182/fst92-a29718
 - **Field:** lunar · **Folder:** isru-processing · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+
+## Contested
+- LCC-13 A

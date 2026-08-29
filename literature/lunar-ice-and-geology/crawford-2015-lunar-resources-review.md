@@ -54,10 +54,12 @@ No single lunar resource clearly justifies extraction for Earth export today (Ea
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/lunar-ice-and-geology/crawford-2015-lunar-resources-review.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f36ef62355bd8b69accaf816e3c2c069a30a92f8619812ed7b03e2c07e680017` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.48550/arxiv.1410.6865

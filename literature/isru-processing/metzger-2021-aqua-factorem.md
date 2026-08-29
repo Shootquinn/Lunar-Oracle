@@ -16,6 +16,10 @@ collaborator. The cover title reads "Ultra Low Energy Lunar Water Extraction" wh
 interior running header reads "Ultra Low Energy Lunar Ice Mining". No Digital Object
 Identifier appears in the document.
 
+## Metadata
+
+Authors: Metzger, P. T., Sapkota, D., Fox, J., & Bennett, N. · Year: 2021 · Publisher URL: [not stated in the document; confirmation needed before this line is filled] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Establishes feasibility of a lunar water extraction architecture that separates ice grains
@@ -359,8 +363,14 @@ aluminum, ilmenite for oxygen, free metal recovery, and excess oxygen as a salea
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/metzger-2021-aqua-factorem.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:3a5e3576fc00fa7d82bb8a47c0de750759c5fe22fc92f985d1df75dad0f74745` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|80NSSC20K1022 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- LCC-06 B

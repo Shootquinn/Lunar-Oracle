@@ -8,6 +8,10 @@ U.S. Geological Survey. (2025). Platinum-group metals. In *Mineral Commodity Sum
 Publisher URL: https://pubs.usgs.gov/periodicals/mcs2025/ (specific per-commodity page URL not
 printed on the extracted pages; flagged, not invented.)
 
+## Metadata
+
+Authors: U.S. Geological Survey. · Year: 2025 · DOI: 10.3133/mcs2025 · Publisher URL: https://pubs.usgs.gov/periodicals/mcs2025/ · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Two-page USGS data sheet on platinum-group metals (palladium, platinum, iridium, osmium, rhodium,
@@ -158,8 +162,13 @@ come from a different source, not this one.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/usgs-2025-platinum-group-metals-mcs.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:6b92b548a0f67f8da214137cddb6dda8454487d1f5a62c3eb83c8c7493a2878c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.3133/mcs2025
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Stated as of:** `2025-01` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. Page footer prints "U.S. Geological Survey, Mineral Commodity Summaries, January 2025" (extraction line 150). Data run 2020-2024 with 2024 estimated (2024e), so the data year is 2024 and the publication month is January 2025.
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; the file's own abstract: "A pure data/reference fact sheet; it reports market size and" prices. A Mineral Commodity Summaries entry compiling reported production and trade.

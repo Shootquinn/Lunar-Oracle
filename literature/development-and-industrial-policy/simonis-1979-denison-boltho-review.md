@@ -10,6 +10,10 @@ DOI: not printed in the document; not recorded (no inferred DOIs).
 
 Publisher URL: https://hdl.handle.net/10419/122730 (EconStor stable handle/URN — recorded here in place of a DOI, none being printed).
 
+## Metadata
+
+Authors: Simonis, Udo E. · Year: 1979 · DOI: not recorded in the citation block — not printed in the document; not recorded (no inferred DOIs). · Publisher URL: https://hdl.handle.net/10419/122730 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A short (four-page) joint review by Udo E. Simonis of two mid-1970s books analyzing the sources of Japan's rapid postwar growth. This document is itself a secondary source: it presents no new data of its own but reports, summarizes, and critiques the findings of Edward F. Denison and William K. Chung's growth-accounting monograph (1976) and, more briefly, Andrea Boltho's more descriptive economic survey (1975). Its chief value for this literature review is that it transmits Denison & Chung's headline growth-decomposition figures — otherwise inaccessible here because the original Brookings monograph (ledger entry 11) could not be obtained as a PDF.
@@ -70,8 +74,16 @@ Serves Sub-Q 1 (secondary review of Denison & Chung, ledger entry 11; NEW non-le
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/simonis-1979-denison-boltho-review.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:24ffa3e6402552b8513ca8fe37ddb730f236030c680507f9b3825095ad287105` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|hdl.handle.net/10419/122730
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `via_review` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: The file's own words: "This is a joint book review (Sammelrezension) of two works, not an original research article." Named in GE-2 as not primary.
+
+## Contested
+- ECR-07 D
+- ECR-08 A

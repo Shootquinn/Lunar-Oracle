@@ -8,6 +8,10 @@ Engineering, 26*(1), 18–29. https://doi.org/10.1061/(ASCE)AS.1943-5525.0000236
 
 Publisher URL: https://ascelibrary.org/doi/10.1061/%28ASCE%29AS.1943-5525.0000236
 
+## Metadata
+
+Authors: Metzger, P. T., Muscatello, A., Mueller, R. P., & Mantovani, J. · Year: 2013 · DOI: 10.1061/(ASCE · Publisher URL: https://ascelibrary.org/doi/10.1061/%28ASCE%29AS.1943-5525.0000236 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Spreadsheet-based systems-engineering model of a robotic lunar industry that starts from a
@@ -313,7 +317,10 @@ comparison and 10^15 J/yr, 3×/year industry energy-growth extrapolation).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/metzger-2013-bootstrapping-space-industry.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:b0728db56cf66633524bfd0bf7fa47804450f1aa3e5df0bf18f4c3212d72e1fb` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1061/(asce)as.1943-5525.0000236
 - **Field:** lunar · **Folder:** self-replication-and-automation · **Also:** space-economy-and-markets

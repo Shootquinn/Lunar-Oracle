@@ -11,6 +11,10 @@ Publisher URL: no separate landing-page URL appears in the extracted text; the o
 World Bank-hosted open-access copy of the published World Bank Economic Review article (volume 14,
 issue 2, pages 221-250).
 
+## Metadata
+
+Authors: Pritchett, L. · Year: 2000 · DOI: 10.1093/wber/14.2.221 · Publisher URL: no separate landing-page URL appears in the extracted text; the on-disk PDF is the World Bank-hosted open-access copy of the published World Bank Economic Review article (volume […] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Cross-country empirical study arguing that U.S. (and other OECD) GDP per capita is well described by
@@ -268,8 +272,16 @@ question of growth deceleration using data built in this paper.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/pritchett-2000-hills-among-plateaus.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:0faea8d1251981340563b0e37646a21e689fd1315f35d1dcff80ab2145df2b97` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1093/wber/14.2.221
 - **Field:** economics · **Folder:** growth-theory · **Also:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: World Bank Economic Review 14(2), the author's own growth-episode analysis.
+
+## Contested
+- ECR-15 A
+- ECR-17 A

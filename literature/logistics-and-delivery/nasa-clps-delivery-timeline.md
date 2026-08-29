@@ -8,6 +8,10 @@ Publisher URL: none in source
 
 *Note: the graphic carries no printed publication or version date, so the year is given as `n.d.`*
 
+## Metadata
+
+Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Single-page NASA infographic. Plots eleven Commercial Lunar Payload Services (CLPS) task-order deliveries against a 2024-2028 horizontal year axis, each entry pairing a vendor with a named mission and a lander image. Four completed deliveries carry printed launch and landing dates; seven planned deliveries carry an asterisk and a year placement only. States no findings, methods, or analysis; it is a status-and-schedule reference at the moment of its (undated) production.
@@ -103,8 +107,15 @@ intra-year ordering of planned work is not exact.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/nasa-clps-delivery-timeline.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:8eed83b543d0d4e856e5420fdf4c00d2b39373d84ccbcd5bb3e74dfa1e40346f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L0|none — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `unknown` · date authority `unknown` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout over the full PDF returns no publication, version or revision date anywhere; the only dates printed are mission launch/landing dates. Citation correctly says "(n.d.)". Content floor is the latest printed event, "Landed Mar. 6, 2025" (IM-2), which is a floor and NOT a stamp. NOTE: this row is HOLD-NOID / dedup_key L0|none and may not land at all under oracle/NAMING.md section 7; the row is written anyway per brief.
+
+## Contested
+- LCC-11 B

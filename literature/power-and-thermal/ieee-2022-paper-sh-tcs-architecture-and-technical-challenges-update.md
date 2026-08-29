@@ -21,6 +21,10 @@ Habitat," of which this IEEE paper is the update (the "Update" in the file title
 credited in the acknowledgements for the detailed radiator-panel models, is not on the IEEE-paper
 author line.
 
+## Metadata
+
+Authors: Schunk, R. G., Babiak, S. D., & Evans, B. W. · Year: 2022 · Publisher URL: https://ntrs.nasa.gov/citations/20210026557 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A NASA conceptual design of the Thermal Control System (TCS) for a crewed Lunar Surface Habitat
@@ -215,7 +219,10 @@ performance (400 kWe/kg, 243 kWt/kg waste heat, 62.2 percent efficiency).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/power-and-thermal/ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:6d3c08f2071f1679aeddef86bb32a9d9e29f8fa2768ff86ca4ac884b7d324cd1` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** lsei-primary
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-LSEI-SCRUB (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/20210026557
 - **Field:** lunar · **Folder:** power-and-thermal

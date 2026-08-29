@@ -6,6 +6,10 @@ Pino, P., Salmeri, A., Hugo, A., & Hume, S. (2022). Waste management for lunar r
 
 Publisher URL: https://www.liebertpub.com/doi/10.1089/space.2021.0012
 
+## Metadata
+
+Authors: Pino, P., Salmeri, A., Hugo, A., & Hume, S. · Year: 2022 · DOI: 10.1089/space.2021.0012 · Publisher URL: https://www.liebertpub.com/doi/10.1089/space.2021.0012 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A review-and-recommendation article from the Space Generation Advisory Council's Space Exploration Project Group, treating waste management for lunar space-resources utilization (SRU) and a lunar circular economy as under-explored but foundational issues. It surveys state-of-the-art extraction/processing technologies for two resource classes (volatiles/water and regolith/minerals), maps their byproducts, storage needs, and applications, and analyzes scalability and logistics. It closes with technical best-practice tables and three legal recommendations for regulating early lunar activity. The work is a conceptual synthesis of prior literature and policy, presenting no new experimental data; scope is technical, economic, and legal grounds for sustainable SRU waste management.
@@ -46,7 +50,10 @@ The article's own sections are: Introduction; Mining Waste on Earth and in Space
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/pino-2022-lunar-waste-management.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:1da45659a257e4b29008ea86beea32d68832ac5f7f6dbd7b2921dde9a4f79300` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1089/space.2021.0012
 - **Field:** lunar · **Folder:** isru-processing

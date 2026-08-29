@@ -1,5 +1,4 @@
 # NexGen 2015 - Economic Assessment of an Evolvable Lunar Architecture (ELA)
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -57,8 +56,12 @@ Economic and systems analysis of an "Evolvable Lunar Architecture" (ELA), an inc
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/nexgen-2015-evolvable-lunar-architecture.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:cf625176914956a326458db0912f1ef8f72b2e640c22689e58ca4a9480468f6d` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|miller|2015|economic-assessment-systems-analysis-evolvable-lunar — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the economic and systems analysis, the 5-to-7-year and 10-billion-dollar findings, are the study's own.

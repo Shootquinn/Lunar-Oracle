@@ -12,6 +12,10 @@ PDF route: https://documents1.worldbank.org/curated/en/469971468771280762/pdf/mu
 
 Note: an earlier draft of this summary carried a DOI of the form 10.1596/1813-9450-2111, constructed from the World Bank series' numbering pattern rather than read from the document. That DOI was NOT confirmed and has been removed. Published May 1999, 54 pages.
 
+## Metadata
+
+Authors: Kawagoe, T. · Year: 1999 · DOI: not recorded in the citation block — No DOI. The World Bank Policy Research Working Paper series does not mint DOIs (per FA1 source ledger). · Publisher URL: https://ideas.repec.org/p/wbk/wbrwps/2111.html · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Historical-institutional working paper on the 1946-1950 SCAP-directed agricultural land reform
@@ -262,8 +266,15 @@ policy favoring industry over agriculture.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/kawagoe-1999-japan-land-reform.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:9715344898ea30cc33dfce7d35b6feb38f642d1b7e2961380cfc164b5d40d55b` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1596/1813-9450-2111
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: World Bank Policy Research WP 2111. Abstract: "Historical-institutional working paper ... documents the legal design and execution ... tabulates its distributional outcomes". CAUTION for retrieval: its productivity-effect statement is reported speech -- the abstract says it cites "prior studies that found no clear productivity effect" -- while the tabulation is its own.
+
+## Contested
+- ECR-05 A

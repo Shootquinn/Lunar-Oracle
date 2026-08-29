@@ -11,6 +11,10 @@ Resources and Environment. GAO product page: https://www.gao.gov/products/gao-11
 
 Publisher URL: https://www.gao.gov/products/gao-11-753
 
+## Metadata
+
+Authors: U.S. Government Accountability Office. · Year: 2011 · Publisher URL: https://www.gao.gov/products/gao-11-753 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A congressionally requested GAO technology assessment evaluating whether boron-10 and lithium-6
@@ -203,8 +207,16 @@ No fusion use, market, or demand for helium-3 appears anywhere in the document. 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/gao-2011-neutron-detectors-helium3.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:71251f6213d3c247c16780e0ad307397a11b1c8e85eabd47b7d89681f1b78a1c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|gao.gov/products/gao-11-753
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** isru-processing
 - **Plan row rev:** 1
+- **Stated as of:** `2011-09` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout, cover page, prints "September 2011" beside "Natural Resources and Environment" (extraction line 3). Citation's finer value "dated September 29, 2011" is the transmittal-letter date and is consistent.
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; a congressionally requested GAO technology assessment. The market and supply figures it is read for here -- the abstract says it "Serves here strictly as the demand-side companion" -- are compiled from agency and industry sources named in the report, not measured by GAO. JUDGEMENT: what would settle it is whether the specific figures the Oracle cites from it are GAO's own detector-performance assessment (primary) or its compiled supply data (via_tertiary).
+
+## Contested
+- LCC-13 B

@@ -8,6 +8,10 @@ Economics, 106*(1), 33-60. https://doi.org/10.2307/2937905
 
 Publisher URL: https://academic.oup.com/qje/article-abstract/106/1/33/1928553
 
+## Metadata
+
+Authors: Hoshi, T., Kashyap, A., & Scharfstein, D. · Year: 1991 · DOI: 10.2307/2937905 · Publisher URL: https://academic.oup.com/qje/article-abstract/106/1/33/1928553 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Panel-data study testing whether investment-cash flow sensitivity differs between
@@ -305,8 +309,17 @@ writing (Section VI).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/hoshi-1991-corporate-structure-liquidity-investment.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:604b721863a85fff07f7e90281870db2a7f631c2482fc5dcede8b58ed88fbcdc` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.2307/2937905
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: QJE 106(1), the authors' own investment-sensitivity estimation.
+
+## Contested
+- ECR-02 A
+- ECR-13 B
+- ECR-14 A

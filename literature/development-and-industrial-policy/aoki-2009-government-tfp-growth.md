@@ -10,6 +10,10 @@ Publisher URL: https://ideas.repec.org/p/tky/fseres/2009cf622.html
 
 Note: the cover page is dated June 2009; the internal title page is dated May 20, 2009. The paper states it was prepared for the festschrift conference for Yujiro Hayami on "State, Community, and Market in Development," 27-28 February 2009. Per the FA1 ledger, this working paper was later published as a chapter in Otsuka & Kalirajan (Eds.), *Community, Market and State in Development* (Palgrave, 2010), ch. 4, pp. 21-44; that published chapter would carry a DOI if the published version is preferred.
 
+## Metadata
+
+Authors: Aoki, S., Esteban-Pretel, J., Okazaki, T., & Sawada, Y. · Year: 2009 · DOI: not recorded in the citation block — No DOI. University working paper series (per FA1 source ledger). · Publisher URL: https://ideas.repec.org/p/tky/fseres/2009cf622.html · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Discussion-paper synthesis of total factor productivity (TFP) growth in Japan's
@@ -297,8 +301,18 @@ cluster case (Section 6).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/aoki-2009-government-tfp-growth.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:cc017a6d49556614c35bac97a59434708375e5920bb8fa55f20540b47e66ec16` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|ideas.repec.org/p/tky/fseres/2009cf622.html
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: CIRJE-F-622, the authors' own TFP estimation for Japan's rapid-growth era. Mentions Denison and Chung only in a bibliographic list, not as a source of figures.
+
+## Contested
+- ECR-01 C
+- ECR-06 A
+- ECR-07 B
+- ECR-09 B

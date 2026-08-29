@@ -49,6 +49,13 @@ const TREE = opt('tree', 'literature');
 const PASS = (m) => ({ v: 'PASS', m });
 const FAIL = (m) => ({ v: 'FAIL', m });
 const VAC = (m) => ({ v: 'VACUOUS', m });   // population empty: reported UNRUN, never PASS
+/* DEFER: the row's SUBJECT does not exist yet -- a Step 3 loader, the retrieval layer, a classifier
+ * built at 3.8. It counts as UNRUN, exactly like VACUOUS and like no-binding, because it is not a
+ * result. It is printed separately from those two because the three are different facts about why a
+ * row did not run, and collapsing them loses the only one that carries a named owner and a date. A
+ * deferred row with a reason is worth more than an unrun one without: both are non-results, but only
+ * one tells you what would have to exist for it to become a result. */
+const DEFER = (m) => ({ v: 'DEFER', m });
 
 /* ------------------------------------------------------------------ parsing */
 // A suite is: `## N. GRP -- ...` or `### N.1 GRP -- ...` headings, then `| ID | ... |` rows.
@@ -246,6 +253,231 @@ B['CRP-5'] = () => {
   return bad.length ? FAIL(`${bad.length} tree-wide normalized-key collisions: ${bad.join(' ; ')}`) : PASS(`0 tree-wide collisions over ${fsx.length} files`);
 };
 
+/* --- naming and provenance: four rows the LANDED corpus makes executable ---
+ * These four were UNRUN through Wave 2 for one reason -- `literature/` was empty, and every one of
+ * them is vacuously true over an empty tree. The tree now holds 168 files, so they can be measured,
+ * and a row that can be measured and is not is the thing this runner exists to make visible. No
+ * suite row is added here; four existing rows stop being claims and start being results.
+ *
+ * The regexes are RE-DECLARED here rather than imported from tools/verify_corpus.js, which checks
+ * the same clauses. That is deliberate and it is this project's standing rule: `check_registers.js`
+ * says it in its own header -- two instruments that must be able to disagree about what they read
+ * do not get to share the function that decides it. If the runner imported the checker, the runner
+ * could only ever confirm the checker. NAMING.md sec.2 is the authority both of them transcribe. */
+const R_S = /^(?!fa[0-8]-)[a-z0-9]+(-[a-z0-9]+)*\.md$/;
+const R_F = /^fa[0-8]-[a-z0-9]+(-[a-z0-9]+)*\.md$/;
+const leaves = () => corpusFiles().map(p => path.basename(p));
+
+B['NAM-1'] = () => {
+  const L = leaves();
+  if (!L.length) return VAC(`${TREE}/ holds 0 .md files; R_S over an empty shelf is vacuously true`);
+  const bad = L.filter(l => !R_S.test(l));
+  return bad.length ? FAIL(`${bad.length} of ${L.length} leaves fail R_S: ${bad.slice(0, 6).join(' ')}`)
+    : PASS(`all ${L.length} leaves match R_S`);
+};
+B['NAM-2'] = () => {
+  const L = leaves();
+  if (!L.length) return VAC(`${TREE}/ holds 0 .md files; the R_F exclusion is vacuously true`);
+  const bad = L.filter(l => R_F.test(l));
+  return bad.length ? FAIL(`${bad.length} leaves match R_F, so a project verdict is shelved as a source: ${bad.join(' ')}`)
+    : PASS(`0 of ${L.length} leaves match R_F`);
+};
+B['NAM-10'] = () => {
+  const L = leaves();
+  if (!L.length) return VAC(`${TREE}/ holds 0 .md files; the numeric-suffix rule has nothing to test`);
+  const bad = L.filter(l => /-\d\.md$/.test(l));
+  return bad.length ? FAIL(`${bad.length} leaves end in -<digit>, which the tokenizer cannot see: ${bad.join(' ')}`)
+    : PASS(`0 of ${L.length} leaves end in -<digit>`);
+};
+B['PRV-1'] = () => {
+  const fsx = corpusFiles();
+  if (!fsx.length) return VAC(`${TREE}/ holds 0 .md files; provenance completeness over an empty shelf is vacuously true`);
+  const bad = fsx.filter(p => !/^## Provenance\s*$/m.test(fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n')));
+  return bad.length ? FAIL(`${bad.length} of ${fsx.length} files carry no ## Provenance block: ${bad.slice(0, 5).map(p => path.relative(ROOT, p).replace(/\\/g, '/')).join(' ')}`)
+    : PASS(`all ${fsx.length} files carry a ## Provenance block`);
+};
+
+/* --- REG: register integrity, oracle/register_schema.md secs 3, 8, 9 -------
+ * LIFTED, not re-derived, from The Space Resources Engineer's `cr_scratch/sre_w34_reg_assertions.js`
+ * (W3-4). He wrote and ran these outside this file rather than editing another seat's artifact, and
+ * routed them here. His falsifiers are kept: REG-2, REG-5 and REG-7 each fired on a mutated copy
+ * under `--mutate`, which is the evidence that these eleven can go red.
+ *
+ * The group reported `18 rows 0 pass 0 fail 18 unrun` through Wave 2 because this file contained no
+ * `REG-` string at all. Sub-step 2.15 wrote the assertions and nobody had ever run them.
+ *
+ * ELEVEN EXECUTE. SEVEN DEFER, each naming the artifact that has to exist first -- the Step 3
+ * loader (3.8), the rebuilt retrieval layer (3.7), the classifier (3.8). A deferred row is still
+ * UNRUN and still not a pass; what it stops being is anonymous. */
+const REGS = ['oracle/REGISTER.lunar.tsv', 'oracle/REGISTER.econ.tsv'];
+let REGP = null;
+function regs() {
+  if (REGP) return REGP;
+  const P = {};
+  for (const r of REGS) {
+    if (!fs.existsSync(R(r))) { P[r] = null; continue; }
+    const H = [], A = [], M = [];
+    fs.readFileSync(R(r), 'utf8').replace(/\r\n/g, '\n').split('\n').forEach((ln, i) => {
+      if (!ln.length || ln.startsWith('#')) return;
+      const f = ln.split('\t');
+      if (f[0] === 'H') H.push({ f, n: i + 1 });
+      else if (f[0] === 'A') A.push({ f, n: i + 1 });
+      else if (f[0] === 'M') M.push({ f, n: i + 1 });
+    });
+    P[r] = { H, A, M, text: fs.readFileSync(R(r), 'utf8') };
+  }
+  return (REGP = P);
+}
+const regsPresent = () => REGS.every(r => regs()[r]);
+function leafIndex() {
+  const m = new Map();
+  for (const p of corpusFiles()) { const l = path.basename(p); if (!m.has(l)) m.set(l, []); m.get(l).push(p); }
+  return m;
+}
+const regGuard = fn => () => {
+  if (!regsPresent()) return VAC(`one or both of ${REGS.join(', ')} does not exist; the assertion has no subject`);
+  if (!corpusFiles().length) return VAC(`${TREE}/ holds 0 .md files; a register/corpus join over an empty shelf is vacuously true`);
+  return fn();
+};
+
+B['REG-2'] = regGuard(() => {                       // SET-1 / L0: exactly one H row, and it is first
+  const bad = [];
+  for (const r of REGS) {
+    const H = regs()[r].H;
+    if (H.length !== 1) bad.push(`${r}: ${H.length} H rows`);
+    else if (H[0].n !== 1) bad.push(`${r}: H row at line ${H[0].n}, not first`);
+  }
+  return bad.length ? FAIL(bad.join('; ')) : PASS(`${REGS.length} files, 1 H row each, each the first row`);
+});
+B['REG-3'] = regGuard(() => {                       // SET-2 / L1b: axis ids unique across the set
+  const seen = new Map(), dup = [];
+  for (const r of REGS) for (const a of regs()[r].A) {
+    if (seen.has(a.f[1])) dup.push(`${a.f[1]} in ${seen.get(a.f[1])} and ${r}`); else seen.set(a.f[1], r);
+  }
+  return dup.length ? FAIL(dup.join('; ')) : PASS(`${REGS.length} files, ${seen.size} A rows, ${seen.size} distinct axis ids`);
+});
+B['REG-5'] = regGuard(() => {                       // L2: the self-declared size
+  const bad = [], say = [];
+  for (const r of REGS) {
+    const { H, A, M } = regs()[r];
+    say.push(`${path.basename(r)} ${A.length}/${M.length}`);
+    if (String(A.length) !== H[0].f[4] || String(M.length) !== H[0].f[5])
+      bad.push(`${r}: header says ${H[0].f[4]}/${H[0].f[5]}, parsed ${A.length}/${M.length}`);
+  }
+  return bad.length ? FAIL(bad.join('; ')) : PASS(`parsed == declared: ${say.join(', ')}`);
+});
+B['REG-7'] = regGuard(() => {                       // L4: every member leaf resolves
+  const idx = leafIndex(), bad = [], distinct = new Set();
+  let n = 0;
+  for (const r of REGS) for (const m of regs()[r].M) { n++; distinct.add(m.f[3]); if (!idx.has(m.f[3])) bad.push(`${r} ${m.f[1]} ${m.f[3]}`); }
+  return bad.length ? FAIL(`${bad.length} unresolved: ${bad.slice(0, 5).join('; ')}`)
+    : PASS(`${n} member rows, ${distinct.size} distinct leaves, all resolve under ${TREE}/`);
+});
+B['REG-8'] = regGuard(() => {                       // L4 resolution is UNIQUE
+  const idx = leafIndex(), bad = [], slash = [];
+  for (const r of REGS) for (const m of regs()[r].M) {
+    if (m.f[3].includes('/')) slash.push(`${r} ${m.f[3]}`);
+    const ps = idx.get(m.f[3]); if (ps && ps.length > 1) bad.push(`${m.f[3]} -> ${ps.length} files`);
+  }
+  return (bad.length || slash.length) ? FAIL([...bad, ...slash].join('; '))
+    : PASS(`${corpusFiles().length} .md under ${TREE}/, ${idx.size} distinct leaves; 0 member rows contain a "/"`);
+});
+B['REG-10'] = regGuard(() => {                      // the basis_root rebind is two edits, not 134
+  const bad = [];
+  for (const r of REGS) {
+    const P = regs()[r];
+    if (P.H[0].f[1] !== 'literature') bad.push(`${r}: basis_root is ${P.H[0].f[1]}`);
+    if (P.text.includes('lsei/literature/')) bad.push(`${r}: contains the string lsei/literature/`);
+    if (P.text.includes('_intake/')) bad.push(`${r}: contains the string _intake/`);
+    for (const m of P.M) if (m.f[3].includes('/')) bad.push(`${r}: member row rewritten to a path`);
+  }
+  return bad.length ? FAIL(bad.join('; '))
+    : PASS('both basis_root == literature; neither file names lsei/literature/ or _intake/; 0 member rows carry a path');
+});
+B['REG-11'] = regGuard(() => {                      // basis_ref resolves in the tree holding basis_root
+  const bad = [], say = [];
+  for (const r of REGS) {
+    const ref = regs()[r].H[0].f[3];
+    if (ref === 'none') { say.push(`${path.basename(r)} none (permitted by 3.1)`); continue; }
+    const t = sh(`git cat-file -t ${ref}`);
+    if (t.code !== 0) { bad.push(`${r}: ${ref} does not resolve in this repository`); continue; }
+    const n = sh(`git ls-tree -r --name-only ${ref} -- literature`).out.trim().split('\n').filter(Boolean).length;
+    if (!n) bad.push(`${r}: ${ref} tracks 0 files under literature/`);
+    else say.push(`${path.basename(r)} ${ref} tracks ${n} files under literature/`);
+  }
+  return bad.length ? FAIL(bad.join('; ')) : PASS(say.join(', '));
+});
+B['REG-12'] = regGuard(() => {                      // L5: side arity by class
+  const bad = [], say = [];
+  for (const r of REGS) {
+    const cls = new Map(regs()[r].A.map(a => [a.f[1], a.f[2]]));
+    const sd = new Map();
+    for (const m of regs()[r].M) { if (!sd.has(m.f[1])) sd.set(m.f[1], new Set()); sd.get(m.f[1]).add(m.f[2]); }
+    for (const [id, c] of cls) {
+      const n = (sd.get(id) || new Set()).size;
+      if (!['two_sided', 'false_pair', 'one_sided'].includes(c)) bad.push(`${id}: class ${c} outside the closed set`);
+      if ((c === 'one_sided' && n !== 1) || (c !== 'one_sided' && n < 2)) bad.push(`${id} class ${c} has ${n} distinct sides`);
+    }
+    say.push(`${path.basename(r)} ${[...cls.values()].filter(c => c !== 'one_sided').length} contested / ${[...cls.values()].filter(c => c === 'one_sided').length} one_sided`);
+  }
+  return bad.length ? FAIL(bad.join('; '))
+    : PASS(`${say.join(', ')}; every contested axis has >= 2 sides, every one_sided axis exactly 1`);
+});
+B['REG-13'] = regGuard(() => {                      // B4: the in-file block round-trips BOTH ways
+  const want = new Map();
+  for (const r of REGS) for (const m of regs()[r].M) { if (!want.has(m.f[3])) want.set(m.f[3], new Set()); want.get(m.f[3]).add(`${m.f[1]} ${m.f[2]}`); }
+  const bad = [], files = corpusFiles();
+  for (const f of files) {
+    const leaf = path.basename(f), t = fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
+    const mm = t.match(/\n## Contested\n([\s\S]*?)(?=\n## |$)/);
+    const have = new Set(mm ? (mm[1].match(/^- [A-Z]{3}-[0-9]{2} [A-Z]$/gm) || []).map(s => s.slice(2)) : []);
+    const w = want.get(leaf) || new Set();
+    if (mm && !w.size) { bad.push(`${leaf}: block with no M rows`); continue; }
+    if (!mm && w.size) { bad.push(`${leaf}: M rows with no block`); continue; }
+    const miss = [...w].filter(x => !have.has(x)), extra = [...have].filter(x => !w.has(x));
+    if (miss.length || extra.length) bad.push(`${leaf}: block-missing[${miss}] block-extra[${extra}]`);
+  }
+  return bad.length ? FAIL(`${bad.length}: ${bad.slice(0, 4).join('; ')}`)
+    : PASS(`${want.size} member leaves; block set == M-row set in both directions across all ${files.length} summaries`);
+});
+B['REG-14'] = regGuard(() => {                      // the block grammar is minimal
+  const bad = []; let n = 0;
+  for (const f of corpusFiles()) {
+    const t = fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
+    const i = t.indexOf('\n## Contested\n'); if (i < 0) continue; n++;
+    let body = t.slice(i + 1); const j = body.indexOf('\n## ', 1); if (j > 0) body = body.slice(0, j);
+    for (const l of body.split('\n').slice(1).filter(x => x.length))
+      if (!/^- [A-Z]{3}-[0-9]{2} [A-Z]$/.test(l)) bad.push(`${path.basename(f)}: ${JSON.stringify(l)}`);
+  }
+  if (!n) return VAC('0 files carry a ## Contested block; the grammar has nothing to constrain');
+  return bad.length ? FAIL(bad.slice(0, 4).join('; '))
+    : PASS(`${n} blocks; every line matches ^- (LCC|ECR)-dd [A-Z]$; no bold, backticks, paths, prose or keys`);
+});
+B['REG-15'] = regGuard(() => {                      // the block is generated, never hand-written
+  /* Regenerate-and-diff, the M6 shape one artifact over. The generator lives in the authoring
+   * seat's scratch file; if it is not there this row DEFERS rather than passing, because "the
+   * generator is missing" is not evidence that the blocks are generated. */
+  const gen = 'cr_scratch/sre_w34_blocks.js';
+  if (!fs.existsSync(R(gen))) return DEFER(`the generator ${gen} is not in this tree, so regenerate-and-diff cannot run; its absence is not evidence the blocks round-trip. Owner: The Space Resources Engineer`);
+  const r = sh(`node ${gen} --check`);
+  const line = (r.out || '').trim().split('\n').pop();
+  const clean = /would-rewrite 0/.test(r.out) && !/WOULD REWRITE|ORPHAN BLOCK/.test(r.out);
+  return clean ? PASS(`regenerate-and-diff: ${line}`) : FAIL(`regenerate-and-diff reports drift: ${line}`);
+});
+
+/* The seven whose subject does not exist yet. Reasons are his, verbatim, because the reason is the
+ * deliverable here: a deferral with no named blocker is an excuse. */
+const REG_DEFER = {
+  'REG-1': 'the loader that takes a list of register paths is Step 3 (3.8); on disk today the assertion reduces to "there is no oracle/REGISTER.tsv", which holds',
+  'REG-4': 'per-file-against-both comparison needs the loader; the sub-assertion it rests on is measured here as REG-7 (0 unresolved per file, both roots literature)',
+  'REG-6': 'a census-reconciliation rule over Step 2 deliverables, not an artifact assertion; discharged for that deliverable by quoting the H row on every count line',
+  'REG-9': 'the refusal path is the Step 3 classifier (3.8); nothing on disk emits axis-incomplete yet',
+  'REG-16': 'corpusDocFrequency() and confirmInText() are rebuilt at 3.7; the excision cannot be asserted against a layer that does not exist',
+  'REG-17': 'same subject as REG-16, one level up',
+  'REG-18': 'the misclassification detector is built at 3.8',
+};
+for (const id of Object.keys(REG_DEFER)) B[id] = () => DEFER(REG_DEFER[id]);
+
 /* --- the merge plan ------------------------------------------------------- */
 B['MRG-1'] = () => {
   const p = plan(); if (p.missing) return FAIL('cr_scratch/merge_plan.tsv does not exist');
@@ -415,7 +647,7 @@ function runOne(row, suite) {
   try { return b(suite); } catch (e) { return FAIL('binding threw: ' + e.message); }
 }
 
-let hardFail = 0, totals = { PASS: 0, FAIL: 0, UNRUN: 0 };
+let hardFail = 0, totals = { PASS: 0, FAIL: 0, UNRUN: 0 }, deferred = 0, vacuous = 0;
 const suiteFiles = opt('suite', null) ? [path.resolve(opt('suite'))] : SUITES.map(R);
 console.log('run_suite 1.0 -- ' + suiteFiles.length + ' suite file(s), corpus tree ' + TREE +
   ', cwd ' + ROOT + ' (' + ROOT.length + ' chars)');
@@ -432,11 +664,14 @@ for (const f of suiteFiles) {
   for (const row of s.rows) {
     if (ONLY_GROUP && row.group !== ONLY_GROUP) continue;
     const res = runOne(row, s);
-    const v = res.v === 'VACUOUS' ? 'UNRUN' : res.v;
+    const v = (res.v === 'VACUOUS' || res.v === 'DEFER') ? 'UNRUN' : res.v;
     if (!byGroup.has(row.group)) byGroup.set(row.group, { PASS: 0, FAIL: 0, UNRUN: 0, notes: [] });
     const g = byGroup.get(row.group); g[v]++; totals[v]++;
+    if (res.v === 'DEFER') deferred++;
+    if (res.v === 'VACUOUS') vacuous++;
     if (v === 'FAIL') { hardFail++; g.notes.push(`FAIL  ${row.id}  ${res.m}`); }
     else if (res.v === 'VACUOUS') g.notes.push(`UNRUN ${row.id}  VACUOUS: ${res.m}`);
+    else if (res.v === 'DEFER') g.notes.push(`UNRUN ${row.id}  DEFERRED: ${res.m}`);
     else if (v === 'PASS' && VERBOSE) g.notes.push(`ok    ${row.id}  ${res.m}`);
   }
   for (const [g, c] of byGroup) {
@@ -449,5 +684,7 @@ for (const f of suiteFiles) {
 const n = totals.PASS + totals.FAIL + totals.UNRUN;
 console.log(`\n${n} rows: ${totals.PASS} pass, ${totals.FAIL} fail, ${totals.UNRUN} unrun.`);
 console.log(`UNRUN IS NOT PASS. ${totals.UNRUN} rows carry no executable binding or ran against an empty population; the suite's own status cell is a claim, not a result.`);
+console.log(`  of those ${totals.UNRUN}: ${deferred} DEFERRED (bound, subject not built yet, reason named), ` +
+  `${vacuous} VACUOUS (bound, population empty), ${totals.UNRUN - deferred - vacuous} with no binding at all.`);
 console.log(hardFail ? `hard failures: ${hardFail}` : 'hard failures: 0');
 process.exit(hardFail ? 1 : 0);

@@ -20,6 +20,10 @@ analysis of the postwar Japanese economy," *The B.E. Journal of Macroeconomics,
 9*(1); that published version's DOI is unconfirmed and is deliberately not
 recorded here.
 
+## Metadata
+
+Authors: Otsu, K. · Year: 2007 · DOI: not recorded in the citation block — No DOI on the IMES discussion paper (per FA1 ledger). A later B.E. Journal of Macroeconomics version exists; its DOI is unconfirmed and not recorded here. · Publisher URL: http://www.imes.boj.or.jp · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Calibrated one-sector stochastic neoclassical growth model of the postwar
@@ -387,8 +391,16 @@ table as specifically Japanese-demographic rather than transportable.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/otsu-2007-neoclassical-postwar-japan.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:6d9231094a42b1f1dfa5e665c70d8dee3f13bbc21267f282892501dceaa09a01` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|IMES-DP-2007-E-1 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** growth-theory · **Also:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: IMES DP 2007-E-1, the author's own neoclassical accounting. Names the Denison-Chung decomposition only as something "targeted elsewhere in FA1"; does not report it.
+
+## Contested
+- ECR-03 B
+- ECR-07 C

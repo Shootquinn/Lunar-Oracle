@@ -20,6 +20,10 @@ text by the same authors. Title, authors (Kozo Kiyota, Keio University and RIETI
 Tetsuji Okazaki, University of Tokyo and RIETI), and date are confirmed from the
 document's own cover and title pages, not inferred.
 
+## Metadata
+
+Authors: Kiyota, K., & Okazaki, T. · Year: 2013 · DOI: not recorded in the citation block — No DOI. Working paper (PRIMCED Discussion Paper Series No. 48 / also posted as RIETI DP 13-E-093 per FA1 ledger). · Publisher URL: http://www.ier.hit-u.ac.jp/primced/e-index.html · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Panel study of 100 Japanese manufacturing industries, 1960-1969, testing whether the
@@ -355,8 +359,17 @@ firm-level technology-acquisition study cited here as a companion finding
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/kiyota-2013-import-quota-removal.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:12aec8ba25ce3e791f491ab1ac01b1d1af4ded6ccb38c34db7ef5fde55e12366` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|rieti.go.jp/en/publications/summary/13110004.html
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: PRIMCED DP 48, the authors' own productivity estimation; the citation note records which of two identical postings was read.
+
+## Contested
+- ECR-01 B
+- ECR-09 A
+- ECR-10 A

@@ -10,6 +10,10 @@ Publisher URL: https://www.econlib.org/library/Enc/JapanandtheMythofMITI.html
 
 Note: the article is a Concise Encyclopedia of Economics (CEE) entry; an editor's note on the page points to an updated "Japan" entry in a later edition. Author David R. Henderson is the encyclopedia's editor. Retrieved this session as a secondary source; used here for the Denison and Chung decomposition figures it reports, not as an original study.
 
+## Metadata
+
+Authors: Henderson, D. R. · Year: 2008 · DOI: not recorded in the citation block — No DOI. Online reference encyclopedia entry (Econlib CEE). DOI exemption: reference-work entry, no DOI minted. · Publisher URL: https://www.econlib.org/library/Enc/JapanandtheMythofMITI.html · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Secondary encyclopedia entry arguing that Japan's postwar growth was driven by high investment, high saving, low taxes, and relatively non-interventionist government, and that the causal role of the Ministry of International Trade and Industry (MITI) has been greatly exaggerated. Its value to this review is that it reports, in citable form, the headline growth-accounting decomposition from Denison and Chung (1976) — the source needed to size the labor-reallocation contribution (FA1 mechanism M4) without extracting the Denison monograph itself.
@@ -59,8 +63,18 @@ FA1. Sub-Q 1 (growth accounting), 5 (contingent enablers: taxation, saving), 6 (
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/henderson-2008-myth-of-miti.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:8468d988a5940577756ce738c0ae2573a78a8280bdbd99419bcd65099bd93b82` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|econlib.org/library/enc/japanandthemythofmiti.html
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: an entry in The Concise Encyclopedia of Economics. Its own note: "Retrieved this session as a secondary source; used here for the Denison and Chung decomposition figures it reports, not as an original study." Named in GE-2 as not primary.
+
+## Contested
+- ECR-01 C
+- ECR-06 C
+- ECR-08 A
+- ECR-12 A

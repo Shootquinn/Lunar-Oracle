@@ -1,7 +1,5 @@
 # Metzger, Sapkota, Fox & Bennett 2020/2021 - Aqua Factorem: Ultra Low Energy Lunar Water Extraction
 
-## Comprehensive Technical Summary
-
 ## Citation
 
 Metzger, P. T., Sapkota, D., Fox, J., & Bennett, N. (2021, March 15). *Aqua Factorem: Ultra low energy lunar water extraction* (NASA Innovative Advanced Concepts Phase I Final Report, Grant No. 80NSSC20K1022). University of Central Florida, Florida Space Institute. NASA NTRS 20230008775. https://ntrs.nasa.gov/citations/20230008775
@@ -90,8 +88,14 @@ No figure in this report was found to carry a numeric finding that is not also s
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/metzger-2020-aqua-factorem.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:43cd93dc7c10c141aaff2fee5593f6f886278f815aa41c4dd86ad14ba84e51ba` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/20230008775
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- LCC-06 B

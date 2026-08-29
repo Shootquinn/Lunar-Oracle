@@ -6,6 +6,10 @@ National Aeronautics and Space Administration, Office of Procurement. (n.d.). *C
 
 Publisher URL: https://www.nasa.gov/content/commercial-lunar-payload-services-overview
 
+## Metadata
+
+Publisher URL: https://www.nasa.gov/content/commercial-lunar-payload-services-overview · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Two-page NASA Office of Procurement fact sheet ("Vignette") on the Commercial Lunar Payload Services (CLPS) contract. Describes the contract vehicle and its administering center, the task-order competition process among a pool of contract holders, the stated contract value and period of performance, the awardee's end-to-end delivery responsibilities, the procurement's stated objectives, and the technology areas the program is meant to demonstrate. No empirical data, methodology, or findings in the research sense; content is programmatic/administrative description.
@@ -69,8 +73,15 @@ operation) linked to both lunar and broader deep-space (Mars, icy moons) applica
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/nasa-clps-procurement-vignette.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:d359d9348cba60cee946599fdfca745d6f1149a197b02486517bf8652bfb379f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|nasa.gov/content/commercial-lunar-payload-services-overview
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `unknown` · date authority `unknown` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout over both pages returns no date of any kind. The vignette asserts a live programme state with no currency stamp at all -- "There are currently a total of fourteen CLPS contract holders" and "$2.6 billion through November 2028" -- which is the exact hazard 2.7 exists to catch. Inferential floor only: Peregrine is described in future tense ("which will launch"), placing it before 2024-01-08, and the "first woman and first person of color" framing is pre-2025. I do not stamp an inference.
+
+## Contested
+- LCC-11 B

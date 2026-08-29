@@ -22,6 +22,10 @@ Policy and Strategy), whose separate super-heavy-lift report supplies the mature
 reusable Starship cost figures used elsewhere in this review. Every citation of either author
 should carry the first name; a bare "Jones" is ambiguous between the two.
 
+## Metadata
+
+Publisher URL: none in source. · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A parametric cost analysis of the "take or make" decision in space life support: whether to
@@ -233,7 +237,10 @@ Jones (Aerospace Corporation).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/take-or-make-in-space.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:9071392f4966da21d0360d574b530f87072bc6052776acf2c8a27eb5d10dd181` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|jones|2023|take-material-space-or-make-it — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets

@@ -9,6 +9,10 @@ translation; the French-language version is the authoritative text.
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: Grand-Duché de Luxembourg. · Year: 2017 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 National statute, 18 articles. Declares space resources capable of being owned and establishes a
@@ -152,7 +156,10 @@ liability for mission-related damage (Article 16); relationship to other regulat
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/luxembourg-2017-space-resources-law.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:244fffde8127016b4221f24042e1e4c16fe4d43c05707032a46be89bf054ec76` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|MEMORIAL-A-674-2017 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-law-and-governance · **Also:** space-economy-and-markets

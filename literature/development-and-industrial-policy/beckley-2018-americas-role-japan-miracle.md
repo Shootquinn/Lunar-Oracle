@@ -10,6 +10,10 @@ Publisher URL: https://www.cambridge.org/core/journals/journal-of-east-asian-stu
 
 Note: the issue number (1) is not printed in the PDF itself and is taken from the confirmed FA1 ledger entry, not inferred.
 
+## Metadata
+
+Authors: Beckley, M., Horiuchi, Y., & Miller, J. M. · Year: 2018 · DOI: 10.1017/jea.2017.24 · Publisher URL: https://www.cambridge.org/core/journals/journal-of-east-asian-studies/article/americas-role-in-the-making-of-japans-economic-miracle/9C7CC6A85CE125290BAD2735B09A882A · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Quasi-experimental re-estimation of the contribution of the US–Japan security alliance to Japan's
@@ -203,8 +207,15 @@ Alliance" subsection rather than as a standalone industrial-policy account.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/beckley-2018-americas-role-japan-miracle.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:5204fe244c30162407e39691e4861d1962cd020ca5b0fff7794da32018793b6d` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1017/jea.2017.24
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Journal of East Asian Studies 18(1), the authors' own study.
+
+## Contested
+- ECR-04 A

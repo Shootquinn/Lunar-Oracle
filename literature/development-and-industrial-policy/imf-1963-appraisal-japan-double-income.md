@@ -10,6 +10,10 @@ Publisher URL: https://www.elibrary.imf.org/view/journals/024/1963/001/article-A
 
 Ledger reconciliation: the year (1963), venue (*IMF Staff Papers* 1963(1)), and publisher URL above are the CONFIRMED values from FA1-source-list.md (Gap 4 closure entry, slug `imf-1963-appraisal-japan-double-income`), supplied externally by Quinn. They are NOT derivable from the source file itself: the 36-page scan carries no printed volume, issue, or year on any page (inspected to 400 dpi), only the journal name in the running head and the page range 150-185. Internal evidence (a cited August 1962 EPA estimate, footnote 2; discussion of fiscal 1961/62 as just-completed) independently placed composition in late 1962, consistent with 1963 publication. The document's own byline is "M. Fujioka" — asterisked as an IMF Far Eastern Division economist, Tokyo University Law School graduate with University of Chicago study and prior Japanese Ministry of Finance staff service. The ledger's citation lists the piece author-less; this file retains the document's byline as the more complete attribution. Full given name still not confirmed.
 
+## Metadata
+
+Authors: Fujioka, M. · Year: 1963 · DOI: not recorded in the citation block — none recorded. The IMF eLibrary may assign one (article-A004); read it off the article page before recording — not inferred here. · Publisher URL: https://www.elibrary.imf.org/view/journals/024/1963/001/article-A004-en.xml · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Writing roughly a year and a half after Japan's Economic Planning Agency (EPA) adopted the
@@ -326,8 +330,12 @@ free-market economic planning as a policy instrument distinct from direct state 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/imf-1963-appraisal-japan-double-income.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:8600267c919a1cadb04b7d6840b98ba5ec203839ca719b2716abb2e59700d47a` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|elibrary.imf.org/view/journals/024/1963/001/article-a004-en.xml
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: IMF Staff Papers 1963(1); Fujioka's own appraisal, written eighteen months into the plan. See ECR-12's unregistered third side, landing at 2.16.

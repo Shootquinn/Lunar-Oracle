@@ -7,6 +7,10 @@ Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/00945765819
 
 (Provenance printed on the paper: presented at the XXXth Congress of the International Astronautical Federation, Munich, F.R.G., 17–22 September 1979, International Astronautical Academy Symposium on Space Economics and Benefits. Received 19 June 1981. Author affiliation: Space Global Co., La Jolla, CA. No IAF/IAC paper number is printed on the article's first page.)
 
+## Metadata
+
+Authors: Ehricke, K. A. · Year: 1981 · DOI: 10.1016/0094-5765(81 · Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/0094576581901326 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 Second installment of a series on lunar industrialization and settlement. Assesses which energy technology is most economically promising as groundwork for later energy discussion. Treats three consumer sectors — habitats, transportation, production — and two source families — nuclear and solar — in variously processed forms. Quantifies power demands for each sector, compares solar-electric and nuclear-electric supply on a mass and cost basis, and argues that above roughly 50 kWe with around-the-clock operation, nuclear power is the superior lunar source. Descriptive engineering-economic study; figures drawn from the paper's own tables and charts.
 
@@ -49,8 +53,12 @@ The paper is explicitly a projection using assumed 1990–2000 state-of-the-art 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/ehricke-1981-selenosphere-energy.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:602acf9921c58a6462ca21d6e977af7de896013ef67c2f39e5d3347868aee080` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/0094-5765(81)90132-6
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "Descriptive engineering-economic study; figures drawn from the paper's own tables and charts."

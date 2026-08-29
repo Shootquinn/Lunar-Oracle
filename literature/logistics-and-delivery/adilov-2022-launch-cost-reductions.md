@@ -12,6 +12,10 @@ Economics Bulletin archive, and is used here as the stable identifier.
 
 Publisher URL: http://www.accessecon.com/Pubs/EB/2022/Volume42/EB-22-V42-I3-P130.pdf
 
+## Metadata
+
+Authors: Adilov, N., Alexander, P., Cunningham, B., & Albertson, N. · Year: 2022 · Publisher URL: http://www.accessecon.com/Pubs/EB/2022/Volume42/EB-22-V42-I3-P130.pdf · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 An econometric study of 2,787 low Earth orbit (LEO) satellites launched from 2000 to 2020,
@@ -216,8 +220,14 @@ modeling).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/adilov-2022-launch-cost-reductions.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f1140aaa4be4a68d847a94fbec54f5492f1dc92d376988790c6be993476585e9` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|accessecon.com/pubs/eb/2022/volume42/eb-22-v42-i3-p130.pdf
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+
+## Contested
+- LCC-11 A

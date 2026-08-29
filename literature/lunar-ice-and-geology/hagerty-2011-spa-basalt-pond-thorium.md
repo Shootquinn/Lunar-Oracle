@@ -49,10 +49,12 @@ Forward modeling / spatially adaptive image restoration (Pixon deconvolution, pe
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/lunar-ice-and-geology/hagerty-2011-spa-basalt-pond-thorium.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:abb16789087b6c74eeed0cd02fff5764f932f33d246e182cf1e0d83563946a72` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1029/2010je003723

@@ -21,6 +21,10 @@ The ledger's slug and citation year should be updated to reflect 2016 and the tw
 
 **Publisher URL:** esri.cao.go.jp
 
+## Metadata
+
+Authors: Yoshioka, S., & Kawasaki, H. · Year: 2016 · DOI: not recorded in the citation block — No DOI. Government research note (per FA1 ledger). · Publisher URL: esri.cao.go.jp · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 The note examines Japan's high-growth period, roughly the mid-1950s to the early 1970s, with emphasis on the indicative role of successive national economic plans in coordinating government policy and signaling direction to the private sector. It also covers related fiscal, monetary, and industrial policy, short-term policy coordination tools, and the annual and monthly economic reports used to communicate the government's economic assessment. The authors frame the material as a development-economics case study intended to be useful to government officials and private-sector actors in catching-up economies.
@@ -328,8 +332,15 @@ Sections and data points touched:
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/esri-2016-japan-high-growth-economic-plans.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:c212ec52fc0904ce3670fd899cf8910c8740db4d1090bfed61e2160a5e4b3996` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|ESRI-RESEARCH-NOTE-27 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: ESRI Research Note 27 by two named ESRI Senior Research Fellows. Abstract: "The authors frame the material as a development-economics case study" -- an institutional account by the agency's own economists, not a report of others' findings.
+
+## Contested
+- ECR-12 B

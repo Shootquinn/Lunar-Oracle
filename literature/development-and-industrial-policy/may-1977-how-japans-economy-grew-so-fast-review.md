@@ -10,6 +10,10 @@ Publisher URL: https://academic.oup.com/ej/article-abstract/87/346/360/5220696 (
 
 Note: the scanned four pages are a fragment of the journal's "Reviews" section. The JSTOR item (stable URL above, pp. 360-362) is specifically R. S. May's review of Denison and Chung. The scan also carries the tail end of a preceding, unrelated review (Anthony Clunies Ross reviewing R. Vedavalli on Indian oil policy, signed off on p. 360) and the opening of a following, unrelated review (an unsigned start of a review of A. S. Eichner, *The Megacorp and Oligopoly*, beginning after May's sign-off on p. 362). Only the middle review — May on Denison and Chung — is the subject of this summary. Reviewer affiliation given in the text: University of St Andrews.
 
+## Metadata
+
+Authors: May, R. S. · Year: 1977 · DOI: not recorded in the citation block — 10.2307/2232109 (confirmed in FA1 ledger, provided by Quinn; this DOI belongs to the review specifically, per ledger entry 11a's "linked review" sub-entry). Not printed in the JSTOR scan itself. · Publisher URL: https://academic.oup.com/ej/article-abstract/87/346/360/5220696 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A contemporary (1977) book review, not a study: R. S. May's assessment in *The Economic Journal* of Denison and Chung's *How Japan's Economy Grew So Fast* (Brookings, 1976). The review restates the book's headline growth-accounting decomposition of Japanese national income growth for 1953-1971, notes the book's overlap with Chapter 2 of Patrick and Rosovsky's *Asia's New Giant* (1976), and offers May's own critical assessment of the residual "advances in knowledge" category and of the book's output-per-worker comparison with the United States. Secondary source: it reports numbers from Denison and Chung rather than deriving them.
@@ -55,8 +59,17 @@ FA1. Sub-Q 1 (canonical growth-accounting decomposition), and directly relevant 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/may-1977-how-japans-economy-grew-so-fast-review.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:c8181d9027d1160d275381d7d103e6d0399c5cf1c2bd7b9b488e25e9ec2f9cc2` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.2307/2232109
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `via_review` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: "Review of How Japan's Economy Grew So Fast, by E. F. Denison and W. K. Chung", The Economic Journal 87(346). The citation note records that only the middle review on the scanned pages is the subject. Named in GE-2 as not primary.
+
+## Contested
+- ECR-06 B
+- ECR-07 D
+- ECR-08 A

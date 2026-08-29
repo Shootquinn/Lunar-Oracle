@@ -6,6 +6,10 @@ Nayak, M. (2024). *Six hypotheses for accelerating the lunar economy* (arXiv:240
 
 Publisher URL: https://arxiv.org/abs/2403.05959
 
+## Metadata
+
+Authors: Nayak, M. · Year: 2024 · DOI: 10.48550/arXiv.2403.05959 · Publisher URL: https://arxiv.org/abs/2403.05959 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A short position paper from DARPA's Strategic Technologies Office. Drawing on work
@@ -117,8 +121,12 @@ study framing. The work is a government-affiliated technology-roadmap perspectiv
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/nayak-2024-six-hypotheses-lunar-economy.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:89ecd155322c970ca611242976f5d6908f9386ff7c76538fd2c9431e3c52d43f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.48550/arxiv.2403.05959
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "the author names six technology areas where revolutionary improvement would, in his assessment" -- the author's own position paper, drawing on the LunA-10 study he ran.

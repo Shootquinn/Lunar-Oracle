@@ -7,6 +7,10 @@ U.S. Commercial Space Launch Competitiveness Act, Pub. L. No. 114-90, 129 Stat. 
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: U.S. Commercial Space Launch Competitiveness Act, Pub. L. No. 114-90, 129 Stat. 704 · Year: 2015 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Public law, four titles, amending Title 51 of the United States Code (and related NASA
@@ -255,7 +259,10 @@ celestial bodies (Title IV).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/us-congress-2015-commercial-space-launch-act.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:cd73738b4d8dd2a328bc28b98b6903e8c7727d5b7187b5d1f3360b02c3e33844` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|PUB-L-114-90 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-law-and-governance · **Also:** space-economy-and-markets

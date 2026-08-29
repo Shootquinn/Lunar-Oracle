@@ -1,7 +1,5 @@
 # Barnett, Oh, Dempster & Saydam 2025 - Mass of Lunar Volatiles Required to Reach Spacecraft Exposure Limits, a Simulation Analysis
 
-## Comprehensive Technical Summary
-
 ## Citation
 
 Barnett, N., Oh, J., Dempster, A. G., & Saydam, S. (2025). Mass of lunar volatiles required to reach spacecraft exposure limits - a simulation analysis. *Proceedings of the International Astronautical Congress, IAC*, 251-272. Presented at the 76th International Astronautical Congress (IAC 2025), 58th IAA Symposium on Safety, Quality and Knowledge Management in Space Activities, Sydney, Australia, September 29-October 3, 2025. https://doi.org/10.52202/083095-0025
@@ -226,7 +224,10 @@ No figure in this source carries a quantitative finding not already stated in th
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/barnett-2025-volatile-exposure-limits.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:dc3c11a57811cebabb7ddbf1176184e216d19f063fd0fe568b9259b633b7ec83` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.52202/083095-0025
 - **Field:** lunar · **Folder:** isru-processing · **Also:** lunar-ice-and-geology

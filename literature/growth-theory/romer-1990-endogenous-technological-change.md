@@ -8,6 +8,10 @@ DOI: 10.1086/261725 (confirmed in FA2 ledger)
 
 Publisher URL: https://www.journals.uchicago.edu/doi/10.1086/261725
 
+## Metadata
+
+Authors: Romer, P. M. · Year: 1990 · DOI: 10.1086/261725 · Publisher URL: https://www.journals.uchicago.edu/doi/10.1086/261725 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 This paper models economic growth as the output of deliberate, profit-seeking R&D investment rather than an exogenous process. Technology occupies an unusual category in the model: unlike a conventional good it can be used by everyone at once (it is nonrival), yet unlike a pure public good its use can still be partially fenced off through patents (partially excludable). That combination breaks the convexity assumptions behind price-taking markets, so the model instead clears through monopolistic competition among firms holding exclusive rights to their designs. Working through the resulting equilibrium, growth turns out to track the economy's stock of human capital, and the market allocates less human capital to research than a social planner would choose. Trade integration that pools human capital across countries speeds up growth, while population size on its own does nothing for it.
@@ -254,8 +258,12 @@ For the FA2 model-by-model verdict table specifically, this entry contributes th
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/romer-1990-endogenous-technological-change.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f90934a9dd357f1d2fe9f579d2a816e7e09478024dd685b38f5eba4648e18b0c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1086/261725
 - **Field:** economics · **Folder:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: JPE 98(5 Pt 2), the original endogenous-growth model.

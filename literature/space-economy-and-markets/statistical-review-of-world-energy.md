@@ -13,6 +13,10 @@ energy supply and carbon" narrative (page 23), the "Total energy Supply" data ta
 and the "Supply by fuel" table (page 25), with the exajoule-to-terawatt-hour conversion taken
 from the Review's own "Approximate conversion factors" appendix (page 83).
 
+## Metadata
+
+Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 The Energy Institute Statistical Review of World Energy is the standard annual dataset of global
@@ -152,8 +156,13 @@ and edition differ, and the recomputed keystone from consistent 2025 on-disk fig
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/statistical-review-of-world-energy.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:32bd01564e541823b9d914c9f44e2179a9a830b6b721018b797f8fb5ade46c17` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|energyinst.org/statistical-review
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Stated as of:** `2026` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. Cover prints "2026 | 75th edition"; running foot prints "Energy Institute Statistical Review of World Energy 2026"; contents list "2025 Key highlights". Edition year 2026, data year 2025.
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Citation: Energy Institute Statistical Review of World Energy 2026. "The standard annual dataset of global energy production, consumption, trade, and emissions" -- a compilation from national and industry reporting.

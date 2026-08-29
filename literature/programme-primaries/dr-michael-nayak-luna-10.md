@@ -1,5 +1,4 @@
 # Nayak 2024 - DARPA LunA-10 (10-Year Lunar Architecture) Capability Study: Program Update
-## Comprehensive Technical Summary
 
 ## Citation
 
@@ -124,8 +123,12 @@ The source is a public program-update briefing, not a technical report: figures 
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/programme-primaries/dr-michael-nayak-luna-10.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:add871048427949414161489eb8178687ec84b97f5ad3b31680d9a2b2fca5e45` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-lsei
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Removed: the `## Comprehensive Technical Summary` marker line (1 line, no content under it). **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `drop-cts-marker`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|nayak|2024|program-update-10-year-lunar-architecture — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** programme-primaries
 - **Plan row rev:** 1
+- **Stated as of:** `2024-04-25` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation gives "(2024, April 25) ... LSIC Spring Meeting"; Metadata repeats "Prepared for the LSIC Spring Meeting, 25 April 2024". No printed slide feature is named as the carrier. Metadata also carries "PDF generated 2024-05-07 (Acrobat PDFMaker)" which is FILE METADATA and is correctly excluded here. No paired PDF on disk.

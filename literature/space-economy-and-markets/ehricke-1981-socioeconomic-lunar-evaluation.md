@@ -10,6 +10,10 @@ Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/00945765819
 
 (Paper presented at the XXIXth Congress of the International Astronautical Federation, Dubrovnik, Yugoslavia, 2–7 October 1978, IAA Symposium on Space Economics and Benefits; received 5 May 1981. Author affiliation as printed: Space Global Co., 845 Lamplight Drive, La Jolla, CA 92037, USA. On-page identifier: 0094-5765/81/111389-17$02.00/0.)
 
+## Metadata
+
+Authors: Ehricke, K. A. · Year: 1981 · DOI: 10.1016/0094-5765(81 · Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/0094576581901314 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 First in a planned series extending the author's 1972/1974 lunar-industrialization argument. It lays out a "selenosphere system strategy" — a framework for gradually building lunar industrial capability organized around lunar surface industrial zones for extraction and processing, integrated with a circumlunar zero-g processing capability, serving markets in geolunar space. Central claims: lunar oxygen is the most promising initial economic "drawing card"; controlled fusion is the key enabling energy source and is easier to engineer in space; and lunar cycle (materials) management is a fundamental requirement for economic viability. The paper also treats legal/treaty questions and the socio-psychological case for lunar (versus orbital) settlement. Method is conceptual analysis with illustrative engineering estimates; transportation detail is deferred to later papers.
@@ -68,8 +72,12 @@ Cross-cutting themes: space/lunar economics and system strategy; in-situ resourc
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/ehricke-1981-socioeconomic-lunar-evaluation.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:8ee559cf3847fef1799f03fa4557c2c610772a78b776fae448e244eb81771d32` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/0094-5765(81)90131-4
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "Method is conceptual analysis with illustrative engineering estimates" -- the selenosphere system strategy is the document's own.

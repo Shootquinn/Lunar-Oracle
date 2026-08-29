@@ -15,6 +15,10 @@ March 20, 2024, keyed to the IFT-3 flight of the preceding week.
 
 Publisher URL: https://payloadspace.com/payload-research-starships-progress-and-exploring-expendable-configuration/
 
+## Metadata
+
+Authors: Kuhr, J., and Islam, M. · Year: 2024, March 20 · Publisher URL: https://payloadspace.com/payload-research-starships-progress-and-exploring-expendable-configuration/ · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A trade-press research analysis published just after Starship's third integrated flight test
@@ -150,8 +154,15 @@ sourced. Distinct from the Karen Jones (Aerospace Corporation) matured fully-reu
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/logistics-and-delivery/payload-research-starship-cost.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:f6273c3064ac8bbb331a3440dbba4ac1f86ead8d3ff12935349fb8eb88517844` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|payloadspace.com/payload-research-starships-progress-and-exploring-expendable-configuration
 - **Field:** lunar · **Folder:** logistics-and-delivery · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Stated as of:** `2024-03-20` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation names the printed carrier: "Byline date March 20, 2024, keyed to the IFT-3 flight of the preceding week", and the abstract independently references "the week before the March 20, 2024 byline". A trade-press byline is printed on the article face. No paired PDF on disk.
+
+## Contested
+- LCC-11 A

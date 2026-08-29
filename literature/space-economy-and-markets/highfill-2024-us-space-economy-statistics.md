@@ -8,6 +8,10 @@ bea.gov/scb
 
 Publisher URL: bea.gov/scb
 
+## Metadata
+
+Authors: Highfill, T., Georgi, P., & Surfield, C. · Year: 2024, June 25 · Publisher URL: bea.gov/scb · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 BEA release article presenting new and revised space-economy satellite-account estimates for
@@ -265,8 +269,13 @@ state-level estimates) following its March 2024 Space Economy Measurement Worksh
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/highfill-2024-us-space-economy-statistics.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:5308f00512c09c8efe880a7695c5486b0daf2e162e9853cecf8046acf90c141e` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|highfill|2024|new-revised-statistics-u — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-economy-and-markets
 - **Plan row rev:** 1
+- **Stated as of:** `2024-06-25` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. pdftotext -layout, p.1 byline prints "By Tina Highfill, Patrick Georgi, and Chris Surfield | June 25, 2024"; the body repeats "released ... statistics for 2017-2022 on June 25, 2024". Data years 2017-2022; the 2017-2021 estimates are revised against BEA's 2023 comprehensive update.
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "BEA release article presenting new and revised space-economy satellite-account estimates" -- BEA's own estimates, published by the authors who produced them. Contrast bea-depreciation-rates.md, also BEA, which is via_tertiary because its rates were estimated by Hulten and Wykoff. Same publisher, different depth, which is the column doing work.

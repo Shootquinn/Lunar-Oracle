@@ -10,6 +10,10 @@ Publisher URL: https://ascelibrary.org/doi/10.1061/(ASCE)0893-1321(1998)11:4(111
 
 (Manuscript submitted 27 April 1998; published October 1998. On-page identifier: ISSN 0893-1321/98/0004-0111-0118/$8.00; Paper No. 18181. Author affiliation as printed: Prof., Mech. and Aerosp. Engrg., Rutgers, The State University of New Jersey, Piscataway, NJ.)
 
+## Metadata
+
+Authors: Benaroya, H. · Year: 1998 · DOI: 10.1061/(ASCE · Publisher URL: https://ascelibrary.org/doi/10.1061/(ASCE)0893-1321(1998)11:4(111) · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 An essay/overview arguing that large-scale lunar development will be led by the private sector rather than governments, because governments lack excess funds and public attention spans for space are short. Its central proposal is a "new paradigm": deconstruct the long, expensive lunar-development project into independently financeable units built on **dual-use technologies** that are profitable for terrestrial applications while advancing lunar capability. A coordinating "Lunar Development Corporation" (LDC), operating like a venture-capital holding company over a ~20-year horizon, is proposed to prioritize and assemble these technologies. The paper also surveys launch economics, lunar-resource prospects, reliability-based design, NASA's role, and long-term environmental/ethical and colony-independence issues. Method is qualitative argument; appendices tabulate candidate dual-use technologies.
@@ -72,8 +76,12 @@ Cross-cutting themes: space-development finance and organization; dual-use techn
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/benaroya-1998-lunar-development-issues.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:786a4759651c928d89e4b723e7a51c0b98b3a9f20856ebfbe7e59aa5372f4e2b` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L1|10.1061/(asce)0893-1321(1998)11:4(111)
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: "An essay/overview arguing ..."; "Method is qualitative argument; appendices tabulate candidate dual-use technologies." The Lunar Development Corporation proposal is the document's own.

@@ -6,6 +6,10 @@ Benaroya, H. (2001). Prospects of commercial activities at a lunar base. *Solar 
 
 Publisher URL: http://www.resonance-pub.com
 
+## Metadata
+
+Authors: Benaroya, H. · Year: 2001 · Publisher URL: http://www.resonance-pub.com · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Journal article surveying possible commercial activities on the Moon and in lunar orbit over roughly 2010–2050. It outlines evolutionary stages of lunar-base development, proposes a three-sector model of a lunar economy, advances a "dual-use technologies" financing paradigm anchored by a proposed Lunar Development Corporation, and discusses launch cost thresholds, lunar resources, environmental stewardship, and eventual colony independence.
@@ -40,8 +44,12 @@ Sections: introduction and evolutionary stages of lunar-base development; (2) th
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/benaroya-2001-commercial-lunar-base.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:5781063afec104a6a20cf8769264ff2265a3e75ec2f7a69b56c609295fd74b64` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|benaroya|2001|prospects-commercial-activities-lunar-base — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** programme-primaries
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the three-sector lunar-economy model and the dual-use financing paradigm are the author's own proposals.

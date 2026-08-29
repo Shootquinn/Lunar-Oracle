@@ -11,6 +11,10 @@ rule.
 Publisher URL: http://www.jstor.org/stable/2109930 (JSTOR stable URL, as printed on the
 document's first page; publisher of record is The MIT Press).
 
+## Metadata
+
+Authors: Beason, R., & Weinstein, D. E. · Year: 1996 · DOI: not recorded in the citation block — unconfirmed in project ledger (MIT Press); not recorded here per no-inferred-DOI rule. · Publisher URL: http://www.jstor.org/stable/2109930 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Tests, for 13 Japanese mining and manufacturing sectors over 1955-1990, whether
@@ -395,8 +399,16 @@ productivity (Section V).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/beason-1996-targeting-japan.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:d569c2e86b9a16cab3e84fd31ed55d79c3f0b9cbd0dc6ade91e36d7beec36584` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|jstor.org/stable/2109930
 - **Field:** economics · **Folder:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: Review of Economics and Statistics 78(2), the authors' own targeting estimation.
+
+## Contested
+- ECR-01 A
+- ECR-10 A

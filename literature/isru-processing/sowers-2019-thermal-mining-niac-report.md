@@ -32,6 +32,10 @@ testing that is not part of the journal article at all. This summary foregrounds
 additional detail the full report carries beyond the journal article; it does not attempt to
 reconcile figures between the two documents where they differ.
 
+## Metadata
+
+Authors: Sowers, G. · Year: 2019 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Final report of a NASA NIAC Phase I award (grant 80NSSC19K0964) to Colorado School of Mines,
@@ -267,9 +271,17 @@ which the shorter journal article does not cover.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/sowers-2019-thermal-mining-niac-report.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:ef061272249bc684dbd9beb7392d0e2d426f1bf89e1680c0130b63e609c28252` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-PAIR (a landing mode, not a gate)
 - **Dedup key:** L3|sowers|2019|thermal-mining-ices-cold-solar-system — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** isru-processing · **Also:** lunar-ice-and-geology
 - **Plan row rev:** 2
 - **Duplicate pair DUP-08:** this file is the PRIMARY and it landed. The secondary, `sowers-2019-thermal-mining-niac.md`, did not land. Picked under the author rule of 2026-08-28 (a recorded step-0 decision wins, else byte-identical takes either, else the larger file).
+
+## Contested
+- LCC-04 A
+- LCC-06 A
+- LCC-12 A

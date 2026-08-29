@@ -37,12 +37,18 @@ Solar-thermal ISRU (concentrated sunlight as direct process heat); carbothermal 
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/colozza-2010-solar-lunar-oxygen.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:5caba4b90c41b5deaba5f3c22cc9960ca1cfbe64b1ee5a4886e3b09e40113a79` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L2B|NASA/TM-2010-216219 — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- LCC-07 B
+- LCC-08 C

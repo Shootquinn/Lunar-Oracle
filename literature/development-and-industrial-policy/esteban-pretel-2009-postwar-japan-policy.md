@@ -10,6 +10,10 @@ Publisher URL: https://www.rieti.go.jp/en/publications/summary/09010004.html
 
 Ledger reconciliation: this file cites the RIETI working paper, which is the document actually read. FA1 ledger entry 1 lists the same work under its published form — Esteban-Pretel, J., & Sawada, Y. (2014). On the role of policy interventions in structural change and economic development: The case of postwar Japan. *Journal of Economic Dynamics and Control, 40*, 67-83 (ScienceDirect PII S0165188913002455). The DOI of that published version is **unconfirmed** in the ledger and is therefore deliberately NOT recorded here. If the published version becomes the citation of record, read the DOI off the ScienceDirect landing page first.
 
+## Metadata
+
+Authors: Esteban-Pretel, J., & Sawada, Y. · Year: 2009 · DOI: not recorded in the citation block — No DOI. RIETI discussion paper series. · Publisher URL: https://www.rieti.go.jp/en/publications/summary/09010004.html · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Two-sector neoclassical growth model (Cass-Koopmans style, with Stone-Geary
@@ -292,8 +296,16 @@ scenarios) for postwar Japan, 1956-1990.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/esteban-pretel-2009-postwar-japan-policy.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:e6733cf64ad47177cfdf5633b17dad6c46d1cd4020f09bac632ad29558602c10` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L2A|rieti.go.jp/en/publications/summary/09010004.html
 - **Field:** economics · **Folder:** development-and-industrial-policy · **Also:** growth-theory
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: RIETI DP 09-E-001, the authors' own structural-change model; the citation note records that the RIETI paper is the document actually read.
+
+## Contested
+- ECR-01 A
+- ECR-13 A

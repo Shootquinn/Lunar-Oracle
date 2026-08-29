@@ -12,6 +12,10 @@ arXiv identifier and submission date (arXiv:2604.27197v1, category physics.gen-p
 page 1 text; the in-document dateline separately states "(Dated: May 1, 2026)." No
 peer-reviewed venue, DOI, or publisher imprint is given anywhere in the document.
 
+## Metadata
+
+Authors: Turyshev, S. G. · Year: 2026 · Publisher URL: none in source. This is an arXiv preprint, not a journal article. The arXiv identifier and submission date (arXiv:2604.27197v1, category physics.gen-ph, 29 Apr 2026) were decoded […] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 This paper asks whether a cluster of solar-powered orbital data-center (ODC) nodes can be economically competitive with terrestrial data centers once every physical constraint is closed at once: photovoltaic generation, eclipse recharge, radiator heat rejection, sustained space-to-ground bandwidth, utilization, and node replacement over a finite operating life. It builds necessary viability conditions around delivered IT electrical power, mass per delivered kilowatt (kg/kW), a communication-intensity ratio of downlinked data to IT energy consumed, a ceiling on that ratio set by downlink physics, effective utilization, and a lifetime penalty factor. Working a representative 1 MW, high-sunlight node, the base case needs roughly 5,640 square meters of beginning-of-life photovoltaic area and about 2,500 square meters of radiator area, putting combined photovoltaic-storage-radiator mass at 29.4 kg/kW before fixed spacecraft mass pushes the total to 34-59 kg/kW. At around 40 kg/kW, matching a terrestrial infrastructure cost benchmark of $10,000-40,000/kW leaves only $250-1,000/kg of headroom for combined launch and spacecraft-build cost, before communications, operations, utilization, and lifetime costs are even subtracted -- a headroom 3.4 to 13.5 times below today's public Falcon 9 dedicated-launch price per kilogram, with spacecraft build cost not yet counted. The paper's conclusion is regime-specific: space-native preprocessing and communications-integrated edge compute look achievable in the near term, but general-purpose compute serving terrestrial users only pencils out under a demanding combination of low communication intensity, high utilization, long node lifetime, and very low combined launch-and-build cost.
@@ -267,8 +271,12 @@ as the credible near-term regimes instead.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-economy-and-markets/turyshev-2026-orbital-data-centers.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:03c85119f0eafea8dfe84058363f18de30ff730dad33e9770aaaba84edd6615f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|arxiv.org/abs/2604.27197
 - **Field:** lunar · **Folder:** space-economy-and-markets · **Also:** power-and-thermal
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: field=lunar; Abstract: the viability conditions, the 29.4 kg/kW base case and the 34-59 kg/kW total are the paper's own derivation.

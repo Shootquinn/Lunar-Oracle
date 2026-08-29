@@ -6,6 +6,10 @@
 
 Publisher URL: none in source
 
+## Metadata
+
+Authors: The Artemis Accords: Principles for cooperation in the civil exploration and use of the Moon, Mars, comets, and asteroids for peaceful purposes. · Year: 2020, October 13 · Publisher URL: none in source · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Founding text of the Artemis Accords, a set of thirteen sections of principles, guidelines, and best practices for civil exploration and use of the Moon, Mars, comets, and asteroids, adopted October 13, 2020. Framed in the preamble and Section 1 as a political commitment rather than a treaty, intended to operationalize obligations under the Outer Space Treaty and related instruments. Covers peaceful purposes, transparency, interoperability, emergency assistance, registration of space objects, release of scientific data, preservation of outer space heritage, space resources, deconfliction of space activities (including "safety zones"), orbital debris, and final/administrative provisions. Signed on the stated date by eight states: Australia, Canada, Italy, Japan, Luxembourg, the United Arab Emirates, the United Kingdom, and the United States.
@@ -100,8 +104,12 @@ for a multilateral instrument.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/space-law-and-governance/nasa-2020-artemis-accords.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:601ad85b96dca75e7348542f9faa9cd2262b836ed9104f6c3693d3544f13c5ec` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** HOLD-NOID (a landing mode, not a gate)
 - **Dedup key:** L3|the-artemis-accords-principles-for-cooperation-in-the-civil-exploration-and-use-of-the-moon|2020|multilateral-political-commitment-signed-71st-international — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** space-law-and-governance
 - **Plan row rev:** 1
+- **Stated as of:** `2020-10-13` · date authority `printed_in_source` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: OPENED. The instrument prints "Adopted on October 13, 2020, in the English language." and the signature pages print "Date: 13th October 2020". SELECTED DESPITE BEING A LEGAL INSTRUMENT, because the summary asserts a ROSTER -- "The signature pages, as printed, list eight Signatory states" -- and a roster is a programme state. Without the stamp the Oracle prints eight signatories as if current; the eight are the original signature pages of 2020-10-13.

@@ -10,6 +10,10 @@ conference paper record rather than a journal article with an assigned DOI.
 
 Publisher URL: https://ntrs.nasa.gov/citations/20210022801
 
+## Metadata
+
+Authors: Olson, A. D. S. · Year: 2021 · Publisher URL: https://ntrs.nasa.gov/citations/20210022801 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 A single-author NASA Kennedy Space Center review paper (15 pages) describing lunar helium-3
@@ -210,8 +214,14 @@ should source He-3 demand and fusion-market realism separately.
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/olson-2021-lunar-helium3-mining.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:c482f4e15f923bc5b32ea305a648bd64044cee6b9c18e66721ed281355381305` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/20210022801
 - **Field:** lunar · **Folder:** isru-processing · **Also:** space-economy-and-markets
 - **Plan row rev:** 1
+
+## Contested
+- LCC-13 A

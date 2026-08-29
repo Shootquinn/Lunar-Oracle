@@ -9,6 +9,10 @@ DOI: 10.1016/j.jjie.2005.05.002 (confirmed in FA1 ledger, provided by Quinn; als
 
 Publisher URL: https://doi.org/10.1016/j.jjie.2005.05.002 (ScienceDirect landing page, JJIE vol. 19 issue 4).
 
+## Metadata
+
+Authors: Jorgenson, D. W., & Nomura, K. · Year: 2005 · DOI: 10.1016/j.jjie.2005.05.002 · Publisher URL: https://doi.org/10.1016/j.jjie.2005.05.002 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Builds a new industry-level growth-accounting dataset for Japan covering 1960-2000,
@@ -347,8 +351,15 @@ growth with only a narrow, IT-linked TFP revival after 1995 (Section 8).
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `_intake/japanese-miracle/lit/jorgenson-2005-industry-origins-japan.md`
+- **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
+- **Merge-time digest:** `sha256:4a7ba5d9613747c0463257563528b2055c955b806f598912cc1ced1a4921137d` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.jjie.2005.05.002
 - **Field:** economics · **Folder:** growth-theory · **Also:** development-and-industrial-policy
 - **Plan row rev:** 1
+- **Provenance depth:** `primary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: JJIE 19(4), the authors' own industry-level decomposition. It names Denison and Chung only as "the substitute for" -- it does not report their decomposition.
+
+## Contested
+- ECR-07 A

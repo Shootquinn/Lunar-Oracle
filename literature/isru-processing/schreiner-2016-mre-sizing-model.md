@@ -49,13 +49,18 @@ Molten Regolith Electrolysis / Molten Oxide Electrolysis (authoritative primary 
 
 ---
 
-## Provenance
+## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/isru-processing/schreiner-2016-mre-sizing-model.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:29272803f844e7e68c49933cfb8bd49e9ceb26a5b04551b191d17af9ce4db70b` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
 - **Disposition:** HOLD-PAIR (a landing mode, not a gate)
 - **Dedup key:** L1|10.1016/j.asr.2016.01.006
 - **Field:** lunar · **Folder:** isru-processing
 - **Plan row rev:** 2
 - **Duplicate pair DUP-06:** this file is the PRIMARY and it landed. The secondary, `schreiner-2016-molten-regolith-electrolysis-sizing.md`, did not land. Picked under the author rule of 2026-08-28 (a recorded step-0 decision wins, else byte-identical takes either, else the larger file).
+
+## Contested
+- LCC-08 B

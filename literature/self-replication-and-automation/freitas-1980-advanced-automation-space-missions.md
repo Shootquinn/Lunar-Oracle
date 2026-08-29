@@ -8,6 +8,10 @@ Aeronautics and Space Administration, Scientific and Technical Information Branc
 
 Publisher URL: https://ntrs.nasa.gov/citations/19830007077
 
+## Metadata
+
+Authors: Freitas, R. A., Jr., & Gilbreath, W. P. (Eds.). · Year: 1982 · Publisher URL: https://ntrs.nasa.gov/citations/19830007077 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 Final report of a 10-week 1980 NASA/ASEE summer faculty-fellowship study (18 university educators
@@ -396,8 +400,14 @@ material also relevant to the broader project's automation-and-industrial-policy
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/freitas-1980-advanced-automation-space-missions.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:a7880cab48a667d9a2a20b1a774fb125924f21fa464697b01faeced7feb62076` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** both-identical
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`.
 - **Disposition:** LIFT-IDENTICAL (a landing mode, not a gate)
 - **Dedup key:** L2A|ntrs.nasa.gov/citations/19830007077
 - **Field:** lunar · **Folder:** self-replication-and-automation · **Also:** isru-processing
 - **Plan row rev:** 1
+
+## Contested
+- ECR-16 A

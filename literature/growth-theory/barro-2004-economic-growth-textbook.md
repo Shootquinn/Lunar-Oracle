@@ -7,6 +7,10 @@ Barro, R. J., & Sala-i-Martin, X. (2004). *Economic Growth* (2nd ed.). MIT Press
 DOI: No DOI (graduate textbook). Publisher URL:
 https://mitpress.mit.edu/9780262025539/economic-growth/
 
+## Metadata
+
+Authors: Barro, R. J., & Sala-i-Martin, X. · Year: 2004 · DOI: not recorded in the citation block — No DOI (graduate textbook). · Publisher URL: https://mitpress.mit.edu/9780262025539/economic-growth/ · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
+
 ## Abstract
 
 This is a **scoped reference extract**, not a summary of the full book. The source is a
@@ -307,8 +311,12 @@ Serves Sub-Q 1, 3 (reference derivations: Solow convergence speed and the AK gro
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
 - **Source:** `lsei/literature/growth-and-industrial-theory/barro-2004-economic-growth-textbook.md`
+- **Upstream ref:** `lsei@7f97983` — local `HEAD` = `origin/main` = the ref `oracle/VERIFIED.tsv` verifies against, all three agreeing when this was stamped, 2026-08-28; push URL DISABLED. This is the ref the bytes below were merged at.
+- **Merge-time digest:** `sha256:325dde5f6d0bc0de9dbec6e92259b4c1c0bb61e1e64fdc01640e106b2fd1d743` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** lsei-primary
+- **Body edit (2.6):** DECLARED house-format normalization, 2026-08-28, sub-step 2.6 (MERGE-6). Added: a `## Metadata` heading and the one line under it (2 non-blank lines), derived from this file's own `## Citation` block. **Line endings:** this file carried CR bytes in its summary body, inherited from the `byte_source` copy, against `.gitattributes` line 49 `literature/** text eol=lf`. They are normalized to LF here, declared as `normalize-eol-to-lf`. The change is line-ending only and both `MRG-4b` and `verify_corpus`'s `DIV` report line-ending normalization separately from content, so no content claim above is altered by it. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operations named here and no others — `insert-metadata`, `normalize-eol-to-lf`.
 - **Disposition:** LIFT-LSEI-SCRUB (a landing mode, not a gate)
 - **Dedup key:** L2A|mitpress.mit.edu/9780262025539/economic-growth
 - **Field:** economics · **Folder:** growth-theory
 - **Plan row rev:** 2
+- **Provenance depth:** `via_tertiary` · sub-step 2.8 (ECON-2), from `cr_scratch/step2_manager_depth.tsv`. Basis, verbatim: Citation: "graduate textbook", MIT Press. Abstract calls itself "a scoped reference extract, not a summary of the full book", used for two closed-form results.
