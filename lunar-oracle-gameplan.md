@@ -188,12 +188,13 @@ gameplan, per A.6.2.
 |---|------|-------------|--------|
 | 0 | Draft, review, and land the operating gameplan. Sub-steps 0.1 through 0.8 below. | The Manager (bookends), Wave 1 (five), register wave (two), Wave 2 (two) | **Complete.** Closed at the author's gate 2026-08-26 |
 | 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 15 sub-steps, 1.0 through 1.14. | The Systems Engineer, The Software Engineer, The Engineer, The Designer, The Fact-Checker, The Manager (both prompts) | **Complete and approved by the author at the gate, 2026-08-28.** Closed by The Manager 2026-08-27 after two refusals and a revision pass |
-| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. **20 sub-steps, 2.1 to 2.20** — the ratified 18, plus 2.19 and 2.20 added by The Manager at the open and approved by the author the same day. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer, The Software Engineer, The Designer, The Fact-Checker | **In progress.** Opened 2026-08-28. Three waves (the six-cycle plan was superseded at the rewave). Wave 1 closed at `ef7cc20`; **Wave 2 Phase 1 running, six seats.** |
-| 3 | **The app boundary and retrieval.** Objective 3. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Manager (economics prompt) | Not started |
-| 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Manager (economics prompt), The Space Resources Engineer | Not started |
-| 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | Not started |
-| 6 | **Bootstrap, first run, and the public-facing prose.** Objectives 2 and 5. 15 sub-steps, 6.1 to 6.15. | The Systems Engineer, The Writer, The Editor | Not started |
-| 7 | **Findings, standing tensions, and the sampling protocol.** 7 sub-steps, 7.1 to 7.7. | The Manager (economics prompt), The Software Engineer | Not started |
+| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. **20 sub-steps, 2.1 to 2.20** — the ratified 18, plus 2.19 and 2.20 added by The Manager at the open and approved by the author the same day. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer, The Software Engineer, The Designer, The Fact-Checker | **Complete.** Closed 2026-08-28 at `99d3601`. 169 summaries on the shelf. |
+| 3 | **The app boundary and retrieval.** Objective 3. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Manager (economics prompt) | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
+| 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Manager (economics prompt), The Space Resources Engineer | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
+| 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
+| 6 | **Bootstrap, first run, and the public-facing prose.** Objectives 2 and 5. 15 sub-steps, 6.1 to 6.15. | The Systems Engineer, The Writer, The Editor | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
+| 7 | **Findings, standing tensions, and the sampling protocol.** 7 sub-steps, 7.1 to 7.7. | The Manager (economics prompt), The Software Engineer | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
+| 8 | **The inversion: Claude rules, the tooling advises.** The author's ruling of 2026-08-28. The router stops choosing verdicts and starts reporting evidence; the deliverable gets the shape of a TDD-method report; the model tier is written into the contracts. 7 sub-steps, 8.1 to 8.7. | The Manager (open), The Software Engineer, The Writer, The Systems Engineer | **Open.** Ruled 2026-08-28, not started |
 
 **The sub-step detail lives in `cr_scratch/step0_integration_draft.md`** and is not duplicated here.
 That file carries the sub-steps with owners, dependencies expressed as `N.M (ORIGIN-ID)`, the
@@ -387,6 +388,7 @@ only statement of which entry supersedes which.
 
 | Step | Date | Notes |
 | --- | --- | --- |
+| 3-7 W4 | 2026-08-28 | **Steps 3 through 7 complete at `f9ae39c`. 43 of 43 sub-steps.** Eight seats plus four repair passes. Acceptance 11/14; suite 455 rows, 85 pass, 13 fail, 357 unrun of which **348 carry no executable binding at all**. Author ruled at the close that the router must stop choosing verdicts: Step 8 opened. |
 | Setup | 2026-08-26 | Repository initialized. CR-Agents (`f0c976b`) and LSEI (`f788ea2`, since advanced to `7f97983`) cloned as working copies and gitignored. `cr_scratch/` created. |
 | Setup rev. 1 | 2026-08-26 | Author feedback. Working copies flattened from `deps/` to `cr-agents/` and `lsei/` at root. |
 | Setup rev. 2 | 2026-08-26 | Author identified the Scenario Explorer's origin folder, `CSA_LSEI_Workshops` (4.1 GB), with instructions to survey it shallowly. Surveyed. |
@@ -510,6 +512,70 @@ Two consequences worth stating plainly, because they are the reason the map look
 **Provisional `CLAUDE.md`.** The `CLAUDE.md` currently in this repository is a session-recovery stub written at seed time. It is not the deliverable. The real one is drafted in a step the team defines at 0.2, and it is the file that carries the bootstrap contract and the first-run sequence.
 
 ---
+
+## Author ruling, 2026-08-28 (at the Step 7 close): the tooling does not choose the verdict
+
+**The ruling, verbatim.** *"Have Claude think about stuff instead of trying to use algebra to run a
+fucking AI. Let it use your little tool to help inform itself but don't have it be how it chooses a
+verdict."* And on weight: *"I actually want the result of that tool to be a very low weight to
+Claude."*
+
+**What this overturns.** Wave 4 built a scoring machine that decides. `K = 2.431`, a govern threshold
+calibrated to a band 7% wide, match-key mass arithmetic, an axis threshold, a thin threshold. Two
+full seat-sittings went into tuning numbers whose only job is to pick one of six verdicts. The
+project said on its first day that the Oracle is a Claude session reading this repository under
+`oracle/answer_contract.md`, and that the contract is the program. That inverted into a classifier
+without anybody ruling that it should, and the orchestrator held a scope contract over the drift for
+a whole wave without noticing the architecture had changed underneath it.
+
+**The evidence that the algebra was wrong is in the acceptance set.** SRQ-12 asks *"how much energy
+does it take to produce a kilogram of oxygen on the Moon?"* and failed to reach `LCC-07`, an axis
+about oxygen production energy, because the axis key reads `kwh` and the question reads "kilowatt
+hours". SRQ-8 failed the same way on `polar` against "pole". No reader misses either. Only a scorer
+does. **These are not defects to be fixed by adding synonyms. They are the defect.**
+
+**What stays.** The six verdicts stay closed. The anti-synthesis rule stays. One persona per side,
+minimum two, no cap stays. Classification before retrieval stays, and no second retrieval repairs a
+first. The registers, the corpus, the exclusions and the thin patches all stay -- as **evidence
+Claude reads**, which is what they always were.
+
+### Step 8 sub-steps
+
+| Sub-step | What it does | Assigned To |
+|---|---|---|
+| 8.1 | **Demote the router to an evidence report.** `classify.js` stops returning `verdict` and returns findings: which axes matched and at what mass, which app outputs resolve, which node is excluded, which patch is thin, and what each score is worth. Scores ship with their own reliability, not as a decision. The closed verdict set moves to the composing session. | The Software Engineer |
+| 8.2 | **Weight the evidence low, and say so in the artifact.** The author's instruction is that the tool result carries *very low weight*. The report states its own known failure modes inline -- the `kwh`/"kilowatt hours" and `polar`/"pole" misses are the worked examples -- so a session reading it is told where it is unreliable at the moment it reads it, rather than in a document it may never open. | The Software Engineer, The Writer |
+| 8.3 | **Run the evidence pass concurrently with the Manager's open**, so it can inform the first prompts. The Manager is **instructed to be sceptical of it** and to state in the open which findings were taken and which were set aside. A Manager who adopts the report wholesale has not used it as evidence. | The Manager |
+| 8.4 | **The deliverable gets a shape: the TDD-method report.** `oracle/answer_contract.md` section 6 says every deliverable is a file and does not say what shape the file has. Specify it: the question, the verdict and why, **what was tested and how it could have failed**, sources with traces, and what remains unverified. The haiku-plus-path rule is unchanged and already enforced by `tools/verify_haiku.js`. | The Writer, tested by The Software Engineer |
+| 8.5 | **Write the model tier into the contracts.** Default is the session's own model. Tier per seat below, with the escalation rule stated as a rule and not a preference. | The Systems Engineer |
+| 8.6 | **Retire or re-scope the calibrated thresholds.** `K`, `axis_threshold.json`, `thin_threshold.json` and the govern band were tuned to decide. Under 8.1 they inform. Decide per artifact whether each survives as a reported score, survives with a widened band, or goes -- and record the reasoning, because these cost two sittings and deleting them silently loses the lesson. | The Engineer |
+| 8.7 | **Re-run the fourteen and report what moved.** Under the inversion SRQ-8, SRQ-10 and SRQ-12 should resolve without a synonym table, a stemmer or a new question class. If they do not, the inversion did not land. | The Space Resources Engineer |
+
+### The model tier, ruled at 8.5
+
+**Default: inherit the session.** Opened in Opus, everything is Opus. The tiers below are the floor
+when the session does not say otherwise, never a ceiling imposed on a session the author opened
+deliberately.
+
+| Seat | Tier | Why |
+|---|---|---|
+| Orchestrator, The Manager | Sonnet | Holds scope and sequencing. Wave 4's orchestrator errors were bookkeeping -- a lost sub-step count, a relayed threshold band measured against too small a control set -- which a mid tier does adequately when the contract is written down rather than remembered. |
+| Lit-review fan-out, first-pass retrieval, field tagging, high-volume extraction | Haiku | Mechanical and wide. The author's constraint is that the lit review has to happen fast, and this is where the parallelism is. |
+| **Reading a source and judging whether a claim is supported** | **Opus** | Non-negotiable, and Wave 4 is the evidence. The source-verification sweep found twelve register claims attached to the wrong paper or contradicting their own source -- Aoki credited with Esteban-Pretel's argument, Nakamura with Kawagoe's percentages, one row asserting the flat negation of what its source says. Every one was caught by careful reading. None by a scorer. |
+| Composing a `CONTESTED` answer, one persona per side | Opus | The anti-synthesis rule is a discipline held under pressure to reconcile. A cheaper tier splits the difference, which is the one failure the rule exists to prevent. |
+| The transfer gate: `legitimate` / `illustration` / `unknown` | Opus | A judgement about whether a mechanism carries from one context to another. `unknown` composes a refusal rather than a hedge, and refusing well is harder than answering. |
+
+**The escalation rule, stated as a rule.** *A seat that is about to look at something -- open a
+source, read a summary against a claim, judge a transfer -- runs at Opus regardless of its tier. The
+Manager may escalate any seat to Opus by saying so in the brief, and needs no reason beyond needing
+someone to look at something.*
+
+**The hazard this tiering creates, named now so it is not discovered later.** A fast Haiku lit review
+feeding an Opus verification pass produces a corpus whose claims are cheap to make and expensive to
+check. That is the right way round **only if the verification pass actually runs**. Skipped for
+speed, it yields a large corpus of unsupported claims that looks exactly like a good one -- the
+container-versus-content pattern at corpus scale. **The lit review does not close until its
+verification pass has run.**
 
 ## Author ruling, 2026-08-28 (mid-Step-2)
 
