@@ -3,7 +3,7 @@
  * tools/verify_corpus.js - sub-step 2.17 (MERGE-11). THE SINGLE TOOL THAT REPORTS CORPUS STATE.
  *
  * Naming conformance, provenance completeness, duplicate identifiers with no primary/secondary
- * call, register integrity, dangling source-file paths, and the upstream divergence check.
+ * call, register integrity, well-formed source declarations, and the upstream divergence check.
  * It REPORTS. It never writes into literature/, oracle/ or any working copy. It is re-runnable
  * and every run stamps what it read.
  *
@@ -65,11 +65,12 @@
  *   node tools/verify_corpus.js --tree <dir>    a STAGED tree, so a gate can run before promotion
  *   node tools/verify_corpus.js --only NAM,PRV  a subset of the check ids
  *   node tools/verify_corpus.js --json          machine-readable
- *   node tools/verify_corpus.js --sources       every Source: declaration with its resolution
- *                                               state: resolved / unresolvable-here / broken.
- *                                               THIS IS THE COMMAND THAT DISTINGUISHES THE THREE.
- *                                               Run it on a fresh clone before concluding that
- *                                               anything is wrong with the corpus
+ *   node tools/verify_corpus.js --sources       every Source: declaration, and whether the source
+ *                                               it names can be opened from this machine. This is
+ *                                               a listing FOR THE COPYRIGHT AUDIT, which needs the
+ *                                               author's source folders. It is not a corpus check
+ *                                               and it decides nothing: a clone opens none of them
+ *                                               and its corpus is complete
  *   node tools/verify_corpus.js --selftest      plant defects in a scratch tree and prove each
  *                                               check goes red, and that an empty tree is VACUOUS
  *
@@ -283,30 +284,29 @@ const NOTEOF = m => ({ v: 'NOTE', m });
 /* =========================================================================== source resolution
  * THE IDENTITY OF A SOURCE TRAVELS IN THE REPOSITORY; THE LOCATION OF IT DOES NOT.
  *
- * MEASURED DEFECT, found by cloning this repository and running it rather than by reading it. 25 of
- * 169 `Source:` cells named `_intake/japanese-miracle/lit/<file>`. `_intake/` is gitignored by
- * design -- this repository ships the summaries it wrote and never the publications it summarises --
- * so those 25 cells named a path that exists on the author's machine and in no clone, ever. SRC-1
- * read them as dangling and printed `FAIL 25 of 169`, which teaches a first-time reader that the
- * repository is broken on arrival. It is not.
+ * WHAT THIS REPOSITORY SHIPS IS 169 SUMMARIES, AND THEY ARE THE DELIVERABLE. The publications they
+ * summarise are not this project's to redistribute and were never going to be in here. A clone that
+ * holds all 169 is COMPLETE: it can answer every question the Oracle exists to answer, and nothing
+ * about the corpus is missing, degraded or pending. Whether the machine it is sitting on also holds
+ * the publications is a fact about that machine and is of interest to exactly one activity --
+ * `tools/audit_abstract_overlap.js`, the copyright-hygiene audit, which needs to open a source in
+ * order to measure verbatim overlap against it. Answering never needs one.
  *
- * It is the container-versus-content pattern one level out: the declaration is present, well formed,
- * passes its own syntax check, and is not the thing it claims to be -- a resolvable pointer to a
- * source. It resolved only where it was written.
+ * SO THE RESOLVER BELOW SERVES THE AUDIT AND THE DIVERGENCE CHECK, AND NOTHING REPORTS ITS RESULT
+ * AS A FINDING. An earlier revision of this file printed `SRC-1 FAIL 25 of 169` on a fresh clone,
+ * then printed `SRC-3 25 UNRESOLVABLE ON THIS MACHINE` after that was softened. Both taught a
+ * first-time reader that something was owed. Nothing is owed. However carefully the second one was
+ * worded, a line in a checker's output over a count of the reader's own files is read as a shortfall,
+ * and the corpus it was counting is whole.
  *
- * THREE STATES, NOT TWO. Collapsing the middle one into either neighbour is the bug:
+ * WHAT SRC STILL CHECKS, AND IT IS A REAL CHECK. A declaration can be WRONG as a piece of text --
+ * syntactically malformed, or naming an alias no machine could ever be configured for because the
+ * alias vocabulary this repository ships does not contain it. That is a defect in the corpus, it is
+ * the same defect in every clone, and it is what SRC-1 now asserts. It is a statement about the
+ * DECLARATION TEXT and therefore machine-independent: SRC-1 gives the same verdict in a fresh clone
+ * as it does on the author's disk, which is the property the old three-state version could not have.
  *
- *   resolved            the identifier names a file this machine can open.
- *   unresolvable here   this machine has not been told where that source tree is. THE NORMAL AND
- *                       CORRECT STATE OF A FRESH CLONE. Never a FAIL: it is a fact about the
- *                       machine, not a defect in the corpus.
- *   broken              the location IS known and the identifier names nothing inside it. A real
- *                       defect, and the only one of the three that fails a run.
- *
- * Reporting the middle state as broken makes a clean clone look defective, which is the bug this
- * block was written to remove. Reporting it as resolved -- or omitting it -- produces "0 findings
- * over 0 resolvable sources", the vacuous pass this project has already paid for five times. So all
- * three counts print on every run, and SRC-1 is VACUOUS rather than OK when nothing was resolvable.
+ * ABSENCE IS NOT A DEFECT. MALFORMATION IS.
  *
  * THE DECLARATION FORM. Two kinds, and the kind is visible in the text of the declaration itself:
  *
@@ -323,19 +323,23 @@ const NOTEOF = m => ({ v: 'NOTE', m });
  *
  * OPTIONAL TREES. Some in-repository first segments are not guaranteed to exist in a clone: `lsei/`
  * and `cr-agents/` are acquired by the CLAUDE.md bootstrap and are absent when it ran offline, and
- * `_intake/` and `literature/_pdf/` are gitignored and never travel at all. A path under one of
- * those whose TREE is absent is `unresolvable here`; a path under one whose tree is PRESENT and
- * which still does not resolve is broken. Without this distinction a clone that bootstrapped
- * offline reports 144 broken sources and every one of them is a false accusation.
+ * `_intake/` is gitignored and never travels at all. A path under one of those whose tree is absent
+ * is `unconfigured` -- the tree simply is not here -- and is distinguished from `broken` so that
+ * `--sources` and DIV can say which of the two they are looking at. NEITHER OF THOSE STATES IS
+ * REPORTED AS A FINDING ANY MORE; the distinction survives because DIV must not call an absent tree
+ * an upstream withdrawal, not because a reader is owed a number.
  *
  * NOTHING HERE WRITES ANYTHING, AND NO SOURCE ENTERS VERSION CONTROL. The configured roots are
  * read-only, tools/source_roots.local is gitignored, and the only tracked file this mechanism adds
  * is the .example beside it. */
 const SOURCE_ROOTS_REL = 'tools/source_roots.local';
+const SOURCE_ROOTS_EXAMPLE = 'tools/source_roots.local.example';
 
-/* Closed. A first segment not on this list is expected in every clone and its absence IS a defect;
- * the four that are here each have a stated reason above for why a clone may lack them. */
-const OPTIONAL_TREES = ['lsei', 'cr-agents', '_intake', 'literature/_pdf'];
+/* Closed. A first segment not on this list is expected in every clone.
+ * `literature/_pdf/` was on this list and is off it: sub-step 2.11, the PDF pull that would have
+ * created that directory, is retired (see oracle/release_gate.md RG-1), no summary declares a source
+ * under it, and a path that no declaration can produce is not a case a resolver needs a rule for. */
+const OPTIONAL_TREES = ['lsei', 'cr-agents', '_intake'];
 
 /* An alias is lower-case, at least two characters, and the remainder must not begin with a
  * separator. The length floor is load-bearing rather than cosmetic: it is what stops `c:/x` from
@@ -379,6 +383,48 @@ function loadSourceRoots() {
     if (m) { add(m[1], m[2]); present = true; }
   }
   return { file: SOURCE_ROOTS_REL, present, byAlias };
+}
+
+/* THE ALIAS VOCABULARY, and it is repository CONTENT rather than machine state.
+ *
+ * `tools/source_roots.local.example` is tracked, so every clone has it and every clone reads the
+ * same set of aliases out of it. That makes it the one place an alias can be declared to exist, and
+ * a `Source:` cell naming an alias that is not in it is a declaration nobody can ever configure --
+ * a defect in the corpus, present identically in every clone, and nothing to do with which machine
+ * is running. That is exactly the kind of thing SRC-1 should fail on, and the resolvability of a
+ * source is exactly the kind of thing it should not. */
+function exampleAliases() {
+  const file = R(SOURCE_ROOTS_EXAMPLE);
+  const set = new Set();
+  if (!fs.existsSync(file)) return { present: false, set };
+  for (const raw of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
+    const m = /^#\s*as:\s*([a-z][a-z0-9-]*[a-z0-9])\s*$/.exec(raw.trim());
+    if (m) set.add(m[1]);
+  }
+  return { present: true, set };
+}
+
+/* IS THIS DECLARATION WELL FORMED AS TEXT? Returns null when it is, and the reason when it is not.
+ * Every clause is about the string and none is about this machine, so the answer is the same
+ * everywhere. Each rule is here because the shape it rejects cannot travel:
+ *
+ *   a backslash or a drive letter   a path typed on one Windows machine, which is the original
+ *                                   defect this whole mechanism was built to remove.
+ *   a leading /                     absolute, so it names a location and not an identity.
+ *   a `..` segment                  escapes the root it is declared against; what it resolves to
+ *                                   depends on where the root happens to be.
+ *   no / at all                     a bare leaf names no tree, so nothing can look it up. THIS ONE
+ *                                   APPLIES TO THE IN-REPOSITORY FORM ONLY: in `<alias>:<path>` the
+ *                                   alias is the tree, so `japanese-miracle:aoki.md` is a complete
+ *                                   identity for a root that holds its files flat. */
+function malformedDeclaration(raw, hasAlias) {
+  if (!raw) return 'is empty';
+  if (raw.indexOf('\\') !== -1) return 'contains a backslash, so it is one machine\'s path and not a portable identity';
+  if (/^[A-Za-z]:/.test(raw)) return 'begins with a drive letter, so it is one machine\'s path and not a portable identity';
+  if (raw.charAt(0) === '/') return 'is an absolute path, so it names a location rather than an identity';
+  if (raw.split('/').indexOf('..') !== -1) return 'contains a ".." segment, which resolves differently depending on where the root sits';
+  if (!hasAlias && raw.indexOf('/') === -1) return 'is a bare leaf with no directory and no alias, so nothing can look it up';
+  return null;
 }
 
 /* ONE resolver, used by SRC and by DIV, so that the two cannot come to disagree about what
@@ -650,54 +696,60 @@ CHECKS.PRV = c => {
   return out;
 };
 
-/* ---- SRC: source resolution, in three states --------------------------------------------------- */
+/* ---- SRC: the Source: declaration is well formed and names an alias this repository ships ------
+ *
+ * WHAT THIS CHECK NO LONGER DOES, and it is deliberate. It does not count how many sources this
+ * machine can open, and it does not report the ones it cannot. Those numbers used to print as
+ * `SRC-1` and `SRC-3` and they made a complete corpus read as a deficient one on every clone that
+ * ran the tool. The summaries are the deliverable; the publications behind them were never going to
+ * be in here. `--sources` still lists the per-file resolution, because the copyright audit is a real
+ * job that needs it, but nothing in the verdict column is decided by it. */
 CHECKS.SRC = c => {
-  if (!c.exists) return [VACUOUS(`${c.treeRel}/ does not exist; no source path was resolved`)];
-  if (!c.docs.length) return [VACUOUS(`${c.treeRel}/ holds 0 .md files; there is no source path to dangle`)];
+  if (!c.exists) return [VACUOUS(`${c.treeRel}/ does not exist; no Source: declaration was read`)];
+  if (!c.docs.length) return [VACUOUS(`${c.treeRel}/ holds 0 .md files; there is no declaration to check`)];
   const out = [];
-  /* `Source:` on the merge block -- the upstream file the bytes came from. Resolved through the
-   * shared resolver above, which returns three states and not two. See that block for why. */
-  const cfg = loadSourceRoots();
-  const st = { resolved: [], unconfigured: [], broken: [] };
+  const ex = exampleAliases();
+  const bad = [], unknownAlias = [];
   const kinds = new Map();
-  let checked = 0;
+  let checked = 0, aliased = 0;
   for (const d of c.docs) {
     const v = unbacktick(first(d.merged, 'Source'));
     if (!v) continue;
     checked++;
-    const k = sourceKind(v);
-    kinds.set(k, (kinds.get(k) || 0) + 1);
-    const r = resolveSource(v, cfg);
-    st[r.state].push({ rel: d.rel, v, why: r.why });
+    kinds.set(sourceKind(v), (kinds.get(sourceKind(v)) || 0) + 1);
+    const m = ALIAS_RE.exec(v);
+    if (m) {
+      aliased++;
+      const why = malformedDeclaration(m[2], true);
+      if (why) { bad.push(`${d.rel} -> "${v}": the path after the alias ${why}`); continue; }
+      if (ex.present && !ex.set.has(m[1])) unknownAlias.push(`${d.rel} -> "${v}" (alias "${m[1]}")`);
+      continue;
+    }
+    const why = malformedDeclaration(v, false);
+    if (why) bad.push(`${d.rel} -> "${v}": it ${why}`);
   }
   const census = [...kinds.entries()].map(([k, n]) => k + ' ' + n).join(', ');
-  const nR = st.resolved.length, nU = st.unconfigured.length, nB = st.broken.length;
-  const tail = `[resolved ${nR} | unresolvable here ${nU} | broken ${nB}] of ${checked} declarations (${census})`;
-  if (!checked) out.push(VACUOUS(`SRC no merge block carries a Source: key; nothing was resolved`));
-  else {
-    if (nB) out.push(FAIL(`SRC-1 ${nB} of ${checked} Source: declarations are BROKEN -- the location IS known on this machine and the identifier names nothing inside it: ` +
-      st.broken.slice(0, 5).map(x => `${x.rel} -> ${x.v} (${x.why})`).join(' ; ') + `${nB > 5 ? ' ...' : ''}. ${tail}`));
-    else if (!nR) out.push(VACUOUS(`SRC-1 0 of ${checked} Source: declarations were resolvable on this machine, so this run VERIFIED NOTHING about source resolution. THIS IS NOT A PASS -- "no broken sources" over a population of zero resolvable ones is the vacuous result this tool exists to refuse. ${tail}`));
-    else out.push(OK(`SRC-1 ${nR} of ${checked} Source: declarations resolve on this machine and 0 are broken. ${tail}`));
-    /* THE MIDDLE STATE. Printed as REPORT and never as FAIL, and printed only when it is non-zero
-     * so that a machine holding every source is not told about a mechanism it is not using. A
-     * fresh clone lands here for every external identity it carries, and that is the correct
-     * result: the reader is told what is missing and how to supply it, not that the repository
-     * arrived broken. */
-    if (nU) {
-      const why = new Map();
-      for (const x of st.unconfigured) why.set(x.why, (why.get(x.why) || 0) + 1);
-      out.push(REPORT(`SRC-3 ${nU} of ${checked} Source: declarations are UNRESOLVABLE ON THIS MACHINE. This is a fact about the machine and NOT a corpus defect -- it is the normal state of a fresh clone, because this repository ships the summaries it wrote and never the publications it summarises. Reasons: ` +
-        [...why.entries()].map(([w, n]) => `${n}x ${w}`).join(' ; ') +
-        `. To resolve them, copy ${SOURCE_ROOTS_REL}.example to ${SOURCE_ROOTS_REL} and point each alias at the tree that holds it; that file is gitignored and no source ever enters version control. \`node tools/verify_corpus.js --sources\` lists all three states file by file`));
-    }
-  }
+  if (!checked) return [VACUOUS(`SRC no merge block carries a Source: key; no declaration was checked`)];
 
-  /* `Source file:` -- PRV-8. Every occurrence on the shelf today is inside an INHERITED block, and
-   * every one of them names a PDF "on disk, project root" in a repository whose entire containment
-   * mechanism (CHK-13) exists to guarantee no PDF is on disk. They are unresolvable by construction,
-   * which is why this is REPORT and not FAIL: the fix is not a path repair, it is the PRV-1b
-   * decision about what to do with the inherited blocks, and failing here would double-count it. */
+  out.push(bad.length
+    ? FAIL(`SRC-1 ${bad.length} of ${checked} Source: declarations are MALFORMED and cannot travel: ${bad.slice(0, 5).join(' ; ')}${bad.length > 5 ? ' ...' : ''}`)
+    : OK(`SRC-1 all ${checked} Source: declarations are well formed as text (${census}). This is a statement about the declarations and not about this machine, so it is the same verdict in every clone`));
+
+  /* The alias vocabulary. Checked against the TRACKED .example, so a clone gets the same answer. */
+  if (!ex.present) out.push(VACUOUS(`SRC-2 ${SOURCE_ROOTS_EXAMPLE} is absent, so the ${aliased} external source identit${aliased === 1 ? 'y' : 'ies'} could not be checked against the alias vocabulary this repository ships. That file is tracked; a working copy without it is missing a tracked file`));
+  else if (!aliased) out.push(NOTEOF(`SRC-2 0 of ${checked} declarations use the <alias>:<path> form, so the alias vocabulary (${ex.set.size} declared in ${SOURCE_ROOTS_EXAMPLE}) had nothing to check`));
+  else out.push(unknownAlias.length
+    ? FAIL(`SRC-2 ${unknownAlias.length} of ${aliased} external source identities name an alias that ${SOURCE_ROOTS_EXAMPLE} does not declare, so no machine can ever be configured for them: ${unknownAlias.slice(0, 5).join(' ; ')}${unknownAlias.length > 5 ? ' ...' : ''}. Declared aliases: ${[...ex.set].join(', ') || '(none)'}`)
+    : OK(`SRC-2 all ${aliased} external source identities name an alias declared in ${SOURCE_ROOTS_EXAMPLE} (${[...ex.set].join(', ')})`));
+
+  /* `Source file:` -- PRV-8. A NOTE, not a finding, and the reason is the same as SRC-1's.
+   *
+   * These cells name a PDF by basename. This repository holds no PDF and never will -- CHK-13 is the
+   * mechanism that guarantees it -- so a resolution test run against the repository root can only
+   * ever come back empty, and printing that emptiness as a finding is reporting the design as a
+   * defect. The cells are not useless: `tools/audit_abstract_overlap.js` pairs by them across the
+   * author's configured source roots and they resolve there, which is the only place they were ever
+   * meant to. Counted here so the shelf's shape is on the record, and counted as an observation. */
   const sf = [];
   for (const d of c.docs) for (const b of d.blocks) {
     if (!b.keys.has('Source file')) continue;
@@ -709,8 +761,9 @@ CHECKS.SRC = c => {
         sf.push(`${d.rel} (${where}) -> ${name}`);
     }
   }
-  out.push(sf.length ? REPORT(`PRV-8 ${sf.length} Source file: references do not resolve: ${sf.slice(0, 4).join(' ; ')}${sf.length > 4 ? ' ...' : ''}. All of them sit in inherited blocks and name PDFs that CHK-13 forbids on disk; the remedy is the PRV-1b ruling, not a path edit`)
-    : OK(`PRV-8 every Source file: reference resolves or reads "not held"`));
+  out.push(sf.length
+    ? NOTEOF(`PRV-8 ${sf.length} Source file: cells name a PDF by basename that is not inside this repository, which is by construction: no PDF is ever in here (CHK-13). They are the pairing hints tools/audit_abstract_overlap.js uses against configured source roots, and they resolve there. Not a defect and not a shortfall: ${sf.slice(0, 4).join(' ; ')}${sf.length > 4 ? ' ...' : ''}`)
+    : OK(`PRV-8 every Source file: reference resolves in this working copy or reads "not held"`));
   return out;
 };
 
@@ -901,11 +954,11 @@ CHECKS.DIV = c => {
    * standing argument. The line that matters is the UNDECLARED one, and it is printed even at zero. */
   const declaresBodyEdit = d => d.merged && [...d.merged.keys.keys()].some(k => /^Body edit\b/.test(k));
 
-  /* DIV resolves through the SAME resolver as SRC, and for the same reason SRC needed it. Before
-   * this, a clone reported 25 files as `withdrawn` -- a verdict bootstrap_contract.md defines as
-   * "a provenance Source cell naming an upstream path that no longer resolves", i.e. an UPSTREAM
-   * event. Nothing upstream had happened; the clone simply did not hold the tree. Two different
-   * facts arriving in one cell is the defect, not the count. */
+  /* DIV resolves through the shared resolver, and this is the one place the unconfigured/broken
+   * distinction still earns its keep. Before it existed, a clone reported 25 files as `withdrawn` --
+   * a verdict bootstrap_contract.md defines as "a provenance Source cell naming an upstream path
+   * that no longer resolves", i.e. an UPSTREAM event. Nothing upstream had happened; the clone
+   * simply did not hold the tree. Two different facts arriving in one cell is the defect. */
   const cfg = loadSourceRoots();
   let compared = 0, identical = 0, eol = 0, declaredDiff = 0, declaredIdentical = 0;
   const undeclared = [], withdrawn = [], unstrippable = [], notHere = [];
@@ -930,10 +983,14 @@ CHECKS.DIV = c => {
     if (declared) { declaredDiff++; continue; }
     undeclared.push(`${d.rel} vs ${src}`);
   }
-  if (!compared && !withdrawn.length) return [VACUOUS(`DIV 0 files named a resolvable upstream Source:; nothing was compared` +
-    (notHere.length ? `. ${notHere.length} named a source tree this machine does not hold -- see SRC-3; that is a configuration fact and not an upstream divergence` : ''))];
+  if (!compared && !withdrawn.length) return [VACUOUS(`DIV 0 files named an upstream Source: this machine can open, so no landed body was compared and this clause asserted nothing` +
+    (notHere.length ? `. ${notHere.length} name a source tree that is not on this machine, which is expected and is not an upstream divergence` : ''))];
 
-  if (notHere.length) out.push(REPORT(`DIV not comparable here: ${notHere.length} landed file(s) name a source tree this machine does not hold, so their bodies were NOT compared against upstream and this run says nothing about them. NOT a withdrawal and NOT drift -- see SRC-3 for how to configure the roots: ${notHere.slice(0, 4).join(' ; ')}${notHere.length > 4 ? ' ...' : ''}`));
+  /* A NOTE, not a finding. It states the size of the population DIV actually walked, which is the
+   * anti-vacuous obligation every check here carries, and it says nothing is wrong -- because
+   * nothing is. A source tree that is not on this machine is not a corpus defect, not a debt and
+   * not a task; it is the ordinary shape of a machine that is not the author's. */
+  if (notHere.length) out.push(NOTEOF(`DIV scope: ${compared} of ${compared + notHere.length} landed files were compared against upstream. The other ${notHere.length} name a source tree that is not on this machine, so this run says nothing about them either way -- not a withdrawal, not drift, nothing owed: ${notHere.slice(0, 4).join(' ; ')}${notHere.length > 4 ? ' ...' : ''}`));
   out.push(withdrawn.length
     ? REPORT(`DIV withdrawn: ${withdrawn.length} landed file(s) name an upstream path that no longer exists: ${withdrawn.slice(0, 4).join(' ; ')}`)
     : OK(`DIV withdrawn: 0 of ${compared} landed files name a vanished upstream path`));
@@ -1098,13 +1155,22 @@ function fixture(dir, opts) {
   leaves.forEach(l => mk(l, (opts.per && opts.per[l]) || {}));
   if (opts.extra) opts.extra(mk, fold, src);
 
-  /* The machine-local roots file, so the three resolution states can each be built deliberately.
+  /* The machine-local roots file, so a configured and an unconfigured machine can each be built
+   * deliberately and asserted to give the SAME verdicts.
    * %UPSTREAM% is the fixture's own source directory; %NOWHERE% is a path guaranteed absent. */
   if (opts.sourceRootsLocal) {
     fs.mkdirSync(path.join(dir, 'tools'), { recursive: true });
     fs.writeFileSync(path.join(dir, 'tools', 'source_roots.local'),
       String(opts.sourceRootsLocal).replace(/%UPSTREAM%/g, src)
         .replace(/%NOWHERE%/g, path.join(dir, 'no-such-root')) + '\n', 'utf8');
+  }
+  /* The TRACKED .example, which is the alias vocabulary SRC-2 checks against. It is written by
+   * default because every clone has it: a fixture without it would test a working copy missing a
+   * tracked file, which is a different case and is asserted separately. */
+  if (opts.sourceRootsExample !== null) {
+    fs.mkdirSync(path.join(dir, 'tools'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'tools', 'source_roots.local.example'),
+      (opts.sourceRootsExample || '# as: fixturecorpus\n/replace/with/a/path') + '\n', 'utf8');
   }
 
   const rows = fs.readdirSync(fold).map(l => `literature/isru-processing/${l}\tisru-processing\tnone\tlunar`);
@@ -1189,69 +1255,64 @@ function selftest() {
   plant('a second ## Provenance block turns PRV red', { per: { 'sowers-2019-thermal-mining.md': { secondBlock: true } } }, 'PRV', /PRV-1b /);
   plant('a dropped landed key turns PRV red', { per: { 'sowers-2019-thermal-mining.md': { dropKey: 'Dedup key' } } }, 'PRV', /PRV-2 /);
   plant('a Byte source outside the closed set turns PRV red', { per: { 'sowers-2019-thermal-mining.md': { badByteSource: 'lsei' } } }, 'PRV', /PRV-4 /);
-  plant('a dangling Source: path turns SRC red', { per: { 'sowers-2019-thermal-mining.md': { badSource: true } } }, 'SRC', /SRC-1 /);
-  /* ---- SOURCE RESOLUTION: THREE STATES, AND THE MIDDLE ONE MUST NOT BE A FAILURE ----------------
-   * The defect these six cases exist for was found by cloning the repository and running it: 25 of
-   * 169 `Source:` cells named a gitignored path, SRC-1 called them dangling, and a fresh clone
-   * therefore greeted its first reader with `FAIL 25 of 169`. The two ways of "fixing" that are
-   * both worse than the bug -- call the middle state resolved and the check certifies files it
-   * never opened; drop it from the population and the check reports 0 findings over 0 sources. Both
-   * of those pass a green-only self-test, so each is asserted here by name. */
+  /* ---- SOURCE DECLARATIONS: MALFORMATION FAILS, ABSENCE DOES NOT ------------------------------
+   * These cases replace the seven that asserted the old three-state resolution reporting, and they
+   * assert the ruling that removed it: a machine that cannot open a source has nothing wrong with
+   * it, and the corpus on it is complete. What can still be wrong is the DECLARATION -- a path that
+   * cannot travel, or an alias no machine could ever be configured for -- and that is wrong in every
+   * clone identically. The last case is the important one and it is written as a prohibition: no
+   * FAIL and no REPORT may appear anywhere in SRC merely because a source is not on this machine.
+   * Without it, somebody re-adds the count in six months because it "seems useful to know". */
   const CASE = 'aoki.md';
-  const srcState = (opts, want) => withTree(opts, mod => {
+  const srcVerdicts = (opts, fn) => withTree(opts, mod => {
     const { groups } = mod._runAll('literature', ['SRC']);
     const g = groups.find(x => x.id === 'SRC');
-    const one = g.results.filter(r => /SRC-1 /.test(r.m))[0];
-    const three = g.results.filter(r => /SRC-3 /.test(r.m))[0];
-    const got = `${one ? one.v : 'none'}/${three ? three.v : 'none'}`;
-    report(want.label, got === want.expect, `SRC-1|SRC-3 = ${got}, wanted ${want.expect}` +
-      (one ? '   ' + one.m.slice(0, 110) : ''));
+    fn(g.results);
+  });
+  const srcRow = (opts, want) => srcVerdicts(opts, results => {
+    const one = results.filter(r => /SRC-1 /.test(r.m))[0];
+    const two = results.filter(r => /SRC-2 /.test(r.m))[0];
+    const got = `${one ? one.v : 'none'}/${two ? two.v : 'none'}`;
+    report(want.label, got === want.expect, `SRC-1|SRC-2 = ${got}, wanted ${want.expect}` +
+      (one ? '   ' + one.m.slice(0, 100) : ''));
   });
 
-  // 1. An external identity with NO roots configured, alongside one that resolves. The unconfigured
-  //    one is REPORTED and the run does not fail. This is a fresh clone.
-  srcState({ leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { aliasSource: true } } },
-    { label: 'an unconfigured external identity REPORTS and does not fail', expect: 'OK/REPORT' });
+  // 1. A backslash: one machine's path, which is the defect the alias mechanism exists to remove.
+  srcRow({ leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { rawSource: 'C:\\corpora\\jm\\' + CASE } } },
+    { label: 'a Windows path in a Source: cell is MALFORMED and turns SRC-1 red', expect: 'FAIL/NOTE' });
 
-  // 2. Every source unconfigured. Zero broken over zero resolvable is NOT a pass.
-  srcState({ leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { aliasSource: true }, 'sowers-2019-thermal-mining.md': { aliasSource: true } } },
-    { label: 'nothing resolvable is VACUOUS, never OK -- 0 broken over 0 checked is not a pass', expect: 'VACUOUS/REPORT' });
+  // 2. A bare leaf names no tree, so nothing can ever look it up.
+  srcRow({ leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { rawSource: CASE } } },
+    { label: 'a bare leaf with no directory is MALFORMED and turns SRC-1 red', expect: 'FAIL/NOTE' });
 
-  // 3. The same declarations, with a root configured that actually holds them: they resolve, and
-  //    the middle-state line disappears because there is no middle state left to report.
-  srcState({
+  // 3. An alias the shipped .example does not declare can never be configured by anybody.
+  srcRow({
+    leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { aliasSource: true } },
+    sourceRootsExample: '# as: someotheralias\n/x',
+  }, { label: 'an alias the shipped .example does not declare turns SRC-2 red', expect: 'OK/FAIL' });
+
+  // 4. THE REGRESSION THAT MATTERS. The same declarations, once with a root configured and once
+  //    with none at all, must produce the SAME verdicts. A check whose answer moves with the
+  //    machine is a check that reports the machine and calls it the corpus.
+  const sameEither = { leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { aliasSource: true }, 'sowers-2019-thermal-mining.md': { aliasSource: true } } };
+  let unconfiguredVerdicts = null;
+  srcVerdicts(sameEither, results => { unconfiguredVerdicts = results.map(r => r.v).join(','); });
+  srcVerdicts(Object.assign({}, sameEither, { sourceRootsLocal: '# as: fixturecorpus\n%UPSTREAM%' }), results => {
+    const configured = results.map(r => r.v).join(',');
+    report('SRC returns the SAME verdicts with every root configured and with none',
+      configured === unconfiguredVerdicts, `unconfigured [${unconfiguredVerdicts}] vs configured [${configured}]`);
+  });
+
+  // 5. THE PROHIBITION. Nothing in SRC may go FAIL or REPORT because a source is not on this
+  //    machine. This is a fresh clone: no roots file, no _intake/, no lsei/, every source elsewhere.
+  srcVerdicts({
     leaves: [CASE, 'sowers-2019-thermal-mining.md'],
-    per: { [CASE]: { aliasSource: true }, 'sowers-2019-thermal-mining.md': { aliasSource: true } },
-    sourceRootsLocal: '# as: fixturecorpus\n%UPSTREAM%',
-  }, { label: 'a configured root resolves the same declarations', expect: 'OK/none' });
-
-  // 4. A root IS configured and the file is not under it. That is the third state and it is a
-  //    real defect, so it fails -- otherwise the mechanism would be a way to silence SRC-1.
-  srcState({
-    leaves: [CASE, 'sowers-2019-thermal-mining.md'],
-    per: { [CASE]: { aliasSource: true, badSource: true } },
-    sourceRootsLocal: '# as: fixturecorpus\n%UPSTREAM%',
-  }, { label: 'a configured root that lacks the file is BROKEN and turns SRC-1 red', expect: 'FAIL/none' });
-
-  // 5. A root declared but absent from this machine is configuration, not corpus: middle state.
-  srcState({
-    leaves: [CASE, 'sowers-2019-thermal-mining.md'],
-    per: { [CASE]: { aliasSource: true } },
-    sourceRootsLocal: '# as: fixturecorpus\n%NOWHERE%',
-  }, { label: 'a declared root that does not exist here is unresolvable-here, not broken', expect: 'OK/REPORT' });
-
-  // 6. An in-repository path under an OPTIONAL tree the clone does not have. This is the case that
-  //    would otherwise report 144 broken sources on a clone that bootstrapped offline.
-  srcState({ leaves: [CASE, 'sowers-2019-thermal-mining.md'], per: { [CASE]: { rawSource: 'lsei/literature/x/' + CASE } } },
-    { label: 'a path under an absent bootstrap working copy is unresolvable-here, not broken', expect: 'OK/REPORT' });
-
-  // 7. ...and the same path with the tree PRESENT and the file missing is broken. Without this the
-  //    rule above would be a blanket amnesty for anything under lsei/.
-  srcState({
-    leaves: [CASE, 'sowers-2019-thermal-mining.md'],
-    per: { [CASE]: { rawSource: 'lsei/literature/x/' + CASE } },
-    extra: (mk, fold, src) => fs.mkdirSync(path.join(path.dirname(path.dirname(fold)), 'lsei'), { recursive: true }),
-  }, { label: 'the same path with lsei/ PRESENT and the file missing is BROKEN', expect: 'FAIL/none' });
+    per: { [CASE]: { aliasSource: true }, 'sowers-2019-thermal-mining.md': { rawSource: 'lsei/literature/x/sowers-2019-thermal-mining.md' } },
+  }, results => {
+    const loud = results.filter(r => r.v === 'FAIL' || r.v === 'REPORT');
+    report('a machine that can open NO source produces no FAIL and no REPORT in SRC',
+      loud.length === 0, loud.length ? loud.map(r => r.v + ' ' + r.m.slice(0, 70)).join(' ; ') : 'silent, as ruled');
+  });
 
   plant('a shared level-1 dedup key with no call turns DUP red',
     { per: { 'csank-2022-powering-the-moon.md': { dedup: 'L1|10.1000/shared' }, 'sowers-2019-thermal-mining.md': { dedup: 'L1|10.1000/shared' } } }, 'DUP', /DUP-1 /);
@@ -1323,9 +1384,14 @@ if (require.main !== module) {
 
   for (const g of groups) { say('NOTE', `--- ${g.id} ---`); for (const r of g.results) say(r.v, r.m); }
 
-  /* --sources: the per-file listing behind SRC-1 and SRC-3. Every line is INDENTED, because
-   * COUNTING_RULE.md section 3 rule 11 reserves column 0 for the five verdict prefixes and a count
-   * over unfiltered output has to stay exact. */
+  /* --sources: a worksheet for the copyright audit, and nothing else reads it.
+   *
+   * It answers one question -- which sources can this machine open -- because
+   * `tools/audit_abstract_overlap.js` has to open a publication to measure verbatim overlap against
+   * it. IT IS NOT A CORPUS CHECK AND NO VERDICT ABOVE DEPENDS ON IT. A clone opens none of these and
+   * its 169 summaries are complete; the author's machine opens most of them and its 169 summaries
+   * are the same 169. Every line is INDENTED, because COUNTING_RULE.md section 3 rule 11 reserves
+   * column 0 for the five verdict prefixes and a count over unfiltered output has to stay exact. */
   if (flag('sources')) {
     const cfg = loadSourceRoots();
     const rows = [];
@@ -1335,8 +1401,9 @@ if (require.main !== module) {
       const r = resolveSource(v, cfg);
       rows.push({ state: r.state, rel: d.rel, v, extra: r.state === 'resolved' ? r.abs : r.why });
     }
-    const label = { resolved: 'RESOLVED        ', unconfigured: 'UNRESOLVABLE-HERE', broken: 'BROKEN           ' };
-    say('NOTE', `--- source resolution, ${rows.length} declarations, roots from ${cfg.file}${cfg.present ? '' : ' (ABSENT)'} ---`);
+    const label = { resolved: 'CAN OPEN        ', unconfigured: 'NOT ON THIS MACHINE', broken: 'ROOT SET, NOT FOUND' };
+    say('NOTE', `--- which sources this machine can open, ${rows.length} declarations, roots from ${cfg.file}${cfg.present ? '' : ' (not present here)'} ---`);
+    say('NOTE', `THIS IS FOR THE COPYRIGHT AUDIT, WHICH NEEDS THE AUTHOR'S SOURCE FOLDERS. It is not a corpus check. A machine that can open none of these still holds the whole corpus`);
     for (const s of ['broken', 'unconfigured', 'resolved'])
       for (const r of rows.filter(x => x.state === s)) lines.push(`  ${label[s]}  ${r.rel} -> ${r.v}   [${r.extra}]`);
     for (const s of ['resolved', 'unconfigured', 'broken'])

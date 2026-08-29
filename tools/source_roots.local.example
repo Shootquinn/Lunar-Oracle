@@ -11,10 +11,18 @@
 # a path resolves only on the machine it was typed on. It carries an IDENTITY instead, and this
 # file is where a given machine says where that identity lives.
 #
-# YOU DO NOT NEED THIS FILE. A clone without it is correct and complete. It will report every
-# external source as `unresolvable here`, which is a fact about your machine and not a defect in
-# the corpus, and `node tools/verify_corpus.js` will not fail because of it. Create this file only
-# if you hold the source trees and want the checks to actually open them.
+# YOU ALMOST CERTAINLY DO NOT NEED THIS FILE, AND NOT MAKING IT COSTS YOU NOTHING.
+#
+# The 169 summaries under literature/ are the deliverable. A clone holds all of them and can answer
+# every question this project exists to answer without opening a single source. `node
+# tools/verify_corpus.js` reports the same corpus verdicts whether or not this file exists, and it
+# will not print a finding, a warning or a shortfall because you did not make one.
+#
+# ONE thing needs it: tools/audit_abstract_overlap.js, the copyright-hygiene audit, which measures
+# how much of a publisher's abstract a summary reproduces and therefore has to open the publication.
+# Without roots it says so and exits 3 rather than printing a clean result it did not earn. That is
+# the check declining to certify what it could not measure, not the repository telling you something
+# is missing. Make this file only if you hold the source trees and want to run that audit.
 #
 # ---------------------------------------------------------------------------- WHAT A LINE MEANS
 #
@@ -51,20 +59,21 @@
 #
 #   node tools/verify_corpus.js --sources
 #
-# lists every `Source:` declaration in one of three states, and the three are never folded together:
+# lists every `Source:` declaration and whether this machine can open what it names:
 #
-#   RESOLVED            this machine can open the file.
-#   UNRESOLVABLE-HERE   this machine has not been told where that tree is. NORMAL on a fresh clone.
-#                       Never a failure.
-#   BROKEN              the root IS configured and the file is not inside it. A real defect --
-#                       either the declaration is wrong or the root points at the wrong tree.
+#   CAN OPEN              this machine can open the file.
+#   NOT ON THIS MACHINE   this machine has not been told where that tree is. Ordinary. Nothing owed.
+#   ROOT SET, NOT FOUND   a root for that alias IS configured and the file is not inside it, so the
+#                         root probably points at the wrong tree. Worth a look if you wrote the root.
 #
-# SRC-1 fails only on BROKEN. It reports VACUOUS, never OK, if nothing at all resolved: "no broken
-# sources" over a population of zero resolvable ones is not a pass.
+# THIS LISTING IS A WORKSHEET FOR THE AUDIT AND DECIDES NOTHING. No corpus verdict depends on it and
+# none of the three lines is a finding. `SRC-1` and `SRC-2` in the same tool check something else
+# entirely: that the DECLARATIONS are well formed and name an alias declared in this file. Those are
+# statements about text, so they give the same answer on every machine -- which is the point.
 #
 # ------------------------------------------------------------------------------------- TEMPLATE
 # Delete these two examples and write your own. The paths below are placeholders and exist on
-# nobody's machine; leaving them in place is harmless and reports `unresolvable here`.
+# nobody's machine; leaving them in place is harmless and reports `not on this machine`.
 
 # The Japanese-miracle economics corpus. Alias used by 25 summaries under literature/.
 # as: japanese-miracle

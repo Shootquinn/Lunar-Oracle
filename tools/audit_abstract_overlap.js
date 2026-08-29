@@ -103,11 +103,17 @@ function shingles(words, n) {
  * When any of these legitimately moves, the numbers are re-taken IN THIS FILE, in the same edit
  * that moves them. That is the point of writing them down: the update is a visible act.
  *
- * `sourcesPresent` is NOT a count and is deliberately a boolean. `_intake/` is gitignored (RG-9 --
- * no source carrier is tracked), so a FRESH CLONE HAS NO PDFs AND THIS AUDIT IS VACUOUS THERE BY
- * CONSTRUCTION. That is BC-19's two-trees fact -- the author's `literature/` and a clone's have the
- * same name and are permanently different -- and it is a reported state, not a failure of the
- * clone. What must never happen is a clone printing a clean result. It now exits 3.
+ * A FRESH CLONE CANNOT RUN THIS AUDIT AND THAT IS NOT A DEFECT IN THE CLONE. Measuring how much of
+ * a publisher's abstract a summary reproduces requires opening the publication, and the publications
+ * are not this project's to redistribute: no source carrier is tracked (RG-9), `_intake/` is
+ * gitignored, and none of that is going to change. `literature/` is IDENTICAL in a clone and on the
+ * author's disk -- 169 summaries, the whole deliverable, nothing pending -- and the only thing a
+ * clone lacks is the outside shelf this one check needs. So the vacuous state is reported as "not
+ * runnable here", never as a shortfall in the corpus.
+ *
+ * What must never happen is a clone printing a CLEAN result. Vacuous stays vacuous and exits 3.
+ * Three all-rights-reserved reproductions were found and repaired by this instrument; an audit that
+ * certifies what it did not measure is worth less than no audit.
  */
 const KA = {
   at: 'Step 8.8/8.9b (W5-3), 2026-08-28, after all three AGU repairs landed and measured to 0.0%, and the 34 Source file: declarations, measured across all three source roots',
@@ -446,6 +452,11 @@ function main(argv) {
    *
    * THESE ROOTS ARE READ-ONLY. This tool opens PDFs for text and hashes them for identity. It does
    * not copy, move, write or delete anything under them, and no PDF enters version control. */
+  /* `literature/_pdf/` is kept on this list although sub-step 2.11, the pull that would have created
+   * it, is retired and it exists on no machine. Searching a directory that is not there costs one
+   * `existsSync`, and if anybody ever does put a source shelf at that path the audit sees it. A root
+   * that is absent is skipped in silence: absence is not reported, because there is nothing to
+   * report. */
   const roots = [tree];
   for (const d of ['_intake', 'literature/_pdf']) {
     const p = path.join(ROOT, d);
@@ -476,7 +487,7 @@ function main(argv) {
   console.log(`tested ${measurable} summaries with a paired PDF and an abstract`);
   console.log(`population: ${res.mds.length} .md walked; ${res.mds.length - res.noAbstract.length} carry an extractable Abstract`);
   console.log(`skipped: ${res.noAbstract.length} with no ## Abstract section, ` +
-    `${res.noSource.length} with no source PDF resolvable on disk, ` +
+    `${res.noSource.length} whose source publication is not reachable from this machine, ` +
     `${res.ambiguous.length} whose candidates differ in content under one name, ` +
     `${res.unreadable.length} whose paired PDF would not extract, ` +
     `${res.emptyAbstract.length} whose abstract is too short to shingle`);
@@ -492,15 +503,26 @@ function main(argv) {
     console.log('  corpus and an unexamined one print the same number, and this tool will not let');
     console.log('  the two share an exit code.');
     console.log('');
+    console.log('  NOTHING IS WRONG WITH THE CORPUS AND NOTHING IS MISSING FROM IT. This is a');
+    console.log('  copyright-hygiene audit. To measure how much of a publisher\'s abstract a summary');
+    console.log('  reproduces, it has to open the publication -- and the publications are not this');
+    console.log('  project\'s to redistribute, so they are not in the repository and never will be.');
+    console.log('  The summaries are the deliverable and this working copy has all of them.');
+    console.log('');
     if (!pdftotext) {
       console.log('  CAUSE: `pdftotext` is not on the PATH, so no source could be read whatever else');
       console.log('  is on disk. Install poppler-utils and re-run.');
     } else if (sourcesOnDisk === 0) {
-      console.log('  CAUSE: no source PDF was found under any of the roots above. `_intake/` is');
-      console.log('  gitignored (RG-9: no source carrier is tracked), so A FRESH CLONE CANNOT RUN');
-      console.log('  THIS AUDIT AT ALL. That is BC-19\'s two-trees fact and it is expected on a');
-      console.log('  clone -- but it is a VACUOUS state, never a clearance. Point --sources at a');
-      console.log('  shelf of PDFs, or run sub-step 2.11 (the PDF pull), then re-run.');
+      console.log('  CAUSE: this machine has not been told where any shelf of source publications');
+      console.log('  is, so there was nothing to compare the summaries against. THAT IS THE EXPECTED');
+      console.log('  STATE ON ANY MACHINE BUT THE AUTHOR\'S, and it is not a defect in anything.');
+      console.log('  This check is simply not runnable here, and it is the only check in this');
+      console.log('  repository that needs anything from outside it.');
+      console.log('');
+      console.log('  If you do hold the publications and want to run it: copy');
+      console.log('  tools/source_roots.local.example to tools/source_roots.local and point it at');
+      console.log('  them, or pass --sources <dir>. That file is gitignored; no source ever enters');
+      console.log('  version control. Otherwise there is nothing for you to do here.');
     } else if (res.mds.length === 0) {
       console.log(`  CAUSE: no .md file was found under ${treeRel}/ at all.`);
     } else {

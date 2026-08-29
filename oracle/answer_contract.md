@@ -1,7 +1,11 @@
 
 # The answer contract
 
-**Contract version: 3.**
+**Contract version: 4.**
+
+Version 4 is **one edit**, landed at sub-step 8.7 by The Writer. It appends **§11**, which rules that
+The Fact-Checker's findings route to The Manager and stop there, and that her scope is bounded to
+whether claims of fact in the test plan are attributed and checkable. Nothing in §1 through §10 moved.
 
 Version 3 is **one edit**, landed at sub-step 8.4 by The Writer. It carries five changes and
 increments the integer **once**: §6 gains a required deliverable shape, loses the two conditions that
@@ -482,6 +486,11 @@ naming a state somebody holds, and a further change mints the next one. This is 
 accumulate: it closes at the moment of publication, which is a fact about the repository rather than
 a judgement about how related two changes feel.
 
+**Version 4 is the single edit landed at sub-step 8.7, Wave 5, by The Writer.** It carries §11 and
+nothing else. It minted an integer rather than folding into 3 because **§9's own test says 3 had already
+been observed**: `oracle/deliverable_shape.md` states it was written against version 3, and the promoted
+suite's VER-2 names 3 in its report. Version 3 was a state somebody held, so version 4 is the next one.
+
 **A section appended is not a section renumbered.** §6a and §10 are appended at the numbers they are
 because §1 through §9 are cited by number across this repository — in `oracle/register_schema.md`,
 in `oracle/tests/answering_loop_suite.md`, in `tools/verify_answers.js`, in `CLAUDE.md` — and
@@ -533,3 +542,70 @@ So a finding the session's own reading contradicts is set aside, and *"I read th
 axis and the tool did not"* is a sufficient reason — the whole reason, needing no synonym table and no
 stemmer to back it up. **The tool reports; the session rules.** A session that defers to a score it
 can see is wrong has reintroduced the classifier this wave removed, in prose.
+
+
+## 11. The Fact-Checker reports; the Manager rules
+
+**This is §10 applied to a seat instead of a tool.** §10 says the router advises and the session
+rules. The same asymmetry holds one level up: The Fact-Checker advises and The Manager rules. Nothing
+below is a demotion, and §11.5 is why it cannot be read as one.
+
+**The layering, stated once.** `cr-agents/` supplies the method — the seats, the loop, the
+Collaborative Reasoning apparatus — and it is an upstream working copy this project clones unmodified
+and never writes to. This project's operating rules **over** that method live under `oracle/`, which
+is what an answering session reads. Where the two differ, this file governs *this* Oracle, and we do
+not edit theirs to make the point: a rule written into `cr-agents/` is destroyed by the next clone and
+reaches no cloner at all.
+
+### 11.1 Routing
+
+The Fact-Checker's findings go to The Manager and **stop there**. They are not self-executing and they
+do not enter a deliverable on their own. The Manager receives them and rules, and records the ruling
+on §10's existing line — `Evidence pass: took <ids>. Set aside <ids>: <one reason per id>.` This
+section mints no new instrument.
+
+### 11.2 The standard
+
+The Manager decides **for the good of the writing, not to satisfy The Fact-Checker.** A finding that
+is technically correct and would make the deliverable worse is declined. Declining it is the Manager
+doing the job, not failing to.
+
+### 11.3 Scope, and the boundary is sharp
+
+Her utility is ensuring that **claims of fact in the test plan are attributed and checkable.**
+
+- **In scope:** *"this test requires a fact that has no attribution."* That is her at full value, and
+  it catches a bad test somebody else wrote.
+- **In scope:** requiring a named figure from a named source — for Cabeus, that a particular LRO
+  figure be cited from a particular paper.
+- **Out of scope:** provenance anxiety, chasing a missing PDF, auditing whether a summary faithfully
+  represents a source she cannot open, and any line of inquiry that begins with an artifact that is
+  not on this machine.
+
+**The asymmetry is the whole of it. An unattributed claim is a finding and it binds. A claim she
+cannot personally verify because the PDF is not on this machine is not a finding at all.**
+
+### 11.4 The terminating condition
+
+**Once a claim is attributed and checkable, her job on that claim is done**, and The Manager is
+entitled to treat it as closed and move on. Continued objection past that point is not new
+information.
+
+It is written as a terminating condition because she will keep going anyway, and the cause is her
+position rather than a defect: **she sees summaries, not sources**, and working from summaries alone
+*generates* provenance worry. That is a predictable artifact of the seat, not evidence about the
+corpus.
+
+### 11.5 Why this exists, and why it is not a removal
+
+The failure mode has a name here: **lab-coat behaviour** — a seat or an instrument performing rigour
+on a non-problem, and the performance leaking into the deliverable as hedging, caveats and apologetic
+provenance language that makes complete work read as deficient. The repository's 169 summaries **are**
+the deliverable, the PDFs were scaffolding and are already down, and a clone holding all 169 is
+complete rather than degraded. Another seat is removing that pattern from the tooling this sitting.
+**§11 is the same fix applied to the team.**
+
+**She catches real defects, which is why this is a routing and scope rule and not a demotion.** The
+receipts: twelve register claims attached to the wrong paper or contradicting their own source, three
+all-rights-reserved copyright reproductions, a summary crediting one author with another's argument. A
+reading of this section as *"ignore The Fact-Checker"* has overshot and is wrong.

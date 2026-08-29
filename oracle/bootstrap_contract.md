@@ -27,8 +27,8 @@ of that phase does.
 | The tracked ref record | named by sub-step 1.5 | Content, committed, survives a clone. Records the ref each working copy was last **verified against**. The bootstrap reads it and never writes it. |
 
 **The bootstrap writes exactly one file: `.oracle-state.json`.** The four facts it carries — the
-verified-against refs, the corpus provenance digest, whether source PDFs are present in this install,
-and the first-run flag with its timestamp and its completed boolean — are written there and nowhere
+verified-against refs, the corpus provenance digest, whether this machine is configured to reach the
+source publications the copyright audit needs, and the first-run flag with its timestamp and its completed boolean — are written there and nowhere
 else. A fact that appears to need a second store is referred to sub-step 1.5, which either finds it a
 field or rules it is not a fact. **A second store for any of the four is a defect, not an
 optimisation.**
@@ -202,7 +202,8 @@ Write the four facts. Then report, in this order:
 5. Each shelf: present or absent, and its conforming-file count.
 6. The corpus fork verdict (§7.2), and the count behind it. `unknown` is reported as `unknown`
    and never as `equal`.
-7. Whether source PDFs are present in this install.
+7. Whether this machine can reach the source publications (BC-19) — stated as a capability of the
+   machine, never as a state of the corpus, and never as something the reader owes.
 8. Any report lines from Phase 4 that are not modes: an over-allowance root with copies present, a
    fetch that could not run, a defeated push-disable.
 
@@ -444,7 +445,7 @@ into a verdict in either direction is the defect. Found by `oracle/tests/bootstr
 |---|---|---|---|---|
 | BC-17 | The summary shelf holds conforming files. | count of `literature/*/*.md` matching `NAMING.md`'s summary regex is greater than zero | A `literature/` holding only a `README.md`, passing a non-empty test, and holding no corpus. | Origin `literature` unavailable (§6) |
 | BC-18 | The findings shelf holds conforming files, when it exists. | count of `findings/*.md` matching `NAMING.md`'s findings regex is greater than zero | A shelf assertion satisfied by a non-conforming file the retrieval layer cannot reach. | Origin `findings` unavailable (§6) |
-| BC-19 | Whether source PDFs are present in this install. | `test -d literature/_pdf` and it holds at least one file | — | Recorded as a fact, not a failure |
+| BC-19 | Whether this machine can reach the source publications, which exactly one check needs. | `test -s tools/source_roots.local`, or a non-empty `$LUNAR_ORACLE_SOURCE_ROOTS` | — | Recorded as a fact about the machine, never as a state of the corpus. **RESTATED at W5-6**: it used to probe `test -d literature/_pdf`, a directory sub-step 2.11 would have created and which is now retired, so the assertion was permanently false everywhere and read as a shortfall on every install |
 
 ### Phase 4, group 5: the bypass ledger
 
@@ -472,10 +473,27 @@ BC-18's shelf is permitted to be absent before the merge lands. Absent and empty
 for the origin set and are distinguished in the report, because absent is expected today and empty
 after the merge is a defect.
 
-BC-19 is why the fact is recorded at all: the author's `literature/` and a fresh clone's
-`literature/` are permanently different trees with the same name, and without this fact nothing tells
-a session which one it is in. A session that cannot tell will offer a reader a source a clone does not
-have, or decline to read one that is sitting on disk.
+**BC-19 was restated at W5-6, and the old version of it is the thing to understand.** It read *whether
+source PDFs are present in this install*, and it probed `literature/_pdf/` — a directory that
+sub-step 2.11's pull would have created, that 2.11 is now retired without creating, and that therefore
+exists on no machine anywhere. Every install reported `false`. The prose under it argued that the
+author's `literature/` and a clone's are *"permanently different trees with the same name"*, and that
+was the premise the whole row rested on. **It is not true.** `literature/` is the same 169 summaries in
+both, byte for byte; it is the deliverable, and a clone holding it is complete rather than partial.
+What genuinely differs between the two machines is something outside `literature/` entirely: whether
+this machine can reach the *source publications*, which are not this project's to redistribute and are
+in no clone by design.
+
+So the fact is kept and re-pointed, because one real thing still turns on it. `tools/audit_abstract_
+overlap.js` measures how much of a publisher's abstract a summary reproduces, and it cannot do that
+without opening the publication. Where it cannot, it must report VACUOUS and refuse to certify — that
+instrument has found and forced the repair of three all-rights-reserved reproductions, and an audit
+that prints a clean line over nothing it opened is worse than no audit. BC-19 is what tells a session,
+before the audit runs, which of those two situations it is in.
+
+**It is reported in that language and not in the language of absence.** Not *source PDFs absent*, which
+invites a reader to go and find some; *this machine is not configured for the copyright audit, which is
+expected and is not a shortfall in this repository*. The corpus is whole either way.
 
 ## 5. Degraded modes
 

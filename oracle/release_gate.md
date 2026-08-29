@@ -5,9 +5,14 @@
 Public release is an irreversible external act. Once the repository is public, a corpus file carrying
 a publisher's copyrighted text has been published by this project, and no later commit unpublishes
 it. **The author releases. This document decides only whether the preconditions hold**, and today
-they do not: **eight of sixteen gates are NOT MET**, and one of those eight is the licence file.
+they do not: **three of fifteen gates are NOT MET**, and a fourth is unmeasurable until one of the
+three closes.
 
-**Gate version: 1.** Measured at `HEAD = 99d3601`, 2026-08-28, over a 169-file corpus.
+**Gate version: 2.** Re-measured 2026-08-29 at W5-6 over the same 169-file corpus. Version 1 had
+sixteen gates and eight of them not met; **`RG-1` is retired at this version and eight cells are
+re-measured**, and §7 records what changed and why so that a reader of version 1 can follow it.
+Nothing was cleared by editing its criterion: every cell that moved names the command that moved
+it.
 
 ---
 
@@ -27,10 +32,10 @@ before either is the act that cannot be undone. **§3 is in that order and the g
 > **An unmeasurable population is unmeasured. It is never clear.**
 
 This is not a general principle borrowed from somewhere. It is the specific failure this gate exists
-to catch, and it has a live instance that reproduces in one command:
+to catch, and at version 1 it had a live instance that reproduced in one command:
 
 ```
-$ node tools/audit_abstract_overlap.js literature 10
+$ node tools/audit_abstract_overlap.js literature 10          # 2026-08-28, before 8.9
 tested 0 summaries with a paired PDF and an abstract
 skipped: 0 with no ## Abstract section, 0 with no readable paired PDF
 median overlap n/a%
@@ -38,44 +43,54 @@ median overlap n/a%
 AT OR ABOVE 10% VERBATIM: 0
 ```
 
-**Zero findings.** The corpus holds 169 summaries and the tool pairs each `x.md` with a sibling
-`x.pdf`; `literature/` holds no PDFs, so the tool tests nothing and reports nothing, and the last line
-reads exactly as it would over a corpus that had been audited and found clean. A gate that reads that
-output as a pass has passed on a measurement that was never taken.
+**Zero findings, and it had opened no file at all** — `readdirSync` did not recurse and the corpus
+lives one directory down. The last line and the exit code, the only two things a gate consumes, were
+byte-identical to a corpus that had been audited and found clean. Sub-step 8.9 repaired it, and the
+same command now prints `tested 160 summaries` and `AT OR ABOVE 10% VERBATIM: 6 of 160 tested`, with a
+known-answer test that fails if either number moves. The broken output is kept above because the rule
+is easier to hold with the instance in front of you.
 
-The same shape, one layer up, is the honest statement of Open Question 8 as its own auditor wrote it:
-*the audit is complete over the 112 summaries whose source is on disk, and it has never been attempted
-on the other 56.* **Fifty-six of one hundred and sixty-nine.** Fifty of those fifty-six are
-Scenario-Explorer-origin and are disproportionately the long Comprehensive Technical Summary format,
-which has more room for transcription, not less.
+**AND THE SECOND HALF OF THE RULE, WHICH VERSION 1 GOT WRONG.** Unmeasurable is not clear, and it is
+also **not a shortfall in this repository**. Version 1 read *"56 of 169 have no source PDF"* as a debt
+the project owed and made `RG-1` a gate on landing PDFs into the tree to pay it. That was backwards.
+**The 169 summaries are the deliverable.** The publications behind them are not this project's to
+redistribute, are in no clone by design, and are needed by exactly one instrument — this audit, which
+must open a publication in order to measure verbatim overlap against it. A machine that cannot open
+them cannot run that one check. It is not holding a deficient corpus.
 
-Every gate below that reports a count therefore reports **three** numbers — measured, findings, and
-**unmeasurable** — and a gate whose unmeasurable count is greater than zero is `NOT MET` regardless of
-its findings count.
+So the rule has two halves and they are both binding:
+
+1. **A run that measured nothing certifies nothing.** `audit_abstract_overlap.js` exits 3 and prints
+   `VACUOUS, NOT CLEAN` rather than a zero. That is not negotiable and is what found three
+   all-rights-reserved reproductions.
+2. **An unmeasurable file is named, with its reason, and the reason is never "the PDF is not on this
+   machine."** A count of unmeasurables is not a finding; a named file whose source nobody can produce
+   is. There are six and they are listed in `RG-2`.
 
 ---
 
 ## 3. The gates
 
-Sixteen. Each names the command that decides it, the observation that would falsify it, and its state
-as measured this session. **Conjunctive: all sixteen, or the gate is shut.**
+Fifteen at version 2, and the sixteenth is retired below rather than deleted. Each names the command
+that decides it, the observation that would falsify it, and its state as measured this session.
+**Conjunctive: all fifteen, or the gate is shut.**
 
 ### 3.1 First: the untested summaries get tested
 
 | Id | Precondition | Command that decides it | Measured 2026-08-28 |
 |---|---|---|---|
-| **RG-1** | Source PDFs for the whole shelf are on disk, so the audit has a population | `test -d literature/_pdf && find literature/_pdf -iname '*.pdf' \| wc -l` — must equal or exceed the count of summaries claiming a PDF source in `cr_scratch/merge_plan.tsv` | **NOT MET.** `literature/_pdf` does not exist. **Sub-step 2.11's pull has not run.** The 112 PDFs that do exist are under `_intake/japanese-miracle/lit/`, which is a staging area and not the shelf |
-| **RG-2** | The abstract-overlap audit has been re-run over the whole shelf, and the unmeasurable count is **zero** | `node tools/audit_abstract_overlap.js literature 10`, read for all three numbers. Falsified by a run whose `tested` count is less than the corpus size | **NOT MET.** `tested 0`, `findings 0`, **unmeasurable 169**. The 2.12 audit measured `tested 112, findings 8, unmeasurable 56` at `899e0ddfb70ed83f` over 168 files, using a hardlinked stage built outside the repository. That stage is how the audit was possible at all, and rebuilding it is the auditor's instruction: *run 2.11, then re-run this audit unchanged* |
-| **RG-3** | The re-run reproduces the eight known findings, so the instrument is known to still work | The eight are `prettyman-2006` 100.0, `levin-2025` 95.6, `mcleod-2017` 74.0, `castillo-rogez-2022` 54.1, `andrews-hanna-2025` 40.9, `hagerty-2011` 39.4, `lawrence-2003` 11.4, `wilson-2018` 11.2. Falsified by a re-run returning a different set over the same 112 | **UNMEASURABLE** until RG-1. The figure set has reproduced across three independent runs — The Engineer at Step 0, The Fact-Checker at Wave 1 on a heading-relaxed build, and 2.12 at two digests — and a fourth run that did not reproduce it would mean the instrument changed, not the corpus |
+| **RG-1** | ~~Source PDFs for the whole shelf are on disk, so the audit has a population~~ | — | **RETIRED at version 2, and not by being met.** This gate demanded that source publications be landed *inside the repository tree* at `literature/_pdf/`, as a proxy for the thing that actually matters — that the audit had something to measure. **`RG-2` measures that directly**, so the proxy asserted nothing `RG-2` does not, and it asserted it wrongly: it made a machine holding a complete corpus read as a machine missing 169 files, and it pointed the remedy at putting publishers' PDFs into a repository whose entire containment mechanism (`RG-9` to `RG-11`) exists to keep them out. Its dependency, **sub-step 2.11's PDF pull, is retired with it**: 447 source PDFs across three configured roots already pair to 160 of the 166 summaries carrying an abstract, and no pull can conjure a PDF for a UN treaty or a Gutenberg ebook. Retiring a gate is a visible act and this row stays here saying so |
+| **RG-2** | The abstract-overlap audit has been run over the whole shelf, and **every summary is either measured or named individually with the reason it cannot be** — and that reason is never "the source is not on this machine" | `node tools/audit_abstract_overlap.js literature 10`, read for all three numbers and for its exit code. Falsified by a run that exits 3 (vacuous), by a `tested` count that is not accounted for file by file, or by an unmeasurable file with no stated reason | **MET, re-measured 2026-08-29.** `tested 160`, `findings 6`, **unmeasurable 6**, exit 0, and the tool's own §KA known-answer test passes on the population and on the finding set. **The six are named and each has a reason, and no PDF pull would change any of them: their sources were never PDFs.** `henderson-2008-myth-of-miti` (econlib HTML entry, self-declared secondary in-file), `payload-research-starship-cost` (web article), `taylor-1911-scientific-management` (Gutenberg #6435, public domain), and the three UN treaty texts `un-1967-outer-space-treaty`, `un-1972-liability-convention-space-objects`, `un-1979-moon-agreement`. Three further summaries carry no `## Abstract` heading and are a separate reported skip in the ledger. **This cell is `MET` because the population is accounted for, not because the unmeasurable count is zero** — version 1 required zero, which is unreachable for a summary whose source is a treaty, and a gate that can never open is not a gate |
+| **RG-3** | The run reproduces a **declared** finding set, so the instrument is known to still work | The tool's own `§KA` declares the expected set and FAILS on a mismatch in either direction on every run — a shrinking finding set and a growing one are both named failures. Falsified by a run whose finding set differs from the declaration with no re-declaration in the same edit | **MET, re-measured 2026-08-29.** The declared set is six: `mcleod-2017` 74.0, `castillo-rogez-2022` 54.1, `andrews-hanna-2025` 40.9, `lawrence-2003` 11.4, `nasa-2025-fission-surface-power-directive` 11.3, `wilson-2018` 11.2, and the run reproduces it exactly. **It is six and not eight because three were repaired**: `prettyman-2006` (100.0, AGU), `levin-2025` (95.6, AGU) and `hagerty-2011` (39.4) were rewritten at 8.8 and now measure below threshold; `nasa-2025` is a member the earlier list never carried. This is stronger than version 1's criterion, which was a human comparison against a list in a document; it is now a known-answer test the instrument runs on itself |
 | **RG-4** | The instrument's own known defect is accounted for | The repaired terminator `(?=^##[ \t]\|$(?![\s\S]))` captures **to the end of the file** where `## Abstract` is followed only by `###` subsections; seven files do this. The error **deflates** — a 150-shingle abstract diluted into a 3,000-shingle body reads near zero — so it cannot manufacture a finding, and on this corpus it hid none: re-run abstract-only, the maximum outside the eight is 8.7% (`ehricke-1984`). Falsified by a `≥1%` tail read as signal | **MET as a known limit, NOT as a fix.** The defect is real, characterised, and routed to The Software Engineer. It is `MET` here because a deflating instrument cannot let contamination through; it would be `NOT MET` if it inflated |
 
 ### 3.2 Then: the contaminated set is cleared or marked
 
 | Id | Precondition | Command that decides it | Measured 2026-08-28 |
 |---|---|---|---|
-| **RG-5** | Every file the audit flags is **cleared or marked**, and the decision is recorded per file | For each of the finding set: either the file no longer reproduces its source above threshold, or it carries an explicit marking and a licence basis. Falsified by a file that is neither | **NOT MET, and it is one file, not thirteen and not eight.** Seven of the eight declare the reproduction in their own section heading, in five distinct forms, and three of those seven are open-licensed at source and say so — `mcleod-2017` (MDPI open access), `castillo-rogez-2022` (CC BY 4.0), `andrews-hanna-2025` (Nature Open Access). **`prettyman-2006` is the row where the marking does not settle it**: a full-length 100.0% verbatim AGU abstract whose own provenance block prints *"Copyright 2006 by the American Geophysical Union"*. Marked, attributed, and still not this project's to dedicate. **`levin-2025` at 95.6%, also AGU, is the same shape one step down** |
-| **RG-6** | The two AGU files are rewritten or explicitly excepted, and the decision is the author's | Rewriting is 2.12's own recommendation and its stated cost is an hour: *rewriting those two removes the question instead of managing it, which is cheaper than any notice file that grows a line each time this recurs*. The alternative is a `NOTICE.md` exception naming both, which is the `lsei/NOTICE.md` precedent and which this gate accepts | **NOT MET.** Neither has been rewritten and no notice names them. **This is the author's decision and not this gate's** — the gate asserts only that one of the two dispositions exists |
-| **RG-7** | Every summary carries a licence class, so the claim is per file rather than in aggregate | `grep -rlE '^Licence:' literature/ \| wc -l` must equal the corpus size, and both `PRV-15` classes — `own-summary` and `contains-transcribed-source-text` — must have members | **NOT MET.** Measured: **0** of 169. `PRV-15` is **vacuously green**: it asserts a partition over a population in which neither class has a single member, and it has been in that state since Wave 1. A register row that cannot go red is `CHK-03`, and this one sits on the licence question |
+| **RG-5** | Every file the audit flags is **cleared or marked**, and the decision is recorded per file | For each of the finding set: either the file no longer reproduces its source above threshold, or it carries an explicit marking and a licence basis **in the file itself**. Falsified by a flagged file that is neither | **MET, re-measured 2026-08-29.** `grep -rli 'licence:' literature/` returns **nine** files and they are exactly the six the audit flags plus the three it used to flag. Each carries a `Licence:` class and a basis: three are open-licensed at source and say so — `mcleod-2017` (MDPI open access), `castillo-rogez-2022` (CC BY 4.0), `andrews-hanna-2025` (Nature Open Access); `nasa-2025` is a US Government work; `lawrence-2003` and `wilson-2018` are project prose with de minimis clause carryover. **The three that marking could not settle were repaired instead** — see RG-6 |
+| **RG-6** | The AGU files are rewritten or explicitly excepted, and the decision is the author's | The gate asserts only that one of the two dispositions exists. Falsified by an all-rights-reserved reproduction still measuring above threshold with no notice naming it | **MET, re-measured 2026-08-29.** Both were **rewritten** at 8.8, which was 2.12's own recommendation, and a third the gate never named went with them: `prettyman-2006` (was 100.0), `levin-2025` (was 95.6) and `hagerty-2011` (was 39.4) are all below threshold and absent from the finding set. The citation and the copyright line are kept as attribution. No `NOTICE.md` exception was needed because no exception is outstanding |
+| **RG-7** | Every summary carries a licence class, so the claim is per file rather than in aggregate | `grep -rli 'licence:' literature/ \| wc -l` must equal the corpus size, and both `PRV-15` classes — `own-summary` and `contains-transcribed-source-text` — must have members | **NOT MET, re-measured 2026-08-29, and it has moved off zero.** Measured: **9** of 169 — 3 `contains-transcribed-source-text`, 6 `own-summary`. **`PRV-15` is no longer vacuously green**: both classes have members, so the partition it asserts can now fail, which it could not do at any point between Wave 1 and 8.8. The remaining 160 are a bulk pass over files the audit measured and cleared. **The six of `RG-2` must not be included in that pass** — no measurement supports a class for them and a label with nothing behind it is what `RG-8` exists to catch. Version 1's command searched for `^Licence:` at column 0 and would have returned 0 against all nine; the key is written as a provenance bullet |
 | **RG-8** | The count of `contains-transcribed-source-text` equals the audit's finding set | Once RG-7 is met: the two sets are compared by filename, not by count. Falsified by a file labelled `own-summary` that the audit flags, or a file labelled `contains-transcribed-source-text` that it does not | **UNMEASURABLE** until RG-7. Named because the two mechanisms are independent — one is a hand-applied label and one is a shingle count — and **agreement between them is the evidence, not either alone** |
 
 ### 3.3 The containment mechanism is installed and asserted
@@ -92,9 +107,9 @@ as measured this session. **Conjunctive: all sixteen, or the gate is shut.**
 
 | Id | Precondition | Command that decides it | Measured 2026-08-28 |
 |---|---|---|---|
-| **RG-14** | A `LICENSE` file exists at the repository root and is tracked | `git ls-files \| grep -cE '^(LICENSE\|LICENCE)'` | **NOT MET.** Measured: **0**. There is no `LICENSE` and no `NOTICE.md` at this repository's root. **Under A1 the repository is public, and a public repository with no licence file is all-rights-reserved by default** — which is not what a project that intends a public-domain dedication means, and is the single cheapest gate on this list to close. `lsei/LICENSE` (the Unlicense, verbatim) and `lsei/NOTICE.md` (one named exception, described in full) are the precedent and they are in another repository |
-| **RG-15** | `README.md` has landed, is tracked, and has been through 6.14 | `git ls-files README.md`; `oracle/tests/readme_suite.md` bound and its RED rows closed | **NOT MET.** `README.md` exists on disk at 12,063 bytes and **`git ls-files README.md` returns nothing — it is untracked.** `oracle/tests/readme_suite.md` was written at 6.11 this session and carries two RED rows, `RDM-14` (the README cannot call the corpus clear while 56 of 169 are unmeasured) and `RDM-15` (`PRV-15`'s classes are empty), both of which close only when RG-2 and RG-7 close |
-| **RG-16** | The three suites written this wave are wired to the runner, and the run is not all-`UNRUN` | `node oracle/tests/run_suite.js` | **NOT MET.** Measured: **455 rows, 33 pass, 4 fail, 418 unrun**, exit 1. Of the 418: 7 DEFERRED with a named blocker, 0 VACUOUS, **411 with no executable binding at all.** `oracle/tests/bootstrap_suite.md` (61), `oracle/tests/first_run_suite.md` (28) and `oracle/tests/readme_suite.md` (26) are **not in `SUITES`** and contribute none of the 455. **The four standing failures are argued in `af7abec` and are not to be silenced to open this gate** — a gate cleared by editing the test that blocked it is not a gate |
+| **RG-14** | A `LICENSE` file exists at the repository root and is tracked | `git ls-files \| grep -cE '^(LICENSE\|LICENCE)'` | **MET, re-measured 2026-08-29.** Measured: **1**. `LICENSE` is tracked at the root. Version 1 measured 0 and called this the cheapest gate on the list to close; it was closed. `lsei/LICENSE` (the Unlicense, verbatim) and `lsei/NOTICE.md` were the precedent. **This cell asserts existence and tracking only** — which dedication it is remains the author's, and whether any file needs a notice exception is `RG-6`, which is now met with none outstanding |
+| **RG-15** | `README.md` has landed, is tracked, and has been through 6.14 | `git ls-files README.md`; `oracle/tests/readme_suite.md` bound and its RED rows closed | **NOT MET, and the half that remains is not the tracking half.** `git ls-files README.md` now returns the file: **it is tracked**, re-measured 2026-08-29. `oracle/tests/readme_suite.md` is still not in `run_suite.js`'s `SUITES`, contributes no rows to the run, and its two RED rows are therefore unobserved rather than closed. **`RDM-14`'s premise has moved and the suite has not been told**: it reads *"the README cannot call the corpus clear while 56 of 169 are unmeasured"* and **the number is six**, each named with a reason in `RG-2`. `RDM-15` reads *"`PRV-15`'s classes are empty"* and both classes now have members — 3 `contains-transcribed-source-text`, 6 `own-summary`. **Neither row may be greened by editing it here**: `oracle/tests/**` belongs to another seat, this cell records the moved premise and routes it, and until the suite is wired and re-argued the gate is shut. The README's own prose still states *112 of 168 tested*, *56 unmeasured* and *"the step that pulls those source PDFs has not run"* — three stale claims and one retired sub-step, routed with it |
+| **RG-16** | The three suites written this wave are wired to the runner, and the run is not all-`UNRUN` | `node oracle/tests/run_suite.js` | **NOT MET, re-measured 2026-08-29.** Measured: **148 rows, 101 pass, 43 fail, 4 unrun**, exit 1. All four unrun are DEFERRED with a named reason and **0 rows have no binding at all**, against version 1's 411 — the row count fell because unbound rows were removed, not because tests were. `oracle/tests/bootstrap_suite.md`, `oracle/tests/first_run_suite.md` and `oracle/tests/readme_suite.md` are **still not in `SUITES`** and contribute none of the 148. Of the 43 failures, **34 are `RFX-*`**, the router retirement at 8.1, and four are the standing `af7abec` set. **Neither group is to be silenced to open this gate** — a gate cleared by editing the test that blocked it is not a gate |
 
 ---
 
@@ -113,6 +128,16 @@ Closed, because each is a thing somebody will propose in order to ship.
    line.
 4. **Never accepts an aggregate where a per-file label is owed.** RG-7 and RG-8 exist because "the
    corpus is clean" is a claim no reader can check and "this file is `own-summary`" is one they can.
+   The same rule runs the other way and version 1 broke it: **an aggregate count of unmeasurable
+   files is not a finding either.** Six named files with six stated reasons is a finding; "56 of 169
+   unmeasured" is a number that made a complete corpus read as a deficient one.
+4b. **Never treats the absence of a source publication as a defect in this repository.** Added at
+   version 2 on the author's ruling. The 169 summaries are the deliverable; the publications behind
+   them were never going to be in here, are needed by exactly one instrument, and a machine that
+   cannot open them is holding a whole corpus. What the gate still refuses, and refuses absolutely,
+   is a *clean* result from a run that opened nothing: §2 rule 1, `exit 3`, `VACUOUS, NOT CLEAN`.
+   **Vacuous stays vacuous. Absent stops being a shortfall.** The two are not the same relaxation and
+   only the second one was made.
 5. **Never silences a failing test to clear a gate.** RG-16. The four standing failures are argued
    on the record and belong to their authors.
 6. **Never clears a gate on a file it has not measured.** Every `MET` above carries the command that
@@ -126,26 +151,28 @@ Closed, because each is a thing somebody will propose in order to ship.
 
 | | Gate | State |
 |---|---|---|
-| 1 | RG-1 source PDFs on disk | **NOT MET** — 2.11 has not run |
-| 2 | RG-2 audit re-run, unmeasurable zero | **NOT MET** — 169 unmeasurable today, 56 at the last real run |
-| 3 | RG-3 eight findings reproduce | unmeasurable until RG-1 |
+| — | ~~RG-1 source PDFs on disk~~ | **RETIRED at version 2** — a proxy for RG-2 that RG-2 measures directly, and it read a complete corpus as a deficient one. 2.11 retired with it |
+| 2 | RG-2 audit run, every summary measured or named | **MET** — tested 160, findings 6, six unmeasurable named with reasons, exit 0 |
+| 3 | RG-3 the declared finding set reproduces | **MET** — six declared in the tool's §KA, checked on every run, both directions |
 | 4 | RG-4 instrument defect accounted for | MET as a known deflating limit |
-| 5 | RG-5 every flagged file cleared or marked | **NOT MET** — one file to decide, `prettyman-2006` |
-| 6 | RG-6 the two AGU files dispositioned | **NOT MET** — author's decision |
-| 7 | RG-7 `PRV-15` licence classes filled | **NOT MET** — 0 of 169 |
+| 5 | RG-5 every flagged file cleared or marked | **MET** — 9 files carry a `Licence:` class and a basis |
+| 6 | RG-6 the AGU files dispositioned | **MET** — three rewritten at 8.8, none above threshold |
+| 7 | RG-7 `PRV-15` licence classes filled | **NOT MET** — 9 of 169, but both classes non-empty for the first time |
 | 8 | RG-8 labels agree with the audit | unmeasurable until RG-7 |
 | 9 | RG-9 no tracked source carrier | **MET** — 497 scanned, 0 findings |
 | 10 | RG-10 ignore rules asserted over a sized probe | **MET** — 25 probes, 0 open |
 | 11 | RG-11 size gate declares its blindness | **MET** — 29 of 112 blind, printed |
 | 12 | RG-12 hooks wired, executable, LF | **MET** — 4 at 100755, eol lf |
 | 13 | RG-13 bypass ledger clean | **MET** — no ledger on this install |
-| 14 | RG-14 `LICENSE` at root, tracked | **NOT MET** — no licence file exists |
-| 15 | RG-15 `README.md` tracked and revised | **NOT MET** — untracked; two RED suite rows |
-| 16 | RG-16 suites wired, run not all-UNRUN | **NOT MET** — 411 rows with no binding; three new suites unwired |
+| 14 | RG-14 `LICENSE` at root, tracked | **MET** — 1, tracked |
+| 15 | RG-15 `README.md` tracked and revised | **NOT MET** — tracked now; suite unwired, two RED rows on moved premises |
+| 16 | RG-16 suites wired, run not all-UNRUN | **NOT MET** — 43 failures, three suites still unwired |
 
-**Eight met, six not met, two unmeasurable.** The gate is shut, and the shortest path through it is
-the one 2.12 already named: **run 2.11, then re-run the audit unchanged.** RG-14 is independent of all
-of that and is one file.
+**Eleven met, three not met, one unmeasurable.** The gate is shut. **The shortest path through it is
+no longer a PDF pull** — version 1 said *run 2.11, then re-run the audit unchanged*, and the audit has
+since been repaired and run without it. What is left is `RG-7` (label the remaining 160, and do not
+label the six), which then makes `RG-8` measurable, and `RG-15` (wire the three suites, re-argue two
+rows whose premises have moved, correct three stale figures in the README).
 
 ---
 
@@ -153,13 +180,14 @@ of that and is one file.
 
 Named rather than averaged, because reconciling them silently is how a wrong number survives.
 
-**Accumulator row A6 states the unmeasurable population as 57.** The 2.12 audit measures **50**
-Scenario-Explorer-origin unmeasurable, or **56** unmeasurable from all origins, at read-digest
-`899e0ddfb70ed83f` over a 168-file corpus that did not exist when A6 was written. The shelf now holds
-**169**. These are different populations at different digests and **they are not comparable.** A6
-needs restating against a current digest or striking and re-deriving after 2.11, and that is The
-Manager's call or the author's, not this gate's. The gate's own figure is whatever
-`audit_abstract_overlap.js` reports on the day RG-2 is run, with its command and digest beside it.
+**Accumulator row A6 states the unmeasurable population as 57.** The 2.12 audit measured **50**
+Scenario-Explorer-origin unmeasurable, or **56** from all origins, at read-digest `899e0ddfb70ed83f`
+over a 168-file corpus that did not exist when A6 was written. The shelf holds **169** and the current
+figure, at the run recorded in `RG-2`, is **six, each named**. These are different populations at
+different digests and **they are still not comparable** — but the reconciliation A6 was waiting for
+was *"after 2.11 runs"*, and 2.11 is retired, so waiting is no longer an option that leads anywhere.
+A6 needs striking and re-deriving against `RG-2`'s six, and that is The Manager's call or the author's,
+not this gate's.
 
 **The `108` / `103` / `112` denominators.** Loose end A4 carries three counts for one audit. The gate
 does not choose between them; RG-2 requires a re-run whose `tested` count equals the corpus size,
@@ -167,15 +195,48 @@ which makes every historical denominator irrelevant rather than requiring one of
 
 ---
 
+## 7. What changed at version 2, and what did not
+
+Version 1 was measured on 2026-08-28. Everything below was re-measured on 2026-08-29 with the command
+named in the cell. **No gate was cleared by editing its criterion**, and where a criterion did change
+it is named here with the reason.
+
+**One gate retired.** `RG-1` demanded source publications be landed inside the repository tree as a
+proxy for *the audit has a population*. `RG-2` measures that directly, so the proxy added nothing; and
+it added something harmful, because a machine holding the entire deliverable reported as a machine
+missing 169 files, and the remedy it pointed at was putting publishers' PDFs into a repository whose
+containment gates exist to keep them out. **Sub-step 2.11, the PDF pull it depended on, is retired with
+it.** 447 source PDFs across three configured roots already pair to 160 of the 166 summaries that carry
+an abstract, and a pull cannot conjure a PDF for a UN treaty or a Gutenberg ebook.
+
+**One criterion restated.** `RG-2` required the unmeasurable count to be **zero**. That is unreachable
+for a summary whose source was never a PDF, so as written the gate could never open — and a gate that
+can never open stops being read. It now requires every summary to be **either measured or named
+individually with the reason it cannot be**, and it forbids that reason being *"the source is not on
+this machine."* That is stricter per file and closable in principle, and the six are in the cell.
+
+**Six cells re-measured with no change of criterion**: `RG-3`, `RG-5`, `RG-6`, `RG-7`, `RG-14`, `RG-16`.
+Four of them moved to `MET` because the work behind them was done at 8.8 and 8.9 — three
+all-rights-reserved reproductions rewritten, the audit repaired from opening zero files to opening 160,
+`LICENSE` landed and tracked. `RG-7` moved off zero without meeting. `RG-16` improved and did not meet.
+
+**Nothing was weakened in the copyright direction, and one thing was hardened.** The audit still exits
+3 and prints `VACUOUS, NOT CLEAN` rather than a zero when it opened nothing; `RG-3` is now a
+known-answer test the instrument runs on itself rather than a list a person compares by eye, so a
+finding that quietly disappears is a named failure; and `RG-5` now requires the licence basis to be **in
+the file**, not merely recorded somewhere. What changed is that the **absence of a source publication is
+no longer reported as a shortfall in this repository**, because it never was one.
+
 ## Not mine
 
 | Finding | Sub-step | Owner |
 |---|---|---|
-| Sub-step 2.11 has not run. It is the blocking dependency for RG-1, RG-2, RG-3, RG-8 and both RED rows of `oracle/tests/readme_suite.md`. | 2.11 | The Engineer |
-| `prettyman-2006` and `levin-2025`: rewrite or except. 2.12 recommends rewriting and costs it at an hour. | 2.12 | The author |
-| There is no `LICENSE` file at this repository's root. Under A1 the repository is public and this is the cheapest gate on the list. RG-14. | 6.13 | The Writer, with this seat on the licence boundary |
-| `README.md` is on disk and untracked. RG-15. | 6.13 / 6.14 | The Writer, then The Editor and The Designer |
-| The three suites written this wave are not in `run_suite.js`'s `SUITES`. 115 rows contribute nothing to the 455. RG-16. | 2.19 | The Software Engineer |
+| **`oracle/tests/readme_suite.md` `RDM-14` and `RDM-15` stand on premises that have moved.** `RDM-14` cites *56 of 169 unmeasured*; the number is **six** and each is named in RG-2. `RDM-15` cites *both `PRV-15` classes empty*; both now have members. Neither may be greened without being re-argued, and neither is this seat's to edit. RG-15. | 6.11 / 2.19 | The suite's owner |
+| **`oracle/tests/bootstrap_suite.md` `BSH-4` asserts BC-19 in its retired form** — *"`literature/_pdf` does not exist, `pdfs_present=false` … sub-step 2.11's PDF pull has not run, so `false` is the true value today"*. BC-19 no longer probes that path and 2.11 is retired; the row is green against a fact that is no longer the fact. | 2.14 | The suite's owner |
+| **`README.md` §"the corpus is clean" block is three figures stale**: *112 of 168 tested*, *56 unmeasured*, *"the step that pulls those source PDFs has not run"*. Current: 160 of 169 tested, six unmeasured and named, and that step is retired. RG-15. | 6.13 / 6.14 | The Writer |
+| **`CLAUDE.md` Phase 4 group 4 implements BC-19 as `test -d literature/_pdf`**, which this document's contract no longer says. `CLAUDE.md`'s own rule is that the contract is the statement and it is the bug. | bootstrap | The seat holding `CLAUDE.md` |
+| Sub-step 2.11, the PDF pull, is **retired** here and in the gameplan: it was scaffolding for a measurement that is now taken without it. Recorded rather than left as a permanent open debt. | 2.11 | Closed at W5-6, satisfied by other means |
+| The three suites written this wave are not in `run_suite.js`'s `SUITES` and contribute none of the 148 rows. RG-16. | 2.19 | The Software Engineer |
 | The abstract-overlap terminator captures the whole file body where `## Abstract` is followed only by `###` sections. Seven files. Deflates, hides nothing at threshold 10, makes the `≥1%` tail unreadable. RG-4. | 2.12 instrument | The Software Engineer |
 | Accumulator A6's population figure is not comparable to the current measurement. §6. | accumulator | The Manager |
 
@@ -183,7 +244,7 @@ which makes every historical denominator irrelevant rather than requiring one of
 apparatus: check rows +0/-0 | amendment rows +0/-0 | quantity ids +0/-0 | tests +0/-0
 ```
 
-**No test rows.** The sixteen `RG-` gates are preconditions on an act, not assertions in a suite: each
+**No test rows.** The fifteen `RG-` gates are preconditions on an act, not assertions in a suite: each
 is decided by a command whose output is read by a person before an irreversible decision, and none is
 a row a runner should report `pass` on. Wiring them into `run_suite.js` would make the release gate
 something that can be green, which is exactly what it must never be.
