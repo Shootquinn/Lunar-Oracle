@@ -5,8 +5,13 @@ const LIT=path.join(ROOT,'lsei/literature');
 const LS=require(path.join(ROOT,'lsei/oracle/lib/literature_search.js'));
 const tokenize=LS.tokenize||LS._tokenize;
 if(!tokenize){console.error('no tokenize export; keys:',Object.keys(LS));process.exit(2);}
-function listFiles(dir,pre){let out=[];for(const e of fs.readdirSync(dir,{withFileTypes:true})){const rel=pre?pre+'/'+e.name:e.name;if(e.isDirectory())out=out.concat(listFiles(path.join(dir,e.name),rel));else if(e.name.endsWith('.md'))out.push(rel);}return out;}
-const files=listFiles(LIT,'');
+// W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+// directory and this shape prunes the subtree silently. Note listRel() sorts and this did not;
+// nothing downstream depends on walk order, it builds a Map and a token index.
+const FSW=require(path.join(ROOT,'tools/fswalk.js'));
+function listFiles(dir){return FSW.listRel(dir,p=>p.endsWith('.md'));}
+const files=listFiles(LIT);
+FSW.requireNonEmpty(LIT,files,'check_register_rows.js');
 const leafIndex=new Map();
 for(const f of files){const leaf=f.split('/').pop();if(leafIndex.has(leaf))console.log('DUPLICATE LEAF',leaf);leafIndex.set(leaf,f);}
 const bodyTokens=new Map();

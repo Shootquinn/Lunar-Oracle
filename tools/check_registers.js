@@ -77,17 +77,10 @@ function tsv(p) {
   return { header: header, rows: rows };
 }
 
-function walk(dir, out) {
-  out = out || [];
-  let ents;
-  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
-  for (const e of ents) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out);
-    else out.push(p);
-  }
-  return out;
-}
+/* W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+   directory, which prunes a whole subtree silently and reports a clean smaller count. */
+const FSW = require('./fswalk.js');
+function walk(dir, out) { return FSW.walk(dir, null, out); }
 const relp = p => path.relative(ROOT, p).split(path.sep).join('/');
 
 /* ------------------------------------------------------ the moment of this run

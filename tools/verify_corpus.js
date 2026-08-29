@@ -227,17 +227,18 @@ function readDigest(absPaths) {
   return { n, digest: h.digest('hex').slice(0, 16) };
 }
 
-/* ======================================================================================= walk */
-function walk(dir, out) {
-  out = out || [];
-  let ents;
-  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
-  for (const e of ents) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out); else out.push(p);
-  }
-  return out;
-}
+/* ======================================================================================= walk
+ * W5-11. `e.isDirectory()` is FALSE for a reparse-pointed directory -- a junction, a mounted
+ * volume, a placeholder folder -- and this walk would then treat the folder as a file and PRUNE
+ * ITS ENTIRE SUBTREE WITHOUT A WORD, reporting a clean, smaller count. Measured on this machine at
+ * W5-11: over a directory holding two files and one junction to a 28-file folder, this shape
+ * returned 2. There is no exception, no error and nothing in the output that differs from a tree
+ * that genuinely holds fewer files, which is this project's oldest defect shape.
+ * tools/fswalk.js asks the Dirent first and falls back to `stat` when it reports a link. On a tree
+ * with no reparse points -- every tree this tool has ever been run against -- the result is
+ * byte-identical, and the counts below are unchanged. */
+const FSW = require('./fswalk.js');
+function walk(dir, out) { return FSW.walk(dir, null, out); }
 
 /* ============================================================================ provenance parse
  * Returns EVERY `## Provenance` block in the file, in order, never just the first and never just
@@ -508,9 +509,11 @@ function loadCorpus(treeRel) {
       inherited: blocks.filter(b => b !== (blocks.find(x => x.labelled) || blocks[blocks.length - 1])),
     };
   });
-  const folders = exists
-    ? fs.readdirSync(abs, { withFileTypes: true }).filter(e => e.isDirectory() && e.name !== '_pdf').map(e => e.name)
-    : [];
+  /* W5-11. A POSITIVE filter on `e.isDirectory()` is the worse half of the reparse-point defect:
+     it does not misfile a placeholder folder, it DROPS it, and a whole taxonomy field then
+     disappears from every per-folder check with no message at all. listDirs() resolves through
+     `stat` when the Dirent reports a link. */
+  const folders = exists ? FSW.listDirs(abs).filter(n => n !== '_pdf') : [];
   return { treeRel, abs, exists, docs, folders, all };
 }
 

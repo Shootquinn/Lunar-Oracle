@@ -85,47 +85,56 @@ function tokenize(text) {
   return raw.filter(t => t.length > 1 && !STOPWORDS.has(t));
 }
 
-/* ---- CARRIED OVER VERBATIM FROM THE PROTOTYPE, COMMENTS INCLUDED ----------------------------
+/* ---- CARRIED OVER FROM THE PROTOTYPE, COMMENTS INCLUDED, WITH ONE REPAIR ---------------------
  * listCorpusFiles walks literatureDir to any depth and returns every .md file as a path relative
  * to literatureDir, forward-slash-joined regardless of platform. It does not assume one level and
  * it does not hard-code the taxonomy's folder names: whether the corpus sits flat or nested into
  * topic folders, the same walk finds every file either way. The taxonomy is a published-side
  * decision that can change again; this file's only job is to find every .md file under the root it
- * is given, at whatever depth it lives. */
+ * is given, at whatever depth it lives.
+ *
+ * THE REPAIR, W5-11, AND IT IS THE ONE LINE THAT MADE THIS THE MOST SERIOUS DEFECT IN THE PROJECT.
+ *
+ * The prototype's leaf test was `e.isFile() && e.name.endsWith('.md')`, reading the type bits of
+ * the DIRECTORY ENTRY. On Windows a reparse point -- a junction, a symlink, and under some sync
+ * states a OneDrive Files-On-Demand placeholder -- is reported by `readdirSync(withFileTypes)` as
+ * a SYMBOLIC LINK, so `Dirent.isFile()` is false for a file that is present, readable and correct.
+ * A walk gated on it then returns ZERO over a corpus sitting on the disk. W5-8 measured exactly
+ * that in the fresh clone at cc/oracletest at 131f513: 169 summaries, every one of which reads,
+ * and every RFX row failing with EMPTY POPULATION.
+ *
+ * The throw was right and it is why this was found rather than answered around. The walk was
+ * wrong. The type test now goes through tools/fswalk.js, which asks the Dirent first and falls
+ * back to `stat` -- not `lstat`, which by definition does not resolve the link -- whenever the
+ * Dirent reports anything other than a plain file or a plain directory. That header carries the
+ * measurements, including the mirror case: a reparse-pointed DIRECTORY prunes a whole subtree
+ * silently, which is worse, because there is no throw to catch it.
+ *
+ * The walk is now shared rather than copied. Six copies of a rule is six places for it to drift,
+ * and this repository has that pattern already. */
+const FSW = require('../../tools/fswalk.js');
+
 function listCorpusFiles(literatureDir) {
-  const out = [];
-  (function walk(dir, relPrefix) {
-    let entries;
-    try {
-      entries = fs.readdirSync(dir, { withFileTypes: true });
-    } catch (e) {
-      return; /* a missing or unreadable directory yields zero files here; the caller decides
-                 whether zero files is itself an error (see requireNonEmptyCorpus below) */
-    }
-    for (const e of entries) {
-      const rel = relPrefix ? relPrefix + '/' + e.name : e.name;
-      if (e.isDirectory()) walk(path.join(dir, e.name), rel);
-      else if (e.isFile() && e.name.endsWith('.md')) out.push(rel);
-    }
-  })(literatureDir, '');
-  return out.sort();
+  /* a missing or unreadable directory yields zero files here; the caller decides whether zero
+     files is itself an error (see requireNonEmptyCorpus below) */
+  return FSW.listRel(literatureDir, p => p.endsWith('.md'));
 }
 
 /* The retrieval path must be able to say it saw no corpus at all, distinctly from a search that
  * saw a real, non-empty corpus and confirmed no match in it. A search against zero files is
  * indistinguishable, by return value alone, from a search that legitimately found nothing
  * relevant; that ambiguity is exactly what let a missing corpus resolve to a confident REFUSE
- * instead of a loud failure. This throws rather than returning an empty result. */
+ * instead of a loud failure. This throws rather than returning an empty result.
+ *
+ * The message now carries a DIAGNOSIS as well as the refusal. When `stat` can see files that the
+ * walk did not return, that is the dehydration signature and the message says so, along with the
+ * command that rehydrates the tree. The reader who hits this is somebody who has just cloned this
+ * repository under OneDrive, and the one conclusion they must not reach is that the corpus is
+ * missing. It is not. */
 function requireNonEmptyCorpus(literatureDir, files) {
-  if (files.length === 0) {
-    throw new Error('EMPTY POPULATION: literature_search.js found zero .md files under ' +
-      literatureDir + ' (searched recursively). A search against an empty corpus is ' +
-      'indistinguishable from a search that found nothing relevant to the question; this throws ' +
-      'rather than returning zero candidates so the router cannot silently classify a missing or ' +
-      'mispointed corpus as a confident REFUSE.');
-  }
+  FSW.requireNonEmpty(literatureDir, files, 'literature_search.js');
 }
-/* ---- END VERBATIM CARRY-OVER ----------------------------------------------------------------- */
+/* ---- END CARRY-OVER --------------------------------------------------------------------------- */
 
 function baseName(filename) {
   const i = filename.lastIndexOf('/');

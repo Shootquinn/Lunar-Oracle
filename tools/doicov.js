@@ -5,7 +5,11 @@
 // Reports its inputs and its read-digest before it reports a single count.
 const fs=require('fs'),path=require('path');
 function normalize(n){let s=path.basename(n).replace(/\.md$/i,'').toLowerCase().replace(/[_ ]+/g,'-').replace(/-{2,}/g,'-').replace(/^-+|-+$/g,'');return s+'.md';}
-function walk(d,o=[]){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())walk(p,o);else if(/\.md$/i.test(e.name))o.push(p);}return o;}
+// W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+// directory and this shape prunes the subtree silently, which for a COVERAGE figure means a
+// smaller denominator and a cleaner-looking number.
+const FSW=require('./fswalk.js');
+function walk(d,o=[]){return FSW.walk(d,p=>/\.md$/i.test(p),o);}
 if(!process.argv[2]||!process.argv[3]){console.error('usage: node doicov.js <lseiLitDir> <intakeLitDir>');process.exit(2);}
 const A=walk(process.argv[2]),B=walk(process.argv[3]);
 // ---- read-digest over every file this run opens ----

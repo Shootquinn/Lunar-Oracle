@@ -74,9 +74,14 @@ for(const [id,a] of axes){
   if(a[2]==='one_sided'&&n!==1) fail.push('L5 '+id+' class one_sided has '+n+' sides');
 }
 // L4 resolution + B3 K1/K2
+// W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+// directory and this shape prunes the subtree silently -- here that reports every leaf in the
+// pruned folder as "does not resolve", a loud failure with a wrong cause, and an empty walk
+// reports EVERY member unresolved, which is why the vacuity line below exists.
+const FSWv=require('./fswalk.js');
 const index=new Map();
-(function walk(d,p){for(const e of fs.readdirSync(d,{withFileTypes:true})){const r=p?p+'/'+e.name:e.name;
-  if(e.isDirectory())walk(path.join(d,e.name),r); else if(e.name.endsWith('.md'))index.set(e.name,r);}})(ROOT,'');
+for(const r of FSWv.listRel(ROOT,p=>p.endsWith('.md'))) index.set(r.split('/').pop(),r);
+if(index.size===0) fail.push('L4 VACUOUS: '+FSWv.emptyPopulationMessage(ROOT,'ecr_verify.js'));
 const bodyCache=new Map();
 function memTokens(leaf){ if(bodyCache.has(leaf))return bodyCache.get(leaf);
   const rel=index.get(leaf); const s=new Set(tokenize(leaf.replace(/\.md$/,'')));

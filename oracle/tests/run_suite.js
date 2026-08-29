@@ -139,11 +139,24 @@ function sh(cmd) {
   try { return { code: 0, out: cp.execSync(cmd, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }) }; }
   catch (e) { return { code: e.status === undefined ? 1 : e.status, out: (e.stdout || '') + (e.stderr || '') }; }
 }
+/* W5-11. `e.isDirectory()` is FALSE for a reparse-pointed directory -- junction, mounted volume,
+ * placeholder folder -- and this shape then treats the folder as a file and prunes its whole
+ * subtree without a word. Measured on this machine at W5-11 over a directory holding two files and
+ * one junction to a 28-file folder: this shape returned 2. The type test is kept LOCAL rather than
+ * imported from tools/fswalk.js, per the rule two hundred lines below -- the runner must not import
+ * the thing it checks -- and it deliberately mirrors it. */
+function entryKind(e, p) {
+  if (e.isDirectory()) return 'dir';
+  if (e.isFile()) return 'file';
+  try { const st = fs.statSync(p); return st.isDirectory() ? 'dir' : st.isFile() ? 'file' : 'other'; }
+  catch (err) { return 'other'; }
+}
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out); else out.push(p);
+    const k = entryKind(e, p);
+    if (k === 'dir') walk(p, out); else if (k === 'file') out.push(p);
   }
   return out;
 }
@@ -955,42 +968,90 @@ function axisOrder() {
  * fixtures: every row resolves register members against `literature/INDEX.tsv` and reaches the shelf
  * through the retrieval channel. A population of zero is reported VACUOUS and counted UNRUN. It is
  * not thirty-five identical reds, and it is emphatically not a pass. The runner does not import the
- * thing it checks, so the walk below is local and deliberately mirrors the one under test. */
+ * thing it checks, so the walk below is local and deliberately mirrors the one under test.
+ *
+ * W5-11 CLOSED IT, AND THE GUARD STAYS, BECAUSE THE GUARD IS NOT ABOUT ONE WALK.
+ *
+ * `listCorpusFiles` now resolves through `tools/fswalk.js`, which asks the Dirent first and falls
+ * back to `stat` -- not `lstat` -- whenever the Dirent reports anything but a plain file or a plain
+ * directory. So the probe below no longer asks "does the Dirent lie about these files": it asks the
+ * question that actually matters and always did, WHICH IS WHETHER THE RETRIEVAL LAYER CAN SEE THE
+ * SHELF AT ALL. That question survives every future cause -- a corpus not cloned, a mispointed root,
+ * a taxonomy folder behind a junction, whatever Windows does next -- and the old form only ever
+ * survived one.
+ *
+ * Three counts, and they are three different instruments on purpose. `byWalk` mirrors the repaired
+ * rule. `byDirent` mirrors the PRE-REPAIR rule and is kept as a DIAGNOSTIC: when the two disagree
+ * the report can say the directory entries are lying and the repair is absorbing it, which is a fact
+ * a reader on a strange machine wants and cannot otherwise get. `byStat` is the ground truth.
+ * MEASURED W5-11: over a `literature/` whose nine taxonomy folders are reached through directory
+ * junctions -- real reparse points, made without admin -- the pre-repair rule counts 0 and the
+ * repaired rule counts 169. The guard fires on the first and is silent on the second.
+ */
 let SHELF = null;
 function shelf() {
   if (SHELF) return SHELF;
-  let byDirent = 0, byStat = 0;
+  let byWalk = 0, byDirent = 0, byStat = 0;
+  /* The pre-repair arm, kept whole so the diagnostic means something: it recurses on
+     `e.isDirectory()` and keeps leaves on `e.isFile()`, exactly as the defect did. */
+  (function old(dir) {
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return; }
+    for (const e of entries) {
+      if (e.isDirectory()) { old(path.join(dir, e.name)); continue; }
+      if (e.isFile() && e.name.endsWith('.md')) byDirent++;
+    }
+  })(R('literature'));
+  /* The repaired arm and the ground truth, walked together. */
   (function w(dir) {
     let entries;
     try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return; }
     for (const e of entries) {
       const p = path.join(dir, e.name);
-      if (e.isDirectory()) { w(p); continue; }
+      if (entryKind(e, p) === 'dir') { w(p); continue; }
       if (!e.name.endsWith('.md')) continue;
-      if (e.isFile()) byDirent++;
+      byWalk++;
       try { if (fs.statSync(p).isFile()) byStat++; } catch (err) { /* unreadable: counted in neither */ }
     }
   })(R('literature'));
-  return (SHELF = { byDirent, byStat });
+  return (SHELF = { byWalk, byDirent, byStat });
 }
 const shelfVacuous = () => {
   const s = shelf();
-  if (s.byDirent > 0) return null;
-  return VAC(`the retrieval layer can read 0 of the ${s.byStat} .md file(s) present under literature/. ` +
-    `readdirSync(withFileTypes) reports them as SYMBOLIC LINKS -- OneDrive Files-On-Demand reparse ` +
-    `points -- so literature_search.js's walk, which keeps entries on e.isFile(), sees an empty corpus ` +
-    `and throws EMPTY POPULATION. statSync() calls all ${s.byStat} of them files and they read. Every ` +
-    `RFX row reaches the shelf, so the population is empty and the fixture has no subject. ` +
-    `Owner: the retrieval seat, the walk in oracle/retrieval/literature_search.js. ` +
-    `Close, an observation not a date: the two counts agree on a clone under OneDrive`);
+  if (s.byWalk > 0) return null;
+  return VAC(`the retrieval layer can read 0 .md file(s) under literature/, of which statSync() ` +
+    `can see ${s.byStat} and the pre-W5-11 Dirent rule could see ${s.byDirent}. Every RFX row ` +
+    `reaches the shelf through oracle/retrieval/literature_search.js, so the population is empty ` +
+    `and the fixture has no subject -- it is UNRUN, not thirty-five identical reds, and it is ` +
+    `emphatically not a pass. ` +
+    (s.byStat > 0
+      ? `AND THE CORPUS IS NOT MISSING: statSync() reads ${s.byStat} files the walk did not ` +
+        `return. That is a metadata failure, not an absent shelf -- a reparse point, a OneDrive ` +
+        `Files-On-Demand placeholder, or a junction somewhere in the taxonomy. Owner: the ` +
+        `retrieval seat. Close: tools/fswalk.js --selftest is green and byWalk equals byStat`
+      : `statSync() cannot see any either, so the shelf is genuinely absent or the root is ` +
+        `mispointed. Close: literature/ holds its 169 summaries and byWalk equals byStat`));
 };
+/* THE ORDER OF THESE FOUR CHECKS IS THE FINDING, W5-11, AND IT IS WHY W5-8's GUARD NEVER FIRED.
+ *
+ * The shelf probe used to run FOURTH, behind `loop()`. But `loop()` calls `classify.loadContext()`,
+ * which reaches the shelf itself -- so a corpus the retrieval layer cannot see does not reach the
+ * shelf probe at all: `loadContext` refuses or throws first, and all 35 rows come out as
+ * `DEFERRED: the assembled loop is not loadable: the shelf at ...\literature. Owner: the router
+ * seat`. MEASURED W5-11 by moving `literature/` aside in the fresh clone: that is verbatim what 35
+ * rows said. The verdict UNRUN was right; the DIAGNOSIS AND THE OWNER WERE BOTH WRONG. A corpus
+ * problem was being handed to the router seat with the corpus named in passing.
+ *
+ * So the shelf goes FIRST. It is the cheapest probe, it has no dependencies, and when it is the
+ * cause it is the only one of the four that can say so. A genuine router fault still reaches the
+ * DEFER below, because a router fault leaves the shelf walkable and the probe silent. */
 const rfxGuard = fn => () => {
+  const empty = shelfVacuous();
+  if (empty) return empty;
   const L = loop();
   if (L.missing) return DEFER('the assembled loop is not loadable: ' + L.missing.join('; ') + '. Owner: the router seat (3.8/3.9)');
   if (L.threw) return DEFER('the router threw at load: ' + L.threw + '. Owner: the router seat');
   if (!regsPresent()) return VAC('one or both register files does not exist; the fixture has no subject');
-  const empty = shelfVacuous();
-  if (empty) return empty;
   return fn(L);
 };
 for (let i = 1; i <= 33; i++) {

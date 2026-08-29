@@ -106,15 +106,14 @@ function inStore(p) {
 }
 
 /* The walk admits EVERY file, which is the whole change. `.git` and `node_modules` are refused by
-   name so that passing `.` as a root is a slow answer rather than a wrong one. */
+   name so that passing `.` as a root is a slow answer rather than a wrong one.
+   W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+   directory, which prunes a whole subtree silently -- and a collision check over a smaller corpus
+   reports no collisions, cleanly, which is the worst possible way for this tool to be wrong. */
+const FSW = require('./fswalk.js');
+const SKIP = n => n === '.git' || n === 'node_modules';
 function walk(dir, out) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name === '.git' || e.name === 'node_modules') continue;
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, out);
-    else out.push(p);
-  }
-  return out;
+  return FSW.walk(dir, p => !SKIP(path.basename(p)), out, { skipDir: SKIP });
 }
 
 function main(argv) {

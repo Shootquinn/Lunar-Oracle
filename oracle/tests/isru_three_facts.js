@@ -45,6 +45,7 @@
  */
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process'), os = require('os');
+const FSW = require('../../tools/fswalk.js');
 const ROOT = path.resolve(__dirname, '..', '..');
 const R = p => path.join(ROOT, p);
 
@@ -209,21 +210,26 @@ function report(label, r) {
  * decoration, and the list is the trigger for the whole check. */
 function unitCoverage(tree) {
   const dir = R(tree || 'literature');
-  const files = [];
-  (function walk(d) {
-    if (!fs.existsSync(d)) return;
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) { if (e.name !== '_pdf') walk(p); } else if (/\.md$/i.test(e.name)) files.push(p);
-    }
-  })(dir);
+  /* W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+     directory, and a pruned taxonomy folder here turns every unit token that only occurs in that
+     folder into a zero -- reported as "this token is decoration", which is a wrong answer arrived
+     at cleanly. The vacuity guard below is what stops the whole check going quiet. */
+  const files = FSW.walk(dir, p => /\.md$/i.test(p), [], { skipDir: n => n === '_pdf' });
   const counts = {};
   for (const u of UNITS) counts[u] = 0;
   for (const p of files) {
     const t = lc(fs.readFileSync(p, 'utf8'));
     for (const u of UNITS) if (t.includes(u)) counts[u]++;
   }
-  return { files: files.length, counts, dead: UNITS.filter(u => counts[u] === 0) };
+  /* VACUITY, W5-11. Over zero files every token is dead, so this check already FAILS rather than
+     going quiet -- which is the right verdict reached for the wrong reason, and a reader told
+     "37 tokens occur nowhere" will go looking for 37 bad tokens instead of one missing corpus.
+     `vacuous` makes the walk's own emptiness the headline. It changes no pass/fail: an empty
+     population failed before this line existed and fails after it. */
+  return {
+    files: files.length, counts, vacuous: files.length === 0,
+    dead: UNITS.filter(u => counts[u] === 0),
+  };
 }
 
 /* ------------------------------------------------------------------ proof
@@ -375,7 +381,12 @@ function prove() {
   /* 9. ISR-2. The unit list is not aspirational. */
   const cov = unitCoverage('literature');
   add('UNIT-LIST-NOT-ASPIRATIONAL', 'every unit token occurs in at least one file under literature/',
-    cov.files + ' files; ' + cov.dead.length + ' token(s) occur nowhere' + (cov.dead.length ? ': ' + cov.dead.join(', ') : ''),
+    (cov.vacuous
+      ? 'VACUOUS: the walk of literature/ returned ZERO files, so all ' + cov.dead.length +
+        ' token(s) are "dead" by arithmetic and this check has no subject. ' +
+        FSW.emptyPopulationMessage(R('literature'), 'isru_three_facts.js unitCoverage()')
+      : cov.files + ' files; ' + cov.dead.length + ' token(s) occur nowhere' +
+        (cov.dead.length ? ': ' + cov.dead.join(', ') : '')),
     cov.dead.length === 0);
 
   const w = Math.max(...out.map(o => o.id.length));

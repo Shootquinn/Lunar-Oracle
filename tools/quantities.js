@@ -118,30 +118,30 @@ if (!OPT.check && !OPT.lint && !OPT.index && !OPT.census && !OPT.filesOnly) OPT.
  * still a silent wrong answer, so both sites are repaired and both are given a known-answer test.
  *
  * `walk()` gets the same treatment for the mirror case: `isDirectory()` is false for a hardlinked
- * or junction-mounted directory, which would prune a whole subtree without a word. */
-function isRealFile(p) {
-  try { return fs.lstatSync(p).isFile(); } catch (e) { return false; }
-}
-function isRealDir(p) {
-  try { return fs.lstatSync(p).isDirectory() || fs.statSync(p).isDirectory(); } catch (e) { return false; }
-}
-function walk(dir, pred, out) {
-  out = out || [];
-  let ents;
-  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
-  for (const e of ents) {
-    const p = path.join(dir, e.name);
-    if (isRealDir(p)) walk(p, pred, out);
-    else if (isRealFile(p) && pred(p)) out.push(p);
-  }
-  return out;
-}
+ * or junction-mounted directory, which would prune a whole subtree without a word.
+ *
+ * W5-11 AMENDMENT, AND IT IS A CORRECTION TO THE ABOVE, NOT A RESTATEMENT OF IT.
+ *
+ * The repair reached for `fs.lstatSync`. `lstat` DOES NOT FOLLOW LINKS -- that is its definition --
+ * so it is the wrong instrument for a family whose whole content is "this entry is reported as a
+ * link and it is really a file". It worked on the hardlink case only because a hardlink is not a
+ * reparse point at all. MEASURED at W5-11 on a real reparse point -- a directory junction on this
+ * machine -- `lstat(junc).isDirectory()` is FALSE and `isSymbolicLink()` is true; only the
+ * `|| statSync` arm of `isRealDir` saved the subtree, and `isRealFile` had no such arm.
+ *
+ * Both now delegate to tools/fswalk.js, which asks the Dirent first and falls back to `stat`. The
+ * rule lives in ONE file with its own known-answer test rather than pasted into six. M16 below is
+ * unchanged and still asserts the count. */
+const FSW = require('./fswalk.js');
+const isRealFile = FSW.isRealFile;
+const isRealDir = FSW.isRealDir;
+const walk = (dir, pred, out) => FSW.walk(dir, pred, out);
 function rel(p) { return path.relative(ROOT, p).split(path.sep).join('/'); }
 
 function declaredFileSet() {
   const files = [];
   for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
-    if (isRealFile(path.join(ROOT, e.name)) && /\.md$/.test(e.name)) files.push(path.join(ROOT, e.name));
+    if (FSW.kindOf(e, path.join(ROOT, e.name)) === 'file' && /\.md$/.test(e.name)) files.push(path.join(ROOT, e.name));
   }
   walk(path.join(ROOT, 'cr_scratch'), p => /\.md$/.test(p), files);
   walk(path.join(ROOT, 'tools'), p => /\.js$/.test(p), files);
@@ -748,8 +748,16 @@ function m16() {
     ' named root document(s): ' + missing.join(', ') + '. On a hardlinked stage Dirent.isFile() is false and this is what that looks like'); }
   if (!lit) { n++; FAIL('M16 the declared file set holds ZERO files under literature/. A count of zero reported as a clean result is the failure this check exists for'); }
   if (!tools) { n++; FAIL('M16 the declared file set holds ZERO files under tools/'); }
-  if (!n) say('OK', 'M16 file scan is hardlink-safe: ' + ROOT_DOCS.length + ' root documents, ' +
-    lit + ' under literature/, ' + tools + ' under tools/, ' + set.length + ' declared in total (lstat, not Dirent type bits)');
+  /* W5-11: the walk is shared now, so M16 also asserts that the shared walk still passes its OWN
+     known-answer test. Without this line M16 could go green over a file set that a broken
+     tools/fswalk.js had quietly shrunk, which is the same silent-zero shape one layer down. */
+  const sf = FSW.selftest(path.join(ROOT, 'literature'));
+  if (sf.fails) { n += sf.fails; for (const l of sf.lines) if (l.indexOf('FAIL') === 0) FAIL('M16 via fswalk ' + l.slice(5)); }
+  if (!n) say('OK', 'M16 file scan is reparse-point-safe: ' + ROOT_DOCS.length + ' root documents, ' +
+    lit + ' under literature/, ' + tools + ' under tools/, ' + set.length +
+    ' declared in total (tools/fswalk.js: Dirent first, stat on fallback -- NOT lstat, which does ' +
+    'not follow a link and was the W4-5 repair\'s one wrong instrument), and fswalk\'s own ' +
+    'known-answer test is green including its synthetic dehydrated tree');
   return n;
 }
 

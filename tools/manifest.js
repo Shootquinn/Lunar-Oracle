@@ -105,28 +105,29 @@ function rows() { return parse().rows; }
  * still a silent wrong answer, so both sites are repaired and both are given a known-answer test.
  *
  * `walk()` gets the same treatment for the mirror case: `isDirectory()` is false for a hardlinked
- * or junction-mounted directory, which would prune a whole subtree without a word. */
-function isRealFile(p) {
-  try { return fs.lstatSync(p).isFile(); } catch (e) { return false; }
-}
-function isRealDir(p) {
-  try { return fs.lstatSync(p).isDirectory() || fs.statSync(p).isDirectory(); } catch (e) { return false; }
-}
-function walk(dir, pred, out) {
-  out = out || [];
-  let ents;
-  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
-  for (const e of ents) {
-    const p = path.join(dir, e.name);
-    if (isRealDir(p)) walk(p, pred, out); else if (isRealFile(p) && pred(p)) out.push(p);
-  }
-  return out;
-}
+ * or junction-mounted directory, which would prune a whole subtree without a word.
+ *
+ * W5-11 AMENDMENT, AND IT IS A CORRECTION TO THE ABOVE, NOT A RESTATEMENT OF IT.
+ *
+ * The repair reached for `fs.lstatSync`. `lstat` DOES NOT FOLLOW LINKS -- that is its definition --
+ * so it is the wrong instrument for a family whose whole content is "this entry is reported as a
+ * link and it is really a file". It worked on the hardlink case only because a hardlink is not a
+ * reparse point at all, so `lstat` saw straight through the Dirent's mistake. MEASURED at W5-11 on
+ * a real reparse point -- a directory junction on this machine -- `lstat` gets it wrong too:
+ * `lstat(junc).isDirectory()` is FALSE and `isSymbolicLink()` is true, and only the `|| statSync`
+ * arm of `isRealDir` saved the subtree. `isRealFile` had no such arm.
+ *
+ * Both now delegate to tools/fswalk.js, which asks the Dirent first and falls back to `stat`. The
+ * rule lives in ONE file with its own known-answer test rather than pasted into six. */
+const FSW = require('./fswalk.js');
+const isRealFile = FSW.isRealFile;
+const isRealDir = FSW.isRealDir;
+const walk = (dir, pred, out) => FSW.walk(dir, pred, out);
 const rel = p => path.relative(ROOT, p).split(path.sep).join('/');
 function declaredFileSet() {
   const f = [];
   for (const e of fs.readdirSync(ROOT, { withFileTypes: true }))
-    if (isRealFile(path.join(ROOT, e.name)) && /\.md$/.test(e.name)) f.push(path.join(ROOT, e.name));
+    if (FSW.kindOf(e, path.join(ROOT, e.name)) === 'file' && /\.md$/.test(e.name)) f.push(path.join(ROOT, e.name));
   walk(path.join(ROOT, 'cr_scratch'), p => /\.md$/.test(p), f);
   walk(path.join(ROOT, 'tools'), p => /\.js$/.test(p), f);
   walk(path.join(ROOT, 'oracle'), () => true, f);

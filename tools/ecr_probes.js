@@ -5,7 +5,12 @@ const fs=require('fs'), path=require('path');
 const STOPWORDS=new Set(['the','a','an','and','or','but','of','in','on','at','to','for','with','by','from','as','is','are','was','were','be','been','being','it','its','this','that','these','those','what','which','who','how','why','when','where','did','does','do','not','no','so','than','then','if','into','about','across','over','under','out','up','down','per','via','vs','and/or','their',"it's",'would','could','should','will','shall','can','may','might','also','only','one','two','three','app','apps','model','models','modeled','modelled','modeling','modelling','assumes','assumed']);
 function tok(t){return (String(t).toLowerCase().match(/[a-z0-9]+/g)||[]).filter(x=>x.length>1&&!STOPWORDS.has(x));}
 const ROOT=process.argv[3];
-const files=[];(function w(d,p){for(const e of fs.readdirSync(d,{withFileTypes:true})){const r=p?p+'/'+e.name:e.name;if(e.isDirectory())w(path.join(d,e.name),r);else if(e.name.endsWith('.md'))files.push(r);}})(ROOT,'');
+// W5-11: routed through tools/fswalk.js. See that file's header: `e.isDirectory()` is false for a
+// reparse-pointed directory and this shape prunes the subtree silently, which changes every IDF
+// weight below without changing anything visible in the output.
+const FSW=require('./fswalk.js');
+const files=FSW.listRel(ROOT,p=>p.endsWith('.md'));
+if(files.length===0){console.error(FSW.emptyPopulationMessage(ROOT,'ecr_probes.js'));process.exit(2);}
 const df=new Map();
 for(const f of files){const s=new Set(tok(fs.readFileSync(path.join(ROOT,f),'utf8')).concat(tok(path.basename(f,'.md'))));for(const t of s)df.set(t,(df.get(t)||0)+1);}
 const N=files.length; const idf=t=>Math.log(N/((df.get(t)||0)+1e-9));

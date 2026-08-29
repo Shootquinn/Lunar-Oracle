@@ -32,6 +32,7 @@
  */
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process'), os = require('os');
+const FSW = require('./fswalk.js');
 const ROOT = path.resolve(__dirname, '..');
 const R = p => path.join(ROOT, p);
 
@@ -127,13 +128,12 @@ function auditTable(rows) {
 function leafResolution(rows, tree) {
   const dir = R(tree || 'literature');
   const index = new Set();
-  (function walk(d) {
-    if (!fs.existsSync(d)) return;
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) { if (e.name !== '_pdf') walk(p); } else if (/\.md$/i.test(e.name)) index.add(e.name);
-    }
-  })(dir);
+  /* W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+     directory; a pruned taxonomy folder here reports every one of its leaves as UNRESOLVED, and
+     TG-37's independent count would agree with it, because both read the same broken index. */
+  for (const p of FSW.walk(dir, q => /\.md$/i.test(q), [], { skipDir: n => n === '_pdf' })) {
+    index.add(path.basename(p));
+  }
   const all = [], distinct = new Set();
   for (const r of rows.values()) for (const l of r.leaves) { all.push({ id: r.id, leaf: l }); distinct.add(l); }
   const unresolved = all.filter(x => !index.has(x.leaf));

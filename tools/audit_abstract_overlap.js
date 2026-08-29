@@ -178,17 +178,13 @@ function abstractOf(md) {
   return m ? m[1].trim() : null;
 }
 
-/* ------------------------------------------------------------------------------ file walking */
+/* ------------------------------------------------------------------------------ file walking
+ * W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+ * directory and this shape then prunes the subtree silently. */
+const FSW = require('./fswalk.js');
 function walk(dir, re, out) {
-  out = out || [];
-  let ents;
-  try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch { return out; }
-  for (const e of ents) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) { if (e.name !== '.git' && e.name !== 'node_modules') walk(p, re, out); }
-    else if (re.test(e.name)) out.push(p);
-  }
-  return out;
+  return FSW.walk(dir, p => re.test(path.basename(p)), out,
+    { skipDir: n => n === '.git' || n === 'node_modules' });
 }
 
 const DOI_RE = /\b10\.\d{4,9}\/[-._;()\/:a-z0-9]+/gi;

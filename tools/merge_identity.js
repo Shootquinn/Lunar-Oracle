@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const FSW = require('./fswalk.js');
 
 // Two modes. Default: the source-identity table (Step 2.1), byte-for-byte as first run.
 // --plan: the Wave-1 disposition table cr_scratch/merge_plan.tsv (Step 2, Wave 1).
@@ -31,16 +32,12 @@ function normalize(name) {
   return s + '.md';                            // 7
 }
 
+/* W5-11: routed through tools/fswalk.js. `e.isDirectory()` is false for a reparse-pointed
+   directory and this shape prunes the subtree silently -- and a merge planned against a corpus
+   that is quietly missing a taxonomy folder is the worst place in this repository for a wrong
+   file list. */
 function walk(dir) {
-  const out = [];
-  (function rec(d) {
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) rec(p);
-      else if (/\.md$/i.test(e.name)) out.push(p);
-    }
-  })(dir);
-  return out.sort();
+  return FSW.walk(dir, p => /\.md$/i.test(p)).sort();
 }
 
 // ---- citation block extraction ----
@@ -835,9 +832,7 @@ stanza. "Wikipedia" is used as the issuer; the artifact prints the publication n
   fs.writeFileSync(path.join(stageLit, 'FIELDS.tsv'), fld.join('\n') + '\n', 'utf8');
 
   // ---- report ----
-  const staged = [];
-  (function rec(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-    const p = path.join(d, e.name); if (e.isDirectory()) rec(p); else staged.push(p); } })(stageLit);
+  const staged = FSW.walk(stageLit, null, []); /* W5-11: see walk() above */
   const mdStaged = staged.filter(p => /\.md$/.test(p));
   const nonMd = staged.filter(p => !/\.md$/.test(p));
   const digest = sha(Buffer.from(READ.slice().sort().join('\n'), 'utf8'));
