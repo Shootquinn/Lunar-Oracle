@@ -280,3 +280,229 @@ opens. Four items, and the reading work is bounded:
    the `Licence` population does not exist until the merge writes `## Provenance` blocks. **Until
    then the correct verdict is UNRUN, and UNRUN is not green.** The instrument is ready:
    `node tools/audit_abstract_overlap.js literature/_pdf/<folder> 10`.
+
+## 6. The four routed suite corrections — three applied, one superseded by a repair
+
+| # | Correction as routed | Measured | Applied |
+|---|---|---|---|
+| 1 | `CRP-10`/`CRP-11` name **five** same-name disagreements; there are **eight** | **CONFIRMED to the byte.** Over the two source trees: **95 same-normalized-key pairs, 87 byte-identical, 8 differing** — and 87 + 8 is exactly the plan's `both-identical` 87 + `lsei-primary` 8. Deltas, intake minus lsei: `azami` −22,334, `csank-2022` −15,553, `poston-2020` +1,490, `473486main-iss-atcs-overview` **+86**, `bea-depreciation-rates` **+77**, `ieee-2022-paper-sh-tcs` **+42**, `falcon-heavy` +28, `barro-2004` −6. The three routed additions match to the byte. **None of the eight is a line-ending difference** — all survive CRLF normalization | **YES.** Both rows corrected to eight, the CRLF question answered for all eight rather than asserted of five, and a mutation added: run the census case-folded instead of under `normalize()` and it returns five, which is the number the row carried for two steps |
+| 2 | `PDF-3` is marked `green` and was red on the measurement that made `PDF-2` red | **SUPERSEDED, and this is the one I will not apply as routed.** The correction was right when written. The Systems Engineer landed a **deliberately unanchored** carrier block at `.gitignore:43–52`, written as character classes (`*.[pP][dD][fF]`) rather than a `*.pdf`/`*.PDF` pair, because a pair covers two of the eight case permutations. `run_suite.js` now reports **8 of 8 `PDF-2` probes ignored** and **64 of 64 `PDF-3` carrier probes ignored** | **NO — and `PDF-2` moves RED to green instead.** `Q-PDF-IGNORE-OPEN` = 0. Declared explicitly for `SLT-4`, which forbids a silent greening: the close condition the cell already named was met by the named owner and the runner is the observation. The routed correction is recorded in the row rather than deleted, because a correction a repair overtook is still a correct reading of an earlier state |
+| 3 | `PDF-14` cannot be run as written on a case-insensitive filesystem | **CONFIRMED by running it.** `echo a > x.pdf; echo b > x.PDF` leaves **one** file whose contents are `b`. `git config core.ignorecase` = `true`. A five-fixture tree holds four fixtures, the harness reports five, and the missing one is the case fixture — the exact case the character-class rule exists to cover | **YES.** The row now requires **one repository per fixture** and the harness to print the fixture count it actually created. `CON-2` already required isolation and `PDF-14` did not; they now agree |
+| 4 | `PTH-13`'s live set omits `oracle/AMENDMENTS.tsv`, which carries four rows naming the dead path | **CONFIRMED: four rows** — `AM-75`, `AM-76`, `AM-77` and `AM-153`. A promoted register whose amendment rows target a path that does not exist is `MF-1`'s defect, one register over | **YES, and the fix is structural rather than a longer list.** My live set was enumerated by memory, which is why it could not see this. It is now **COMPUTED** — every tracked file outside `cr_scratch/` and the working copies — and run by `run_suite.js`. It reported **5** live files at my open and **3** at my close as The Systems Engineer worked: `lunar-oracle-gameplan.md`, `oracle/AMENDMENTS.tsv`, `oracle/NAMING.md` |
+
+**`oracle/NAMING.md` cites the dead path in its own relocation banner** — *"This file was
+`literature/NAMING.md`"* — and that is a judgement, not a defect: a relocated contract that does not
+say where it came from is harder to follow, and `PTH-13` as written counts it. Routed to The Systems
+Engineer, whose row it is, rather than decided by me.
+
+## 7. `SLOT-B` filled — twelve `PUL` rows, written before the pull
+
+§8.2, `PUL-1` to `PUL-12`, inside §8 so no section number moves and no cross-reference breaks. Same
+split as `SLOT-A` for the same `SLT-8` reason: I write, The Engineer executes 2.11. This is `SLT-9`'s
+case and the fill state says so — the artifact they assert against does not exist, all twelve are RED
+with an owner and a close condition, and the runner reports them UNRUN rather than green.
+
+Three rows carry the brief's named requirements: `PUL-1` every landed PDF has a summary; `PUL-2`
+zero files from `_QUARANTINED_prior_art/`; `PUL-4` the byte ceiling. The other nine exist because
+each closes a way the first three could pass without meaning anything:
+
+- **`PUL-2` reports TWO figures on one line**: files landed from the quarantine (0) **and files the
+  exclusion actually removed (0, reported as a no-op)**. The baseline measured that directory as 26
+  files, all `.md`, zero PDFs — so a quarantine filter over a PDF pull removes nothing. A filter
+  pointed at the wrong tree also lands zero quarantined files and also reports success. **A filter
+  that silently does nothing is the Step 1 failure that produced a wrong verdict.**
+- **`PUL-4` states the threshold in BYTES with its reading named** — `≤ 250,000,000 bytes (SI)`,
+  against a known answer of **224,042,382 bytes** = 224.0 MB SI = **213.7 MiB**. The gap between the
+  two readings of one number is 10 MB. `PDF-11`'s clause, which `SLOT-B` may not relax.
+- **`PUL-5` is the row the brief's reasoning actually implies.** "Under the ceiling" is not the
+  assertion. 249,000,000 bytes is under 250 MB and is **+11% over the estimate** — 25 MB of files
+  nobody enumerated, landing green. The row compares to 224,042,382 and reports a signed delta,
+  failing above +15%, because the estimate came from an enumerated 52-file set and the only way that
+  set grows is the selection rule matching files nobody adjudicated.
+- **`PUL-9` refuses a hard-coded T4.** Standing clause 7d, mechanized: the checker must contain no
+  numeric T4 literal, asserted by grepping the pull script for a bare `22` or `52` adjacent to `T4`.
+  **22 is not settled and 52 is an upper bound under a name-only rule.** Hard-code 22 and the check
+  passes when the world disagrees with it, and the number acquires an authority nobody granted it by
+  being asserted in a test.
+- **`PUL-10`** — an empty orphan report says `orphans: 0` **with the population it searched**, never
+  nothing. Same defect as `CON-8`'s empty stage and `PRV-15`'s empty label class: three rows, one
+  shape, an empty list reading as a clean one.
+- `PUL-3` set-not-count, `PUL-6` path shape, `PUL-7` zero tracked **after** the pull (`PDF-1`
+  asserts it on an empty tree, where it cannot fail; `PUL-7` asserts it on the only day it can),
+  `PUL-8` closed tier set, `PUL-11` hand queue enumerated by id, `PUL-12` re-runnable.
+
+## 8. `CON-1`…`CON-9` reviewed against what he actually built — by running it
+
+**I checked it rather than accepting his audit, and I ran every row I could rather than reading the
+source.** The mechanism is good. Five rows are satisfied and observed, one exceeds its assertion,
+one is partly satisfied, and two cannot be satisfied because the harness they name does not exist.
+
+| Row | Verdict | Evidence |
+|---|---|---|
+| `CON-1` | **SATISFIED AND EXCEEDED** | Not a remembered measurement but a live probe: `CHK-37 ignore-probe` runs **25 probe paths** in four labelled classes and **reports its own set size** — `probe set size=25 open=0 (a SHRINKING probe set is the failure this reports its own size to prevent)`. He added case permutations (`x.PDF`, `x.Pdf`) I had not asked for, and separated `.txt`/`.zip` as extension-gate findings rather than ignore rules, which is the right call and is stated as a ruling |
+| `CON-2` | **NOT SATISFIED** | `cr_scratch/fixtures/` **does not exist**. The five fixtures have never been run one at a time from a clean tree. This is the row `PDF-14`'s correction now depends on |
+| `CON-3` | **NOT SATISFIED** | Depends on `CON-2`. No before/after tree hash exists because there is no fixture run to bracket |
+| `CON-4` | **SATISFIED, degenerately, and the degeneracy is the right design** | `core.hooksPath` = `tools/githooks`, resolving to the tracked directory itself. The content comparison the row demands is then a tautology — there is no copy to drift. Worth saying out loud: the row was written against a design that copies hooks into `.git/hooks`, and he did not build that design |
+| `CON-5` | **SATISFIED AND OBSERVED** | `git hook run pre-commit` prints `CHK-10 pre-commit dispatcher: dispatching CHK-01 …`, then `CHK-13`, then `CHK-37`, in row order, then `dispatched 3 of 7 jobs, all exit 0` **and names the four it did not dispatch as debts rather than passes**. That last line is not in my row and should be |
+| `CON-6` | **SATISFIED AND OBSERVED** | Run for real, not read: `LUNAR_ORACLE_HOOK_DEPTH=1 node tools/githooks/pre-commit` → `REENTRANCY REFUSED at depth 2. Chain: pre-commit -> merge-gate -> pre-commit`, exit **1**. The depth and the chain are reported rather than absorbed. This is the `CHK-09` unbounded recursion I built and watched in Wave 1, and it is now bounded in the engine and shared with `merge-gate` |
+| `CON-7` | **SATISFIED, structurally** | The guard lives in `dispatch.js` and is inherited by every trigger through the environment, so a check that shells out to any trigger re-enters at depth 1 and is refused. The assertion and its trigger are different processes by construction |
+| `CON-8` | **PARTLY SATISFIED, and the missing half is the half I wrote the row for** | The empty-stage branch exists and is written exactly right — `files_scanned=0 -- SCANNED NOTHING.` followed by `this is not a clean result. Nothing was examined, so nothing is asserted.` **But the EXIT CODE is not on that line.** `CON-8` asks for both together *"so neither can be read without the other"*, and the exit code is still out of band. **And I could not observe the branch at all**: this working tree never has an empty stage — `files_scanned=3` on every invocation — so the path is unexercised here, which is precisely `CON-2`'s isolated-fixture problem showing up in a second row |
+| `CON-9` | **SATISFIED — AND I RAN IT, BECAUSE NOBODY HAD** | A scratch clone at `$TEMP/w2-2_con9`, `core.hooksPath` set, a `%PDF` file named `x.md` staged, and a **real `git commit`**: `CHK-13 FINDING [MAGIC] x.md -- first bytes are %PDF, whatever the extension says`, `BLOCKED by CHK-13 … on_failure=block`, and `git log` reports **no commits**. End to end, from `git commit`, not from `node tools/check_no_sources.js`. The row that says the commit path is the only path that matters, run on the commit path |
+
+**A live bootstrap defect found while running `CON-9`, and it is not in anyone's write set.** On the
+first attempt the commit was blocked, but **for the wrong reason**: `CHK-01`
+(`check_corpus_collisions.js`) exits **2** when `literature/` does not exist, and the dispatcher
+correctly classifies exit 2 as `HARNESS FAILURE in CHK-01 … Fix the tool, not the commit`. `literature/`
+is empty, so **git does not track it, so no fresh clone has it, so the first commit in any fresh
+clone is blocked by a harness failure rather than by a finding.** The dispatcher's diagnosis is
+exactly right and the tool is exactly wrong: an empty corpus root is a legitimate state and
+`CHK-01` should report `walked 0 files` and exit 0, as it does the moment the directory exists.
+Routed below.
+
+## 9. The instruments made text, and the `--index` contract bug
+
+### 9.1 Two instruments were binary to git, not one
+
+Repaired by replacing each raw NUL with the escape `\0` inside the string literal. Identical
+behaviour, identical key space, three bytes longer each.
+
+```
+BEFORE  tools/check_registers.js  a node script executable (binary data)   NULs at 7926 7953 8500
+        tools/manifest.js         a node script executable (binary data)   NULs at 3361 3410 3426
+AFTER   tools/check_registers.js  Node.js script executable, ASCII text
+        tools/manifest.js         Node.js script executable, ASCII text
+```
+
+**Behaviour verified unchanged, not assumed.** `check_registers.js` still parses its `MF-3` marker
+keys — `NOTE MF-3 census: 13 BEGIN markers under cr_scratch/`, `OK MF-3 every BEGIN marker … has a
+manifest row` — and `manifest.js` still emits its rows and computes read-digests.
+
+**The close condition is `git diff` rendering line-level, and here is the subtlety.** A diff of *this
+very change* still prints `Binary files … differ`, because git compares against a pre-image that is
+binary. That is not a failure; it is the last binary diff either file will ever produce. Proved with
+`git diff --no-index` against a copy carrying a one-line addition:
+
+```
+2  1  tools/check_registers.js => a.js      @@ -332,3 +332,4 @@ … +// probe line
+1  0  tools/manifest.js        => b.js      @@ -165,3 +165,4 @@ … +// probe line
+```
+
+Real add/delete counts, hunk headers, `+` lines. **Not the exit code, which was 0 throughout and
+proves nothing about this.** The property that had failed is not "the script works"; it is "a human
+can review a change to the script", and no assertion anywhere said so — which is `CNT-12`.
+
+### 9.2 `--index` reported success and changed nothing
+
+Confirmed: `node tools/quantities.js --index` prints the regenerated index to stdout, exits 0, and
+`QUANTITIES.md`'s md5 is unchanged before and after. `COUNTING_RULE.md` §4 part 3 says to run exactly
+that command "to regenerate `QUANTITIES.md`".
+
+**Which side is wrong: the contract.** A flag that reads as *show me the index* must not mutate the
+tree, and `--index`/`--index --write` is the right shape — a dry run and a write. Making `--index`
+write by default would fix the sentence by breaking the tool.
+
+**What I fixed inside my write set**, since the contract is not mine:
+
+1. `--index` without `--write` now **says what it did**, on stderr, every time:
+   `NOTE --index is the DRY RUN: 111 blocks printed to stdout, QUANTITIES.md UNCHANGED. The in-place
+   regeneration is 'node tools/quantities.js --index --write'.` A command that changes nothing must
+   say it changed nothing; following the contract verbatim now looks like what it is.
+2. The banner the generator writes **into `QUANTITIES.md` itself** said
+   `GENERATED by tools/quantities.js --index` — the wrong command, propagating into the artifact on
+   every regeneration. Now `` `node tools/quantities.js --index --write` ``.
+3. The usage header records the finding and the measurement.
+
+This is a repair, not an addition: no new check row, quantity id or test. The one-line contract
+correction is routed below, ready to paste.
+
+## 10. Not mine
+
+| # | Finding | Sub-step | Owner |
+|---|---|---|---|
+| 1 | **`COUNTING_RULE.md` §4 part 3 names a command that regenerates nothing.** Paste-ready: `3. Re-run `tools/quantities.js --index --write` to regenerate `QUANTITIES.md`. The bare `--index` is the DRY RUN: it prints to stdout, exits 0, and changes nothing.` Measured: `--index` leaves the md5 identical; another seat measured 11 failures → `--index` → 11 → `--index --write` → 9 | 2.19 / counting contract | **The Designer** (`COUNTING_RULE.md`) |
+| 2 | **`MRG-4b`'s ruled form is unsatisfiable and I implemented the satisfiable one.** Byte-identity of the whole landed file contradicts `PRV-1`/`PRV-2`/`PRV-17`, which require an appended `## Provenance` block the sources do not carry — false for all 176 rows, not for one. I changed it to **body**-identity, which loses nothing the ruling wanted. **The text I changed is his and this needs ratification** | 2.4 | **The Manager** |
+| 3 | **`MRG-4b` found two UNDECLARED body edits in the staged tree.** `falcon-heavy-wikipedia` +11/−1 — a `## Citation` block added **and the maiden-flight date changed 2026-02-06 → 2018-02-06** — and `rostami2018-figures` +11/−0. Both are probably correct; neither is declared. Declare them with a `basis` or revert them | 2.5 | **The Engineer**, with **The Space Resources Engineer** for the edits |
+| 4 | **162 of 168 staged landings normalize line endings and trailing whitespace**, which nothing in the merge specification declares. It is almost certainly benign and it is undeclared, and `CRP-11` exists because this repository has already read a CRLF diff as a content disagreement once | 2.5 | **The Engineer** |
+| 5 | **`MRG-1` and `MRG-2` still fail for the same reason as in Wave 1**: `merge_plan.tsv` declares its size and its disposition legend **in a comment**, and a comment is parsed by nothing. The 18-column split landed; the `^H` row did not | 2.5 | **The Engineer** |
+| 6 | **`MRG-9`/`MRG-10`: 8 dedup-key collisions, up from 6 at my open.** Two new ones arrived with the column split: `L3\|lunar-surface-innovation-consortium\|2026\|lsic-newsletter-vol` and `L2B\|NASA/TP-20250010956`. All 8 are same-folder today, so `MRG-10` finds nothing `MRG-9` missed — **which is the two scopes agreeing at this placement, not `MRG-10` passing vacuously.** Two reviewers are cutting folder assignments; move one member of any of the 8 and `MRG-9` goes green while the corpus carries one source twice under one key | 2.5 / 2.16 | **The Engineer** |
+| 7 | **`CON-2` and `CON-3` are undischarged: `cr_scratch/fixtures/` does not exist.** The five containment fixtures have never been run one at a time from a clean tree. `PDF-14`'s correction now depends on this, because on a case-insensitive filesystem a five-fixture tree holds four | 2.13 / 2.14 | **The Systems Engineer** |
+| 8 | **`CON-8` is half-built.** The empty-stage branch is written exactly right but **the exit code is not on the line with the scanned count**, and `CON-8` asks for both together. Also unexercised here: this tree never has an empty stage (`files_scanned=3` always) | 2.14 | **The Systems Engineer** |
+| 9 | **A FRESH CLONE CANNOT COMMIT.** `CHK-01` (`check_corpus_collisions.js`) exits **2** when `literature/` does not exist; `literature/` is empty so git does not track it; so no fresh clone has it, and the dispatcher blocks the first commit with `HARNESS FAILURE in CHK-01`. The dispatcher's classification is right; the tool is wrong. An empty corpus root is a legitimate state and `CHK-01` should report `walked 0 files` and exit 0. Found by running `CON-9` in a scratch clone | 2.14 / bootstrap | **The Systems Engineer** |
+| 10 | **`oracle/NAMING.md` cites the dead path in its own relocation banner** and `PTH-13` counts it. A relocated contract that does not say where it came from is harder to follow. This is a judgement, not a defect, and it is his row | 2.20 | **The Systems Engineer** |
+| 11 | **`oracle/AMENDMENTS.tsv` carries four rows targeting `literature/NAMING.md`** — `AM-75`, `AM-76`, `AM-77`, `AM-153`. A promoted register whose amendment rows target a path that does not exist is `MF-1`'s defect, one register over | 2.20 | **The Systems Engineer** |
+| 12 | **The answering-loop suite has four RED rows with no owner or close condition in the cell** — `LIM-3`, `REF-19`, `FIX-9`, `FIX-10` — and a fourth status value `[4.1]` on 14 rows. `LIM-3`'s owner and close are in prose near the row, not in it. My runner scopes `MUT-6` to the corpus suite rather than inventing a contract for a file it only reads; the divergence is real and should be closed one way or the other | 1.11 | **mine, but not in this wave's write set** — routed rather than taken |
+| 13 | **`CHK-18` NOW HAS ITS ARTIFACT AND STILL HAS NO DISPATCHER, AND THIS IS THE ONE THAT MATTERS.** `oracle/tests/run_suite.js` exists at the address `CHK-18` has reserved since 1.13. `CHK-18`'s triggers are `substep-gate,ci-linux`, and **there is no `substep-gate` dispatcher** — `tools/githooks/` holds `pre-commit`, `post-commit` and `merge-gate` and nothing else. So the runner is invoked by nobody. **A runner nothing invokes is one step better than a suite nothing invokes, and it is not the finish line.** `oracle/check_register.md` is his and I did not write a row; relay written | 1.13 / 2.14 | **The Systems Engineer** |
+| 14 | **`CHK-18`'s row carries a stale figure.** It says "the 211 tests of the 1.11 v2 answering-loop suite"; the suite has declared **216** since the R-3 reconciliation, and `run_suite.js` counts 216. A check row that names a population by a number nobody re-counted is the `H`-row problem in the register itself | 1.13 | **The Systems Engineer** |
+
+**Relays written this wave** (`cr_scratch/relay/`), both **REVIEW**, neither a BRIEF, and neither a
+discharge of arm 2a — every seat named is already building:
+`w2-2_review_to_systems_engineer.md` (items 7, 8, 9, 10, 11, 13) and
+`w2-2_review_to_engineer.md` (items 3, 4, 5, 6).
+
+## 11. Close state, re-measured with digests — and it moved under me for reasons that are not mine
+
+| Instrument | At my open | At my close | Comparable? |
+|---|---|---|---|
+| `quantities.js --check` | 15 hard @ `4f017a7cfd297995` / 110 files | **5 hard** @ `0276a441b65b656e` / **293** files | **NO — different digest, and the file set nearly tripled.** The staged corpus landed under `cr_scratch/_stage/` during my sitting. 15 → 5 is **the fork collapse landing**, per standing clause 7a, not a regression and not mine. Read the failure lines: the 8 `M2` duplicate ids are gone, one new `M6` (`QUANTITIES.md` differs from the regenerated index) appeared, and that one is the collapse mid-flight |
+| `check_registers.js` | 1 hard @ `bbaa4be015d4edd0` / 81 files — `FAIL MF-1 row literature/NAMING.md …` | **0 hard** @ `49c7474ac748b155` / **262** files | **NO.** `MF-1` was repaired by The Systems Engineer during my sitting, as clause 7b said it would be. **Exit code was 0 in both states**, which is why the exit code is not the close condition for anything |
+| `run_suite.js` | did not exist | **405 rows: 14 pass, 5 fail, 386 unrun**, exit 1 | n/a |
+| `literature/` | 0 files | **0 files** — staged at `cr_scratch/_stage/literature/` (168 `.md`), not promoted | held |
+| suite row count | 175 | **189**, and the header, the per-group list, the `awk` command and the runner all agree | — |
+
+**Standing clause 4, on myself: this deliverable is inside the declared file set.** Every digest
+above was taken with this file present at whatever length it had reached, and the open and close
+censuses are two different measurements of two different sets. I am reporting both rather than
+picking one.
+
+**And the Cycle A process finding did not recur to me this time.** It did not need to: the runner
+reports per-row failures with the row id, so a count that moves is decomposed automatically rather
+than by discipline. That is the remedy applied to the tool instead of to the person, which is where
+it belongs.
+
+## 12. The five standing failures the runner reports, and why none is closed here
+
+`PTH-13` (3 live citations, his), `MRG-1` and `MRG-2` (declaration in a comment, his), `MRG-9` and
+`MRG-10` (8 dedup-key collisions, his). **All five are in artifacts I do not write**, all five are
+routed in §10, and none is silenced. A runner whose first act was to turn its own failures green
+would be the thing this wave exists to stop.
+
+
+## 13. THE CORPUS LANDED DURING MY FINAL VERIFICATION PASS, AND THE RUNNER GATED IT
+
+Between the close measurement in §11 and the last command of this sitting, The Engineer promoted the
+stage. **`literature/` holds 168 `.md` files.** It was empty at my open and it has been empty for
+the whole of Step 2. That is the prize, and it is not mine — but three things about it are, and they
+are the reason the runner exists.
+
+**1. Two assertions stopped being vacuous, and the runner said so on its own.** `CRP-4` and `CRP-5`
+went from `UNRUN — VACUOUS: literature/ holds 0 .md files` to **PASS over 168 files**: zero
+within-folder and zero tree-wide normalized-key collisions on the real corpus. Nobody edited the
+runner to make that happen. The verdict changed because the population did, which is the whole
+argument for reporting VACUOUS instead of green: had those two rows read green while the tree was
+empty, today's real result would have been indistinguishable from six weeks of nothing.
+
+**2. `MRG-4b` re-fired against the promoted tree with the identical finding.**
+
+```
+FAIL MRG-4b  168 landed under literature/; 166 bodies identical to byte_source
+             (162 of them after line-ending normalization only); 1 declared exception;
+             2 UNDECLARED: falcon-heavy-wikipedia.md, rostami2018-figures.md
+```
+
+Same two rows, same counts, now in the promoted corpus rather than in a stage. **`falcon-heavy-wikipedia`
+in `literature/` carries a maiden-flight date that no assertion authorised anyone to change.** It is
+the right date. It is still undeclared, and it is now shipped rather than staged. `## Not mine` item 3
+is now a live corpus defect rather than a staging one.
+
+**3. Six standing failures, none of them mine, all named by row id, and the exit code is 1.** That
+is the runner doing the job the wave gave it: `literature/` is no longer empty, and the first thing
+that happened when it filled was that an instrument read it and reported what is wrong with it, by
+name, in one command. A suite nothing invokes could not have done that, and for eleven sub-steps
+that is what we had.
+
+**The close-state figures in §11 are therefore superseded by one measurement and I am leaving both.**
+`literature/` = 0 files at §11 and 168 files here, an hour apart, and the two are not the same
+repository. Standing clause 4 says a census written at the start of a sitting and quoted at the end
+is two different measurements; this is that, at the largest scale it will occur in this project.
+
+apparatus: check rows +0/-0 | amendment rows +0/-0 | quantity ids +0/-0 | tests +14/-0

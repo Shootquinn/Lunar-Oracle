@@ -346,9 +346,12 @@ B['MRG-4b'] = () => {
 };
 B['MRG-6'] = () => {
   const p = plan(); if (p.missing) return FAIL('no plan table');
-  const bad = p.rows.filter(r => r.target_path !== 'literature/' + r.target_folder + '/' + r.key);
+  // The `H` row is the table's self-declaration, not a merge row; row-level assertions
+  // exclude it, as MANIFEST.tsv's own H row is excluded from its row assertions.
+  const D = p.rows.filter(r => r.block !== 'H');
+  const bad = D.filter(r => r.target_path !== 'literature/' + r.target_folder + '/' + r.key);
   return bad.length ? FAIL(`${bad.length} rows where target_path disagrees with target_folder: ${bad.slice(0, 3).map(r => r.key).join(' ')}`)
-    : PASS(`0 of ${p.rows.length} rows where target_path disagrees with target_folder`);
+    : PASS(`0 of ${D.length} D rows where target_path disagrees with target_folder`);
 };
 function dedupCollisions(scopeFn) {
   const p = plan(); if (p.missing) return null;

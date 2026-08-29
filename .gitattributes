@@ -38,3 +38,13 @@ tools/githooks/** text eol=lf
 # obscure ways ($'\r': command not found) long before anyone suspects line endings.
 *.js text eol=lf
 *.sh text eol=lf
+
+# THE CORPUS. Added by the orchestrator at the Wave 2 close, 2026-08-28, and it is the same
+# family as the three above. literature/ landed today with LF endings. core.autocrlf=true is set
+# on this machine, so `git checkout` of a corpus file re-materializes it with CRLF -- observed,
+# not theorized: restoring two files from HEAD converted them and MRG-4b immediately reported
+# `no appended ## Provenance block` for both, because the provenance parser matches raw bytes.
+# A FRESH CLONE WOULD DO THAT TO ALL 168. The corpus is content; its line endings are not
+# per-install configuration.
+literature/** text eol=lf
+cr_scratch/merge_plan.tsv text eol=lf

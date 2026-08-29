@@ -284,7 +284,7 @@ a seat running an operation with an instrument it wrote and never tested, so the
 is deliberately not the seat that produces Step 2's numbers.
 
 **Two counting rules are live in this step and they do not agree.** Under raw filenames the union is
-185 with 86 overlaps; under `normalize()` as `literature/NAMING.md` section 1 defines it, the union
+185 with 86 overlaps; under `normalize()` as `oracle/NAMING.md` section 1 defines it, the union
 is 176 with 95 overlaps. Both are correct and the difference is exactly nine named files. **The
 normalized figures are operative**, because `normalize()` is the merge key. A figure quoted without
 saying which rule produced it is not quotable here.
