@@ -1,0 +1,401 @@
+{
+  "schema": 1,
+  "id": "oracle/thin_patches.json",
+  "sub_step": "3.5",
+  "author": "The Space Resources Engineer",
+  "authored": "2026-08-28",
+  "consumed_by": "the retrieval layer, and the refusal writer",
+  "corpus": {
+    "root": "literature/",
+    "files": 169,
+    "counted_by": "find literature -name '*.md' | wc -l",
+    "folders": 11,
+    "note": "Every count below was re-run against this shelf on 2026-08-28. The source surface (cr_scratch/step0_space_resources_engineer_question_surface.md section 3) was written against the 158-file pre-merge lsei/literature tree and four of its ten absence claims have moved. Each entry carries a reverify field saying which."
+  },
+
+  "rule": {
+    "name": "R3 - refuse by substitution, not by apology",
+    "statement": "A question landing in a thin patch does not answer from the nearest word-overlap match and does not say the corpus is limited. It names the specific missing measurement, then names the nearest real evidence and what that evidence is instead. Shorter than the apology, and it tells the reader what to go and find.",
+    "bad": "the literature in this corpus is limited on the geotechnical properties of icy regolith",
+    "good": "No measurement of icy-regolith shear strength or cone penetration resistance at permanently shadowed region temperature exists in this corpus. The nearest evidence is Barnett 2025 on regolith consolidation during thaw, which is the opposite process.",
+    "refusal_code": "not-found",
+    "refusal_code_note": "not-found is the correct code for every entry here: no address resolved and no shelf file confirmed for the specific measurement. Where the app also declares the topic excluded, not-found is still written, because excluded routes to nobody and must never mask a code that routes to someone (answer_contract.md section 5)."
+  },
+
+  "firing_rule": {
+    "name": "trigger mass, IDF-weighted, lunar-scoped",
+    "why": "A COUNT RULE OVER TRIGGER TOKENS DOES NOT WORK AND A MASS RULE DOES. Under any-token-fires, T1 fires on SRQ-7 on the single token 'regolith' (idf 0.662) and T2 fires on SRQ-13 on 'bearing' (1.411). Both are correct vocabulary and wrong triggers on their own. Measured by The Engineer at W4-3 and re-measured here on a wider control set.",
+    "score": "mass = sum over the patch's trigger_tokens present in the question's tokens of idfFor('literature','lunar',token). tokenize() and idfFor() are both exported from oracle/retrieval/literature_search.js; this needs no new mechanism.",
+    "two_tiers": "FIRING IS NOT GOVERNING, and conflating them is what makes a single threshold fail. A patch that FIRES attaches its `substitution` to the answer as content. A patch that GOVERNS makes its `refusal_code` the verdict. T3 fires on SRQ-10 at 5.961 and SRQ-10 is BOTH -- the acceptance row says so in its own Must-carry cell. A one-tier rule has to choose between silencing that legitimate fire and turning a BOTH into a REFUSE.",
+    "fire_threshold": {
+      "value": 1.7,
+      "status": "PROVISIONAL",
+      "band": [
+        1.478,
+        1.858
+      ],
+      "evidence": "below the band: T1 on SRQ-7 and on SRQ-5, both 0.662 on 'regolith' alone, the false fire this rule exists to stop; and T2's own probe_neg at 1.478. Above it: T10 on SRQ-7 at 1.858, which is a CORRECT fire -- SRQ-7's Must-carry cell already requires the May 2025 date T10 supplies."
+    },
+    "govern_threshold": {
+      "value": 6.175,
+      "status": "PROVISIONAL",
+      "band": [
+        5.961,
+        6.389
+      ],
+      "evidence": "must govern: SRQ-13/T1 8.540, SRQ-14/T5 6.389, and all ten probe_pos rows at 10.238 or above. Must not govern: SRQ-10/T3 5.961 (verdict BOTH), LCC-14 probe_pos/T6 5.601 (verdict CONTESTED), and the ten probe_neg rows at 5.550 or below. Separates all 49 labelled questions.",
+      "margin_warning": "The band is 0.428 wide, about 7 percent. It is real and it separates every row measured, but it is tight, and the row constraining it from below (T3 on SRQ-10) is a LEGITIMATE fire rather than a false one. That is the single-threshold design at its limit and it is the argument for the two tiers above."
+    },
+    "owner": "The threshold values are PROVISIONAL and are the router seat's to set, on the same footing as K in oracle/router/axis_threshold.json. What is authored here is the rule, the labelled fixture set (probe_pos/probe_neg per patch), and the measured bands. Re-measure with cr_scratch/sre_w4/tp_band2.js and tp_probemass.js.",
+    "refuted": "The Engineer's W4-3 proposal of any threshold in (1.86, 3.78] is REFUTED by the wider control set. That band was measured on five rows and contained neither SRQ-10 nor the LCC-14 probe_pos. A threshold of 2.5 or 3.0 makes T3 govern SRQ-10 and T6 govern LCC-14, flipping a BOTH and a CONTESTED into REFUSE. The shape of the finding stands; the number does not.",
+    "precondition_refuted": "An obvious-looking precondition -- let a patch govern only where no competing route answered -- is REFUTED by measurement. SRQ-13 returns LITERATURE confirmed 9 of 9 at frac 0.85, so that precondition would block T1 on exactly the row it must govern. A confirmed retrieval is not evidence the question was answered; that is the whole content of the third failure mode The Engineer identified.",
+    "token_form": "Every trigger token satisfies tokenize(t) deep-equals [t]. Nine did not before this repair and could never match: 'boil-off' (T5), 'MTBF' (T3), 'he-3' 'helium-3' 'REE' 'KREEP' 'PGM' (T7), 'TRL' and 'as of' (T10). The defect class is wider than the hyphen: uppercase and multi-word forms fail identically, and 'as of' tokenizes to nothing at all because both halves are stopwords. Check with cr_scratch/sre_w4/fix_triggers.js.",
+    "no_corpus_floor": "The corpus-presence floor asserted on excluded-node match_keys DOES NOT APPLY HERE, and applying it would be backwards. A thin patch exists because a measurement is absent, so a trigger naming that measurement is expected to be absent from the corpus: 'shear' (T1), 'tribology' and 'ingress' (T2) occur in no summary on this shelf. Their absence is evidence the patch is real, not evidence the trigger is wrong.",
+    "kept_deliberately": "T1 keeps 'regolith' and T2 keeps 'bearing'. Both are correct vocabulary for their patch and both contribute to a true positive: 'regolith' is 0.662 of T1's 8.540 on SRQ-13 and 'bearing' is 1.411 of it. The mass rule is what makes them safe, and removing them would lower the true-positive signal to fix a problem the rule already fixes."
+  },
+
+  "patches": [
+    {
+      "id": "T1",
+      "title": "Icy-regolith geotechnics",
+      "rank": 1,
+      "rank_basis": "ask-frequency times how confidently the corpus would answer wrongly",
+      "trigger_tokens": ["shear", "strength", "bearing", "capacity", "cone", "penetration", "geotechnical", "excavation", "force", "digging", "dig", "frozen", "icy", "regolith", "cohesion", "trafficability"],
+      "probe_pos": "What shear strength and cone penetration resistance does frozen icy regolith have when you dig it?",
+      "probe_neg": "Which review paper surveys lunar regolith excavation concepts?",
+      "absent": "Shear strength, bearing capacity, cone penetration resistance and specific excavation force for ice-bearing regolith at permanently shadowed region temperature. No measurement of any of the four exists in this corpus.",
+      "measured": [
+        {"command": "grep -ril 'shear strength' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'bearing capacity' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'cone penetr' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'regolith mechanic' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'excavation force' literature --include='*.md' | wc -l", "hits": 1}
+      ],
+      "reverify": "HOLDS. All four absence greps still return zero against the 169-file shelf. One change: 'excavation force' now returns one file, just-2020, which reviews the concept and reports no measurement.",
+      "nearest_evidence": [
+        {"path": "literature/isru-processing/barnett-2025-regolith-consolidation-water-ice.md", "what": "regolith consolidation caused by thawing of water ice - the opposite process, and a single IAC paper"},
+        {"path": "literature/isru-processing/just-2020-regolith-excavation-review.md", "what": "thirteen excavation concepts reviewed; the paper's own output is recommendations for experiments not yet performed"},
+        {"path": "literature/isru-processing/rostami2018.md", "what": "lunar TBMs, explicitly conceptual, no original experimental or design data"},
+        {"path": "literature/programme-primaries/nasa-data-gaps-acr25-wp-data-gaps-v3.md", "what": "NASA's own framework for architecture-driven data gaps; establishes that the agency documents this class of absence rather than holding the measurement"}
+      ],
+      "substitution": "No measurement of icy-regolith shear strength, bearing capacity, cone penetration resistance or specific excavation force at PSR temperature exists in this corpus. The nearest evidence is Barnett 2025 on regolith consolidation during thaw, which is the opposite process, and Just 2020, whose own conclusion is a list of excavation experiments not yet performed.",
+      "undermines": {
+        "coefficients": ["kExc"],
+        "coefficient_status": "ASSUMPTION (calibrated-to-fit)",
+        "app_surface": ["throughput-coefficient", "productive-plant-mass", "min-of-two-limits"],
+        "downstream_outputs": ["Rcap", "Wthr", "cap", "water", "Cfull"],
+        "how": "kExc = 4 t regolith/yr per t plant sets the entire mass-bound regime. Nothing in the corpus constrains it and nothing in the corpus can."
+      },
+      "register_axes": ["LCC-15"],
+      "question_classes": ["L4", "L8"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T2",
+      "title": "Dust, abrasion and wear",
+      "rank": 2,
+      "trigger_tokens": ["abrasive", "abrasion", "wear", "bearing", "seal", "tribology", "duty", "cycle", "uptime", "availability", "dust", "ingress"],
+      "probe_pos": "What abrasive wear rate and seal life should I assume for a duty cycle on dusty lunar machinery?",
+      "probe_neg": "Which programme documents name dust mitigation as an architecture need?",
+      "absent": "Abrasive wear rates, bearing and seal life, and tribology under vacuum with regolith ingress. Nothing in this corpus measures how long lunar surface machinery runs before it stops.",
+      "measured": [
+        {"command": "grep -ril 'abrasive wear' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'bearing life' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'tribolog' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'dust mitigation' literature --include='*.md' | wc -l", "hits": 3}
+      ],
+      "reverify": "HOLDS, unchanged. All three wear greps still zero; dust mitigation still three files, and all three are programme documents rather than wear measurements.",
+      "nearest_evidence": [
+        {"path": "literature/programme-primaries/nasa-moon-to-mars-doc.md", "what": "names dust mitigation as an architecture need; carries no wear rate"},
+        {"path": "literature/programme-primaries/moon-base-architecture-users-guide.md", "what": "same, at the base-design level"},
+        {"path": "literature/programme-primaries/lsic-2026-newsletter-august.md", "what": "a community newsletter reporting activity, not a measurement"},
+        {"path": "literature/isru-processing/kleinhenz-2020-polar-water-case-studies.md", "what": "states explicitly that wear and mission risk from tanker traverse frequency are discussed qualitatively only and are not quantified in the model"}
+      ],
+      "substitution": "No wear rate, bearing life or seal life for lunar surface machinery exists in this corpus. Three files name dust mitigation as a programme need and none measures it. Kleinhenz 2020 is the nearest, and it says in its own words that its model does not quantify wear.",
+      "undermines": {
+        "coefficients": ["duty"],
+        "coefficient_status": "ASSUMPTION",
+        "app_surface": ["energy-per-tonne", "bilinear-water-law"],
+        "downstream_outputs": ["Wpower", "cap", "water", "Cfull"],
+        "how": "duty = 0.6 is the active-extraction fraction of calendar time. Every annual production figure in the app, and in every architecture study in the corpus, rests on an assumed duty cycle with no wear evidence behind it."
+      },
+      "register_axes": [],
+      "question_classes": ["L4", "L8"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T3",
+      "title": "Maintenance, reliability and spares",
+      "rank": 3,
+      "trigger_tokens": ["reliability", "maintenance", "spares", "spare", "failure", "rate", "plant", "life", "depreciation", "availability", "mtbf"],
+      "probe_pos": "What mtbf and spares provisioning does lunar plant reliability and maintenance require over its life?",
+      "probe_neg": "What depreciation rate does BEA publish for mining machinery?",
+      "absent": "Lunar-surface reliability data of any kind. No failure rate, no MTBF and no spares provisioning measured on or for lunar hardware.",
+      "measured": [
+        {"command": "grep -ril 'MTBF' literature --include='*.md' | wc -l", "hits": 2},
+        {"command": "grep -ril 'spare part' literature --include='*.md' | wc -l", "hits": 3},
+        {"command": "grep -ril 'mean time between' literature --include='*.md' | wc -l", "hits": 0}
+      ],
+      "reverify": "MOVED, narrowed. The source surface said rahimdel-2024 is the only reliability primary. That is refuted: shishko-2019 also carries MTBF, in a lunar thermal-mining business case, which is a closer object than a terrestrial mining truck. The absence itself holds - neither file reports a measured lunar failure rate - but the nearest evidence is nearer than claimed.",
+      "nearest_evidence": [
+        {"path": "literature/space-economy-and-markets/shishko-2019-lunar-thermal-mining-business-case.md", "what": "carries MTBF inside a lunar thermal-mining production-rate framework; the paper's own summary states it is not a completed cost or NPV result"},
+        {"path": "literature/isru-processing/rahimdel-2024-mining-truck-reliability-bayesian.md", "what": "Bayesian reliability of terrestrial mining trucks - a real method on the wrong planet"},
+        {"path": "literature/self-replication-and-automation/freitas-1980-advanced-automation-space-missions.md", "what": "spares and closure at the study level, 1980"}
+      ],
+      "substitution": "No measured lunar-surface failure rate or MTBF exists in this corpus. Shishko 2019 carries MTBF inside a lunar thermal-mining framework whose own summary says it is not a completed result; Rahimdel 2024 is a real Bayesian reliability study of terrestrial mining trucks.",
+      "undermines": {
+        "coefficients": ["L", "decayRate", "decayLife"],
+        "coefficient_status": "DESIGN; SOURCED; SOURCED",
+        "app_surface": ["amortized-plant-identity", "industrial-plant-price"],
+        "downstream_outputs": ["r_prop", "r_const", "P_prop", "P_const", "margin_prop", "margin_const"],
+        "how": "L = 10 yr is a design assumption. decayRate = 0.15/yr and decayLife = 11 yr are SOURCED, and the source is BEA depreciation for terrestrial mining and oil field machinery. The amortized-plant identity is the app's whole economic engine and its plant-life terms come from Earth. The app says so in its own source string; the answer must too."
+      },
+      "register_axes": [],
+      "question_classes": ["L4", "L10"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T4",
+      "title": "Water cleanup and downstream contamination",
+      "rank": 4,
+      "trigger_tokens": ["cleanup", "clean", "purification", "contamination", "contaminant", "electrolysis", "grade", "feed", "purity", "corrosion", "volatile"],
+      "probe_pos": "What purity and contaminant removal does water cleanup and purification reach before electrolysis?",
+      "probe_neg": "At what temperature does molten regolith electrolysis operate?",
+      "absent": "Any primary reporting cleanup performance - a measured removal fraction, a contaminant specification, or an electrolysis-feed purity achieved from sublimated lunar vapour. The corpus documents that this step is immature without documenting how immature.",
+      "measured": [
+        {"command": "grep -ril 'water cleanup' literature --include='*.md' | wc -l", "hits": 3},
+        {"command": "grep -ril 'purification' literature --include='*.md' | wc -l", "hits": 7},
+        {"command": "grep -ril 'contaminat' literature --include='*.md' | wc -l", "hits": 16}
+      ],
+      "reverify": "MOVED, and this is the sharpest change. Kleinhenz 2020, which was not on the pre-merge shelf under this heading, states in its own words that water cleanup hardware is not yet defined and is not included in its model because contaminant criteria for the water were still unknown. That is a documented absence with an author and a page, which is a far better substitution than a general claim of thinness. Gott 2024 and Barnett 2025 (volatile exposure limits) also landed and bear on measuring the product stream. The absence of a cleanup performance figure holds.",
+      "nearest_evidence": [
+        {"path": "literature/isru-processing/kleinhenz-2020-polar-water-case-studies.md", "what": "states water cleanup hardware is not yet defined and is excluded from the model because contaminant criteria were unknown"},
+        {"path": "literature/isru-processing/kiewiet-2026-luwex-water-extraction.md", "what": "the only integrated extract-capture-liquefy demonstration; names volatile contamination and dust mobilisation as unresolved"},
+        {"path": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md", "what": "puts capture and cleanup at TRL 3/4 and notes alkaline electrolysis of dirty water has unresolved corrosion issues (May 2025)"},
+        {"path": "literature/isru-processing/gott-2024-card-gas-analysis-subsystem.md", "what": "a flight-forward residual gas analyser for quantifying a product gas stream - the instrument, not the cleanup performance"},
+        {"path": "literature/isru-processing/barnett-2025-volatile-exposure-limits.md", "what": "simulation of the volatile mass needed to reach spacecraft exposure limits; contamination as a hazard, not as a process yield"}
+      ],
+      "substitution": "No measured cleanup removal fraction or electrolysis-feed purity from lunar-derived water exists in this corpus. Kleinhenz 2020 states that its own model excludes cleanup hardware because the contaminant criteria were undefined; Sanders 2025 places capture and cleanup at TRL 3/4 as of May 2025.",
+      "undermines": {
+        "coefficients": ["captureEff", "kP", "E1"],
+        "coefficient_status": "ASSUMPTION (optimistic bound, no primary reports 100 percent); SOURCED (design target, ahead of demonstration); SOURCED (derived)",
+        "app_surface": ["capture-derate", "energy-per-tonne", "energy-per-kilogram"],
+        "downstream_outputs": ["Wthr", "cap", "water"],
+        "how": "Every propellant figure downstream of extraction passes through a step nothing in the corpus measures."
+      },
+      "register_axes": ["LCC-05"],
+      "question_classes": ["L7"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T5",
+      "title": "Cryogenic fluid management, boil-off and transfer cadence",
+      "rank": 5,
+      "rank_basis": "the double gap - the app declares the boundary and the corpus cannot fill it, so nothing refuses",
+      "trigger_tokens": ["cryogenic", "boiloff", "cryocooler", "transfer", "cadence", "storage", "tank", "liquefaction", "zero", "depot", "boil", "transferred", "transfers", "transferring", "refueling", "tanker"],
+      "probe_pos": "How often is cryogenic propellant transferred, and what boil-off does a depot tank lose between transfers?",
+      "probe_neg": "Which paper sizes a cryocooler for lunar liquefaction?",
+      "absent": "Any primary on lunar-surface cryogenic transfer: a measured transfer loss, a surface boil-off rate, or an operational transfer cadence.",
+      "measured": [
+        {"command": "grep -ril 'boil-off' literature --include='*.md' | wc -l", "hits": 6},
+        {"command": "grep -ril 'cryocool' literature --include='*.md' | wc -l", "hits": 8},
+        {"command": "grep -ril 'cryogenic transfer' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'propellant transfer' literature --include='*.md' | wc -l", "hits": 2}
+      ],
+      "reverify": "HOLDS. 'cryogenic transfer' still returns zero. Boil-off and cryocooler files are all modelling terms inside architecture studies rather than surface measurements.",
+      "nearest_evidence": [
+        {"path": "literature/isru-processing/kleinhenz-2017-mars-ascent-vehicle-propellant.md", "what": "cryogenic storage and boil-off for a Mars ascent vehicle - the closest real treatment, on the wrong body"},
+        {"path": "literature/isru-processing/kleinhenz-2020-polar-water-case-studies.md", "what": "sizes a Dust Tolerant Automated Umbilical and cryocooler-based liquefaction with radiator mass; a design model, not a demonstration"},
+        {"path": "literature/isru-processing/leger-2025-energy-oxygen-moon.md", "what": "includes liquefaction and zero-boil-off storage inside its 24.3 kWh/kg end-to-end figure, which is where the term is buried"},
+        {"path": "literature/logistics-and-delivery/jones-2019-cislunar-isru-breakeven.md", "what": "propellant transfer as an economic term in a breakeven model"}
+      ],
+      "substitution": "No measurement of lunar-surface cryogenic transfer loss, surface boil-off rate or transfer cadence exists in this corpus. Kleinhenz 2017 treats cryogenic storage and boil-off for a Mars ascent vehicle; Kleinhenz 2020 sizes a dust-tolerant umbilical and cryocooler liquefaction as a design model with no demonstration behind it.",
+      "undermines": {
+        "coefficients": [],
+        "app_surface": ["cadence-cryogenic-break"],
+        "app_exclusion": true,
+        "downstream_outputs": [],
+        "how": "The app excludes this - 'This app does not model programme milestones.' The exclusions matcher requires a topic overlap, and a thin corpus can still produce a word-overlap match, so nothing refuses. The matcher's own header comment names this exact failure as its motivating case. Outcome EXCLUDED-THEN-THIN."
+      },
+      "register_axes": [],
+      "question_classes": ["L8"],
+      "refusal_code": "not-found",
+      "refusal_code_note": "not-found, not excluded. The app's boundary is real but excluded routes to nobody, and the fix here is an acquisition decision, which routes to someone."
+    },
+    {
+      "id": "T6",
+      "title": "Sintering and construction-product properties",
+      "rank": 6,
+      "trigger_tokens": ["sinter", "sintering", "sintered", "compressive", "flexural", "strength", "product", "construction", "pad", "brick", "yield", "microwave"],
+      "probe_pos": "What compressive and flexural strength does sintered regolith product reach per unit of sintering energy?",
+      "probe_neg": "Which paper reports microwave sintering of lunar simulant?",
+      "absent": "A strength measurement on sintered lunar regolith at a stated process energy, and any per-mass sintering specific energy from a primary. The app carries an entire product line on two assumed coefficients the corpus cannot check.",
+      "measured": [
+        {"command": "grep -ril 'sintering strength' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'compressive strength' literature --include='*.md' | wc -l", "hits": 2},
+        {"command": "grep -ril 'flexural strength' literature --include='*.md' | wc -l", "hits": 2}
+      ],
+      "reverify": "HOLDS, slightly improved. 'sintering strength' still zero. Compressive and flexural strength are each carried by the same two files, azami-2024 and liu-2025, so there are real bench strength numbers on the shelf - but neither is paired with a per-mass process energy on the app's basis.",
+      "nearest_evidence": [
+        {"path": "literature/isru-processing/liu-2025-microwave-sintering-lunar-regolith-simulants.md", "what": "bench microwave sintering of two simulants at 69 and 98 MJ/kg for an 11 g sample under a consumer appliance - a different object on a different basis from the app's 3 MJ/kg in-place constant"},
+        {"path": "literature/isru-processing/azami-2024-lunar-manufacturing-review.md", "what": "review-level strength figures across manufacturing routes"},
+        {"path": "literature/logistics-and-delivery/metzger-autry-2023-lunar-landing-pads.md", "what": "reports energy per unit AREA at the soil surface, 21.73 and 18.45 kWh/m2, and prints no per-mass figure at all"}
+      ],
+      "substitution": "No primary reports a per-mass sintering specific energy on the app's in-place basis. Metzger and Autry 2023 report 21.73 and 18.45 kWh/m2 per unit area and print no per-mass figure; Liu 2025 measures 69 and 98 MJ/kg for an 11 g bench sample under a consumer appliance, which is a different object at a different scale.",
+      "undermines": {
+        "coefficients": ["eSinter", "ySinter", "op_const"],
+        "coefficient_status": "ASSUMPTION; ASSUMPTION; ASSUMPTION (energy, wall-plug), PROJECTED (ops slice); negligible",
+        "app_surface": ["sintering-specific-energy", "sintering-yield", "construction-reference", "sintering"],
+        "downstream_outputs": ["Cfull", "construction", "constructionPotential", "ranking"],
+        "how": "The governing section's own tier string reads 'VERIFIED (source per-area figures), ASSUMPTION (app constant), VERIFIED-as-printed (bench figures, source internally unreconciled)'. Any eSinter answer returns that string verbatim; a paraphrase is a copy and a copy drifts."
+      },
+      "register_axes": ["LCC-14"],
+      "question_classes": ["L4"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T7",
+      "title": "Non-water product routes past oxygen",
+      "rank": 7,
+      "trigger_tokens": ["iron", "metal", "metals", "helium", "rare", "earth", "platinum", "byproduct", "aluminium", "aluminum", "he3", "ree", "kreep", "pgm"],
+      "probe_pos": "What energy does smelting iron or refining rare earth and platinum metals from regolith take?",
+      "probe_neg": "How much helium is implanted in lunar regolith?",
+      "absent": "An iron production route treated as a primary product rather than an MRE byproduct, with its own energy figure. For helium-3, an operating demand side. For REE and PGM, a lunar ore grade.",
+      "measured": [
+        {"command": "grep -ril 'iron production' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'helium-3' literature --include='*.md' | wc -l", "hits": 10},
+        {"command": "grep -ril 'rare earth' literature --include='*.md' | wc -l", "hits": 4},
+        {"command": "grep -ril 'PGM|platinum' literature --include='*.md' | wc -l", "hits": 5}
+      ],
+      "reverify": "MOVED, and this entry is materially less thin than the source surface claimed. The surface said REE and PGM hold two files, neither lunar-specific in the way a question would need. That is refuted. McLeod 2017 is a lunar-specific REE review that reaches a negative result stated in its own abstract: there is at present no geological, mineralogical or chemical evidence supporting REE concentrations on the Moon that would classify them as ores. Levin 2025 maps crustal KREEP distribution, which is the host. USGS 2025 supplies the terrestrial PGM market side. Iron and the helium-3 demand side are unchanged and still thin.",
+      "nearest_evidence": [
+        {"path": "literature/lunar-ice-and-geology/mcleod-2017-extraterrestrial-ree.md", "what": "lunar REE review; its own conclusion is that no extraterrestrial REE ore has been identified - a negative result, not an absence"},
+        {"path": "literature/lunar-ice-and-geology/levin-2025-lunar-crustal-kreep-distribution.md", "what": "crustal KREEP distribution, the host terrane for lunar REE"},
+        {"path": "literature/space-economy-and-markets/usgs-2025-platinum-group-metals-mcs.md", "what": "terrestrial PGM production, reserves and prices; a market reference with no elasticity model and nothing lunar"},
+        {"path": "literature/isru-processing/schreiner-2016-mre-sizing-model.md", "what": "molten regolith electrolysis sizing; metals appear as byproducts of an oxygen route"},
+        {"path": "literature/isru-processing/olson-2021-lunar-helium3-mining.md", "what": "supply-side helium-3 engineering, Mark-series miners and the Wisconsin implantation experiments; one short non-quantified passage on the fusion market"},
+        {"path": "literature/isru-processing/wittenberg-1992-he3-resources-review.md", "what": "the founding helium-3 resource case, 1992"}
+      ],
+      "substitution": "This corpus holds no iron production route treated as a primary product with its own energy figure; Schreiner 2016 treats metals as an MRE byproduct. For REE, the corpus holds a lunar-specific finding rather than a gap: McLeod 2017 concludes no extraterrestrial REE ore has been identified. For helium-3, the supply chain is documented and no source establishes an operating D-3He reactor or a contracted buyer.",
+      "undermines": {
+        "coefficients": [],
+        "app_surface": ["iron-production-energy", "helium-procurement-energy", "non-water-routes", "bound-oxygen-mare"],
+        "app_exclusion": true,
+        "downstream_outputs": [],
+        "how": "Four excluded nodes. Outcome EXCLUDED-THEN-THIN for iron; EXCLUDED-THEN-CORPUS on helium-3 supply and REFUSE on helium-3 demand."
+      },
+      "register_axes": ["LCC-13"],
+      "question_classes": ["L7", "L10"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T8",
+      "title": "Autonomy and teleoperation at the operational level",
+      "rank": 8,
+      "trigger_tokens": ["autonomy", "autonomous", "teleoperation", "teleoperated", "supervisory", "control", "latency", "operator", "crew", "ratio", "robotic"],
+      "probe_pos": "What operator ratio and intervention latency does autonomous teleoperated lunar mining need?",
+      "probe_neg": "Which review covers automated drilling in terrestrial mining?",
+      "absent": "Any measured operational-level autonomy performance: an operator-to-machine ratio, an intervention rate, or a demonstrated autonomous duty cycle for surface mining.",
+      "measured": [
+        {"command": "grep -ril 'teleoperat' literature --include='*.md' | wc -l", "hits": 6},
+        {"command": "grep -ril 'supervisory control' literature --include='*.md' | wc -l", "hits": 0},
+        {"command": "grep -ril 'autonom' literature --include='*.md' | wc -l", "hits": 22}
+      ],
+      "reverify": "HOLDS. Teleoperation grew from the pre-merge count but the additions are Freitas 1980, Metzger 2013 and Ehricke 1984, which are vision and closure studies rather than operational measurements. The substantive file is unchanged.",
+      "nearest_evidence": [
+        {"path": "literature/isru-processing/kokkinis-2024-automated-drilling-mining-review.md", "what": "terrestrial mining-automation review whose own conclusion is that infrastructure-less standardised autonomy remains an open research target rather than a deployed reality"},
+        {"path": "literature/self-replication-and-automation/metzger-2013-bootstrapping-space-industry.md", "what": "bootstrapping study; autonomy as an architecture premise"},
+        {"path": "literature/self-replication-and-automation/freitas-1980-advanced-automation-space-missions.md", "what": "the 1980 NASA advanced automation study; the founding treatment and 46 years old"}
+      ],
+      "substitution": "No measured operator-to-machine ratio, intervention rate or autonomous duty cycle for lunar surface mining exists in this corpus. The nearest evidence is Kokkinis 2024, a terrestrial mining-automation review whose own conclusion is that infrastructure-less standardised autonomy remains an open research target rather than a deployed reality.",
+      "undermines": {
+        "coefficients": ["duty", "kExc"],
+        "coefficient_status": "ASSUMPTION; ASSUMPTION (calibrated-to-fit)",
+        "app_surface": ["throughput-coefficient"],
+        "downstream_outputs": ["Rcap", "Wthr"],
+        "how": "Any Oracle statement about autonomous lunar mining operations rests on a terrestrial review that says the terrestrial case is unsolved."
+      },
+      "register_axes": ["LCC-15"],
+      "question_classes": ["L8", "L10"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T9",
+      "title": "Plume ejecta and pad construction",
+      "rank": 9,
+      "trigger_tokens": ["plume", "ejecta", "pad", "landing", "blast", "erosion", "cratering", "site", "preparation"],
+      "probe_pos": "What plume ejecta and blast erosion does a landing pad site preparation have to survive?",
+      "probe_neg": "Which paper reports per-area sintering energy for a pad?",
+      "absent": "A second independent design source on lunar landing pads. Metzger and Autry 2023 is effectively the sole source and is also one of the references licensing the app's sintering specific energy - a single source doing double duty for two different question classes.",
+      "measured": [
+        {"command": "grep -ril 'landing pad' literature --include='*.md' | wc -l", "hits": 6},
+        {"command": "grep -ril 'plume' literature --include='*.md' | wc -l", "hits": 15},
+        {"command": "grep -ril 'ejecta' literature --include='*.md' | wc -l", "hits": 18}
+      ],
+      "reverify": "HOLDS as a single-point-of-failure claim, though the surrounding plume literature is larger than the surface implied. Of the six landing-pad files, one is a design paper and the other five reference pads inside another argument.",
+      "nearest_evidence": [
+        {"path": "literature/logistics-and-delivery/metzger-autry-2023-lunar-landing-pads.md", "what": "the sole landing-pad design source; reports per-area sintering energy and no per-mass figure"},
+        {"path": "literature/isru-processing/liu-2025-microwave-sintering-lunar-regolith-simulants.md", "what": "bench sintering of simulants; a materials check on the pad concept, not a pad design"},
+        {"path": "literature/lunar-ice-and-geology/colaprete-2010-lcross-ejecta-water-detection.md", "what": "impact ejecta as a measurement technique, a different sense of the word"}
+      ],
+      "substitution": "This corpus holds one landing-pad design source, Metzger and Autry 2023, and it is also one of the references licensing the app's sintering specific energy. Any pad answer and any sintering-energy answer rest on the same paper, and the answer says so.",
+      "undermines": {
+        "coefficients": ["eSinter"],
+        "coefficient_status": "ASSUMPTION",
+        "app_surface": ["sintering-specific-energy"],
+        "downstream_outputs": ["Cfull", "construction"],
+        "how": "A single source doing double duty is a single point of failure for two different question classes."
+      },
+      "register_axes": ["LCC-14"],
+      "question_classes": ["L8", "L4"],
+      "refusal_code": "not-found"
+    },
+    {
+      "id": "T10",
+      "title": "Programme-state currency",
+      "rank": 10,
+      "trigger_tokens": ["readiness", "milestone", "schedule", "programme", "program", "current", "status", "today", "now", "latest", "trl"],
+      "probe_pos": "What trl and readiness milestone does the current programme schedule show today?",
+      "probe_neg": "What technology readiness level did Sanders report for carbothermal reduction?",
+      "absent": "A dated currency stamp on the sources whose content is a programme-state snapshot rather than a measurement. Only one file in this corpus carries a stated_as_of field, and it is on the economics side.",
+      "measured": [
+        {"command": "grep -rl 'stated_as_of' literature --include='*.md' | wc -l", "hits": 1},
+        {"command": "grep -ril 'TRL' literature --include='*.md' | wc -l", "hits": 24},
+        {"command": "ls literature/programme-primaries | wc -l", "hits": 8}
+      ],
+      "reverify": "MOVED, in both directions. programme-primaries is 8 files, not the 10 the source surface assumed. The claim that Sanders and Kleinhenz 2025 is the only TRL sheet HOLDS in the sense that matters: 24 files state a TRL, but 23 of them state one for their own subject only, and Sanders 2025 is the only cross-programme maturity sheet. Two newer programme documents landed - the LSIC August 2026 newsletter and the NASA ACR25 data-gaps white paper - so the corpus is more current than it was, and neither replaces a TRL sheet.",
+      "nearest_evidence": [
+        {"path": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md", "what": "the only cross-programme TRL sheet; a May 2025 point-in-time briefing"},
+        {"path": "literature/programme-primaries/nasa-data-gaps-acr25-wp-data-gaps-v3.md", "what": "NASA's 2025 architecture-driven data gaps framework; explicitly a framework rather than a comprehensive gap catalogue, revised on an annual cycle"},
+        {"path": "literature/programme-primaries/lsic-2026-newsletter-august.md", "what": "August 2026 community newsletter; the most recent programme-state item on the shelf"},
+        {"path": "literature/space-economy-and-markets/oecd-2023-space-economy-in-figures.md", "what": "the one file that already carries a stated_as_of field; the pattern to follow"}
+      ],
+      "substitution": "Every maturity claim this Oracle makes resolves to Sanders and Kleinhenz 2025, a May 2025 point-in-time briefing, and any answer quoting it names that date. An unsourced TRL is worse than no TRL: it is a fabricated measurement wearing a number. A 2025 TRL quoted without its date is a claim about the past presented as a claim about the present.",
+      "undermines": {
+        "coefficients": [],
+        "app_surface": ["break-conditions", "signed-offtake-break", "offtake-record", "delivered-cargo-record"],
+        "downstream_outputs": [],
+        "how": "The whole TRL discipline rests on one dated sheet. Without a currency stamp the Oracle will still be answering with it in 2028 and will not say so."
+      },
+      "register_axes": [],
+      "question_classes": ["L7", "L9"],
+      "refusal_code": "not-found"
+    }
+  ],
+
+  "three_named_facts": {
+    "rule": "R5. For any answer carrying a quantitative ISRU figure, three facts are named: the system boundary, the scale, and the maturity.",
+    "boundary": "extraction only, or integrated",
+    "scale": "bench kilograms, or tonnes per year",
+    "maturity": "measured, modelled, or assumed",
+    "why": "Without them the corpus appears to say water extraction costs anywhere from 1.9 to 44 kWh per kilogram and is therefore useless. With them it says something precise: bench systems carrying capture and liquefaction measure 15 to 44, extraction-only concepts model 1.3 to 10, and the difference between those two ranges is the part of the process nobody has demonstrated at scale. The discipline is not a hedge on the answer. It is the answer."
+  },
+
+  "retired_claims": [
+    {
+      "claim": "Sixteen author-year clusters hold more than one summary file, so a filename-token retrieval can return the wrong member of a cluster.",
+      "source": "cr_scratch/step0_space_resources_engineer_question_surface.md section 3, structural note",
+      "status": "LARGELY RESOLVED BY THE MERGE. sowers-2019 is now two distinct papers rather than four files; the Aqua Factorem set is two rather than three; sanders-2025, csank-2022, poston-2020, azami-2024 and speyerer each resolve to one file per paper. The register's member basenames all resolve uniquely against the 169-file shelf, checked 2026-08-28. The hazard the note described is no longer the corpus's shape."
+    }
+  ]
+}

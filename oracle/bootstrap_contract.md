@@ -1,7 +1,9 @@
 
 # The bootstrap contract
 
-**Contract version: 2.** Bumped at sub-step 2.18 by The Systems Engineer: §7 gains the corpus fork verdicts, Phase 5 gains a report line, and BC-16's failure cell names what the absence produces. §10 makes any change to a closed set or a phase a bump, and the verdict set is a closed set. **Nothing reads this integer today** — `CLAUDE.md` is still the seed stub and the acceptance suite is 6.1 — so §10's own rule applies to itself: two of its three readers do not exist, and if 6.1 does not land the field is removed rather than left as decoration.
+**Contract version: 3.** Bumped at sub-step 6.1 by The Systems Engineer, on seven repairs, **six of which were found by running the acceptance suite against a mutated stage rather than by reading this file**: BC-10 gains `--prune` and the forced refspec it always required (`AM-W4-1`, The Writer's F1); BC-21 is added, because `present-but-wrong`'s origin-URL clause had no instrument and `BMD-5` measured a repointed `origin` reporting `CLEAN`; Phase 3's clone carries `-c core.longpaths=true`, because BC-7 was set one phase after the operation it protects; Phase 4 group 3 is gated on the copy being present, because a content assertion evaluated against an absent copy assigned `present-but-wrong` to a directory that must be cloned; BC-5 and BC-8 gain the failure branches they lacked; and §7.2's dispatch target follows The Engineer's W3-1 ruling.
+
+**All three readers of this integer now exist**, which they did not at version 2. This file carries it; `CLAUDE.md` quotes it; `oracle/tests/bootstrap_suite.md` **BXT-4** asserts that the version it was written against equals this one and fails when they differ. §10's own rule — *the field is removed rather than left as decoration* — was pointed at 6.1 and 6.1 has landed, so the field stays. **`oracle/tests/bootstrap_suite.md` was written against version 2 and must be re-pointed at 3 in the same sub-step that reads this line**, and BXT-4 is what makes that non-optional.
 
 This file specifies what the bootstrap does, in what order, and what each part of it does when it
 fails. `CLAUDE.md` is prose that implements this specification for a reader. **Where the two
@@ -126,6 +128,32 @@ resolves to success or to offline and is never itself a state at that phase" —
 the §5 table as a member the mechanism that computes the set could never produce. (1.4 review F3;
 `AM-03`, `AM-18`.)
 
+**The clone carries `-c core.longpaths=true` on its own invocation**, thus:
+
+```
+git -c core.longpaths=true clone <url> <copy>
+```
+
+**Not because Phase 4 will set the key anyway — because Phase 4 sets it one phase too late to matter
+here, and this was measured.** BC-7 is a Phase 4 group 1 assertion; the checkout that needs the
+setting happens in Phase 3. Cloning `cr-agents` into a root of 151 characters exits **128** with
+`Filename too long` and `fatal: unable to checkout working tree`; the identical clone with
+`-c core.longpaths=true` exits **0**, at 151, 152, 153 and 156. On the one path where the key decides
+an outcome, it did not yet exist.
+
+**This is E7's own shape reached from a different direction, and it is worth naming as such**: E7 was
+a check written inside a branch that did not reach the case it was for, and this is a setting written
+after the operation it was for. In both, the mechanism is present and correct and is wired to the
+wrong moment. The remedy in both is to move the wiring rather than to strengthen the mechanism.
+
+**BC-5 stays, and BC-5 and BC-7 are now understood to measure the same wall from opposite sides.**
+`core.longpaths` raises **git's** path ceiling and nothing else's: Node's `fs`, this project's own
+instruments under `tools/`, and the shell still meet the platform limit. So the key removes one wall
+of several and the allowance remains the budget for the whole toolchain. It also means BC-5's
+falsifier cell — *"a clone succeeding into a root over the allowance ... falsifies the budget"* — must
+be read with the key's state attached, because with the key on a clone succeeds at 156 and falsifies
+nothing.
+
 Acquire does not disable push, does not fetch, and does not verify. Those are Phase 4's, and they run
 whether or not Acquire did anything. **This split is loose end E7:** the push-disable and the fetch
 previously sat inside the acquire branch, so a working copy that was present with push still enabled
@@ -239,15 +267,38 @@ assertion, and what a failure does. `<copy>` ranges over `cr-agents` and `lsei`.
 | BC-2 | `git` is on the path. | `git --version` | — | `ABORT` |
 | BC-3 | The network reaches both upstreams. | `git ls-remote --exit-code <url>` per upstream | A proxy answering `ls-remote` for a host that cannot serve a clone. | Record; consumed by Phase 3 |
 | BC-4 | Node is available. | `node --version` | — | Record; consumed by §6 — origin `app` is unavailable without it |
-| BC-5 | The repository root fits the allowance: `abspath(root).length <= 150 [Q-ROOT-ALLOWANCE]`, measured on the **long-name** form of the path, never the 8.3 short form. | `node -p "path.resolve('.').length"` run from the root | A clone succeeding into a root over the allowance, or failing on path length inside it. Either falsifies the budget, not the assertion. | Record; gates Phase 3 |
+| BC-5 | The repository root fits the allowance: `abspath(root).length <= 150 [Q-ROOT-ALLOWANCE]`, measured on the **long-name** form of the path, never the 8.3 short form. | `node -p "path.resolve('.').length"` run from the root | A clone succeeding into a root over the allowance **with `core.longpaths` off**, or failing on path length inside it with it on. Either falsifies the budget, not the assertion. | Record; gates Phase 3 **when a copy is missing**; **emits Phase 5 report item 8 when it fails with both copies present** |
 
 **BC-5 runs every session**, which is a deliberate strengthening of `oracle/NAMING.md` A4's
 "once, at bootstrap." A repository directory can be moved or renamed between sessions and a check
 that ran once cannot notice. It costs one string length.
 
-`150 [Q-ROOT-ALLOWANCE]` is a remainder, not a measurement: it is the measured git-for-Windows
+`150 [Q-ROOT-ALLOWANCE]` was derived as a remainder rather than measured: the git-for-Windows
 absolute-path ceiling, less one separator, less the repo-relative ceiling chosen from the corpus. The
-arithmetic is in that quantity's `operation` field. **No observed root was ever evidence for it.**
+arithmetic is in that quantity's `operation` field.
+
+**Its `sampled:` cell reads "No observed root was ever evidence for it", and that sentence is now
+false.** Bisected 2026-08-28 by cloning `cr-agents` — the deeper of the two working copies — into
+roots of increasing length, with `core.longpaths` unset:
+
+```
+root length 150   git clone exit 0
+root length 151   git clone exit 128   "Filename too long"  "fatal: unable to checkout working tree"
+root length 152, 153, 156                exit 128
+```
+
+**The remainder and the observation agree exactly**, which is the outcome a derived budget most wants
+and least often gets. The quantity block lives at `cr_scratch/step1_7_engineer_naming_addendum.md`,
+which is The Engineer's file and outside this sub-step's write set; the correction to its `sampled:`
+cell is routed rather than taken. Two things to carry when it is taken: the bisect is conditional on
+`core.longpaths` being unset — with it on, the clone succeeds at 156 — and the ceiling is a property
+of the deepest path in `cr-agents`, so a future upstream commit that deepens that tree moves the wall
+without moving the arithmetic.
+
+**BC-5's second clause is what the accident that produced this measurement was.** The 6.1 stage was
+first built inside the session scratchpad, at **153** characters, and the clone failed exactly as BC-5
+predicts. The assertion earned its keep on its first real encounter with a root somebody had not
+chosen.
 
 ### Phase 4, group 1: configuration
 
@@ -257,8 +308,31 @@ The bootstrap writes local git configuration and nothing else. The set of keys i
 |---|---|---|---|---|
 | BC-6 | Push is disabled on each working copy. | `git -C <copy> remote set-url --push origin DISABLED` then `git -C <copy> remote -v` shows `DISABLED (push)` | A working copy whose push URL is live at the start of any session after the first. | Report; retry once; if it will not take, mode `present-but-wrong` |
 | BC-7 | `core.longpaths` is set on this repository and on each working copy. | `git config core.longpaths true`; same with `-C <copy>` | A clone or fetch into a root inside the allowance failing on path length **with the setting on** — which falsifies the budget. A run in which the setting changes no outcome inside the allowance falsifies the clause's usefulness and it is deleted. | Report only |
-| BC-8 | `core.hooksPath` on **this repository** points at the committed hook directory, **and that directory holds executable hooks**. | `git config core.hooksPath tools/githooks`, then `git hook run pre-commit` for the resolver and `git ls-files -s tools/githooks/` for the modes | A committed check that does not fire on the event the check register says it fires on. **Two ways this happens with the config value set correctly, both measured:** the directory is absent or empty, in which case `git config` exits 0, reads back correctly, and the next commit fires nothing; or the hooks are committed at `100644`, in which case they run here (`core.filemode` is `false` on the authoring machine) and are inert on a Linux clone. | Report; the check register's mechanisms are unwired until it takes |
+| BC-8 | `core.hooksPath` on **this repository** points at the committed hook directory, **and that directory holds executable hooks**. Preceded by asserting that the repository root **is** a git repository. | `git rev-parse --show-toplevel` first; then `git config core.hooksPath tools/githooks`, `git hook run pre-commit` for the resolver, and `git ls-files -s tools/githooks/` for the modes | A committed check that does not fire on the event the check register says it fires on. **Three ways this happens, all measured:** the directory is absent or empty, in which case `git config` exits 0, reads back correctly, and the next commit fires nothing; the hooks are committed at `100644`, in which case they run here (`core.filemode` is `false` on the authoring machine) and are inert on a Linux clone; or **the root is not a git repository at all** — a download-as-zip install — in which case `config --get` returns empty and exits 1 and `ls-files` exits 128, and both read as "hooksPath is unset". | Report. A root that is not a git repository is its **own** report line and not a configuration finding; otherwise the check register's mechanisms are unwired until it takes |
 | BC-9 | `core.hooksPath` is **not** set on either working copy. | `git -C <copy> config --get core.hooksPath` returns empty | A borrowed repository running this project's scripts. | Unset it; report |
+| BC-21 | Each working copy's `origin` fetch URL is the expected upstream. | `git -C <copy> remote get-url origin` equals the URL for that copy in §6's origin table | **A working copy repointed at a third party reporting `CLEAN`.** Measured 2026-08-28 on a mutated stage: `origin` set to `https://example.invalid/someone-elses.git` produced `outcome=CLEAN`, `modeSet=[]`, `phase7.plays=true`, origins `["app","literature","none"]`, and the only symptom was a failed fetch — which BC-10's own row downgrades to a report line and explicitly says is not a mode. | Mode `present-but-wrong` on that copy |
+
+**BC-21 exists because §5 gave `present-but-wrong` three disjuncts and one of them had no
+instrument.** The mode's condition reads *"the directory exists and is not a git repository; or its
+`origin` points somewhere other than the expected upstream; or a content assertion for that copy
+failed."* BC-6 writes the **push** URL and reads back `DISABLED (push)`; BC-9 reads `core.hooksPath`;
+BC-12 through BC-14 read content. **Nothing read the fetch URL**, so no execution path produced the
+middle disjunct.
+
+That is `Q-DEGRADED-MODES`'s own lesson one level down. The 1.4 review found a closed set holding a
+*member* the mechanism could not assign and demoted it; this is a closed set holding a *clause* the
+mechanism could not assign, and the remedy is the opposite one — the clause is right and the
+instrument was missing. **The two cases are told apart by asking whether the condition can occur**:
+`missing-recoverable` could not occur at Phase 4 because Phase 3 resolves it, so the member left the
+table; a repointed `origin` occurs the moment somebody clones from a fork, so the assertion arrives.
+Found by `oracle/tests/bootstrap_suite.md` `BMD-5`, which is the row this contract could not have
+satisfied and which now names BC-21 as its close condition.
+
+**BC-21 reports and never repairs.** It does not `set-url origin` back to the expected upstream. §5's
+"never clone over `present-but-wrong` and never delete it — something put it there on purpose" governs
+the URL for the same reason it governs the directory: a fork the author is deliberately working
+against is indistinguishable, from inside this contract, from a mistake, and the report is what tells
+them apart.
 
 BC-6 and BC-7 are the only keys written into a working copy. They are local configuration, not
 content, and neither can reach the upstream. **BC-9 exists because the same reasoning does not extend
@@ -304,8 +378,21 @@ the resolver worked perfectly and a dispatched row failed on accepted repository
 
 | Id | Asserts | Command | Falsified by | On failure |
 |---|---|---|---|---|
-| BC-10 | Each working copy has fetched this session. | `git -C <copy> fetch --quiet origin` | A drift verdict computed from a tracking ref that was never updated. | Report line "currency unknown"; **not** a mode |
+| BC-10 | Each working copy has fetched this session, **with pruning and a forced refspec**. | `git -C <copy> fetch --quiet --prune origin` | A drift verdict computed from a tracking ref that was never updated, **or from a tracking ref for a branch the upstream has deleted**. | Report line "currency unknown"; **not** a mode |
 | BC-11 | Three refs are readable per working copy: local `HEAD`, `origin/main`, and the verified-against ref from the tracked record. | `git -C <copy> rev-parse --short HEAD`, `... origin/main`, read the tracked record | A drift report naming fewer than three refs. | Report; the drift verdict is `unknown` |
+
+**`--prune` was omitted from this cell for eleven sub-steps and the omission is a defect, not a
+shorthand.** `oracle/currency_policy.md` §4 has required it since 1.6 and states the measurement:
+without it, a branch deleted upstream keeps resolving from a stale tracking ref and the comparison
+returns a **clean verdict against a branch that does not exist**. With it, `rev-parse` on that ref
+exits 128, which §5 of that policy turns into `unknown`. Prune moves the failure from the silent
+direction to the loud one, which is the direction every choice in this contract takes. The same
+section requires a **forced refspec** — both working copies carry a leading `+`, so a rewritten
+upstream updates the tracking ref rather than being refused — and without it §7.1's `unrelated` and
+§7.2's `withdrawn` are unreachable. Found by The Writer at 6.4 while implementing this contract as
+prose: `CLAUDE.md` was written to the currency policy and asserted at `CMD-10`, so **the prose was
+right and the contract cell was the bug**, which is the one direction §5's "correct `CLAUDE.md`" rule
+does not cover and is why that rule is stated as a default rather than as an absolute.
 
 BC-10 runs every session. **A local clone that has not fetched cannot distinguish an upstream that has
 not moved from an upstream it has not looked at.** A fetch that fails because the network is
@@ -322,6 +409,26 @@ This contract's obligation is that the three refs are fetched, read and reported
 exists.** A path check on a dependency that lives as content passes against an empty file, a truncated
 download and an error page, and the failure then surfaces as a wrong number rather than as a missing
 input.
+
+**This group is evaluated only against a copy that is present, and skipping it against an absent copy
+is a repair, not an optimisation.** Measured 2026-08-28: with `lsei/` removed and its upstream
+unreachable, `grep -q 'KNOB_DATA' lsei/index.html` fails on a file that is not there, BC-14 goes red,
+and §5's *"or a content assertion for that copy failed"* clause fires — so the run assigned
+`{offline, present-but-wrong, partially-acquired}`, **three modes for one condition**. The gate answer
+is unaffected, because blocking is by intersection, which is exactly why nothing that only reads the
+gate can see this.
+
+The consequence is not cosmetic. §5's "What no mode does" attaches to `present-but-wrong` the rule
+*never clone over it and never delete it — something put it there on purpose*, and a run that assigns
+that mode to an absent directory has attached a do-not-clone rule to the one copy that must be cloned.
+
+**The rule, stated so it can be asserted:** a content assertion returns `not-applicable` against an
+absent copy, and `not-applicable` is neither a pass nor a failure. The absence is already carried by
+`offline`, which is the mode that describes it. `oracle/tests/corpus_suite.md` already carries the
+general form in the other direction — **`VACUOUS IS NOT PASS`**, an empty population must never read as
+a clean one. This is its mirror: **vacuous is not fail.** Both say the same thing, which is that an
+assertion evaluated against nothing has produced no evidence, and a mechanism that turns no evidence
+into a verdict in either direction is the defect. Found by `oracle/tests/bootstrap_suite.md` `BCT-6`.
 
 | Id | Asserts | Command | Falsified by | On failure |
 |---|---|---|---|---|
@@ -381,7 +488,7 @@ report lists the set and Phase 7 tests the set for intersection.
 | `offline` | Copy absent; it could not be fetched. | per copy | **yes** |
 | `moved-on` | Copy present; `HEAD` differs from the verified-against ref. | per copy | no |
 | `dirty-or-diverged` | Copy present with uncommitted modifications, or on a branch other than the recorded one, or holding commits `origin/main` does not. | per copy | no |
-| `present-but-wrong` | The directory exists and is not a git repository; or its `origin` points somewhere other than the expected upstream; or a content assertion for that copy failed. | per copy | **yes** |
+| `present-but-wrong` | The directory exists and is not a git repository (BC-6); or its `origin` points somewhere other than the expected upstream (**BC-21**); or a content assertion for that copy **was evaluated and** failed (BC-12, BC-13, BC-14). | per copy | **yes** |
 | `partially-acquired` | Exactly one working copy is *usable*, as defined below. | per install | **yes** |
 
 **A missing copy is not a mode.** It resolves during Phase 3, to acquisition or to `offline` or to an
@@ -448,6 +555,19 @@ apart, an origin is unavailable and the refusal rule below fires. **Node availab
 capability and not an install fact**: it is computed at Preflight, consumed here, reported, and never
 stored — the install state record's §8 rules it out on both its tests. (1.4 review F4; `AM-04`, and the
 BC-4 clause of `AM-23`.)
+
+**And the fix that BC-4 received was never generalised, which `BSH-2` measured.** Empty
+`literature/` holding only a `README.md`: BC-17 red, origin `literature` unavailable, **mode set
+empty, outcome `CLEAN`**. The come-apart §6 names for Node — *`CLEAN` is defined to mean the mode set
+is empty and it was being read to mean the install works* — happens identically for the corpus shelf,
+and there it produces a session that reports `CLEAN` and refuses `LITERATURE` and `CONTESTED`.
+`AM-04` closed one of the two directions.
+
+**The remedy is not a sixth mode**, which would be arithmetic and would put a per-install fact into a
+per-copy vocabulary. It is that **the terminal outcome line carries the available-origin set whenever
+that set is not the full four.** `CLEAN` keeps its definition — the mode set is empty — and stops
+being readable as a claim about capability, because the line that states it also states what cannot be
+answered. §2's `CLEAN` row is to be read with that attached.
 
 The set is computed, reported, and **not stored**. A stored availability is a copy of the filesystem,
 and a copy drifts.
@@ -530,12 +650,42 @@ close this faster. The requirement is this contract's; the format is The Enginee
 a check reporting `equal` over the content layer would be reporting a comparison it did not make.
 
 **Who computes it.** Not this contract, and not any code inside the bootstrap. §8 rule 7 stands: the
-bootstrap performs no content check on a corpus file. It **dispatches** `tools/corpus_divergence.js` and
+bootstrap performs no content check on a corpus file. It **dispatches the divergence check** and
 prints what comes back, which is the same shape as BC-8 and the pre-commit trigger — the wiring is the
 bootstrap's, the assertion is a committed script's. Two register rows, one artifact, two consequences:
 `CHK-40` at `session-start` **reports**, `CHK-32` at `substep-gate` **blocks**. They are two rows because
 a divergence must stop a sub-step that is about the corpus and must never stop a session that is not,
 and a single row would have to pick one.
+
+**The dispatch target is `tools/verify_corpus.js`, in its divergence mode. It is not
+`tools/corpus_divergence.js`, and this section named a file that does not exist.** `ls tools/`
+returns nineteen files and no `corpus_divergence.js`; `tools/verify_corpus.js` exists and already
+carries a `DIV` section that walks `literature/`, resolves every `Source:` path, and reports
+undeclared divergence. **The Engineer ruled it at W3-1 and the ruling is adopted here whole**, on his
+four reasons, of which the first is decisive:
+
+1. **2.17's own integration note already ruled it** — *"The Engineer and The Systems Engineer each
+   proposed a drift check; this is one tool, not two."* Minting a second binary re-opens a
+   consolidation the plan closed before either seat started.
+2. **Two tools cannot share a read-digest**, and this project's standing rule is that two figures at
+   different digests are not comparable. A shelf-side count from one binary against an upstream-side
+   count from another is exactly that, and comparing the two sides is the whole job.
+3. **The upstream walk is a second directory, not a second tool.** `verify_corpus.js` already walks
+   `literature/`; the `lsei/literature/` side is an argument, not an executable.
+4. **The `100 / 71 / 17 / 89` precedent**: four instruments walked one repository and returned four
+   counts, and the fix was one walker.
+
+`CHK-32` and `CHK-40` are therefore two invocations of one binary rather than two binaries, and their
+`artifact` cells are the check register's to reconcile — routed, not taken here.
+
+**Which of the two was the defect is worth stating, because the answer is not the obvious one.** A
+contract clause naming an artifact that does not exist is normally a gap in the build. Here the build
+was right and the clause was stale: the ruling that consolidated the two tools postdates this text,
+and nothing re-read it afterwards. **The Writer found it at 6.4 by trying to implement this contract
+as prose**, and wrote Phase 5 to dispatch as specified rather than dropping the line — which was the
+right call, because a `CLAUDE.md` that omits the dispatch makes the gap invisible at the moment
+somebody could close it. `CLAUDE.md` §3 prohibition 7 still describes the choice as *open at 2.17*; it
+is closed, and that sentence is routed to The Writer as the one conformance finding of 6.5.
 
 **Report, never resolve, and this is the whole of sub-step 2.18.** No verdict merges, adopts, reverts,
 deletes, renames or re-lands anything. A `diverged` pair is a finding for The Fact-Checker; an
@@ -548,8 +698,17 @@ Stated as a closed list, because each item is a thing somebody will propose as a
 
 1. **Never vendors either working copy into this repository.** `lsei/index.html` is the authority on
    the model; a copy of it here would be a second authority, and a second authority drifts.
-2. **Never copies this repository's corpus into a working copy.** The reverse rule, enforced
-   mechanically by BC-6.
+2. **Never copies this repository's corpus into a working copy.** The reverse rule. **It is enforced
+   mechanically only in the direction that leaves this machine, and "enforced mechanically by BC-6"
+   overstated it for eleven sub-steps.** BC-6 disables the push URL, so a copy that lands in
+   `lsei/literature/` cannot reach the upstream. Nothing stops a local `cp -r literature/
+   lsei/literature/`, and the result is a working copy that fails §7.2's fork comparison against
+   itself — an `equal` verdict computed over content this project put there. The Editor found the
+   overstatement at 6.5 by reading the contract against the prose that implements it, and the finding
+   is against the contract: **the prose was correctly implementing a claim that was too strong.**
+   Stated correctly, this rule is a **prohibition on the bootstrap** with a partial mechanical
+   backstop, which is what the other six rules on this list are and what this one was pretending not
+   to be.
 3. **Never writes to any path outside this repository and its two working copies.** No path outside
    them is read at runtime either. Material pulled from elsewhere arrives through a human-supervised
    step, never through the bootstrap and never through the answering loop.

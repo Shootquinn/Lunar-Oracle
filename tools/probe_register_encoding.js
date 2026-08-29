@@ -56,6 +56,17 @@ const FIXTURE = [
      'linne-2020-lunar-water-pilot-plant.md']],
   ['LCC-06', ['aqua factorem', 'beneficiation', 'magnetic', 'electrostatic', 'separation', 'thermal mining', 'power reduction'],
     ['sowers-2019-thermal-mining-ice.md', 'metzger-2021-aqua-factorem.md',
+     // DELIBERATE NON-RESOLVER, and it must stay one. `metzger-2021-aqua-factorem-2.md` resolves
+     // to no file, in `lsei/literature/` or in `literature/`. It is not an assertion that such a
+     // file exists -- the lunar register's "superseded duplicate" clause that once supplied that
+     // basis has been struck as unsourced, and this comment replaces it. What the name IS, is the
+     // measurement subject of `Q-LCC-MEMBER-UNRESOLVED` = 1: `register_schema.md` §6 cites "one of
+     // the 67 lunar member references resolves to no leaf" and this entry is the one. Delete it and
+     // the instrument stops reproducing a governed figure the schema still cites, which is a worse
+     // defect than a name that resolves nowhere in a fixture whose whole job is to count the names
+     // that resolve nowhere. `--selftest` fires if this entry is removed, or if a second phantom
+     // joins it. The probe REPORTS non-resolvers; it neither skips them nor throws on them, so this
+     // row is not VACUOUS -- it is the row being measured.
      'metzger-2021-aqua-factorem-2.md', 'metzger-2020-aqua-factorem.md']],
   ['LCC-07', ['oxygen', 'o2', 'lox', 'energy', 'kwh', 'per kilogram', 'carbothermal', 'ilmenite', 'mre', 'reduction'],
     ['leger-2025-energy-oxygen-moon.md', 'colozza-2010-solar-lunar-oxygen.md',
@@ -235,9 +246,60 @@ function cmdBlocks(corpus) {
   }
 }
 
+/* --------------------------------------------------------------- selftest
+ *
+ * A KNOWN-ANSWER TEST, on the `tools/verify_corpus.js` pattern, added at sub-step 5.1 after the
+ * Fact-Checker seat flagged the one fixture name that resolves to no file.
+ *
+ * WHAT WAS ASKED AND WHAT THE MEASUREMENT SAID. The question put to this seat was whether the probe
+ * SKIPS a missing file (in which case the fixture row is VACUOUS wearing a passing status) or THROWS
+ * (in which case something is swallowing it). It does neither: `cmdResolve` counts the reference,
+ * fails to resolve it, and PRINTS it by axis and leaf. Non-resolution is the probe's output, not an
+ * error in it, so the row asserts something and asserts it correctly.
+ *
+ * The name therefore stays, and this test is what stops it drifting either way:
+ *   - delete the phantom and the count drops to 0, and this test fails;
+ *   - let a second phantom in and the count rises to 2, and this test fails;
+ *   - rename the corpus out from under the probe and the count jumps, and this test fails.
+ *
+ * IT IS PINNED TO `lsei/literature`, DELIBERATELY. `Q-LCC-MEMBER-UNRESOLVED` is a `fixed` quantity
+ * measured before the merge ran, and the fixture's leaf names are the PRE-MERGE names the domain
+ * persona wrote. Against the landed `literature/` tree seven of the sixty-seven do not resolve,
+ * because the merge renamed six of them -- which is a fact about the merge and not about the
+ * register, and folding it into this figure would silently redefine the quantity.
+ */
+const KNOWN = {
+  corpus: DEFAULT_CORPUS,
+  references: 67,                                   // Q-LCC-MEMBER-REFS
+  unresolved: 1,                                    // Q-LCC-MEMBER-UNRESOLVED
+  unresolvedNames: ['metzger-2021-aqua-factorem-2.md'],
+};
+function cmdSelftest() {
+  const axes = loadAxes(), idx = leafIndex(KNOWN.corpus);
+  let total = 0; const bad = [];
+  for (const a of axes) for (const m of a.members) { total++; if (!idx.has(m)) bad.push(m); }
+  const names = [...new Set(bad)].sort();
+  const out = [];
+  out.push(['REFERENCES', KNOWN.references, total]);
+  out.push(['UNRESOLVED', KNOWN.unresolved, bad.length]);
+  out.push(['UNRESOLVED-NAMES', KNOWN.unresolvedNames.join(','), names.join(',')]);
+  let fail = 0;
+  console.log('probe_register_encoding --selftest   known-answer test against ' + KNOWN.corpus);
+  for (const [id, want, got] of out) {
+    const ok = String(want) === String(got);
+    if (!ok) fail++;
+    console.log('  ' + (ok ? 'ok    ' : 'FAIL  ') + id.padEnd(18) + 'expected ' + JSON.stringify(want) + '  got ' + JSON.stringify(got));
+  }
+  console.log('  Q-LCC-MEMBER-REFS and Q-LCC-MEMBER-UNRESOLVED are the governed figures this reproduces.');
+  console.log(fail ? 'RESULT  FAIL, ' + fail + ' finding(s) -- the fixture or the corpus moved and a governed figure no longer reproduces'
+    : 'RESULT  PASS');
+  process.exitCode = fail ? 1 : 0;
+}
+
 const mode = process.argv[2] || '--blocks';
 const corpus = process.argv[3] ? path.resolve(process.argv[3]) : DEFAULT_CORPUS;
 if (mode === '--resolve') cmdResolve(corpus);
 else if (mode === '--keys') cmdKeys(corpus);
 else if (mode === '--blocks') cmdBlocks(corpus);
-else { console.error('usage: probe_register_encoding.js --resolve|--keys|--blocks [corpusRoot]'); process.exitCode = 2; }
+else if (mode === '--selftest') cmdSelftest();
+else { console.error('usage: probe_register_encoding.js --resolve|--keys|--blocks|--selftest [corpusRoot]'); process.exitCode = 2; }

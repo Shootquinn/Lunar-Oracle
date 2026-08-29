@@ -84,3 +84,12 @@ oracle/AMENDMENTS.tsv text eol=lf
 oracle/MANIFEST.tsv text eol=lf
 oracle/VERIFIED.tsv text eol=lf
 oracle/REGISTER.*.tsv text eol=lf
+
+# Wave 4: pin LF on everything this project authors. core.autocrlf is true here and
+# git reported it would convert 58 files to CRLF on next touch. Five distinct failures
+# in this project have been caused by line endings; the sixth was found this wave
+# (Dirent.isFile on a hardlink). Pinning is cheaper than finding the seventh.
+oracle/** text eol=lf
+tools/** text eol=lf
+cr_scratch/** text eol=lf
+*.md text eol=lf

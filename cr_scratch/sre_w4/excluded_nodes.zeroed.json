@@ -1,0 +1,841 @@
+{
+  "generated_by": "oracle/router/build.js",
+  "app_path": "lsei/index.html",
+  "app_md5": "16caa330ebae773684285c301a8e0a98",
+  "index_path": "literature/INDEX.tsv",
+  "question_classes_path": "oracle/question_classes.json",
+  "node_count": 10,
+  "outcome_counts": {
+    "EXCLUDED-THEN-CORPUS": 5,
+    "EXCLUDED-THEN-THIN": 2,
+    "EXCLUDED-BUT-ADJACENT": 3
+  },
+  "findings": [],
+  "nodes": [
+    {
+      "slug": "bound-oxygen-mare",
+      "title": "Bound Oxygen and the Mare Resources",
+      "parent": "resource-geography",
+      "parent_title": "Where the Resources Are",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model where the non-water resources sit.",
+      "reason": "Placing bound oxygen everywhere and the mare resources at low latitudes would take an abundance term or a terrain term, and the model’s coefficient set carries neither an oxygen term nor a geology term.",
+      "register_axes": [
+        "LCC-08"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L7",
+      "primaries": [
+        {
+          "axis": "LCC-08",
+          "side": "A",
+          "stem": "sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+          "leaf": "literature/isru-processing/sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "A",
+          "stem": "leger-2025-energy-oxygen-moon.md",
+          "leaf": "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "B",
+          "stem": "schreiner-2016-mre-sizing-model.md",
+          "leaf": "literature/isru-processing/schreiner-2016-mre-sizing-model.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "B",
+          "stem": "sibille-2012-joule-heated-mre.md",
+          "leaf": "literature/isru-processing/sibille-2012-joule-heated-mre.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "C",
+          "stem": "nasa-2023-card-carbothermal-reduction.md",
+          "leaf": "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "C",
+          "stem": "colozza-2010-solar-lunar-oxygen.md",
+          "leaf": "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "D",
+          "stem": "sanders-2025-nasa-isru-progress-review.md",
+          "leaf": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-CORPUS",
+      "declared_outcome": "EXCLUDED-THEN-CORPUS",
+      "verdict": "LITERATURE",
+      "reason_code": null,
+      "refusal": {
+        "absent_object": {
+          "slug": "bound-oxygen-mare",
+          "title": "Bound Oxygen and the Mare Resources",
+          "app_says": "This app does not model where the non-water resources sit.",
+          "app_reason": "Placing bound oxygen everywhere and the mare resources at low latitudes would take an abundance term or a terrain term, and the model’s coefficient set carries neither an oxygen term nor a geology term.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-08"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "shelf",
+          "leaves": [
+            "literature/isru-processing/sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+            "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+            "literature/isru-processing/schreiner-2016-mre-sizing-model.md",
+            "literature/isru-processing/sibille-2012-joule-heated-mre.md",
+            "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+            "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+            "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md"
+          ],
+          "axes": [
+            "LCC-08"
+          ]
+        },
+        "reason_code": null,
+        "outcome": "EXCLUDED-THEN-CORPUS",
+        "why": "the app declared the boundary and the corpus holds a named primary; the answer comes from the corpus and the boundary sentence is printed beside it, never as an app output"
+      }
+    },
+    {
+      "slug": "cadence-cryogenic-break",
+      "title": "The Cadence and Cryogenic-Transfer Break Condition",
+      "parent": "break-conditions",
+      "parent_title": "The Falsifiable Break Conditions",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model programme milestones.",
+      "reason": "Testing a slipped cadence or a cryogenic-transfer failure would take a milestone date and a cadence term, and the model carries no milestone of any kind and no cryogenic term anywhere.",
+      "register_axes": [],
+      "match_keys": [],
+      "thin_patches": [
+        "T5"
+      ],
+      "question_class": "L8",
+      "primaries": [],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-THIN",
+      "declared_outcome": "EXCLUDED-THEN-THIN",
+      "verdict": "REFUSE",
+      "reason_code": "not-found",
+      "refusal": {
+        "absent_object": {
+          "slug": "cadence-cryogenic-break",
+          "title": "The Cadence and Cryogenic-Transfer Break Condition",
+          "app_says": "This app does not model programme milestones.",
+          "app_reason": "Testing a slipped cadence or a cryogenic-transfer failure would take a milestone date and a cadence term, and the model carries no milestone of any kind and no cryogenic term anywhere.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [],
+          "thin_patches": [
+            "T5"
+          ]
+        },
+        "nearest_present_object": {
+          "kind": "app-parent",
+          "slug": "break-conditions",
+          "title": "The Falsifiable Break Conditions"
+        },
+        "reason_code": "not-found",
+        "outcome": "EXCLUDED-THEN-THIN",
+        "why": "the app declared the boundary and no named primary resolves on the shelf; a thin corpus is a corpus gap, which is what not-found routes to"
+      }
+    },
+    {
+      "slug": "delivered-cargo-record",
+      "title": "The Delivered-Cargo Record",
+      "parent": "demand",
+      "parent_title": "Demand and Cadence",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model delivery capacity.",
+      "reason": "Comparing production against what has actually been landed would take a delivered-record term and a lander capacity class, and the model’s lander figures are all delivery cost per kilogram rather than mass delivered per year.",
+      "register_axes": [
+        "LCC-11"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L9",
+      "primaries": [
+        {
+          "axis": "LCC-11",
+          "side": "A",
+          "stem": "payload-research-starship-cost.md",
+          "leaf": "literature/logistics-and-delivery/payload-research-starship-cost.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "A",
+          "stem": "jones-superheavylift-final20260614.md",
+          "leaf": "literature/logistics-and-delivery/jones-superheavylift-final20260614.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "A",
+          "stem": "adilov-2022-launch-cost-reductions.md",
+          "leaf": "literature/logistics-and-delivery/adilov-2022-launch-cost-reductions.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "B",
+          "stem": "nasa-2023-card-carbothermal-reduction.md",
+          "leaf": "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "B",
+          "stem": "metzger-autry-2023-lunar-landing-pads.md",
+          "leaf": "literature/logistics-and-delivery/metzger-autry-2023-lunar-landing-pads.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "B",
+          "stem": "nasa-clps-delivery-timeline.md",
+          "leaf": "literature/logistics-and-delivery/nasa-clps-delivery-timeline.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-11",
+          "side": "B",
+          "stem": "nasa-clps-procurement-vignette.md",
+          "leaf": "literature/logistics-and-delivery/nasa-clps-procurement-vignette.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-CORPUS",
+      "declared_outcome": "EXCLUDED-THEN-CORPUS",
+      "verdict": "LITERATURE",
+      "reason_code": null,
+      "refusal": {
+        "absent_object": {
+          "slug": "delivered-cargo-record",
+          "title": "The Delivered-Cargo Record",
+          "app_says": "This app does not model delivery capacity.",
+          "app_reason": "Comparing production against what has actually been landed would take a delivered-record term and a lander capacity class, and the model’s lander figures are all delivery cost per kilogram rather than mass delivered per year.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-11"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "shelf",
+          "leaves": [
+            "literature/logistics-and-delivery/payload-research-starship-cost.md",
+            "literature/logistics-and-delivery/jones-superheavylift-final20260614.md",
+            "literature/logistics-and-delivery/adilov-2022-launch-cost-reductions.md",
+            "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+            "literature/logistics-and-delivery/metzger-autry-2023-lunar-landing-pads.md",
+            "literature/logistics-and-delivery/nasa-clps-delivery-timeline.md",
+            "literature/logistics-and-delivery/nasa-clps-procurement-vignette.md"
+          ],
+          "axes": [
+            "LCC-11"
+          ]
+        },
+        "reason_code": null,
+        "outcome": "EXCLUDED-THEN-CORPUS",
+        "why": "the app declared the boundary and the corpus holds a named primary; the answer comes from the corpus and the boundary sentence is printed beside it, never as an app output"
+      }
+    },
+    {
+      "slug": "grade-independent-demand",
+      "title": "What Drives Grade-Independent Demand",
+      "parent": "demand",
+      "parent_title": "Demand and Cadence",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model demand.",
+      "reason": "Tying output to landing cadence and surface build-out would take a cadence coefficient, a landings knob or a build-out term, and the model carries no dial of any of those kinds.",
+      "register_axes": [
+        "LCC-12"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L9",
+      "primaries": [
+        {
+          "axis": "LCC-12",
+          "side": "A",
+          "stem": "kornuta-2019-commercial-lunar-propellant-architecture.md",
+          "leaf": "literature/logistics-and-delivery/kornuta-2019-commercial-lunar-propellant-architecture.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "A",
+          "stem": "sowers-2019-psr-ice-mining.md",
+          "leaf": "literature/isru-processing/sowers-2019-psr-ice-mining.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "A",
+          "stem": "sowers-2019-thermal-mining-niac-report.md",
+          "leaf": "literature/isru-processing/sowers-2019-thermal-mining-niac-report.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "B",
+          "stem": "jones-2019-cislunar-isru-breakeven.md",
+          "leaf": "literature/logistics-and-delivery/jones-2019-cislunar-isru-breakeven.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "B",
+          "stem": "jones-2020-lunar-propellant-breakeven.md",
+          "leaf": "literature/logistics-and-delivery/jones-2020-lunar-propellant-breakeven.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "C",
+          "stem": "shishko-2019-lunar-thermal-mining-business-case.md",
+          "leaf": "literature/space-economy-and-markets/shishko-2019-lunar-thermal-mining-business-case.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-12",
+          "side": "C",
+          "stem": "mckeown-2024-space-resource-hurdle-rate.md",
+          "leaf": "literature/space-economy-and-markets/mckeown-2024-space-resource-hurdle-rate.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": {
+        "adjacent_slug": "offtake-record",
+        "adjacent_title": "The Offtake Record",
+        "relation": "siblings under demand",
+        "distinction": "a demand model is not a record of signed offtakes"
+      },
+      "outcome": "EXCLUDED-BUT-ADJACENT",
+      "declared_outcome": "EXCLUDED-BUT-ADJACENT",
+      "verdict": "REFUSE",
+      "reason_code": "excluded",
+      "refusal": {
+        "absent_object": {
+          "slug": "grade-independent-demand",
+          "title": "What Drives Grade-Independent Demand",
+          "app_says": "This app does not model demand.",
+          "app_reason": "Tying output to landing cadence and surface build-out would take a cadence coefficient, a landings knob or a build-out term, and the model carries no dial of any of those kinds.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-12"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "app-node",
+          "slug": "offtake-record",
+          "title": "The Offtake Record",
+          "relation": "siblings under demand",
+          "distinction": "a demand model is not a record of signed offtakes",
+          "warning": "The app computes this and it is NOT the answer to the question asked. An answer that prints its number without the distinction above is read as answering the excluded question."
+        },
+        "reason_code": "excluded",
+        "outcome": "EXCLUDED-BUT-ADJACENT",
+        "why": "the app models an adjacent quantity that reads as the answer and is not; the refusal names it as the nearest present object and states the distinction"
+      }
+    },
+    {
+      "slug": "habitat-water-terrain",
+      "title": "Habitat Volume and Water Terrain",
+      "parent": "resource-geography",
+      "parent_title": "Where the Resources Are",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model crew habitat siting.",
+      "reason": "Deciding whether a habitat and a water mine can share a site would take a habitat mass or volume term, and the model has none; the Equations tab already tells a reader so, in the transmission-distance note stating that the model carries no crew habitat term.",
+      "register_axes": [
+        "LCC-03"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L8",
+      "primaries": [
+        {
+          "axis": "LCC-03",
+          "side": "A",
+          "stem": "hayne-2020-micro-cold-traps.md",
+          "leaf": "literature/lunar-ice-and-geology/hayne-2020-micro-cold-traps.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-03",
+          "side": "B",
+          "stem": "cannon-2020-lunar-ice-geologic-model.md",
+          "leaf": "literature/lunar-ice-and-geology/cannon-2020-lunar-ice-geologic-model.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-03",
+          "side": "C",
+          "stem": "schorghofer-2026-current-theories-lunar-ice.md",
+          "leaf": "literature/lunar-ice-and-geology/schorghofer-2026-current-theories-lunar-ice.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-CORPUS",
+      "declared_outcome": "EXCLUDED-THEN-CORPUS",
+      "verdict": "LITERATURE",
+      "reason_code": null,
+      "refusal": {
+        "absent_object": {
+          "slug": "habitat-water-terrain",
+          "title": "Habitat Volume and Water Terrain",
+          "app_says": "This app does not model crew habitat siting.",
+          "app_reason": "Deciding whether a habitat and a water mine can share a site would take a habitat mass or volume term, and the model has none; the Equations tab already tells a reader so, in the transmission-distance note stating that the model carries no crew habitat term.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-03"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "shelf",
+          "leaves": [
+            "literature/lunar-ice-and-geology/hayne-2020-micro-cold-traps.md",
+            "literature/lunar-ice-and-geology/cannon-2020-lunar-ice-geologic-model.md",
+            "literature/lunar-ice-and-geology/schorghofer-2026-current-theories-lunar-ice.md"
+          ],
+          "axes": [
+            "LCC-03"
+          ]
+        },
+        "reason_code": null,
+        "outcome": "EXCLUDED-THEN-CORPUS",
+        "why": "the app declared the boundary and the corpus holds a named primary; the answer comes from the corpus and the boundary sentence is printed beside it, never as an app output"
+      }
+    },
+    {
+      "slug": "helium-procurement-energy",
+      "title": "Helium-3 Procurement Energy",
+      "parent": "non-water-routes",
+      "parent_title": "The Non-Water Product Routes",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model helium-3 procurement.",
+      "reason": "Costing it would take a procurement energy coefficient and a regolith throughput path for a parts-per-billion product, and neither exists anywhere in the model or its render layer.",
+      "register_axes": [
+        "LCC-13"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L7",
+      "primaries": [
+        {
+          "axis": "LCC-13",
+          "side": "A",
+          "stem": "olson-2021-lunar-helium3-mining.md",
+          "leaf": "literature/isru-processing/olson-2021-lunar-helium3-mining.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-13",
+          "side": "A",
+          "stem": "wittenberg-1992-he3-resources-review.md",
+          "leaf": "literature/isru-processing/wittenberg-1992-he3-resources-review.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-13",
+          "side": "B",
+          "stem": "gao-2011-neutron-detectors-helium3.md",
+          "leaf": "literature/space-economy-and-markets/gao-2011-neutron-detectors-helium3.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-CORPUS",
+      "declared_outcome": "EXCLUDED-THEN-CORPUS",
+      "verdict": "LITERATURE",
+      "reason_code": null,
+      "refusal": {
+        "absent_object": {
+          "slug": "helium-procurement-energy",
+          "title": "Helium-3 Procurement Energy",
+          "app_says": "This app does not model helium-3 procurement.",
+          "app_reason": "Costing it would take a procurement energy coefficient and a regolith throughput path for a parts-per-billion product, and neither exists anywhere in the model or its render layer.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-13"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "shelf",
+          "leaves": [
+            "literature/isru-processing/olson-2021-lunar-helium3-mining.md",
+            "literature/isru-processing/wittenberg-1992-he3-resources-review.md",
+            "literature/space-economy-and-markets/gao-2011-neutron-detectors-helium3.md"
+          ],
+          "axes": [
+            "LCC-13"
+          ]
+        },
+        "reason_code": null,
+        "outcome": "EXCLUDED-THEN-CORPUS",
+        "why": "the app declared the boundary and the corpus holds a named primary; the answer comes from the corpus and the boundary sentence is printed beside it, never as an app output"
+      }
+    },
+    {
+      "slug": "iron-production-energy",
+      "title": "Iron Production Energy",
+      "parent": "non-water-routes",
+      "parent_title": "The Non-Water Product Routes",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model iron production.",
+      "reason": "Costing it would take an iron energy coefficient and a metal product line, and the model’s construction leg runs on sintered regolith rather than on metal, so the nearest thing it holds is a different product.",
+      "register_axes": [],
+      "match_keys": [],
+      "thin_patches": [
+        "T7"
+      ],
+      "question_class": "L7",
+      "primaries": [],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-THIN",
+      "declared_outcome": "EXCLUDED-THEN-THIN",
+      "verdict": "REFUSE",
+      "reason_code": "not-found",
+      "refusal": {
+        "absent_object": {
+          "slug": "iron-production-energy",
+          "title": "Iron Production Energy",
+          "app_says": "This app does not model iron production.",
+          "app_reason": "Costing it would take an iron energy coefficient and a metal product line, and the model’s construction leg runs on sintered regolith rather than on metal, so the nearest thing it holds is a different product.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [],
+          "thin_patches": [
+            "T7"
+          ]
+        },
+        "nearest_present_object": {
+          "kind": "app-parent",
+          "slug": "non-water-routes",
+          "title": "The Non-Water Product Routes"
+        },
+        "reason_code": "not-found",
+        "outcome": "EXCLUDED-THEN-THIN",
+        "why": "the app declared the boundary and no named primary resolves on the shelf; a thin corpus is a corpus gap, which is what not-found routes to"
+      }
+    },
+    {
+      "slug": "mars-campaign-conditional",
+      "title": "The Mars Campaign Conditional",
+      "parent": "avoided-cost",
+      "parent_title": "The Avoided-Cost Side",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model Mars campaign economics.",
+      "reason": "Answering a campaign-scale breakeven would take a campaign term and an ISRU-lifetime term, and the model carries neither.",
+      "register_axes": [],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L9",
+      "primaries": [],
+      "adjacency": {
+        "adjacent_slug": "avoided-cost",
+        "adjacent_title": "The Avoided-Cost Side",
+        "relation": "child of avoided-cost",
+        "distinction": "a campaign's conditional economics is not a per-kilogram avoided cost"
+      },
+      "outcome": "EXCLUDED-BUT-ADJACENT",
+      "declared_outcome": "EXCLUDED-BUT-ADJACENT",
+      "verdict": "REFUSE",
+      "reason_code": "excluded",
+      "refusal": {
+        "absent_object": {
+          "slug": "mars-campaign-conditional",
+          "title": "The Mars Campaign Conditional",
+          "app_says": "This app does not model Mars campaign economics.",
+          "app_reason": "Answering a campaign-scale breakeven would take a campaign term and an ISRU-lifetime term, and the model carries neither.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "app-node",
+          "slug": "avoided-cost",
+          "title": "The Avoided-Cost Side",
+          "relation": "child of avoided-cost",
+          "distinction": "a campaign's conditional economics is not a per-kilogram avoided cost",
+          "warning": "The app computes this and it is NOT the answer to the question asked. An answer that prints its number without the distinction above is read as answering the excluded question."
+        },
+        "reason_code": "excluded",
+        "outcome": "EXCLUDED-BUT-ADJACENT",
+        "why": "the app models an adjacent quantity that reads as the answer and is not; the refusal names it as the nearest present object and states the distinction"
+      }
+    },
+    {
+      "slug": "oxygen-extraction-energy",
+      "title": "Oxygen Extraction Energy",
+      "parent": "non-water-routes",
+      "parent_title": "The Non-Water Product Routes",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model oxygen production.",
+      "reason": "Costing an oxygen route would take an oxygen energy coefficient and an oxygen product line in the value model, which carries a propellant term and a construction term and nothing for oxygen.",
+      "register_axes": [
+        "LCC-07",
+        "LCC-08"
+      ],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L7",
+      "primaries": [
+        {
+          "axis": "LCC-07",
+          "side": "A",
+          "stem": "leger-2025-energy-oxygen-moon.md",
+          "leaf": "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-07",
+          "side": "B",
+          "stem": "colozza-2010-solar-lunar-oxygen.md",
+          "leaf": "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-07",
+          "side": "C",
+          "stem": "nasa-2023-card-carbothermal-reduction.md",
+          "leaf": "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-07",
+          "side": "C",
+          "stem": "azami-2024-lunar-manufacturing-review.md",
+          "leaf": "literature/isru-processing/azami-2024-lunar-manufacturing-review.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-07",
+          "side": "D",
+          "stem": "sanders-2025-nasa-isru-progress-review.md",
+          "leaf": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "A",
+          "stem": "sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+          "leaf": "literature/isru-processing/sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "A",
+          "stem": "leger-2025-energy-oxygen-moon.md",
+          "leaf": "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "B",
+          "stem": "schreiner-2016-mre-sizing-model.md",
+          "leaf": "literature/isru-processing/schreiner-2016-mre-sizing-model.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "B",
+          "stem": "sibille-2012-joule-heated-mre.md",
+          "leaf": "literature/isru-processing/sibille-2012-joule-heated-mre.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "C",
+          "stem": "nasa-2023-card-carbothermal-reduction.md",
+          "leaf": "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "C",
+          "stem": "colozza-2010-solar-lunar-oxygen.md",
+          "leaf": "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+          "field": "lunar"
+        },
+        {
+          "axis": "LCC-08",
+          "side": "D",
+          "stem": "sanders-2025-nasa-isru-progress-review.md",
+          "leaf": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md",
+          "field": "lunar"
+        }
+      ],
+      "adjacency": null,
+      "outcome": "EXCLUDED-THEN-CORPUS",
+      "declared_outcome": "EXCLUDED-THEN-CORPUS",
+      "verdict": "LITERATURE",
+      "reason_code": null,
+      "refusal": {
+        "absent_object": {
+          "slug": "oxygen-extraction-energy",
+          "title": "Oxygen Extraction Energy",
+          "app_says": "This app does not model oxygen production.",
+          "app_reason": "Costing an oxygen route would take an oxygen energy coefficient and an oxygen product line in the value model, which carries a propellant term and a construction term and nothing for oxygen.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [
+            "LCC-07",
+            "LCC-08"
+          ],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "shelf",
+          "leaves": [
+            "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+            "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+            "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+            "literature/isru-processing/azami-2024-lunar-manufacturing-review.md",
+            "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md",
+            "literature/isru-processing/sargeant-2020-hydrogen-reduction-ilmenite-static.md",
+            "literature/isru-processing/leger-2025-energy-oxygen-moon.md",
+            "literature/isru-processing/schreiner-2016-mre-sizing-model.md",
+            "literature/isru-processing/sibille-2012-joule-heated-mre.md",
+            "literature/isru-processing/nasa-2023-card-carbothermal-reduction.md",
+            "literature/isru-processing/colozza-2010-solar-lunar-oxygen.md",
+            "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md"
+          ],
+          "axes": [
+            "LCC-07",
+            "LCC-08"
+          ]
+        },
+        "reason_code": null,
+        "outcome": "EXCLUDED-THEN-CORPUS",
+        "why": "the app declared the boundary and the corpus holds a named primary; the answer comes from the corpus and the boundary sentence is printed beside it, never as an app output"
+      }
+    },
+    {
+      "slug": "propellant-mass-leverage",
+      "title": "Propellant Mass Leverage",
+      "parent": "avoided-cost",
+      "parent_title": "The Avoided-Cost Side",
+      "state": "excluded",
+      "status": "FORMALLY EXCLUDED",
+      "ruled": "Step 38 reconciliation, 2026-08-23",
+      "does": "This app does not model propellant displacing delivered cargo.",
+      "reason": "Computing that leverage would take a displacement term, and the model’s two ratios are both plant-mass payback ratios, which measure a different quantity.",
+      "register_axes": [],
+      "match_keys": [],
+      "thin_patches": [],
+      "question_class": "L9",
+      "primaries": [],
+      "adjacency": {
+        "adjacent_slug": "net-value-identity",
+        "adjacent_title": "The Net Value Identity",
+        "relation": "siblings under avoided-cost",
+        "distinction": "avoided delivery cost on a fixed mass is not propellant displacing cargo"
+      },
+      "outcome": "EXCLUDED-BUT-ADJACENT",
+      "declared_outcome": "EXCLUDED-BUT-ADJACENT",
+      "verdict": "REFUSE",
+      "reason_code": "excluded",
+      "refusal": {
+        "absent_object": {
+          "slug": "propellant-mass-leverage",
+          "title": "Propellant Mass Leverage",
+          "app_says": "This app does not model propellant displacing delivered cargo.",
+          "app_reason": "Computing that leverage would take a displacement term, and the model’s two ratios are both plant-mass payback ratios, which measure a different quantity.",
+          "ruled": "Step 38 reconciliation, 2026-08-23"
+        },
+        "region_searched": {
+          "app": "the app's own node tree at md5 16caa330ebae773684285c301a8e0a98",
+          "shelf": "literature/INDEX.tsv",
+          "axes": [],
+          "thin_patches": []
+        },
+        "nearest_present_object": {
+          "kind": "app-node",
+          "slug": "net-value-identity",
+          "title": "The Net Value Identity",
+          "relation": "siblings under avoided-cost",
+          "distinction": "avoided delivery cost on a fixed mass is not propellant displacing cargo",
+          "warning": "The app computes this and it is NOT the answer to the question asked. An answer that prints its number without the distinction above is read as answering the excluded question."
+        },
+        "reason_code": "excluded",
+        "outcome": "EXCLUDED-BUT-ADJACENT",
+        "why": "the app models an adjacent quantity that reads as the answer and is not; the refusal names it as the nearest present object and states the distinction"
+      }
+    }
+  ]
+}

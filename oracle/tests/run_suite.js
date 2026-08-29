@@ -640,6 +640,247 @@ B['SLT-2'] = (s) => {
   return bad.length ? FAIL(`${bad.length} slot fill states outside {EMPTY, FILLED, DECLINED}`) : PASS(`${cells.length} slot fill states in the closed set`);
 };
 
+/* --- RFX: register fixtures, sub-step 4.1 -------------------------------------
+ * THE ASSEMBLED LOOP EXISTS, so these run rather than defer. `oracle/router/classify.js` (3.8) and
+ * `oracle/router/wave.js` (3.9) landed this wave; the context is loaded ONCE and every RFX row
+ * reads it, because thirty-five loads of a 169-file corpus is a runner nobody waits for.
+ *
+ * WHAT EACH ROW ASSERTS. The axis's own `probe_pos` question is classified, and three things are
+ * compared against the REGISTER rather than against a copy in the suite: the verdict the class
+ * implies, the number of sides the axis declares, and the persona count the wave derives. The
+ * expected values are read out of `oracle/REGISTER.*.tsv` at run time. A suite row that carried its
+ * own copy of a side count would be the second authority this project keeps finding.
+ *
+ * EVERY SIDE, NEVER BOTH. The side assertion is `wave.personaCount === axis.sides.size`, not
+ * `>= 2`. Eighteen axes are class `two_sided` and seven of them declare three or four sides, so a
+ * `>= 2` assertion passes while a three-sided answer returns two -- and the router has then chosen
+ * which of three measurement methods the reader hears. RFX-35 is the decoy that separates the two
+ * readings, and it lives in `oracle/tests/fault_inject.js` because it needs a mutated register. */
+let LOOP = null;
+function loop() {
+  if (LOOP !== null) return LOOP;
+  const need = ['oracle/router/classify.js', 'oracle/router/wave.js'];
+  const missing = need.filter(f => !fs.existsSync(R(f)));
+  if (missing.length) return (LOOP = { missing });
+  try {
+    const C = require(R('oracle/router/classify.js'));
+    const W = require(R('oracle/router/wave.js'));
+    const ctx = C.loadContext({});
+    if (ctx.refuse) return (LOOP = { missing: ctx.refuse.missing || ['the context refused at load'] });
+    return (LOOP = { C, W, ctx });
+  } catch (e) { return (LOOP = { threw: e.message }); }
+}
+/* Axis order is the register's own: lunar first, then econ, in file order. RFX-nn maps to the
+ * nn-th axis by that order, which is how the table was generated. */
+function axisOrder() {
+  const out = [];
+  for (const r of REGS) {
+    if (!regs()[r]) continue;
+    for (const a of regs()[r].A) out.push(a.f[1]);
+  }
+  return out;
+}
+const rfxGuard = fn => () => {
+  const L = loop();
+  if (L.missing) return DEFER('the assembled loop is not loadable: ' + L.missing.join('; ') + '. Owner: the router seat (3.8/3.9)');
+  if (L.threw) return DEFER('the router threw at load: ' + L.threw + '. Owner: the router seat');
+  if (!regsPresent()) return VAC('one or both register files does not exist; the fixture has no subject');
+  return fn(L);
+};
+for (let i = 1; i <= 33; i++) {
+  const id = 'RFX-' + String(i).padStart(2, '0');
+  B[id] = rfxGuard(L => {
+    const order = axisOrder();
+    const axisId = order[i - 1];
+    if (!axisId) return FAIL(`${id} indexes axis ${i} of ${order.length}; the register shrank and the fixture set is stale`);
+    const ax = L.ctx.axes.get(axisId);
+    if (!ax) return FAIL(`${axisId} is not in the loaded context, though it is in the register file`);
+    const sides = ax.sides ? ax.sides.size : 0;
+    const q = L.C.classifyQuestion(L.ctx, ax.probe_pos);
+    const w = L.W.selectWave(q, L.ctx);
+    const want = ax.class === 'one_sided' ? ['LITERATURE', 'BOTH'] : ['CONTESTED'];
+    const bad = [];
+    if (!want.includes(q.verdict)) bad.push(`verdict ${q.verdict}, expected ${want.join(' or ')} for class ${ax.class}`);
+    if (ax.class === 'one_sided') {
+      if (sides !== 1) bad.push(`class one_sided declares ${sides} sides; L5 requires exactly one`);
+      if (q.verdict === 'CONTESTED') bad.push('a one_sided axis produced CONTESTED, which contract §1 makes UNSATISFIABLE rather than wrong');
+    } else {
+      // EVERY SIDE, not two. This is the assertion the plan's own wording would have got wrong.
+      if (w.personaCount !== sides) bad.push(`wave spends ${w.personaCount} persona(s) on an axis declaring ${sides} side(s) -- the count must be sides.length, never the literal two`);
+      if (sides < 2) bad.push(`class ${ax.class} declares ${sides} side(s)`);
+    }
+    return bad.length ? FAIL(`${axisId} (${ax.class}, ${sides} sides): ${bad.join('; ')}`)
+      : PASS(`${axisId} ${ax.class}, ${sides} side(s) -> ${q.verdict}, ${w.personaCount} persona(s) on its own probe_pos`);
+  });
+}
+/* RFX-34 and RFX-35 are mutations, and a mutation belongs where the mutation harness is. Both
+ * delegate to `oracle/tests/fault_inject.js`, which stages a copy, asserts the mutation reached the
+ * loaded context, and refuses to score a decoy that did not apply. */
+function faultDecoy(name) {
+  const f = 'oracle/tests/fault_inject.js';
+  if (!fs.existsSync(R(f))) return DEFER(`${f} does not exist`);
+  const r = sh(`node ${f} --only ${name}`);
+  const applied = /^ *reached +yes/m.test(r.out) || /applied +yes/.test(r.out);
+  const line = (r.out.match(/^(ok|FAIL) +\S+ +(.*)$/m) || [, '', ''])[2];
+  const tally = (r.out.match(/decoys written \d+, decoys applied \d+, pass \d+, fail \d+/) || [''])[0];
+  if (/DECOY DID NOT APPLY|DID NOT REACH/.test(r.out))
+    return FAIL(`the decoy did not apply, which is a failure and not a skip: ${tally}`);
+  return r.code === 0 ? PASS(`${tally} :: ${line.slice(0, 150)}`) : FAIL(`${tally} :: ${line.slice(0, 150)}`);
+}
+B['RFX-34'] = () => faultDecoy('I4d');
+B['RFX-35'] = () => faultDecoy('I5-dropped-side');
+
+/* --- ISR: the three named facts, sub-step 4.7 --------------------------------
+ * Fifteen rows, thirteen mechanized and two `H`. The checker is a standing file with its own
+ * eighteen proofs; these bindings run it and read the proof line rather than re-implementing an
+ * assertion the checker already makes, which is the rule this runner has followed since MUT-5. */
+const ISR_TOOL = 'oracle/tests/isru_three_facts.js';
+let ISRP = null;
+function isruProofs() {
+  if (ISRP) return ISRP;
+  if (!fs.existsSync(R(ISR_TOOL))) return (ISRP = { missing: true });
+  const r = sh(`node ${ISR_TOOL} --prove`);
+  const rows = new Map();
+  for (const m of r.out.matchAll(/^(PASS|FAIL) {2}(\S+)(?: \/ .*?)? +expected/gm)) rows.set(m[2], m[1]);
+  const tail = (r.out.match(/\d+ of \d+ proofs pass/) || [''])[0];
+  const mut = (r.out.match(/mutations written \d+, mutations observed to apply \d+/) || [''])[0];
+  return (ISRP = { rows, tail, mut, code: r.code, out: r.out });
+}
+const isr = (needle, note) => () => {
+  const P = isruProofs();
+  if (P.missing) return DEFER(`${ISR_TOOL} does not exist`);
+  const hits = [...P.rows].filter(([k]) => new RegExp(needle).test(k));
+  if (!hits.length) return VAC(`no proof in ${ISR_TOOL} matches /${needle}/; the row has nothing measuring it`);
+  const bad = hits.filter(([, v]) => v === 'FAIL');
+  return bad.length ? FAIL(`${bad.length} of ${hits.length} proof(s) fail: ${bad.map(([k]) => k).join(' ')}`)
+    : PASS(`${hits.length} proof(s) pass (${hits.map(([k]) => k).join(', ')})${note ? ' -- ' + note : ''}`);
+};
+B['ISR-1'] = isr('^CONTROL-COMPLIANT$|^FALSE-POSITIVE-DEFENCE$', 'the trigger fires on a real figure and not on a real app scalar');
+B['ISR-2'] = isr('^UNIT-LIST-NOT-ASPIRATIONAL$');
+B['ISR-3'] = isr('^DECOY-BOUNDARY-DELETED$');
+B['ISR-4'] = isr('^DECOY-SCALE-DELETED$');
+B['ISR-5'] = isr('^DECOY-MATURITY-DELETED$');
+B['ISR-6'] = () => {
+  // The three lists are closed sets in the checker and the suite carries no copy of them. Asserted
+  // by reading the module rather than by restating the tokens here.
+  if (!fs.existsSync(R(ISR_TOOL))) return DEFER(`${ISR_TOOL} does not exist`);
+  let M; try { M = require(R(ISR_TOOL)); } catch (e) { return FAIL('the checker does not load: ' + e.message); }
+  const bad = ['BOUNDARY', 'SCALE', 'MATURITY', 'UNITS'].filter(k => !Array.isArray(M[k]) || !M[k].length);
+  return bad.length ? FAIL(`${bad.join(', ')} is not a non-empty closed list in the checker`)
+    : PASS(`four closed lists in the checker: UNITS ${M.UNITS.length}, boundary ${M.BOUNDARY.length}, scale ${M.SCALE.length}, maturity ${M.MATURITY.length}; this suite carries no copy of any of them`);
+};
+B['ISR-7'] = isr('^DECOY-(BOUNDARY|SCALE|MATURITY)-DELETED$');
+B['ISR-8'] = isr('^DECOY-BORROWED-FACTS$');
+B['ISR-9'] = isr('^FALSE-POSITIVE-DEFENCE$');
+B['ISR-10'] = isr('^CONTROL-TRL-SOURCED$|^DECOY-TRL-UNSOURCED$');
+B['ISR-11'] = isr('^CONTROL-TRL-SOURCED$');
+B['ISR-12'] = isr('^DECOY-TRL-UNSOURCED$');
+B['ISR-15'] = isr('^CONTROL-NO-FIGURE$');
+/* ISR-13 and ISR-14 are `H`. They are given a binding that returns DEFER rather than no binding at
+ * all, because "a human gate" and "nobody bound this" print identically as UNRUN otherwise, and the
+ * difference is the whole point of the H marker. */
+B['ISR-13'] = () => DEFER('H: R2 -- prefer the demonstrated figure to the modelled one -- is a judgement about which of two sources is demonstrated, not a token in a sentence. A checker that guessed at it would answer §6\'s question by inventing an answer. Owner: the sampling read at 7.4');
+B['ISR-14'] = () => DEFER('H: three facts named and three of them wrong is invisible to a membership test. The checker states this in its own LIMIT block. Owner: the sampling read at 7.4');
+
+/* --- INV: the Level 2 invariants the fault-injection pass now reaches ---------
+ * Sub-step 5.3. Four decoys against the ASSEMBLED loop, plus the meta-row that makes the pass
+ * honest. `oracle/tests/fault_inject.js` refuses to score a decoy that did not reach the loaded
+ * context, so a green here is evidence the control was exercised rather than that it was written. */
+B['INV-6'] = () => faultDecoy('I4a');
+B['INV-7'] = () => faultDecoy('I4b-missing');
+B['INV-8'] = () => faultDecoy('I4c');
+B['INV-9'] = () => faultDecoy('I4d');
+B['INV-11'] = () => {
+  const f = 'oracle/tests/fault_inject.js';
+  if (!fs.existsSync(R(f))) return DEFER(`${f} does not exist`);
+  const r = sh(`node ${f}`);
+  const m = r.out.match(/decoys written (\d+), decoys applied (\d+), pass (\d+), fail (\d+)/);
+  if (!m) return FAIL('the fault-injection pass printed no tally');
+  const [, written, applied, pass, fail] = m.map(Number);
+  /* THE ROW SAYS "every decoy applies", NOT "every decoy passes". Binding this to the pass count
+   * would assert something the row does not say -- PDF-4's lesson one group over -- and it would
+   * go red on I7, which is a decoy that applied perfectly and found a real defect. The failing
+   * decoy count is REPORTED here and owned by the rows those decoys are aimed at. */
+  if (written !== applied) return FAIL(`${written} decoys written, ${applied} applied. A decoy that fails to apply is a failure, not a skip, and the difference is not a footnote`);
+  return PASS(`${written} decoys written, ${applied} observed to apply (100%); ${pass} pass, ${fail} fail -- every mutation was asserted to have reached the loaded context before its red was asserted. The ${fail} failing decoy(s) are findings owned by their own rows, not by this one`);
+};
+
+/* --- LOG: the run log, sub-step 5.2 -----------------------------------------
+ * Bound against `tools/verify_answers.js`'s exported closed sets, which are transcribed from
+ * contract §8 in ONE place. Each row below is bound to what the ROW SAYS and to nothing wider:
+ * LOG-1 is the outcome enum, LOG-2 the review enum, and neither is bound to "the proof passes",
+ * because a binding that asserts something the row does not say fails loudly and wrongly and the
+ * next person relaxes the row. That is PDF-4's lesson, one group over. */
+const VA = 'tools/verify_answers.js';
+const vaGuard = fn => () => {
+  if (!fs.existsSync(R(VA))) return DEFER(`${VA} does not exist`);
+  let M; try { M = require(R(VA)); } catch (e) { return FAIL(`${VA} does not load: ` + e.message); }
+  return fn(M);
+};
+B['LOG-1'] = vaGuard(M => {
+  const want = ['ERROR', 'MISCLASSIFIED', 'REGISTER_FAIL', 'REFUSED', 'ANSWERED'];
+  return (M.OUTCOMES.length === 5 && want.every((w, i) => M.OUTCOMES[i] === w))
+    ? PASS(`outcome enum is exactly five, in precedence order: ${M.OUTCOMES.join(' > ')}`)
+    : FAIL(`outcome enum is ${JSON.stringify(M.OUTCOMES)}; contract §8 declares ${JSON.stringify(want)}`);
+});
+B['LOG-2'] = vaGuard(M => {
+  const want = ['unreviewed', 'confirmed', 'FILLED'];
+  return (M.REVIEWS.length === 3 && want.every(w => M.REVIEWS.includes(w)))
+    ? PASS(`review enum is exactly three: ${M.REVIEWS.join(' | ')}`)
+    : FAIL(`review enum is ${JSON.stringify(M.REVIEWS)}; contract §8 declares ${JSON.stringify(want)}`);
+});
+B['LOG-9'] = vaGuard(M => {
+  if (M.OUTCOMES.includes('FILLED')) return FAIL('FILLED is in the outcome enum; contract §8 puts it in `review`, and the separation is a column rather than a convention');
+  const bad = M.readLog === undefined ? null : 1;
+  return PASS(`FILLED is absent from the outcome enum (${M.OUTCOMES.length} values) and present in the review enum; a row writing FILLED into outcome is rejected as malformed${bad ? '' : ''}`);
+});
+B['LOG-11'] = vaGuard(M => {
+  // Static, per the row: the log-writer module contains no code path emitting the literal.
+  const src = fs.readFileSync(R(VA), 'utf8');
+  const prove = src.indexOf('function prove()');
+  const outside = [...src.slice(0, prove).matchAll(/review\s*[:=]\s*['"]FILLED['"]/g)].length;
+  const inside = [...src.slice(prove).matchAll(/review:\s*'FILLED'/g)].length;
+  return outside ? FAIL(`${outside} code path(s) outside the proof fixtures assign FILLED; a column no machine writes to is what makes the separation structural`)
+    : PASS(`0 code paths assign FILLED outside the proof fixtures (${inside} inside prove(), which build a log rather than annotate one)`);
+});
+B['LOG-12'] = vaGuard(M => {
+  const want = ['timestamp', 'question', 'verdict', 'outcome', 'review', 'reason_code',
+    'deliverable', 'contract_version', 'lsei_ref'];
+  return (M.FIELDS.length === 9 && want.every(w => M.FIELDS.includes(w)))
+    ? PASS(`the row schema is closed at nine: ${M.FIELDS.join(', ')}. A tenth fails and extending is a version bump`)
+    : FAIL(`the row schema is ${M.FIELDS.length} field(s): ${M.FIELDS.join(', ')}`);
+});
+B['LOG-18'] = vaGuard(M => {
+  const base = { timestamp: 't', question: 'q', verdict: 'LITERATURE', outcome: 'ANSWERED',
+    review: 'unreviewed', reason_code: '', deliverable: 'a.md', contract_version: 2, lsei_ref: '-' };
+  const onNonRefusal = M.integrity([Object.assign({}, base, { reason_code: 'not-found' })]);
+  const missingOnRefusal = M.integrity([Object.assign({}, base, { verdict: 'REFUSE', outcome: 'REFUSED', reason_code: '' })]);
+  const bad = [];
+  if (!onNonRefusal.some(f => /reason_code/.test(f))) bad.push('a reason code on a non-refusal is not caught');
+  if (!missingOnRefusal.some(f => /reason_code/.test(f))) bad.push('an absent reason code on a refusal is not caught');
+  return bad.length ? FAIL(bad.join('; '))
+    : PASS('present on a non-refusal fails, absent on a refusal fails; both directions measured against tools/verify_answers.js integrity()');
+});
+
+/* --- the register-enforcement checks, sub-step 5.1 ---------------------------
+ * Each row is bound to the ONE proof in the checker that measures what the row says, never to the
+ * checker's overall exit code. GRD-9 says "two grade tokens in one trace line fails"; CLM-7 says
+ * "delete one trace line from a real answer; CLM-7 red". Those are two named proofs, and binding
+ * either to "--prove exits 0" would report a pass for a proof that never ran. */
+function namedProof(tool, needle, label) {
+  if (!fs.existsSync(R(tool))) return DEFER(`${tool} does not exist`);
+  const r = sh(`node ${tool} --prove`);
+  const mut = r.out.match(/mutations written (\d+), mutations observed to apply (\d+)/);
+  if (mut && mut[1] !== mut[2]) return FAIL(`${mut[1]} mutations written, ${mut[2]} applied -- a decoy that fails to apply is a failure, not a skip`);
+  const hits = [...r.out.matchAll(/^(PASS|FAIL) {2}(\S+)/gm)].filter(m => new RegExp(needle).test(m[2]));
+  if (!hits.length) return VAC(`no proof in ${tool} matches /${needle}/; this row has nothing measuring it`);
+  const bad = hits.filter(m => m[1] === 'FAIL');
+  return bad.length ? FAIL(`${label}: ${bad.length} of ${hits.length} proof(s) fail: ${bad.map(m => m[2]).join(' ')}`)
+    : PASS(`${label}: ${hits.map(m => m[2]).join(', ')}${mut ? `; ${mut[1]} mutations all observed to apply` : ''}`);
+}
+B['GRD-9'] = () => namedProof('tools/verify_register.js', '^DECOY-B3-TWO-GRADES$', 'two grade tokens in one trace line, both legal, fails');
+B['CLM-7'] = () => namedProof('tools/verify_register.js', '^DECOY-B1-CLAIM-WITHOUT-TRACE$', 'a trace deleted from a real answer turns CLM-7 red');
+
 /* ---------------------------------------------------------------- the run */
 function runOne(row, suite) {
   const b = B[row.id];

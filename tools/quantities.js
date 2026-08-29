@@ -14,7 +14,7 @@
  * Shares one parse with --index so checker and indexer cannot disagree (M6).
  *
  * Modes:
- *   --check   hard clauses. Exit 1 on any FAIL line. M1 M2 M3 M4 M10 M11 M12, plus
+ *   --check   hard clauses. Exit 1 on any FAIL line. M1 M2 M3 M4 M10 M11 M12 M16, plus
  *             M6 M7 when QUANTITIES.md exists.
  *   --lint    soft clauses. Always exit 0. M5 drift, M8, M9, M13, M14, M15.
  *   --index   DRY RUN: print the regenerated index to stdout and WRITE NOTHING.
@@ -101,14 +101,38 @@ if (!OPT.check && !OPT.lint && !OPT.index && !OPT.census && !OPT.filesOnly) OPT.
  * It does not scan lsei/ or cr-agents/. _intake/ is not in the set either: section 8
  * names five globs and that is the whole set.
  */
+/* HARDLINK SAFETY, and it is the sixth member of the line-ending family.
+ *
+ * `Dirent.isFile()` returns FALSE for a hardlink on this platform -- `isSymbolicLink()` reports
+ * true while `lstat` reports a file correctly. A hardlinked working copy therefore reads as a set
+ * this scan cannot see, and the shape is the one this repository keeps finding: the content is
+ * present and correct, the trigger is METADATA, and the assertion passes on the machine where it
+ * cannot fail.
+ *
+ * MEASURED SCOPE, because the first report of this said `literature/` reads as empty and that is
+ * not what these two call sites do. `walk()` below never calls `isFile()`: it asks `isDirectory()`
+ * and treats everything else as a candidate, so a hardlinked summary under `literature/` is still
+ * collected. What `isFile()` gates is the ROOT-LEVEL `.md` scan -- `CLAUDE.md`, `COUNTING_RULE.md`,
+ * `QUANTITIES.md`, `accumulator.md`, `lunar-oracle-gameplan.md` -- which would silently drop out of
+ * the declared set on a hardlinked stage. That is a smaller blast radius than reported and it is
+ * still a silent wrong answer, so both sites are repaired and both are given a known-answer test.
+ *
+ * `walk()` gets the same treatment for the mirror case: `isDirectory()` is false for a hardlinked
+ * or junction-mounted directory, which would prune a whole subtree without a word. */
+function isRealFile(p) {
+  try { return fs.lstatSync(p).isFile(); } catch (e) { return false; }
+}
+function isRealDir(p) {
+  try { return fs.lstatSync(p).isDirectory() || fs.statSync(p).isDirectory(); } catch (e) { return false; }
+}
 function walk(dir, pred, out) {
   out = out || [];
   let ents;
   try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
   for (const e of ents) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, pred, out);
-    else if (pred(p)) out.push(p);
+    if (isRealDir(p)) walk(p, pred, out);
+    else if (isRealFile(p) && pred(p)) out.push(p);
   }
   return out;
 }
@@ -117,7 +141,7 @@ function rel(p) { return path.relative(ROOT, p).split(path.sep).join('/'); }
 function declaredFileSet() {
   const files = [];
   for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
-    if (e.isFile() && /\.md$/.test(e.name)) files.push(path.join(ROOT, e.name));
+    if (isRealFile(path.join(ROOT, e.name)) && /\.md$/.test(e.name)) files.push(path.join(ROOT, e.name));
   }
   walk(path.join(ROOT, 'cr_scratch'), p => /\.md$/.test(p), files);
   walk(path.join(ROOT, 'tools'), p => /\.js$/.test(p), files);
@@ -700,6 +724,35 @@ function m12() {
   return n;
 }
 
+/* ---------------------------------------------------------------- M16
+ * THE KNOWN-ANSWER TEST ON THE FILE SCAN ITSELF, added with the hardlink repair.
+ *
+ * The repair swapped `Dirent`'s type bits for `lstat`, and a repair with no test is a repair that
+ * regresses the next time somebody finds `readdirSync(dir, {withFileTypes:true})` tidier. What this
+ * asserts is the one thing a broken scan produces: A COUNT OF ZERO, reported as a clean result.
+ *
+ * `tools/verify_corpus.js` carries a known-answer test and it caught its own parser breaking. This
+ * is the same device on the same class of failure: an empty population that reads as a clean one.
+ * It is deliberately crude -- five named root documents and a non-zero corpus count -- because a
+ * crude assertion that fails on zero is worth more here than a precise one that has to be updated
+ * every time a file lands. */
+function m16() {
+  const set = declaredFileSet();
+  const ROOT_DOCS = ['CLAUDE.md', 'COUNTING_RULE.md', 'QUANTITIES.md', 'accumulator.md',
+    'lunar-oracle-gameplan.md'];
+  const missing = ROOT_DOCS.filter(f => !set.includes(f));
+  const lit = set.filter(f => f.startsWith('literature/')).length;
+  const tools = set.filter(f => f.startsWith('tools/')).length;
+  let n = 0;
+  if (missing.length) { n++; FAIL('M16 the root scan lost ' + missing.length + ' of ' + ROOT_DOCS.length +
+    ' named root document(s): ' + missing.join(', ') + '. On a hardlinked stage Dirent.isFile() is false and this is what that looks like'); }
+  if (!lit) { n++; FAIL('M16 the declared file set holds ZERO files under literature/. A count of zero reported as a clean result is the failure this check exists for'); }
+  if (!tools) { n++; FAIL('M16 the declared file set holds ZERO files under tools/'); }
+  if (!n) say('OK', 'M16 file scan is hardlink-safe: ' + ROOT_DOCS.length + ' root documents, ' +
+    lit + ' under literature/, ' + tools + ' under tools/, ' + set.length + ' declared in total (lstat, not Dirent type bits)');
+  return n;
+}
+
 /* ---------------------------------------------------------------- index, M6, M7 */
 function shortUnit(u) {
   const s = String(u || '').split(/[,;(]/)[0].trim();
@@ -1062,7 +1115,7 @@ if (has('--selftest')) {
   process.exit(bad ? 1 : 0);
 }
 
-if (OPT.check) { m1(); m2(); m3(); m4(); m4pending(); m4derived(); m10(); m11(); m12(); m6m7(); }
+if (OPT.check) { m1(); m2(); m3(); m4(); m4pending(); m4derived(); m10(); m11(); m12(); m16(); m6m7(); }
 if (OPT.lint) { m5(); m8(); m9(); m13(); m14(); m15(); }
 /* The count carries its command AND its moment on the same line. Section 3 rule 11 required
  * the first; the 12-13-14-12 sequence is what the second exists to prevent. A figure lifted

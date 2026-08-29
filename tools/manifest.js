@@ -88,13 +88,37 @@ function rows() { return parse().rows; }
 /* the declared file set of COUNTING_RULE.md section 8, for --unlisted only. Kept here
  * rather than imported so this accessor has no dependency on the checker: they must be
  * able to disagree visibly, and a shared walker would hide it. */
+/* HARDLINK SAFETY, and it is the sixth member of the line-ending family.
+ *
+ * `Dirent.isFile()` returns FALSE for a hardlink on this platform -- `isSymbolicLink()` reports
+ * true while `lstat` reports a file correctly. A hardlinked working copy therefore reads as a set
+ * this scan cannot see, and the shape is the one this repository keeps finding: the content is
+ * present and correct, the trigger is METADATA, and the assertion passes on the machine where it
+ * cannot fail.
+ *
+ * MEASURED SCOPE, because the first report of this said `literature/` reads as empty and that is
+ * not what these two call sites do. `walk()` below never calls `isFile()`: it asks `isDirectory()`
+ * and treats everything else as a candidate, so a hardlinked summary under `literature/` is still
+ * collected. What `isFile()` gates is the ROOT-LEVEL `.md` scan -- `CLAUDE.md`, `COUNTING_RULE.md`,
+ * `QUANTITIES.md`, `accumulator.md`, `lunar-oracle-gameplan.md` -- which would silently drop out of
+ * the declared set on a hardlinked stage. That is a smaller blast radius than reported and it is
+ * still a silent wrong answer, so both sites are repaired and both are given a known-answer test.
+ *
+ * `walk()` gets the same treatment for the mirror case: `isDirectory()` is false for a hardlinked
+ * or junction-mounted directory, which would prune a whole subtree without a word. */
+function isRealFile(p) {
+  try { return fs.lstatSync(p).isFile(); } catch (e) { return false; }
+}
+function isRealDir(p) {
+  try { return fs.lstatSync(p).isDirectory() || fs.statSync(p).isDirectory(); } catch (e) { return false; }
+}
 function walk(dir, pred, out) {
   out = out || [];
   let ents;
   try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return out; }
   for (const e of ents) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) walk(p, pred, out); else if (pred(p)) out.push(p);
+    if (isRealDir(p)) walk(p, pred, out); else if (isRealFile(p) && pred(p)) out.push(p);
   }
   return out;
 }
@@ -102,7 +126,7 @@ const rel = p => path.relative(ROOT, p).split(path.sep).join('/');
 function declaredFileSet() {
   const f = [];
   for (const e of fs.readdirSync(ROOT, { withFileTypes: true }))
-    if (e.isFile() && /\.md$/.test(e.name)) f.push(path.join(ROOT, e.name));
+    if (isRealFile(path.join(ROOT, e.name)) && /\.md$/.test(e.name)) f.push(path.join(ROOT, e.name));
   walk(path.join(ROOT, 'cr_scratch'), p => /\.md$/.test(p), f);
   walk(path.join(ROOT, 'tools'), p => /\.js$/.test(p), f);
   walk(path.join(ROOT, 'oracle'), () => true, f);

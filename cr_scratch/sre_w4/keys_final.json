@@ -1,0 +1,12 @@
+{
+  "cadence-cryogenic-break": ["boil","boiloff","cryocooler","cryocoolers","transferred","transfers","transferring","depot","resupply","refuel","refueling","tanker","slip","schedule","liquefaction"],
+  "iron-production-energy": ["smelting","steel","alloy","alloys","ore","ores","refining","metals","metallic","aluminium","aluminum","titanium","silicon"],
+  "oxygen-extraction-energy": ["lox","o2","carbothermal","ilmenite","kwh","kilowatt","reduction","electrolysis"],
+  "bound-oxygen-mare": ["ilmenite","feedstock","composition","highland","highlands","basalt","anorthosite","silicate","deposit","deposits","titanium","thorium","kreep"],
+  "delivered-cargo-record": ["clps","starship","tonnes","tonne","tonnage","manifest","missions","flown","deliveries","payload","offload","landers"],
+  "grade-independent-demand": ["buy","buyer","buyers","customer","customers","market","markets","sell","sales","revenue","offtake","contract","contracts","purchase","consumption","willingness"],
+  "mars-campaign-conditional": ["gateway","transit","stepping","stone","trip","cislunar","staging","crewed","interplanetary"],
+  "propellant-mass-leverage": ["worth","save","saves","saving","savings","offset","offsets","avoided","imleo","gear","multiplier","substitute","replace","replaces"],
+  "habitat-water-terrain": ["base","outpost","astronaut","astronauts","live","living","shelter","lava","tube","tubes","pit","pits","settlement","colony","habitation","quarters"],
+  "helium-procurement-energy": ["he3","fusion","isotope","isotopes","deuterium","tokamak","harvest","harvesting","mining"]
+}

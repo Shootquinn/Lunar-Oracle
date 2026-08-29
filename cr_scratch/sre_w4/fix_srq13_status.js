@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('fs');
+let s=fs.readFileSync('oracle/acceptance/lunar_questions.md','utf8');
+const old='| **K** — probes **LCC-15** in the negative direction. `excavation` and `regolith` are both `match_keys`. If the axis fires, the verdict becomes `CONTESTED` and the answer returns throughput demonstrations to a force question. The fix is an edit to `match_keys`, not to the router. |';
+const neu='| **RED** — and the `K` framing this row carried was wrong, measured 2026-08-28. LCC-15 scores **2.040**, below `K` = 2.431, so the axis stays quiet exactly as predicted and the negative probe passes. The row fails for a **third mode** neither threshold reaches: retrieval confirms **9 of 9** candidates at frac **0.85**, best `just-2020-regolith-excavation-review.md` — *every token of the question is in the corpus and the answer is not*. No scalar bar over token overlap separates that, because the instrument only measures vocabulary. **SRQ-13 is T1**, and `oracle/thin_patches.json` now carries the mechanism: T1 scores mass **8.540** here against a govern threshold of 6.175. Close condition: the router consults `thin_patches.json` under its `firing_rule` before accepting a `LITERATURE` verdict. Owner: the router seat. |';
+if(!s.includes(old)) throw new Error('SRQ-13 status cell not found verbatim');
+s=s.replace(old,neu);
+const old14='This is the EXCLUDED-THEN-THIN outcome and it is the one that will answer wrongly. | green |';
+const neu14='This is the EXCLUDED-THEN-THIN outcome and it is the one that will answer wrongly. | **green**, and it now passes on **both** routes. The excluded-node path reaches it through `cadence-cryogenic-break`\'s `match_keys`; the thin-patch path reaches it through T5 at mass **6.389** against a govern threshold of 6.175. T5 could not fire at all until 2026-08-28, when the trigger `boil-off` was found unmatchable against `tokenize()`. |';
+if(!s.includes(old14)) throw new Error('SRQ-14 status cell not found verbatim');
+s=s.replace(old14,neu14);
+fs.writeFileSync('oracle/acceptance/lunar_questions.md',Buffer.from(s.replace(/\r\n/g,'\n'),'binary'));
+console.log('SRQ-13 and SRQ-14 status cells updated');
+console.log('SRQ rows still '+ (s.match(/^\| SRQ-\d+ \|/gm)||[]).length);
+console.log('CR '+fs.readFileSync('oracle/acceptance/lunar_questions.md').filter(b=>b===13).length);

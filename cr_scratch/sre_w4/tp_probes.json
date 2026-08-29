@@ -1,0 +1,12 @@
+{
+"T1":["What shear strength and cone penetration resistance does frozen icy regolith have when you dig it?","Which review paper surveys lunar regolith excavation concepts?"],
+"T2":["What abrasive wear rate and seal life should I assume for a duty cycle on dusty lunar machinery?","Which programme documents name dust mitigation as an architecture need?"],
+"T3":["What mtbf and spares provisioning does lunar plant reliability and maintenance require over its life?","What depreciation rate does BEA publish for mining machinery?"],
+"T4":["What purity and contaminant removal does water cleanup and purification reach before electrolysis?","At what temperature does molten regolith electrolysis operate?"],
+"T5":["How often is cryogenic propellant transferred, and what boil-off does a depot tank lose between transfers?","Which paper sizes a cryocooler for lunar liquefaction?"],
+"T6":["What compressive and flexural strength does sintered regolith product reach per unit of sintering energy?","Which paper reports microwave sintering of lunar simulant?"],
+"T7":["What energy does smelting iron or refining rare earth and platinum metals from regolith take?","How much helium is implanted in lunar regolith?"],
+"T8":["What operator ratio and intervention latency does autonomous teleoperated lunar mining need?","Which review covers automated drilling in terrestrial mining?"],
+"T9":["What plume ejecta and blast erosion does a landing pad site preparation have to survive?","Which paper reports per-area sintering energy for a pad?"],
+"T10":["What trl and readiness milestone does the current programme schedule show today?","What technology readiness level did Sanders report for carbothermal reduction?"]
+}

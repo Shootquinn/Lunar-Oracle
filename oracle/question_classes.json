@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "id": "oracle/question_classes.json",
+  "sub_step": "3.3",
+  "author": "The Space Resources Engineer",
+  "authored": "2026-08-28",
+  "consumed_by": "the router, before any retrieval runs (classification-before-retrieval)",
+  "authority": {
+    "app": "lsei/index.html",
+    "app_md5": "16caa330ebae773684285c301a8e0a98",
+    "app_bytes": 894127,
+    "data_island_pin": "e2989bf6",
+    "measured_by": "node oracle/lib/app_model.js loadModelAPI + FNV-1a over {CONFIG,CLAIMS,VALUE,LANDED_COST}",
+    "note": "lsei/lunar-scenario-explorer-map.md disagrees with the artifact on md5, byte count, pin and the References total. The artifact wins. See cr_scratch/step3_sre_boundary_audit.md."
+  },
+
+  "app_address_test": {
+    "definition": "An app address resolves when, and only when, every named component resolves against the app's own objects with no hand-typed number. This is the operational test in lsei/oracle/lib/address.js, restated here as the router's branch condition.",
+    "resolvers": [
+      {
+        "name": "resolveScenario",
+        "against": "PRESETS[*].label, slugified",
+        "throws_when": "the text names no canonical label; nearest-match guessing is refused"
+      },
+      {
+        "name": "resolvePhase",
+        "against": "the phase keys ENVELOPE carries, or their era display names read off runTests() CELLS",
+        "throws_when": "the text names no phase and no era"
+      },
+      {
+        "name": "resolveOutput",
+        "against": "Object.keys(model(probe)) - the 26 keys model() actually returns",
+        "throws_when": "the named output is not a key model() returns"
+      },
+      {
+        "name": "resolveKnob",
+        "against": "DETENTS keys INTERSECT model()'s own read-off-argument input keys",
+        "throws_when": "the knob is in one set and not the other; landed_cost is the standing example"
+      }
+    ],
+    "forms": ["singlePoint", "eraSeries", "scenarioComparison", "knobSweep"],
+    "figure_rule": "More than one model() call for one sub-claim makes the verdict FIGURE, not APP (answer_contract.md section 1)."
+  },
+
+  "reachable": {
+    "scenario_labels": ["Agency Led Baseline", "Early Shift to Mars", "The Commercial Break"],
+    "preset_keys": ["artemis", "contested", "commercial"],
+    "phases": ["2030", "2040", "2055"],
+    "era_names": {"2030": "Prospecting", "2040": "Pilot", "2055": "Sustained"},
+    "model_output_keys": [
+      "ice", "power", "mass", "fission", "phi_c",
+      "eEE", "rho", "Wpower", "Wthr", "cap", "mPwr", "mining", "Rcap",
+      "binding", "regime", "feasible",
+      "water", "construction", "constructionPotential", "Cfull", "regolith",
+      "envPowerFrac", "envMassFrac",
+      "transDistKm", "phi_c0", "massEff"
+    ],
+    "model_input_keys": [
+      "ice", "power", "mass", "fission", "funding", "phase", "phi_c",
+      "mix", "fFisOvr", "fSolOvr", "transDistKm", "phi_c0"
+    ],
+    "detent_rails": {
+      "ice": [1, 2, 5, 10, 20],
+      "power": [10, 50, 100, 200, 400, 1000, 2000, 5000, 10000],
+      "mass": [10, 75, 100, 150, 500, 1000, 10000],
+      "phi_c": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1],
+      "landed_cost": [1000, 2000, 5000, 10000, 20000, 35000, 50000, 100000, 200000, 500000, 1000000]
+    },
+    "sweepable_knobs": ["ice", "power", "mass", "phi_c"],
+    "unsweepable_detent_rails": ["landed_cost"],
+    "unsweepable_reason": "landed_cost is a DETENTS rail model() does not accept as an input. address.js resolveKnob refuses it by name. A landed-cost sweep is a valueModel object, not a model object, and the two are not the same address.",
+    "lexicon_named_outputs": [
+      "water", "binding", "ice", "constructionPotential", "construction", "feasible", "phi_c", "regolith"
+    ],
+    "lexicon_unnamed_outputs": [
+      "power", "mass", "fission", "eEE", "rho", "Wpower", "Wthr", "cap", "mPwr", "mining",
+      "Rcap", "regime", "Cfull", "envPowerFrac", "envMassFrac", "transDistKm", "phi_c0", "massEff"
+    ],
+    "unreachable_economics": {
+      "function": "valueModel()",
+      "keys": [
+        "D", "L", "op_prop", "op_const", "cap", "Cfull", "mass", "water_tpy", "construction_tpy",
+        "binding", "feasible", "r_prop", "r_const", "P_prop", "P_const", "margin_prop",
+        "margin_const", "value_prop", "value_const", "Dstar_prop", "ranking", "massBinds",
+        "annualFrac", "decayBasis", "transDistKm", "phi_c0", "massEff"
+      ],
+      "status": "not extracted by lsei/oracle/lib/app_model.js and not addressable by lsei/oracle/lib/address.js. Every question the app's economic half computes routes to LITERATURE today."
+    }
+  },
+
+  "refusal_codes": ["excluded", "not-found", "unbuildable", "axis-incomplete", "misclassified", "input-missing"],
+  "verdicts": ["APP", "FIGURE", "LITERATURE", "BOTH", "CONTESTED", "REFUSE"],
+
+  "classes": [
+    {
+      "id": "L1",
+      "name": "Scenario output",
+      "tier": "A",
+      "tier_meaning": "The app computes it. Recompute-grade.",
+      "verdict": "APP",
+      "alt_verdict": "FIGURE",
+      "alt_verdict_when": "one dimension is left unbound, so more than one model() call resolves the address",
+      "test": {
+        "kind": "app_address",
+        "form": "singlePoint",
+        "requires": ["scenario", "phase", "output"],
+        "passes_when": "resolveScenario AND resolvePhase AND resolveOutput all return without throwing",
+        "output_keys": ["water", "construction", "constructionPotential", "cap", "Cfull", "Wpower", "Wthr", "mPwr", "mining", "Rcap", "regolith", "eEE", "rho", "massEff", "envPowerFrac", "envMassFrac"]
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "unbuildable",
+        "note": "An app address was named in intent and the grammar could not build it. Never falls through to a shelf search."
+      },
+      "app_surface": ["water-output", "energy-per-tonne", "bilinear-water-law", "min-of-two-limits", "shared-capacity-split"],
+      "register_axes": [],
+      "thin_patches": [],
+      "status_disclosure_required": true,
+      "status_disclosure_rule": "Every coefficient on the computation's path whose CONFIG/VALUE status is ASSUMPTION, PROJECTED, CONTROL or DESIGN is named in the answer with its own status string verbatim. The app figure stands unchanged; this is the app reporting itself completely."
+    },
+    {
+      "id": "L2",
+      "name": "Binding regime and structural why",
+      "tier": "A",
+      "tier_meaning": "The label is computed; the prose is stored. Two different trace grades.",
+      "verdict": "APP",
+      "alt_verdict": "BOTH",
+      "alt_verdict_when": "the question asks both for the label and for a corpus-held reason the app's stored prose does not carry",
+      "test": {
+        "kind": "app_address",
+        "form": "singlePoint",
+        "requires": ["scenario", "phase", "output"],
+        "passes_when": "resolveOutput resolves to 'binding', 'regime' or 'feasible'",
+        "output_keys": ["binding", "regime", "feasible"]
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "unbuildable"
+      },
+      "trace_split": {
+        "label": "recompute-verified",
+        "prose": "resolution-only",
+        "prose_source": "DERIVATION.notes, keyed by the app's own _dBindKey/_dIceKey/_dPhiKey selectors",
+        "note_keys": ["BIND-POWER", "BIND-MASS", "BIND-POWERMASS", "ICE-LEAN", "ICE-NOMINAL", "ICE-RICH", "PHIC-WATER", "PHIC-MIXED", "PHIC-CONSTRUCTION", "FISSION-ON", "FISSION-OFF", "RPROP-PAYS", "RPROP-FAILS", "TRANS-ACTIVE", "TRANS-DIST", "PHIC0-ACTIVE", "DECAY-ACTIVE"]
+      },
+      "app_surface": ["binding-regime-labels", "min-of-two-limits", "structural-choices", "water-primary-default", "construction-reference", "zero-intercept-mass-law", "productive-plant-mass"],
+      "register_axes": [],
+      "thin_patches": [],
+      "status_disclosure_required": true
+    },
+    {
+      "id": "L3",
+      "name": "Sensitivity and sweep",
+      "tier": "A",
+      "tier_meaning": "The app computes it, within the rails. Outside a rail: refuse.",
+      "verdict": "FIGURE",
+      "alt_verdict": "REFUSE",
+      "alt_verdict_when": "the named knob is not sweepable",
+      "test": {
+        "kind": "app_address",
+        "form": "knobSweep",
+        "requires": ["scenario", "phase", "knob", "output"],
+        "passes_when": "resolveKnob returns, i.e. the knob is in DETENTS AND in model()'s input keys",
+        "knobs": ["ice", "power", "mass", "phi_c"]
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "unbuildable",
+        "note": "A landed_cost sweep fails here by name and must not fall through to a shelf search: address.js states the reason in its own error text."
+      },
+      "app_surface": ["bilinear-water-law", "min-of-two-limits", "shared-capacity-split", "power-mass-break"],
+      "register_axes": ["LCC-01"],
+      "register_axes_reason": "An ice sweep at the 10 and 20 wt% detents runs above every measurement in this corpus. LCC-01 fires and the rail-endpoint disclosure is mandatory.",
+      "thin_patches": [],
+      "rail_endpoint_disclosure": {
+        "knob": "ice",
+        "detents": [10, 20],
+        "text_requirement": "the answer states that the grade exceeds every measurement this corpus holds"
+      }
+    },
+    {
+      "id": "L4",
+      "name": "Coefficient provenance and licence",
+      "tier": "B",
+      "tier_meaning": "The app holds a position it did not compute. App first, corpus second, in that fixed order.",
+      "verdict": "BOTH",
+      "alt_verdict": "CONTESTED",
+      "alt_verdict_when": "a register axis of class two_sided or false_pair fires at classification time",
+      "test": {
+        "kind": "coefficient_lookup",
+        "passes_when": "the sub-claim names a CONFIG or VALUE symbol, or a governing section slug, and asks where the value comes from rather than what it produces",
+        "config_symbols": ["kP", "E1", "H", "duty", "captureEff", "fFis", "fSol", "kExc", "eSinter", "ySinter", "phiCRef", "transmission", "phiC0"],
+        "value_symbols": ["L", "op_prop", "op_const", "f_op", "decayRate", "decayLife"],
+        "landed_cost_symbol": "landed_cost"
+      },
+      "fallback": {
+        "verdict": "LITERATURE",
+        "then_reason": "not-found",
+        "note": "Where no app symbol is named the sub-claim degrades to a corpus search; where the search also fails, not-found."
+      },
+      "app_surface": ["energy-per-tonne", "energy-per-kilogram", "capture-derate", "fission-specific-power", "solar-mass-allocation", "throughput-coefficient", "sintering-specific-energy", "sintering-yield", "transmission-coefficient", "productive-mass-fraction", "amortized-plant-identity", "propellant-operating-floor"],
+      "register_axes": ["LCC-04", "LCC-05", "LCC-10", "LCC-14", "LCC-15"],
+      "thin_patches": ["T1", "T2", "T3", "T6"],
+      "ungoverned_rows": {
+        "symbols": ["E1", "H", "duty", "kExc", "ySinter", "phiCRef"],
+        "meaning": "six CONFIG rows whose source string carries no [[slug]] link to a governing section. The app declares these gaps itself; the corpus is answering a question the app asked."
+      },
+      "order_rule": "The app states what it uses. The corpus states what was measured. The second is never presented as if it were the first."
+    },
+    {
+      "id": "L5",
+      "name": "Resource state and prospecting evidence",
+      "tier": "B",
+      "tier_meaning": "The app carries an input rail with the right name and no computation behind it. The most dangerous class in the taxonomy.",
+      "verdict": "CONTESTED",
+      "alt_verdict": "LITERATURE",
+      "alt_verdict_when": "no register axis fires at its stated threshold",
+      "test": {
+        "kind": "input_rail_trap",
+        "passes_when": "an OUTPUT_LEXICON or KNOB_LEXICON hit resolves to 'ice', which is a model INPUT and not a computed quantity",
+        "trap": "resolveOutput('ice') SUCCEEDS because 'ice' is echoed back in model()'s return object. The address builds and the number returned is the number the caller supplied. An APP verdict here answers a prospecting question with a control setting.",
+        "guard": "Where the resolved output key is also a model input key, the router must not issue APP. The intersection is exactly: ice, power, mass, fission, phi_c, transDistKm, phi_c0."
+      },
+      "fallback": {
+        "verdict": "LITERATURE",
+        "then_reason": "not-found"
+      },
+      "app_surface": ["ice-grade-evidence", "ice-grade-break", "polar-cold-trap-water", "grade-evidence", "capture-and-grade", "resource-geography"],
+      "register_axes": ["LCC-01", "LCC-02", "LCC-03"],
+      "thin_patches": [],
+      "literature_folders": ["literature/lunar-ice-and-geology"]
+    },
+    {
+      "id": "L6",
+      "name": "Delivery cost and architecture",
+      "tier": "B",
+      "tier_meaning": "landed_cost is an input rail of eleven rungs. The app assumed it; the corpus measured around it.",
+      "verdict": "CONTESTED",
+      "alt_verdict": "BOTH",
+      "alt_verdict_when": "the question asks what the app assumed AND what the corpus reports, as two distinct questions",
+      "test": {
+        "kind": "input_rail_trap",
+        "passes_when": "the sub-claim names a per-kilogram delivery price, or names the landed_cost rail",
+        "trap": "landed_cost is in DETENTS and is not a model() input, so no sweep address builds and no scalar address builds. The rail exists and is unreachable.",
+        "rail": [1000, 2000, 5000, 10000, 20000, 35000, 50000, 100000, 200000, 500000, 1000000],
+        "era_defaults": {"2030": 100000, "2040": 35000, "2055": 2000}
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "unbuildable",
+        "note": "Where the question is a pure rail-value lookup and no corpus side is named."
+      },
+      "app_surface": ["ladder-range-and-floor", "shared-flight-price", "clps-small-lander-cost", "leo-to-surface-multiplier", "falling-launch-price", "delivery-cost"],
+      "register_axes": ["LCC-11"],
+      "thin_patches": [],
+      "literature_folders": ["literature/logistics-and-delivery"],
+      "scope_token": "LEO against surface, and estimate against contracted"
+    },
+    {
+      "id": "L7",
+      "name": "Process route performance and maturity",
+      "tier": "C",
+      "tier_meaning": "The app computes nothing. One implicit water route through E1 and kP; no oxygen, metal or helium route at all.",
+      "verdict": "CONTESTED",
+      "alt_verdict": "LITERATURE",
+      "alt_verdict_when": "no register axis fires",
+      "test": {
+        "kind": "no_app_address",
+        "passes_when": "no scenario label resolves, or no OUTPUT_LEXICON hit resolves, and the sub-claim names a process route, a specific energy, or a maturity level",
+        "app_computes": false
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "not-found"
+      },
+      "app_surface": ["oxygen-extraction-energy", "bound-oxygen-mare", "iron-production-energy", "helium-procurement-energy", "non-water-routes"],
+      "app_surface_note": "All five are EXCLUSIONS entries. The app declares the boundary; that is not itself a refusal.",
+      "register_axes": ["LCC-04", "LCC-06", "LCC-07", "LCC-08", "LCC-13"],
+      "thin_patches": ["T4", "T7"],
+      "literature_folders": ["literature/isru-processing", "literature/programme-primaries"],
+      "trl_rule": {
+        "sheet": "literature/programme-primaries/sanders-2025-nasa-isru-progress-review.md",
+        "rule": "A TRL number is sourced or absent. The only corpus-wide TRL sheet is Sanders and Kleinhenz 2025, a May 2025 briefing; any answer quoting it names that date. Twenty-four other files state a TRL for their own subject only and license nothing beyond it."
+      },
+      "three_named_facts": ["system boundary", "scale", "maturity"]
+    },
+    {
+      "id": "L8",
+      "name": "Site, environment and surface operations",
+      "tier": "C",
+      "tier_meaning": "Two app sections carry evidence and compute nothing.",
+      "verdict": "CONTESTED",
+      "alt_verdict": "LITERATURE",
+      "alt_verdict_when": "no register axis fires",
+      "test": {
+        "kind": "no_app_address",
+        "passes_when": "no output key resolves and the sub-claim names illumination, temperature, terrain, excavation conditions, dust, wear or night survival",
+        "app_computes": false
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "not-found",
+        "substitute_from": "oracle/thin_patches.json",
+        "note": "A refusal in this class refuses by substitution: it names the specific missing measurement and the nearest real evidence, never a general limitation."
+      },
+      "app_surface": ["persistently-lit-terrain", "polar-cold-trap-water", "storage-and-siting", "habitat-water-terrain", "cadence-cryogenic-break"],
+      "register_axes": ["LCC-03", "LCC-09"],
+      "thin_patches": ["T1", "T2", "T5", "T8", "T9"],
+      "literature_folders": ["literature/power-and-thermal", "literature/lunar-ice-and-geology"]
+    },
+    {
+      "id": "L9",
+      "name": "Demand, market, programme and law",
+      "tier": "C",
+      "tier_meaning": "The app computes nothing and says so. Three of its ten exclusions sit here.",
+      "verdict": "LITERATURE",
+      "alt_verdict": "CONTESTED",
+      "alt_verdict_when": "LCC-12 or an ECR axis fires",
+      "test": {
+        "kind": "no_app_address",
+        "passes_when": "no output key resolves and the sub-claim names offtake, demand, delivery record, a programme milestone, a treaty or a property regime",
+        "app_computes": false
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "excluded",
+        "note": "excluded is the weakest of the six codes and is written only when no other applies. Where a corpus side exists the class answers from it rather than refusing."
+      },
+      "app_surface": ["grade-independent-demand", "delivered-cargo-record", "mars-campaign-conditional", "offtake-record", "signed-offtake-break", "demand", "break-even-sales-price"],
+      "register_axes": ["LCC-12", "LCC-13"],
+      "thin_patches": ["T10"],
+      "literature_folders": ["literature/space-economy-and-markets", "literature/space-law-and-governance", "literature/programme-primaries", "literature/logistics-and-delivery"],
+      "shared_with": "The Growth Economist. LCC-12 is written once, under the lunar prefix, and is never duplicated under ECR."
+    },
+    {
+      "id": "L10",
+      "name": "Cross-domain transfer",
+      "tier": "C",
+      "tier_meaning": "Neither corpus answers alone. This is the class the merge exists for.",
+      "verdict": "BOTH",
+      "alt_verdict": "REFUSE",
+      "alt_verdict_when": "either half of the proposed binding fails",
+      "test": {
+        "kind": "two_field_join",
+        "passes_when": "the sub-claim's tokens confirm files in at least one lunar folder AND at least one economics folder, per literature/FIELDS.tsv",
+        "app_computes": false,
+        "both_halves_rule": "The lunar half must be a real technical fact and the economic half must be a real transfer. Both hold or the answer refuses. A plausible-sounding technical premise carrying a correct economic argument is the failure mode this class exists to catch."
+      },
+      "fallback": {
+        "verdict": "REFUSE",
+        "reason": "not-found"
+      },
+      "app_surface": [],
+      "register_axes": ["LCC-12"],
+      "thin_patches": ["T3", "T7", "T8"],
+      "literature_folders": ["literature/growth-theory", "literature/development-and-industrial-policy", "literature/organization-and-production-systems", "literature/isru-processing", "literature/space-economy-and-markets"]
+    }
+  ],
+
+  "exclusion_outcomes": {
+    "rule": "An excluded node is not a refusal. The app's exclusion prose says what the app does not do; it does not say the question is unanswerable, and in six of ten cases the corpus answers it well. Three outcomes, not one.",
+    "outcomes": ["EXCLUDED-THEN-CORPUS", "EXCLUDED-THEN-THIN", "EXCLUDED-BUT-ADJACENT"],
+    "match_keys_contract": {
+      "why": "The exclusions matcher scores a question against the app's own boundary prose (EXCLUSIONS[slug].does + .reason). That prose is the APP'S vocabulary about what the app does not model; a question is the USER'S vocabulary about the world. On cadence-cryogenic-break the two share zero tokens, so the node never fired and the Oracle answered from an off-topic shelf hit. This is oracle/register_schema.md section 4's argument arriving at a second object: match_keys cannot be derived from the app or from the summaries, because it requires knowing how a user phrases a question. Authored by The Space Resources Engineer, 2026-08-28, on the router seat's measured finding.",
+      "sourced_from": "this file, exclusion_outcomes.assignments[].match_keys. oracle/router/excluded_nodes.js already reads the field and carries it into oracle/router/excluded_nodes.json at build time, and tools/exclusions_match.js already adds the hits to the overlap. Nothing is hand-edited in the generated artifact: a key edit here plus 'node oracle/router/build.js' is the whole change.",
+      "K1_token_form": "tokenize(k) deep-equals [k], against the retrieval layer's own tokenizer in oracle/retrieval/literature_search.js. All keys pass. This is why the keys read 'he3' and not 'helium-3' (which tokenizes to ['helium'], the trailing 3 falling to the length filter), and 'boil' plus 'boiloff' rather than 'boil-off'.",
+      "K2_presence": "THE REGISTER'S K2 DOES NOT TRANSFER, and that is a finding rather than an omission. An axis IS its members, so testing a key against the axis's own primaries is sound. An excluded node is not its members: it is a boundary in the app, and four of the ten nodes resolve zero primaries -- both EXCLUDED-THEN-THIN nodes by definition, and two of the three EXCLUDED-BUT-ADJACENT ones. K2-against-primaries is therefore unsatisfiable for exactly the nodes that need keys most. The floor asserted instead is the corpus: every key occurs as a whole token in at least one file under literature/. All keys pass. A key naming a word no summary in this corpus contains is a key about nothing a reader could be asking this Oracle.",
+      "checked_by": "cr_scratch/sre_w4/keycheck.js, run against this file. K1 failures 0, corpus-floor misses 0.",
+      "probe_pos": "One user-phrased question per node, the same fixture form the register carries on its A rows, so the key set is testable by calibration machinery that already exists rather than by inspection. Measured 2026-08-28: with match_keys empty, four of the ten probes routed to their node's declared outcome; with them, ten of ten do.",
+      "deliberate_duplicates": "'ilmenite' is a key on both bound-oxygen-mare and oxygen-extraction-energy, and 'titanium' on both bound-oxygen-mare and iron-production-energy. Not a collision to repair: an ilmenite question genuinely touches two boundaries the app declares, and tools/exclusions_match.js topBand() returns the tied band precisely so that the router does not choose which boundary the user hears."
+    },
+    "assignments": [
+      {"slug": "oxygen-extraction-energy",   "outcome": "EXCLUDED-THEN-CORPUS",  "register_axes": ["LCC-07", "LCC-08"], "class": "L7", "match_keys": ["lox","o2","carbothermal","ilmenite","kwh","kilowatt","reduction","electrolysis"], "probe_pos": "How many kwh does carbothermal reduction need per kilogram of lox?"},
+      {"slug": "propellant-mass-leverage",   "outcome": "EXCLUDED-BUT-ADJACENT", "adjacent_to": "net-value-identity", "class": "L9", "match_keys": ["worth","save","saves","saving","savings","offset","offsets","avoided","imleo","gear","multiplier","substitute","replace","replaces"], "probe_pos": "How much delivered cargo does lunar propellant save, and what is that saving worth?"},
+      {"slug": "delivered-cargo-record",     "outcome": "EXCLUDED-THEN-CORPUS",  "register_axes": ["LCC-11"], "class": "L9", "match_keys": ["clps","starship","tonnes","tonne","tonnage","manifest","missions","flown","deliveries","payload","offload","landers"], "probe_pos": "How many tonnes of cargo have CLPS landers actually flown to the lunar surface?"},
+      {"slug": "grade-independent-demand",   "outcome": "EXCLUDED-BUT-ADJACENT", "adjacent_to": "offtake-record", "register_axes": ["LCC-12"], "class": "L9", "match_keys": ["buy","buyer","buyers","customer","customers","market","markets","sell","sales","revenue","offtake","contract","contracts","purchase","consumption","willingness"], "probe_pos": "Who would buy lunar propellant, and are there signed contracts from any customer?"},
+      {"slug": "bound-oxygen-mare",          "outcome": "EXCLUDED-THEN-CORPUS",  "register_axes": ["LCC-08"], "class": "L7", "match_keys": ["ilmenite","feedstock","composition","highland","highlands","basalt","anorthosite","silicate","deposit","deposits","titanium","thorium","kreep"], "probe_pos": "Where on the Moon is the ilmenite-rich mare feedstock, and how does its composition compare with the polar highlands?"},
+      {"slug": "cadence-cryogenic-break",    "outcome": "EXCLUDED-THEN-THIN",    "thin_patches": ["T5"], "class": "L8", "match_keys": ["boil","boiloff","cryocooler","cryocoolers","transferred","transfers","transferring","depot","resupply","refuel","refueling","tanker","slip","schedule","liquefaction"], "probe_pos": "How often must lunar propellant be transferred to keep boil-off within limits?"},
+      {"slug": "habitat-water-terrain",      "outcome": "EXCLUDED-THEN-CORPUS",  "register_axes": ["LCC-03"], "class": "L8", "match_keys": ["base","outpost","astronaut","astronauts","live","living","shelter","lava","tube","tubes","pit","pits","settlement","colony","habitation","quarters"], "probe_pos": "Can an astronaut outpost be sited next to a water mine, or should the base go in a lava tube?"},
+      {"slug": "mars-campaign-conditional",  "outcome": "EXCLUDED-BUT-ADJACENT", "adjacent_to": "avoided-cost", "class": "L9", "match_keys": ["gateway","transit","stepping","stone","trip","cislunar","staging","crewed","interplanetary"], "probe_pos": "Does lunar propellant make a crewed Mars transit cheaper when staging through Gateway?"},
+      {"slug": "iron-production-energy",     "outcome": "EXCLUDED-THEN-THIN",    "thin_patches": ["T7"], "class": "L7", "match_keys": ["smelting","steel","alloy","alloys","ore","ores","refining","metals","metallic","aluminium","aluminum","titanium","silicon"], "probe_pos": "How much energy does it take to smelting iron or refining metals from lunar regolith?"},
+      {"slug": "helium-procurement-energy",  "outcome": "EXCLUDED-THEN-CORPUS",  "register_axes": ["LCC-13"], "class": "L7", "note": "corpus on supply; REFUSE on demand", "match_keys": ["he3","fusion","isotope","isotopes","deuterium","tokamak","harvest","harvesting","mining"], "probe_pos": "How much regolith must be mined to harvest a kilogram of he3 for fusion?"}
+    ],
+    "adjacency_pairs": [
+      {"excluded": "propellant-mass-leverage", "modeled": "net-value-identity",  "distinction": "avoided delivery cost on a fixed mass is not propellant displacing cargo"},
+      {"excluded": "mars-campaign-conditional", "modeled": "avoided-cost",       "distinction": "a campaign's conditional economics is not a per-kilogram avoided cost"},
+      {"excluded": "grade-independent-demand", "modeled": "offtake-record",      "distinction": "a demand model is not a record of signed offtakes"}
+    ],
+    "adjacency_rule": "For an EXCLUDED-BUT-ADJACENT node the answer states the distinction explicitly, or the reader takes the adjacent number as the answer. This is the outcome with no mechanism in the prototype and it is where the real damage is."
+  }
+}

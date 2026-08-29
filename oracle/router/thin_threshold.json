@@ -1,0 +1,26 @@
+{
+  "fire_threshold": 1.7,
+  "govern_threshold": 6.175,
+  "status": "PROVISIONAL",
+  "owner": "the router seat (W4-2), on the same footing as K in oracle/router/axis_threshold.json",
+  "set_by": "oracle/router/calibrate_thin.js",
+  "provenance": "joint plateau of two independently measured objectives: the thin-patch register's own 20 probe rows, and the 14 labelled acceptance rows scored through the full classifier. Joint interval [5.561, 6.372].",
+  "joint_interval": [
+    5.5612,
+    6.3723
+  ],
+  "register_figure": 6.175,
+  "register_figure_inside_joint_interval": true,
+  "fire_threshold_source": "oracle/thin_patches.json firing_rule.fire_threshold, adopted unchanged. The fire tier attaches content and never moves a verdict, so it carries no collateral risk and re-measuring it against a verdict objective would measure nothing.",
+  "collateral_at_adopted": 2,
+  "superseded_band": {
+    "band": [
+      1.86,
+      3.78
+    ],
+    "midpoint": 2.82,
+    "verdicts_destroyed": 6,
+    "labelled_score": "11/14",
+    "note": "the five-row band. Recorded with its measured damage so the failure is falsifiable rather than remembered."
+  }
+}

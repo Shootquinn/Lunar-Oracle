@@ -1,0 +1,86 @@
+{
+  "K": 2.431,
+  "status": "PROVISIONAL",
+  "owner": "sub-step 3.6",
+  "set_by": "oracle/router/calibrate_k.js, run by The Software Engineer at sub-step 3.8",
+  "provenance": "plateau midpoint of the widest best-scoring interval over the register's own probe_pos/probe_neg fixture set (oracle/register_schema.md section 4.2), 66 labelled questions over 33 axes",
+  "score": {
+    "pass": 55,
+    "total": 66,
+    "plateau": [
+      2.3195,
+      2.5416
+    ]
+  },
+  "idf": "field-scoped, oracle/retrieval/literature_search.js idfFor(), scoped to the axis's own register field",
+  "rule": "an axis fires when the IDF-weighted MASS of its match_keys present in the question tokens is >= K",
+  "caveat": "This is a measurement, not a ruling. 3.6 owns K. The classifier reads this file and refuses input-missing when it is absent rather than defaulting, so replacing this value is an edit to one artifact and touches no code.",
+  "fails": [
+    {
+      "axis_id": "LCC-01",
+      "expect": "quiet",
+      "mass": 3.576,
+      "question": "How does LEND neutron albedo vary with relief height and average annual temperature?"
+    },
+    {
+      "axis_id": "LCC-03",
+      "expect": "quiet",
+      "mass": 2.725,
+      "question": "At what temperature is water ice stable in a lunar cold trap?"
+    },
+    {
+      "axis_id": "LCC-04",
+      "expect": "fire",
+      "mass": 1.174,
+      "question": "How much energy does it take to extract a kilogram of water from lunar regolith?"
+    },
+    {
+      "axis_id": "LCC-04",
+      "expect": "quiet",
+      "mass": 4.423,
+      "question": "What simulant did the LUWEX campaign use to stand in for icy regolith?"
+    },
+    {
+      "axis_id": "LCC-07",
+      "expect": "fire",
+      "mass": 0.968,
+      "question": "How many kilowatt hours does it take to produce a kilogram of oxygen from lunar regolith?"
+    },
+    {
+      "axis_id": "LCC-07",
+      "expect": "quiet",
+      "mass": 3.68,
+      "question": "What temperature does carbothermal reduction of lunar regolith run at?"
+    },
+    {
+      "axis_id": "LCC-09",
+      "expect": "fire",
+      "mass": 0.919,
+      "question": "How much solar power is available at the lunar south pole?"
+    },
+    {
+      "axis_id": "LCC-10",
+      "expect": "quiet",
+      "mass": 5.323,
+      "question": "What fuel enrichment does the KRUSTY reactor use?"
+    },
+    {
+      "axis_id": "LCC-13",
+      "expect": "fire",
+      "mass": 2.087,
+      "question": "Who would buy lunar helium-3?"
+    },
+    {
+      "axis_id": "LCC-14",
+      "expect": "fire",
+      "mass": 1.234,
+      "question": "How much energy does it take to sinter a kilogram of lunar regolith?"
+    },
+    {
+      "axis_id": "LCC-14",
+      "expect": "quiet",
+      "mass": 2.687,
+      "question": "What compressive strength does a laser-melted regolith paving tile reach?"
+    }
+  ]
+}
