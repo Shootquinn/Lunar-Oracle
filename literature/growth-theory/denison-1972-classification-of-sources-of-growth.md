@@ -264,7 +264,7 @@ in the corpus use those terms without defining them.
 ## Provenance
 
 - **Landed:** W3-6, 2026-08-28, by the Manager, written directly from the acquired PDF. This file did not pass through `tools/merge_identity.js` and has no row in `cr_scratch/merge_plan.tsv`; it is the first `literature/` file to land outside the Step 2.5 merge.
-- **Source:** `_intake/japanese-miracle/lit/denison-1972-classification-of-sources-of-growth.pdf`
+- **Source:** `japanese-miracle:lit/denison-1972-classification-of-sources-of-growth.pdf`
 - **Acquired:** by the author (Quinn), who pulled the PDF and dropped it into the repository mid-Wave-3, 2026-08-28. This line carries the acquisition note that was previously appended to `Source:`; `Source:` is a bare path because it is machine-read (SRC-1) and trailing prose makes it unresolvable — the same defect class already measured on 4 of 11 `Publisher URL:` values in this corpus.
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Acquisition digest:** `sha256:05143b5733146b7324cbfe35c3539e7fe92f1a27158570a16ac5640a66a6a1f5` over the bytes of the `Source:` PDF, 447354 bytes, taken 2026-08-28. There is no merge-time digest because there was no merge and no prior `.md` copy of this text anywhere in the tree.

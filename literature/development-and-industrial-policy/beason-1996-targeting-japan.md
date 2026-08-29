@@ -398,7 +398,7 @@ productivity (Section V).
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/beason-1996-targeting-japan.md`
+- **Source:** `japanese-miracle:lit/beason-1996-targeting-japan.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:d569c2e86b9a16cab3e84fd31ed55d79c3f0b9cbd0dc6ade91e36d7beec36584` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

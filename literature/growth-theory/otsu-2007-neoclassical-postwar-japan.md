@@ -390,7 +390,7 @@ table as specifically Japanese-demographic rather than transportable.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/otsu-2007-neoclassical-postwar-japan.md`
+- **Source:** `japanese-miracle:lit/otsu-2007-neoclassical-postwar-japan.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:6d9231094a42b1f1dfa5e665c70d8dee3f13bbc21267f282892501dceaa09a01` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

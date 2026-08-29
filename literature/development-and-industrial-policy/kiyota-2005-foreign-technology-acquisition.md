@@ -246,7 +246,7 @@ Stock Exchange-listed firms, 1957–1970) during Japan's high-growth period.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/kiyota-2005-foreign-technology-acquisition.md`
+- **Source:** `japanese-miracle:lit/kiyota-2005-foreign-technology-acquisition.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:b83375fec7edc68e383a6a7927b05f62cd71a7cfe2e2246425b5a7874c37585f` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

@@ -261,7 +261,7 @@ nationalization.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/trist-1951-longwall-coal-getting.md`
+- **Source:** `japanese-miracle:lit/trist-1951-longwall-coal-getting.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:ed9358a15b5964b1d92f535c8c22c768356a89a3d9767c86c0c5836bbbd8267a` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

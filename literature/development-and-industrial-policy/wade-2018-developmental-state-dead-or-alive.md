@@ -262,7 +262,7 @@ questions for middle-income countries and global economic governance.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/wade-2018-developmental-state-dead-or-alive.md`
+- **Source:** `japanese-miracle:lit/wade-2018-developmental-state-dead-or-alive.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:aee10c28326e0db69649691dbccc3416c976e8d47d98f1dadc7263e7d0e92695` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

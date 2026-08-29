@@ -333,7 +333,7 @@ Lincoln et al. 1996, 1998) cited elsewhere in the literature review.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/miwa-2002-fable-of-the-keiretsu.md`
+- **Source:** `japanese-miracle:lit/miwa-2002-fable-of-the-keiretsu.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:94654f9e926d552ea676cab7ceb058792e1ec4693ec4934ef1bf18461d2173c1` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

@@ -42,7 +42,7 @@ NASA CaRD (Carbothermal Reduction Demonstration) project; carbothermal reduction
 ## Provenance (merge)
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/gott-2024-card-gas-analysis-subsystem.md`
+- **Source:** `japanese-miracle:lit/gott-2024-card-gas-analysis-subsystem.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:c260b7671373e464855f8ded5dff969faa1762a2d8ecd152d76cea814352692c` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

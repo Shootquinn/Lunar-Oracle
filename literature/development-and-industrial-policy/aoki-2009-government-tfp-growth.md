@@ -300,7 +300,7 @@ cluster case (Section 6).
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/aoki-2009-government-tfp-growth.md`
+- **Source:** `japanese-miracle:lit/aoki-2009-government-tfp-growth.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:cc017a6d49556614c35bac97a59434708375e5920bb8fa55f20540b47e66ec16` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

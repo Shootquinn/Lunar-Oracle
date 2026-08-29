@@ -271,7 +271,7 @@ question of growth deceleration using data built in this paper.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/pritchett-2000-hills-among-plateaus.md`
+- **Source:** `japanese-miracle:lit/pritchett-2000-hills-among-plateaus.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:0faea8d1251981340563b0e37646a21e689fd1315f35d1dcff80ab2145df2b97` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

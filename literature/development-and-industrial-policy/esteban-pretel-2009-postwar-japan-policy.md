@@ -295,7 +295,7 @@ scenarios) for postwar Japan, 1956-1990.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/esteban-pretel-2009-postwar-japan-policy.md`
+- **Source:** `japanese-miracle:lit/esteban-pretel-2009-postwar-japan-policy.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:e6733cf64ad47177cfdf5633b17dad6c46d1cd4020f09bac632ad29558602c10` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

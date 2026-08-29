@@ -358,7 +358,7 @@ firm-level technology-acquisition study cited here as a companion finding
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/kiyota-2013-import-quota-removal.md`
+- **Source:** `japanese-miracle:lit/kiyota-2013-import-quota-removal.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:12aec8ba25ce3e791f491ab1ac01b1d1af4ded6ccb38c34db7ef5fde55e12366` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

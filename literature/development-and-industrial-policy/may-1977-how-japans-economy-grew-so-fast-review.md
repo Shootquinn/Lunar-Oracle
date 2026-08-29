@@ -58,7 +58,7 @@ FA1. Sub-Q 1 (canonical growth-accounting decomposition), and directly relevant 
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/may-1977-how-japans-economy-grew-so-fast-review.md`
+- **Source:** `japanese-miracle:lit/may-1977-how-japans-economy-grew-so-fast-review.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:c8181d9027d1160d275381d7d103e6d0399c5cf1c2bd7b9b488e25e9ec2f9cc2` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

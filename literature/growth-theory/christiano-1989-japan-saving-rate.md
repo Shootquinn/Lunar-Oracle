@@ -248,7 +248,7 @@ saving rate and growth trajectory across the 1950s-1970s.
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/christiano-1989-japan-saving-rate.md`
+- **Source:** `japanese-miracle:lit/christiano-1989-japan-saving-rate.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:0e1c2e1f8cc061409869210fadd20d93d53b1ac45371c6518f637d8bd0f308be` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake

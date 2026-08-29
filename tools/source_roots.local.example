@@ -1,0 +1,75 @@
+# tools/source_roots.local.example -- COPY THIS TO tools/source_roots.local AND EDIT.
+#
+# THIS FILE (.example) IS TRACKED. THE FILE YOU MAKE FROM IT (.local) IS NOT, and .gitignore
+# names it as a literal. That split is the whole point of the mechanism:
+#
+#     THE IDENTITY OF A SOURCE TRAVELS IN THE REPOSITORY; THE LOCATION OF IT DOES NOT.
+#
+# This repository ships the summaries it wrote. It never ships the publications it summarises --
+# no PDF enters version control, `_intake/` and `literature/_pdf/` are gitignored, and the trees
+# named below are read-only to every tool here. So a summary cannot carry the path of its source:
+# a path resolves only on the machine it was typed on. It carries an IDENTITY instead, and this
+# file is where a given machine says where that identity lives.
+#
+# YOU DO NOT NEED THIS FILE. A clone without it is correct and complete. It will report every
+# external source as `unresolvable here`, which is a fact about your machine and not a defect in
+# the corpus, and `node tools/verify_corpus.js` will not fail because of it. Create this file only
+# if you hold the source trees and want the checks to actually open them.
+#
+# ---------------------------------------------------------------------------- WHAT A LINE MEANS
+#
+#   # as: <alias>          A DIRECTIVE, not decoration. It binds the alias to the NEXT path line.
+#                          The alias is the string that appears in a summary's
+#                          `- **Source:** ` + "`" + `<alias>:<path under the root>` + "`" + ` cell.
+#                          Aliases are lower-case, at least two characters, [a-z0-9-].
+#
+#   <absolute path>        One root, one line, absolute, no quotes, no trailing comment. A line
+#                          with no `# as:` directive above it is an UNALIASED root: it is used by
+#                          tools/audit_abstract_overlap.js, which searches all roots by filename,
+#                          and is ignored by the alias resolver in tools/verify_corpus.js.
+#
+#   (blank line)           Cancels a pending `# as:` directive, so a dangling one at the foot of a
+#                          section cannot capture an unrelated root further down.
+#
+# WHY THE DIRECTIVE IS A COMMENT. tools/audit_abstract_overlap.js reads this same file as a list of
+# bare paths and skips `#` lines. Writing the alias as `japanese-miracle = C:\...` instead would
+# make that reader treat the whole line as a path, fail to find it, drop the root, and silently
+# shrink the population it measures. The comment form is byte-compatible with both readers.
+#
+# AN ALIAS MAY BE DECLARED MORE THAN ONCE. The roots are tried in the order written, first hit
+# wins. Order is load-bearing when two copies of a source tree have drifted apart: put the tree the
+# corpus was actually built from FIRST, or the divergence check compares landed bodies against
+# bytes that never landed. `_intake/<alias>/` is searched before anything in this file whenever the
+# working copy has it, for exactly that reason.
+#
+# ENVIRONMENT ALTERNATIVE, for a machine that cannot keep a file (CI):
+#   LUNAR_ORACLE_SOURCE_ROOTS="japanese-miracle=/srv/corpora/jm;another=/srv/corpora/x"
+# Entries are <alias>=<path>, separated by the platform's path delimiter (`;` on Windows, `:`
+# elsewhere). A bare path there is left to audit_abstract_overlap.js and is not given an alias.
+#
+# ------------------------------------------------------------------- CHECKING WHAT YOU JUST WROTE
+#
+#   node tools/verify_corpus.js --sources
+#
+# lists every `Source:` declaration in one of three states, and the three are never folded together:
+#
+#   RESOLVED            this machine can open the file.
+#   UNRESOLVABLE-HERE   this machine has not been told where that tree is. NORMAL on a fresh clone.
+#                       Never a failure.
+#   BROKEN              the root IS configured and the file is not inside it. A real defect --
+#                       either the declaration is wrong or the root points at the wrong tree.
+#
+# SRC-1 fails only on BROKEN. It reports VACUOUS, never OK, if nothing at all resolved: "no broken
+# sources" over a population of zero resolvable ones is not a pass.
+#
+# ------------------------------------------------------------------------------------- TEMPLATE
+# Delete these two examples and write your own. The paths below are placeholders and exist on
+# nobody's machine; leaving them in place is harmless and reports `unresolvable here`.
+
+# The Japanese-miracle economics corpus. Alias used by 25 summaries under literature/.
+# as: japanese-miracle
+/replace/with/the/absolute/path/to/your/japanese-miracle/source/tree
+
+# An unaliased root: searched by filename by tools/audit_abstract_overlap.js, ignored by the
+# alias resolver. Use this form for a pile of source PDFs that no summary names by alias.
+/replace/with/the/absolute/path/to/another/read-only/source/tree

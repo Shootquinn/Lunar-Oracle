@@ -319,7 +319,7 @@ War in Japan's postwar trajectory (Conclusion).
 ## Provenance
 
 - **Landed:** Step 2.5, 2026-08-28, by `tools/merge_identity.js --stage`.
-- **Source:** `_intake/japanese-miracle/lit/dingman-1993-dagger-and-gift-korean-war.md`
+- **Source:** `japanese-miracle:lit/dingman-1993-dagger-and-gift-korean-war.md`
 - **Upstream ref:** `none` — the `Source:` path is under `_intake/`, which is not a git working copy, so no ref exists. Stated rather than omitted: an omitted field is invisible and a stated `none` is falsifiable.
 - **Merge-time digest:** `sha256:4b81ead59939e52dba69b182c660aa072595d2330c17db0b1bad08edc44cd5bd` over the bytes of the `Source:` file, taken 2026-08-28. This is the value `bootstrap_contract.md` §7.2 compares upstream against to reach `equal` or `diverged`; without it that verdict is `unknown`.
 - **Byte source:** sole-intake
