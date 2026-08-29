@@ -194,7 +194,7 @@ gameplan, per A.6.2.
 | 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
 | 6 | **Bootstrap, first run, and the public-facing prose.** Objectives 2 and 5. 15 sub-steps, 6.1 to 6.15. | The Systems Engineer, The Writer, The Editor | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
 | 7 | **Findings, standing tensions, and the sampling protocol.** 7 sub-steps, 7.1 to 7.7. | The Manager (economics prompt), The Software Engineer | **Complete.** Wave 4, closed 2026-08-28 at `f9ae39c`. |
-| 8 | **The inversion: Claude rules, the tooling advises.** The author's ruling of 2026-08-28. The router stops choosing verdicts and starts reporting evidence; the deliverable gets the shape of a TDD-method report; the model tier is written into the contracts. 7 sub-steps, 8.1 to 8.7. | The Manager (open), The Software Engineer, The Writer, The Systems Engineer | **Open.** Ruled 2026-08-28, not started |
+| 8 | **Claude decides, the tool advises.** The author's ruling of 2026-08-28. The router stops choosing verdicts and starts reporting evidence; the deliverable gets the shape of a TDD-method report; the model tier is written into the contracts. 9 sub-steps, 8.1 to 8.9. | The Manager (open), The Software Engineer, The Writer, The Systems Engineer | **Open.** Ruled 2026-08-28, not started |
 
 **The sub-step detail lives in `cr_scratch/step0_integration_draft.md`** and is not duplicated here.
 That file carries the sub-steps with owners, dependencies expressed as `N.M (ORIGIN-ID)`, the
@@ -513,7 +513,7 @@ Two consequences worth stating plainly, because they are the reason the map look
 
 ---
 
-## Author ruling, 2026-08-28 (at the Step 7 close): the tooling does not choose the verdict
+## Author ruling, 2026-08-28 (at the Step 7 close): the tool does not choose the verdict
 
 **The ruling, verbatim.** *"Have Claude think about stuff instead of trying to use algebra to run a
 fucking AI. Let it use your little tool to help inform itself but don't have it be how it chooses a
@@ -543,35 +543,50 @@ Claude reads**, which is what they always were.
 
 | Sub-step | What it does | Assigned To |
 |---|---|---|
-| 8.1 | **Demote the router to an evidence report.** `classify.js` stops returning `verdict` and returns findings: which axes matched and at what mass, which app outputs resolve, which node is excluded, which patch is thin, and what each score is worth. Scores ship with their own reliability, not as a decision. The closed verdict set moves to the composing session. | The Software Engineer |
+| 8.1 | **The router stops deciding and starts advising.** `classify.js` stops returning `verdict` and returns findings: which axes matched and at what mass, which app outputs resolve, which node is excluded, which patch is thin, and what each score is worth. Scores ship with their own reliability, not as a decision. The closed verdict set moves to the composing session. | The Software Engineer |
 | 8.2 | **Weight the evidence low, and say so in the artifact.** The author's instruction is that the tool result carries *very low weight*. The report states its own known failure modes inline -- the `kwh`/"kilowatt hours" and `polar`/"pole" misses are the worked examples -- so a session reading it is told where it is unreliable at the moment it reads it, rather than in a document it may never open. | The Software Engineer, The Writer |
 | 8.3 | **Run the evidence pass concurrently with the Manager's open**, so it can inform the first prompts. The Manager is **instructed to be sceptical of it** and to state in the open which findings were taken and which were set aside. A Manager who adopts the report wholesale has not used it as evidence. | The Manager |
 | 8.4 | **The deliverable gets a shape: the TDD-method report.** `oracle/answer_contract.md` section 6 says every deliverable is a file and does not say what shape the file has. Specify it: the question, the verdict and why, **what was tested and how it could have failed**, sources with traces, and what remains unverified. The haiku-plus-path rule is unchanged and already enforced by `tools/verify_haiku.js`. | The Writer, tested by The Software Engineer |
 | 8.5 | **Write the model tier into the contracts.** Default is the session's own model. Tier per seat below, with the escalation rule stated as a rule and not a preference. | The Systems Engineer |
 | 8.6 | **Retire or re-scope the calibrated thresholds.** `K`, `axis_threshold.json`, `thin_threshold.json` and the govern band were tuned to decide. Under 8.1 they inform. Decide per artifact whether each survives as a reported score, survives with a widened band, or goes -- and record the reasoning, because these cost two sittings and deleting them silently loses the lesson. | The Engineer |
-| 8.7 | **Re-run the fourteen and report what moved.** Under the inversion SRQ-8, SRQ-10 and SRQ-12 should resolve without a synonym table, a stemmer or a new question class. If they do not, the inversion did not land. | The Space Resources Engineer |
+| 8.7 | **Re-run the fourteen and report what moved.** With the router advising rather than deciding, SRQ-8, SRQ-10 and SRQ-12 should resolve without a synonym table, a stemmer or a new question class. If they do not, the change did not land. | The Space Resources Engineer |
+| 8.8 | **Clear `prettyman-2006` and `levin-2025`.** One summary reproduces its source abstract **100.0% verbatim** and prints *"Copyright 2006 by the American Geophysical Union"* in its own provenance block; `levin-2025` is the same shape at 95.6%. This project's dedication covers its own summaries and **cannot cover an abstract it does not own**, so a public release ships someone else's copyrighted text under a public-domain dedication. Replace both transcriptions with the project's own prose, keep the citation and the copyright line as attribution, and re-run the audit to confirm each drops below threshold. **This was carried as an open question for the author; it is not a question, it is a paraphrase.** Release itself stays the author's act. | The Writer, audited by The Fact-Checker |
+| 8.9 | **Make the abstract-overlap audit non-vacuous.** `node tools/audit_abstract_overlap.js literature 10` reports *"AT OR ABOVE 10%: 0"* over a tested population of **zero** -- byte-identical output to a genuinely clean corpus. Sub-step 2.11 never ran, so 56 of 169 summaries have no measurement. Give the tool a known-answer test that fails when the tested population is zero, then run it. | The Engineer |
 
 ### The model tier, ruled at 8.5
 
-**Default: inherit the session.** Opened in Opus, everything is Opus. The tiers below are the floor
-when the session does not say otherwise, never a ceiling imposed on a session the author opened
-deliberately.
+**Default: inherit the session.** Opened in Opus, everything is Opus. Opened in Sonnet, everything is
+Sonnet. The tiers below are a floor when the session does not say otherwise, never a ceiling on a
+session the author opened deliberately.
 
-| Seat | Tier | Why |
+**The constraint that decides this, from the author:** *"We can't always assume everyone has Opus or
+can afford to use it. And Sonnet is quite capable except for image analysis."* This repository is
+meant to be cloned and run by someone who is not the author, so **a tier the reader may not have is
+not a floor, it is a barrier.** Every seat below is specified so the work is correct at Sonnet.
+
+| Seat | Floor | Why |
 |---|---|---|
-| Orchestrator, The Manager | Sonnet | Holds scope and sequencing. Wave 4's orchestrator errors were bookkeeping -- a lost sub-step count, a relayed threshold band measured against too small a control set -- which a mid tier does adequately when the contract is written down rather than remembered. |
-| Lit-review fan-out, first-pass retrieval, field tagging, high-volume extraction | Haiku | Mechanical and wide. The author's constraint is that the lit review has to happen fast, and this is where the parallelism is. |
-| **Reading a source and judging whether a claim is supported** | **Opus** | Non-negotiable, and Wave 4 is the evidence. The source-verification sweep found twelve register claims attached to the wrong paper or contradicting their own source -- Aoki credited with Esteban-Pretel's argument, Nakamura with Kawagoe's percentages, one row asserting the flat negation of what its source says. Every one was caught by careful reading. None by a scorer. |
-| Composing a `CONTESTED` answer, one persona per side | Opus | The anti-synthesis rule is a discipline held under pressure to reconcile. A cheaper tier splits the difference, which is the one failure the rule exists to prevent. |
-| The transfer gate: `legitimate` / `illustration` / `unknown` | Opus | A judgement about whether a mechanism carries from one context to another. `unknown` composes a refusal rather than a hedge, and refusing well is harder than answering. |
+| Orchestrator, The Manager | Sonnet | Holds scope and sequencing against a written contract. |
+| Lit-review fan-out, first-pass retrieval, field tagging, high-volume extraction | Haiku | Mechanical and wide, and the lit review has to be fast. This is where the parallelism is. |
+| Reading a source and judging whether a claim is supported | Sonnet | The judgement that catches a claim attached to the wrong paper. It is careful reading, not a model tier, and it is specified as a procedure -- open the cited file, search for the claim's own words, quote what is there -- so that it is reproducible rather than dependent on who is reading. |
+| Composing a `CONTESTED` answer, one persona per side | Sonnet | The anti-synthesis rule is a written discipline. A persona briefed on one side's leaves and given no others cannot synthesise what it has not been handed, which is why the rule is enforced by the brief rather than by the reader's restraint. |
+| The transfer gate: `legitimate` / `illustration` / `unknown` | Sonnet | The verdict rules are written out with their falsifiers. |
+| **Anything involving an image** -- a PDF page image, a figure, a scanned table, a plot read for its values | **Opus** | The author's stated exception, and the one place a tier genuinely changes the outcome rather than the comfort. |
 
-**The escalation rule, stated as a rule.** *A seat that is about to look at something -- open a
-source, read a summary against a claim, judge a transfer -- runs at Opus regardless of its tier. The
-Manager may escalate any seat to Opus by saying so in the brief, and needs no reason beyond needing
-someone to look at something.*
+**The escalation rule.** *The Manager may escalate any seat by saying so in the brief and needs no
+reason beyond wanting a second quality of attention on something. A seat that hits an image escalates
+on its own without asking.* Escalation is always available and never assumed.
+
+**A correction the orchestrator owes this table.** An earlier draft of 8.5 made Opus the
+non-negotiable floor for source verification and cited Wave 4 as the evidence: twelve register claims
+attached to the wrong paper, every one caught by careful reading. **That is not evidence for a tier.**
+Wave 4 ran no Sonnet arm -- every seat ran on the session's own model -- so there is no comparison in
+it, and "the work went well" was written up as "the tier was necessary." An uncontrolled result
+presented as a controlled one is the defect this project has spent four waves finding in other
+people's artifacts. Recorded here rather than quietly deleted.
 
 **The hazard this tiering creates, named now so it is not discovered later.** A fast Haiku lit review
-feeding an Opus verification pass produces a corpus whose claims are cheap to make and expensive to
+feeding a slower verification pass produces a corpus whose claims are cheap to make and expensive to
 check. That is the right way round **only if the verification pass actually runs**. Skipped for
 speed, it yields a large corpus of unsupported claims that looks exactly like a good one -- the
 container-versus-content pattern at corpus scale. **The lit review does not close until its
