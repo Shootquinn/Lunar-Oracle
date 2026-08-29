@@ -19,6 +19,8 @@ Citation verification: the extracted source PDF carries no printed DOI, journal 
 | Funding | KICT Research Program project no. 20230081-001, Korean Ministry of Science and ICT; Australian Federal Government via the Australia-Korea Foundation |
 | Open access | Not confirmed from the source; distributed through the paid Curran Associates / proceedings.com IAC 2025 proceedings record |
 
+Source file: `Lunar Regolith Consolidation Caused by the Thawing of Water Ice.pdf`
+
 ---
 
 ## Abstract

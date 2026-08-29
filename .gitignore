@@ -170,3 +170,7 @@
 # --- Editor and OS litter ------------------------------------------------------------------
 # Deliberately unanchored: litter appears at any depth and has no home directory.
 *.tmp
+
+# Machine-local source roots for tools/audit_abstract_overlap.js (8.9b). Absolute paths into
+# the author's own trees are machine state, not repository content, and must never be committed.
+/tools/source_roots.local

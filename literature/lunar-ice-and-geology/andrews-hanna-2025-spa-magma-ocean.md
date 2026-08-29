@@ -9,6 +9,19 @@
 - **DOI:** `10.1038/s41586-025-09582-y` (transcribed from the article title page)
 - **Publisher URL:** https://doi.org/10.1038/s41586-025-09582-y ; open-access copy https://pmc.ncbi.nlm.nih.gov/articles/PMC12507655/
 
+Licence: contains-transcribed-source-text
+
+The abstract below is reproduced from the source, and the source permits it. The article prints:
+
+> Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made.
+
+CC BY 4.0 permits reproduction and redistribution with attribution, so this section is NOT covered
+by this repository's Unlicense dedication and is not this project's to dedicate -- it travels under
+the publisher's licence, which is why that licence is named here rather than left as "open access".
+"Open access" is a distribution fact and not a licence; the specific grant is what does the work.
+The citation, DOI and publisher URL below are the attribution CC BY requires.
+
+
 ## Abstract (transcribed from title page)
 The ancient South Pole–Aitken (SPA) impact basin formed during the earliest pre-Nectarian epoch, excavated more deeply than any other known basin, and lies on the less-explored far side. The tapering of the basin outline and the more gradual topographic and crustal-thickness transition toward the south support a **southward impact trajectory** (opposite the commonly assumed direction). A broad **thorium-rich and iron-rich ejecta deposit southwest of the basin** is consistent with partial excavation of late-stage magma-ocean liquids, indicating that thorium-rich magma-ocean liquids persisted only beneath the southwestern half of the basin at the time of impact — matching predictions for the transition from a global magma ocean to a local enrichment of K, REE and P (KREEP).
 

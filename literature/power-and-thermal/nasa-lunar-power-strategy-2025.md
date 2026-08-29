@@ -14,6 +14,8 @@ The printed title on the document itself is "Integrated Lunar Power 2025 / Moon 
 
 Authors printed on the record: Nujoud Merancy and Shatel Bhakta (Johnson Space Center), Kandyce E. Goodliff (Langley Research Center), Lee S. Mason (NASA Headquarters), Justin S. Fada (Glenn Research Center), Greg Mercer and Danny Baird (NCS).
 
+Source file: `acr25_lunar_power_strategy.pdf`
+
 ---
 
 ## Abstract

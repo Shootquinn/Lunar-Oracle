@@ -10,6 +10,8 @@ Publisher URL: not printed in source (NexGen Space LLC report, dated July 13, 20
 
 Independent study report · NexGen Space LLC · published 13 July 2015 · Principal Investigator Charles Miller, Co-PI Alan Wilhite, with Dave Cheuvront, Rob Kelso, Howard McCurdy (American University), and Edgar Zapata (NASA KSC) · reviewed by an independent team chaired by former NASA human-spaceflight head Joe Rothenberg · partly NASA-funded, gray literature, no DOI
 
+Source file: `nexgen_ela2015.pdf`
+
 ---
 
 ## Abstract

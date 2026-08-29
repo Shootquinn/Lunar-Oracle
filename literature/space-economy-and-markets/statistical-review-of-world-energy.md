@@ -17,6 +17,8 @@ from the Review's own "Approximate conversion factors" appendix (page 83).
 
 Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
 
+Source file: `Statistical Review of World Energy.pdf`
+
 ## Abstract
 
 The Energy Institute Statistical Review of World Energy is the standard annual dataset of global

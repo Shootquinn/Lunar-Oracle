@@ -12,6 +12,8 @@ Publisher URL: https://lsic.jhuapl.edu
 
 Consortium newsletter (periodic bulletin) · Administered by Johns Hopkins Applied Physics Laboratory (APL), operating in collaboration with NASA Space Tech under the Lunar Surface Innovation Initiative (LSII) · Publication date: August 2026 · Publicly distributed / open access (sign-up available at lsic.jhuapl.edu)
 
+Source file: `26-11890_LSIC-Newsletter_2026_Aug_FINAL.pdf`
+
 ---
 
 ## Abstract
@@ -108,4 +110,5 @@ A newsletter/bulletin, not a technical report; content is predominantly announce
 - **Dedup key:** L3|lunar-surface-innovation-consortium|2026|lsic-newsletter-vol — no identifier is recorded for this file; the field is open, not omitted
 - **Field:** lunar · **Folder:** programme-primaries
 - **Plan row rev:** 1
+- **Body edit (8.9b):** DECLARED source declaration, 2026-08-28, sub-step 8.9 (W5-3). Added: one line, ``Source file: `26-11890_LSIC-Newsletter_2026_Aug_FINAL.pdf` ``, so the abstract-overlap audit can resolve this summary to its source. **This amends the byte-identity claim carried by `Byte source` above:** the landed body is no longer byte-identical to the `byte_source` copy. It equals that copy under exactly the operation named here and no other — `declare-source-file`. **Note on the `Stated as of` basis below:** it records "No paired PDF on disk", which was true when written against `_intake/` alone and is now false — the PDF is in the author's `CSA_LSEI_Workshops` tree. That sentence is sub-step 2.7's and is left for its owner rather than edited here.
 - **Stated as of:** `2026-08` · date authority `derived_from_citation` · sub-step 2.7 (LUNAR-8), from `cr_scratch/step2_factchecker_currency.tsv`. Basis, verbatim: Citation "(2026, August) ... (Vol. 7, Issue 4)"; Metadata "Publication date: August 2026". No masthead or cover feature is named as the carrier. No paired PDF on disk. Content floor: an Aug. 20 telecon is announced as upcoming.

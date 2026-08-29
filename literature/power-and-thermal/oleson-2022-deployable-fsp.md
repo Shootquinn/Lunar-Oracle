@@ -18,6 +18,8 @@ No DOI is printed in the source. The extracted text itself carries the notation 
 | Pages | 9 |
 | Open access | Yes, NASA NTRS |
 
+Source file: `40 kW Deployable FSP Paper_FINAL.pdf`
+
 ---
 
 ## Abstract

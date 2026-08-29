@@ -12,6 +12,8 @@ Agency architecture-definition document (systems-engineering reference; not a st
 
 **Note on this summary's production.** This file merges a full text-layer reading of the source with a separate reading of its rendered pages (vector tables, icon footers, and templated catalog cards, which carry data the text layer does not preserve in structured form). This synthesis did not re-read the source PDF; it reconciles the two readings, flagging any point where they disagree.
 
+Source file: `NASA moon to mars doc.pdf`
+
 ---
 
 ## Abstract

@@ -10,6 +10,18 @@ This file implements **bootstrap contract version 2**, specified at `oracle/boot
 Where this file and that contract disagree, the contract is the statement and this file is the bug.
 Correct this file, and say in your deliverable that you did.
 
+**`oracle/bootstrap_contract.md` reads version 3, and the phases below are still version 2's. The lag
+is real and it is stated here rather than hidden by a bumped integer.** Measured 8.4, 2026-08-28: §1
+Phase 3's clone does not carry `-c core.longpaths=true` on its own invocation (contract §"clone", the
+key is set one phase after the operation it protects); `BC-21` is absent from this file entirely and
+appears six times in the contract; Phase 4 group 3 is not gated on the copy being present. **Bumping
+the integer here without landing the repairs would make this sentence false and the acceptance suite
+green**, which is the failure that ordering exists to prevent. Owner: The Systems Engineer, who bumped
+the contract at 6.1. Routed at 8.4.
+
+The answering half of this repository is at **`oracle/answer_contract.md` version 3**, and this file
+holds no copy of its rules.
+
 Run the commands below in **bash** — Git Bash on Windows. Heredocs fail in it; write files with the
 file-writing tool rather than by redirection.
 
@@ -316,6 +328,39 @@ optional one, and the report names which is absent.
 
 **TDD (`cr-agents/method/tdd_method.md`): always active.** Every deliverable has its own test plan,
 written before the deliverable.
+
+**The answer is a TDD report, and its shape is `oracle/deliverable_shape.md`.** Five sections, closed
+and ordered: the question as asked; the verdict and why not the adjacent one; **what was tested and
+how it could have failed**; sources with traces; what remains unverified. That third section is why
+the answer is a report and not an essay — *a claim with no stated falsifier is an assertion*. The
+shape is required by `oracle/answer_contract.md` §6 and it is not optional for short answers or for
+refusals.
+
+**The user receives haiku and a path, and nothing else.** No chat text block, under any condition.
+The path line carries the verdict, the reason code where the verdict is `REFUSE`, and the path — and
+it is subject to the same claim-bearing test as the haiku. `answer_contract.md` §6a records the
+measurement that removed version 2's two exceptions and states what would bring them back.
+
+**The form: 2 to 5 haiku strung linearly, no line breaks, and questions are in it too.** If the Oracle
+must ask the user something, it asks in haiku; there is no asking exception. `answer_contract.md` §6b
+holds the form and the author's reasoning, and **the reasoning is the part that binds**: the haiku is
+the anti-AI-voice mechanism, not a formatting quirk. An oracle that answers plainly is not an oracle,
+and the failure mode the form prevents is the fluent run-on paragraph that persuades on cadence.
+**Laconic is the standard; the two-hundred-word figure is a backstop and is not the control** — do not
+satisfy this with a word count. Checked by `node tools/verify_haiku.js "<text>" --turn`, which requires
+the mode and has no default.
+
+**Model tier: `oracle/model_tier.md`. Default is to inherit the session.** Haiku for the lit-review
+fan-out and high-volume extraction; **Sonnet for everything else, source verification and `CONTESTED`
+composition included**; Opus only where an image is involved. The author's constraint is the reason:
+*"we can't always assume everyone has Opus or can afford to use it, and Sonnet is quite capable except
+for image analysis."* **A tier the reader may not have is a barrier, not a floor.** The corollary is
+the operative part — where correctness depends on how carefully someone reads, the procedure is
+written down instead, and `model_tier.md` §2 writes out source verification as four steps.
+
+**The evidence pass is concurrent with the Manager's open, and the open is sceptical of it in
+writing.** `answer_contract.md` §10: the open states which findings it took and which it set aside,
+with a reason for each set-aside. `Set aside: none` is legal; an absent line does not close.
 
 **LLM-PLM (`cr-agents/supplements/llm_plm_cad.md`): not active.** No CAD or geometry work here.
 

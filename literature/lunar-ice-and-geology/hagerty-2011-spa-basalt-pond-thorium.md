@@ -8,11 +8,30 @@
 - **Year:** 2011 — received 26 August 2010; revised 6 December 2010; accepted 2 March 2011; published 3 June 2011
 - **DOI:** `10.1029/2010JE003723` (printed on the title page and in the article's own citation block)
 - **Publisher URL:** https://doi.org/10.1029/2010JE003723
+- **Publisher / copyright line (as printed):** Copyright 2011 by the American Geophysical Union. 0148-0227/11/2010JE003723
+
+Licence: own-summary
+
+The prose below is this project's own, written from the paper and dedicated with the rest of this
+repository under the Unlicense. Until 2026-08-28 (Step 8.8) this section carried the publisher's
+abstract with its pronouns changed — "we" rewritten to "the authors" — which left seven contiguous
+verbatim runs, the longest 39 words, and measured 39.4% overlap against the source. Changing someone's
+pronouns is not authorship. The article prints an AGU all-rights-reserved line, so that text was never
+this project's to dedicate; it was replaced rather than requoted. The citation, DOI, publisher URL and
+copyright line above are attribution and stay.
 
 > Transcription note: the title page reads "VOL. 116, E06001, doi:10.1029/2010JE003723, 2011", and the paper's self-citation reads "J. Geophys. Res., 116, E06001, doi:10.1029/2010JE003723." The article number printed on the page is **E06001** (the intake request's expected "E01003" is not what is printed; the on-page value is authoritative). All citation fields above are transcribed off the page; none reconstructed.
 
-## Abstract (transcribed from title page, paragraph [1])
-Imbrian-aged basalt ponds, located on the floor of South Pole-Aitken (SPA) basin, are used to provide constraints on the composition and evolution of the far side lunar mantle. The authors use forward modeling of the Lunar Prospector Gamma Ray Spectrometer (LP-GRS) thorium data to suggest that at least five different and distinct portions of the far side lunar mantle contain little or no thorium as of the Imbrian Period. They also use spatial correlations between local thorium enhancements and nonmare material on top of the basalt ponds to support previous assertions that lower crustal materials exposed in SPA basin have elevated thorium abundances, consistent with noritic to gabbronoritic lithologies. They suggest the far-side lower crust experienced multiple intrusions of thorium-rich basaltic magmas prior to the formation of SPA basin. Because many of the ponds on the far side have elevated titanium abundances, they argue the far side experienced extensive fractional crystallization that likely produced a KREEP-like component. However, because the Imbrian-aged basalts contain no signs of elevated thorium, they propose the SPA impact event triggered transport of a KREEP-like component from the far side and concentrated it on the near side. Because of the correlation between basaltic ponds and basins within SPA, they suggest Imbrian-aged basaltic volcanism on the far side was driven by basin-induced decompressional melting.
+## Abstract (this project's own description; not the publisher's abstract)
+South Pole–Aitken reads as thorium-enriched from orbit against the feldspathic highlands around it, and this paper asks what inside the basin is actually carrying that signal. Its answer is that the mare basalts are not. For this project that is the whole point: SPA's regional thorium belongs to the nonmare material lying on the basin floor, not to its lavas, which bears directly on whether the basin is a KREEP-bearing resource terrane or only looks like one from a distance.
+
+The obstacle is resolution. LP-GRS averages over roughly 80 km and the fifty-odd Imbrian-aged basalt ponds on the SPA floor are smaller than that, so no pixel is ever a pond. The authors work backwards instead. Assign a candidate thorium abundance to each mapped geological unit, forward-model the thorium map that a footprint of that size would have produced, and chi-square the synthetic map against what LP-GRS actually recorded, with Pixon deconvolution sharpening the input. A unit's best-fit abundance is the one whose synthetic map matches the observation.
+
+Run that way, the uncovered basalt exposures come out at essentially nothing — individual best fits of 0.00 ± 0.29, 0.02 ± 0.14 and 0.00 ± 0.22 ppm among others, with the fit breaking as soon as a single ppm is added. The defensible statement is *under 1 ppm* rather than any precise figure, because the model forbids negative abundances and the optima are therefore one-sided against a floor at zero. Meanwhile the basin as a whole averages 2–3 ppm with a regional high near 6 ppm in the northwest, and the local highs — about 8 ppm inside one pond scene, 4–6 ppm with 1–2 wt% TiO₂ to the northeast — sit on noritic to gabbronoritic material draped over the ponds rather than on the ponds themselves. Individual lithologic units reach 8–10 ppm. Norites and gabbronorites in the returned sample suite average 2–3 ppm, which is also the SPA floor average.
+
+On that measurement the authors build an interpretation. At least five distinct portions of the far-side mantle held little or no thorium by the Imbrian; the far-side lower crust was nonetheless intruded repeatedly by thorium-rich magma before SPA formed; and the far side did undergo enough fractional crystallization to produce a KREEP-like component, for which the ponds' high titanium is the evidence. What became of that component is the argument the paper is really making — that the SPA impact mobilised it and concentrated it on the near side, leaving far-side source regions titanium-rich and thorium-poor. The ponds' correlation with basins inside SPA is read as basin-induced decompressional melting.
+
+Three things constrain how far the result can be pushed. Everything at pond scale is inferred through the forward model rather than measured, with uncertainties around ±0.9 ppm on values near zero. The mechanism that put thorium into the noritic parent melts in the first place is left explicitly open, and the mobilisation story leans on prior work rather than on anything measured here. And SPA's ~6 ppm regional high is *below* the near-side Procellarum KREEP Terrane, so the basin is enriched against the highlands but not against the nearside — a distinction that matters to any resource claim made from the headline "SPA is thorium-rich".
 
 ## Summary
 

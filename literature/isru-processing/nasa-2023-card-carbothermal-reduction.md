@@ -10,6 +10,8 @@ Publisher URL: not printed in source.
 
 Study type: NASA internal project status slide deck (institutional gray literature, no peer review, no named authors). Institution: NASA, with project partners named on the slides: Canadian Space Agency (soil excavation), Sierra Space / Orbitec (carbothermal reactor), Physical Sciences Inc. (solar concentrator), NASA Johnson Space Center (water electrolysis, liquefaction, propulsion), and University of Texas at El Paso, UTEP (methanation, shown on the p. 1 process diagram). Publication date: 2023, per the title-slide banner ("CaRD Project Status 2023"); every slide footer, however, reads "GCD FY18 Mid Year Review," a leftover template footer that conflicts with the 2023 date. This discrepancy is reported as printed and not resolved. Open-access status: not specified; no distribution statement, author list, or DOI is printed anywhere in the deck.
 
+Source file: `card2023.pdf`
+
 ---
 
 ## Abstract

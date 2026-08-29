@@ -472,8 +472,13 @@ const REG_DEFER = {
   'REG-4': 'per-file-against-both comparison needs the loader; the sub-assertion it rests on is measured here as REG-7 (0 unresolved per file, both roots literature)',
   'REG-6': 'a census-reconciliation rule over Step 2 deliverables, not an artifact assertion; discharged for that deliverable by quoting the H row on every count line',
   'REG-9': 'the refusal path is the Step 3 classifier (3.8); nothing on disk emits axis-incomplete yet',
-  'REG-16': 'corpusDocFrequency() and confirmInText() are rebuilt at 3.7; the excision cannot be asserted against a layer that does not exist',
-  'REG-17': 'same subject as REG-16, one level up',
+  /* BLOCKERS RE-VERIFIED AT 8.5, and the old ones were stale. Both read "rebuilt at 3.7", a sub-step
+   * that closed three waves ago; a deferral whose blocker has expired is a row nobody rechecks,
+   * which is the same defect as a status cell nobody runs. Re-measured: `grep -n "excis\|Contested"
+   * oracle/retrieval/*.js oracle/router/*.js` returns 0 lines. The excision was not built at 3.7 and
+   * has not been built since, so the subject is genuinely absent and the rows survive unbound. */
+  'REG-16': 'the excision does not exist: 0 matches for /excis|Contested/ across oracle/retrieval/*.js and oracle/router/*.js as of 2026-08-29. Retrieval tokenizes the whole file including the in-file block. Owner: the retrieval seat. Close: an excision step in oracle/retrieval/literature_search.js, at which point this row binds against it',
+  'REG-17': 'same absent subject as REG-16, one level up: whether the excision is a REQUIREMENT on retrieval or a convention cannot be asserted while no excision exists to carry either status. Owner and close as REG-16',
   'REG-18': 'the misclassification detector is built at 3.8',
 };
 for (const id of Object.keys(REG_DEFER)) B[id] = () => DEFER(REG_DEFER[id]);
@@ -779,8 +784,14 @@ B['ISR-15'] = isr('^CONTROL-NO-FIGURE$');
 /* ISR-13 and ISR-14 are `H`. They are given a binding that returns DEFER rather than no binding at
  * all, because "a human gate" and "nobody bound this" print identically as UNRUN otherwise, and the
  * difference is the whole point of the H marker. */
-B['ISR-13'] = () => DEFER('H: R2 -- prefer the demonstrated figure to the modelled one -- is a judgement about which of two sources is demonstrated, not a token in a sentence. A checker that guessed at it would answer §6\'s question by inventing an answer. Owner: the sampling read at 7.4');
-B['ISR-14'] = () => DEFER('H: three facts named and three of them wrong is invisible to a membership test. The checker states this in its own LIMIT block. Owner: the sampling read at 7.4');
+/* THE TWO PERMANENT HUMAN GATES, re-stated at 8.5. Their old reason lines named "the sampling read
+ * at 7.4" as owner, and 7.4 closed; read literally that made both look like scheduled work somebody
+ * had forgotten. They are not scheduled work. Neither is decidable by any checker this project could
+ * write, which is a different fact from "not built yet" and is the reason they survive the 8.5 triage
+ * unbound while 307 other unbound rows did not. The owner is a reader, every time, and there is no
+ * close condition because there is nothing to close. */
+B['ISR-13'] = () => DEFER('H, PERMANENT: R2 -- prefer the demonstrated figure to the modelled one -- is a judgement about which of two sources is demonstrated, not a token in a sentence. A checker that guessed at it would answer §6\'s question by inventing an answer. Owner: the reading seat, every run. No close condition: this does not become mechanizable');
+B['ISR-14'] = () => DEFER('H, PERMANENT: three facts named and three of them wrong is invisible to a membership test -- the test sees three facts. The checker states this limit in its own LIMIT block rather than leaving a reader to infer it. Owner: the reading seat, every run. No close condition');
 
 /* --- INV: the Level 2 invariants the fault-injection pass now reaches ---------
  * Sub-step 5.3. Four decoys against the ASSEMBLED loop, plus the meta-row that makes the pass
@@ -880,6 +891,373 @@ function namedProof(tool, needle, label) {
 }
 B['GRD-9'] = () => namedProof('tools/verify_register.js', '^DECOY-B3-TWO-GRADES$', 'two grade tokens in one trace line, both legal, fails');
 B['CLM-7'] = () => namedProof('tools/verify_register.js', '^DECOY-B1-CLAIM-WITHOUT-TRACE$', 'a trace deleted from a real answer turns CLM-7 red');
+
+
+/* ==========================================================================================
+ * SUB-STEP 8.5 TRIAGE BINDINGS. The Fact-Checker, W5-4, 2026-08-28.
+ *
+ * THE RULING THIS BLOCK EXECUTES. The suite held 455 rows and 348 of them had no binding at all:
+ * sentences with a status cell beside them, which the runner had been reporting as UNRUN on every
+ * run for four waves. The author: "probably shitcan this eh?" 307 rows were deleted. The 45 below
+ * are the ones that turned out to be measurable against something already on disk -- a `--prove`
+ * mode a tool already had, a closed set a contract already states, a file property already true or
+ * already false. None of them is a new mechanism. Every one of them is five to ten lines, which is
+ * the test of whether a row was worth keeping: a row needing a framework to bind was a row nobody
+ * was ever going to bind.
+ *
+ * WHAT THE BINDINGS ARE NOT. They do not restate the row in code. Where a row asserted something
+ * over "every produced answer" and no produced answers exist, the row was deleted rather than bound
+ * to a weaker proxy -- a binding that measures something adjacent to the row is worse than no
+ * binding, because UNRUN is at least honest.
+ * ========================================================================================== */
+
+/* --- VER: the contract version, and the field has now caught three drifts ------------------ */
+const CONTRACT = 'oracle/answer_contract.md';
+const contractText = () => fs.readFileSync(R(CONTRACT), 'utf8');
+// The integer, read at test time, never copied into this file.
+const contractVersion = t => ((t || contractText()).match(/^\*\*Contract version: *([^*]+?)\.?\*\*/m) || [])[1];
+// The suite's own pin, read out of the suite text the runner already loaded.
+const suitePin = s => ((s.text || '').match(/Written against answer contract version *([0-9]+)/) || [])[1];
+
+B['VER-1'] = () => {
+  const v = contractVersion();
+  if (v === undefined) return FAIL(`${CONTRACT} states no \`**Contract version: N.**\` line`);
+  return /^[0-9]+$/.test(v) ? PASS(`contract version "${v}", a bare monotone integer`)
+    : FAIL(`contract version "${v}" is not \`^[0-9]+$\`; semantic versioning implies compatibility semantics nobody will maintain`);
+};
+B['VER-2'] = (s) => {
+  const c = contractVersion(), p = suitePin(s);
+  if (p === undefined) return FAIL('this suite states no pinned contract version');
+  return c === p ? PASS(`suite pins ${p}, contract reads ${c}`)
+    : FAIL(`suite pins ${p}, contract reads ${c}. THE FIELD IS WORKING: a red here is the report, not the defect. ` +
+      `The defect is that ${CONTRACT} moved and this file's assertions were not re-read against it. ` +
+      `Owner: the seat landing the version-${c} reconciliation. Close: re-read, then re-pin.`);
+};
+B['VER-3'] = () => {
+  /* The tripwire, proved in memory and independently of what this suite currently pins. Take the
+   * contract's own integer as a synthetic pin -- so the comparator starts agreeing -- then increment
+   * the integer in the contract text and require the comparator to disagree. A green comparator
+   * after the mutation means the field is decoration and VER-1..3 are deleted along with it. */
+  const t = contractText(), v = contractVersion(t);
+  if (v === undefined) return FAIL('no version line to mutate');
+  const mutated = t.replace(/^(\*\*Contract version: *)([0-9]+)(\.?\*\*)/m, (_, a, n, b) => a + (Number(n) + 1) + b);
+  if (mutated === t) return FAIL('DECOY DID NOT APPLY: the version line did not change under mutation');
+  const agreesBefore = contractVersion(t) === v, agreesAfter = contractVersion(mutated) === v;
+  return (agreesBefore && !agreesAfter)
+    ? PASS(`decoy applied (${v} -> ${contractVersion(mutated)}); a pin of ${v} agrees before and disagrees after`)
+    : FAIL(`the tripwire does not fire: agreesBefore=${agreesBefore} agreesAfter=${agreesAfter}`);
+};
+
+/* --- GRD: the six blacklisted grade words, one decoy each, in verify_register --------------- */
+for (const [id, word] of [['GRD-3', 'VERIFIED'], ['GRD-4', 'CONFIRMED'], ['GRD-5', 'VALIDATED'],
+['GRD-6', 'PROVEN'], ['GRD-7', 'ESTABLISHED'], ['GRD-8', 'SUPPORTED']])
+  B[id] = () => namedProof('tools/verify_register.js', '^DECOY-B3-' + word + '$',
+    `"${word.toLowerCase()}" on a real trace line is a FAIL, not a warning`);
+/* GRD-10 is the false-positive gate and it is bound to the CONTROL, not to a decoy. The hazard is
+ * that `recompute-verified` CONTAINS `verified`, so a substring scan reds a legal answer. The proof
+ * that the matcher is word-boundary is that a real APP answer carrying `recompute-verified` passes
+ * B3 -- a decoy cannot show this, only a control can. A blacklist that trips on its own legal token
+ * is switched off within a week, and a check that gets switched off is worse than no check. */
+B['GRD-10'] = () => namedProof('tools/verify_register.js', '^CONTROL-APP$',
+  '`recompute-verified` on a real produced answer does not trip the `verified` blacklist');
+
+/* --- CLM: claim-bearing, bound to verify_register's own proofs ------------------------------ */
+B['CLM-3'] = () => namedProof('tools/verify_register.js', '^CLAIM-BEARING-READS-THE-APP$',
+  'a sentence naming an app coefficient is claim-bearing because the app names it');
+B['CLM-4'] = () => namedProof('tools/verify_register.js', '^CLAIM-BEARING-NAMED-SOURCE$',
+  'a sentence naming a REFERENCES author is claim-bearing');
+B['CLM-5'] = () => namedProof('tools/verify_register.js', '^LISTS-FROM-THE-APP$',
+  'the coefficient and named-source lists are read out of lsei/index.html at run time, not typed into the checker');
+B['CLM-9'] = () => namedProof('tools/verify_register.js', '^DECOY-B1-ALL-EXEMPT$',
+  'a deliverable that exempts every claim-bearing unit fails rather than passes');
+B['CLM-14'] = () => {
+  // A post-condition, and the cheapest real check in the suite: the replaced tool is gone.
+  const hits = sh('git ls-files "*verify_report.js"').out.split('\n').filter(Boolean)
+    .concat(fs.existsSync(R('tools/verify_report.js')) ? ['tools/verify_report.js (untracked)'] : []);
+  return hits.length ? FAIL(`verify_report.js is still in the tree: ${[...new Set(hits)].join(' ')}`)
+    : PASS('verify_report.js is absent from the tree, tracked and untracked');
+};
+
+/* --- LOG: the run log, bound to verify_answers' own proofs ---------------------------------- */
+B['LOG-3'] = () => namedProof('tools/verify_answers.js', '^ALL-SIX-COUNTED$',
+  'each of the six outcomes lands in its own bucket and in no other');
+B['LOG-7'] = () => namedProof('tools/verify_answers.js', '^REFUSED-NOT-ABSORBED$',
+  'a REFUSE verdict logged ANSWERED is caught, not silently counted as an answer');
+B['LOG-19'] = () => namedProof('tools/verify_answers.js', '^DELIVERABLE-PATH-REQUIRED$',
+  'a row with no deliverable path is a row nobody can sample');
+B['LOG-22'] = () => namedProof('tools/verify_answers.js', '^PROPORTION-WITH-DENOMINATORS$',
+  'all three sampling denominators are computable from the two columns alone');
+B['LOG-23'] = () => namedProof('tools/verify_answers.js', '^UNRECOGNISED-IS-A-FINDING$',
+  'an outcome, review or verdict outside its closed set is a finding, never a silent skip');
+
+/* --- FIL: the haiku half of the deliverable, bound to verify_haiku's own proofs ------------- */
+B['FIL-10'] = () => namedProof('tools/verify_haiku.js', '^DECOY-A3-',
+  'A3 fires on each of the seven claim shapes and names the rule it fired on');
+B['FIL-11'] = () => namedProof('tools/verify_haiku.js', '^DECOY-NEWLINE$|^DECOY-A2-NOT-575$',
+  'a line break fails A1 and a haiku with no 5/7/5 partition fails A2');
+B['FIL-12'] = () => namedProof('tools/verify_haiku.js', '^UNCERTIFIED-IS-NOT-(PASS|FAIL)$',
+  'a word outside the dictionary is a refusal to certify -- neither a pass nor a failure');
+
+/* --- VRD and REF: the two closed sets, read from the router, compared to the contract -------- */
+const routerConst = () => {
+  const f = R('oracle/router/classify.js');
+  if (!fs.existsSync(f)) return null;
+  const t = fs.readFileSync(f, 'utf8');
+  const grab = n => { const m = t.match(new RegExp('const ' + n + " = \\[([^\\]]*)\\]")); return m ? m[1].match(/'([^']+)'/g).map(x => x.slice(1, -1)) : null; };
+  return { VERDICTS: grab('VERDICTS'), REASON_CODES: grab('REASON_CODES'), text: t };
+};
+B['VRD-1'] = () => {
+  const rc = routerConst();
+  if (!rc || !rc.VERDICTS) return FAIL('oracle/router/classify.js declares no VERDICTS array');
+  const want = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
+  const c = contractText();
+  const missing = want.filter(v => !new RegExp('`' + v + '`').test(c));
+  const extra = rc.VERDICTS.filter(v => !want.includes(v)), absent = want.filter(v => !rc.VERDICTS.includes(v));
+  if (extra.length || absent.length) return FAIL(`the router's closed set is not the six: extra [${extra}] absent [${absent}]`);
+  if (missing.length) return FAIL(`the contract does not name ${missing.join(' ')}; the router and the contract disagree on the set`);
+  return PASS(`exactly six, closed, and all six named in ${CONTRACT}: ${rc.VERDICTS.join(' ')}`);
+};
+B['VRD-11'] = () => {
+  /* A seventh verdict parked in a corner is how a closed set stops being closed. Asserted over CODE
+   * only -- prose naming the token as excluded is the record of the 1.3 cut, not a member -- and
+   * over code that is NOT THIS FILE. The first version of this binding searched for the token in a
+   * string it was itself holding and reported its own source as the defect, which is the CHK-03
+   * shape one layer in: a check whose only finding is itself. */
+  const self = 'oracle/tests/run_suite.js';
+  const r = sh('git grep -In "APP_UNBUILDABLE" -- "oracle/**/*.js" "oracle/**/*.json" "tools/**/*.js"');
+  const live = r.out.split(String.fromCharCode(10)).filter(Boolean).filter(l => !l.startsWith(self + ':'));
+  return live.length ? FAIL(`APP_UNBUILDABLE appears in ${live.length} code location(s) outside this checker: ${live[0].slice(0, 140)}`)
+    : PASS('APP_UNBUILDABLE appears in no .js or .json under oracle/ or tools/ (this checker excluded); the condition produces REFUSE with reason unbuildable');
+};
+
+B['REF-1'] = () => {
+  /* CLM-5's lesson applied to this row: the expected set is READ OUT OF THE CONTRACT at test time,
+   * never typed here. A checker holding its own copy of a closed set cannot detect the set moving,
+   * which is the only thing this row is for. */
+  const rc = routerConst();
+  if (!rc || !rc.REASON_CODES) return FAIL('oracle/router/classify.js declares no REASON_CODES array');
+  const c = contractText();
+  const sec = c.slice(c.indexOf(String.fromCharCode(10) + '## 5. Refusals'));
+  const table = sec.slice(0, sec.indexOf(String.fromCharCode(10) + '## 6.'));
+  const fromContract = [...table.matchAll(/^\| `([a-z-]+)` \|/gm)].map(m => m[1]);
+  if (!fromContract.length) return FAIL('the contract sec.5 table yields no reason codes; the table shape moved and this row cannot read it');
+  const declared = (table.match(/closed set of ([a-z]+)/) || [])[1];
+  const extra = rc.REASON_CODES.filter(v => !fromContract.includes(v));
+  const absent = fromContract.filter(v => !rc.REASON_CODES.includes(v));
+  if (!extra.length && !absent.length)
+    return PASS(`exactly ${fromContract.length}, closed, and the router's set is the contract's set: ${fromContract.join(' ')}`);
+  return FAIL(`THE SET IS NOT CLOSED. oracle/router/classify.js declares ${rc.REASON_CODES.length} reason codes; ` +
+    `${CONTRACT} sec.5 tables ${fromContract.length} and its prose says "closed set of ${declared}". ` +
+    `In the router and not in the contract: [${extra.join(' ')}]. In the contract and not in the router: [${absent.join(' ')}]. ` +
+    `A code ruled into the router without a contract row is a seventh member of a set the contract still calls six, ` +
+    `and every consumer that trusts the contract's arity is wrong by one. Owner: the seat that ruled the extra code in. ` +
+    `Close: the contract's sec.5 table and its stated arity name every code the router can emit.`);
+};
+
+/* --- CON and PDF: containment, bound to check_no_sources' own runnable probe ---------------- */
+const NO_SRC = 'tools/check_no_sources.js';
+const ignoreProbe = () => sh(`node ${NO_SRC} --ignore-probe`);
+B['CON-1'] = () => {
+  const r = ignoreProbe();
+  const size = (r.out.match(/probe set size=([0-9]+) open=([0-9]+)/) || []);
+  if (!size.length) return FAIL(`${NO_SRC} --ignore-probe printed no probe-set line; the probe is a measurement, not a fixture`);
+  if (r.code !== 0) return FAIL(`the probe fixture exits ${r.code}: open=${size[2]} of ${size[1]}`);
+  // A SHRINKING probe set is the failure. 25 is the set as landed; fewer is a silent narrowing.
+  return Number(size[1]) < 25 ? FAIL(`probe set has shrunk to ${size[1]} paths (was 25); the remaining paths all passing is not evidence`)
+    : PASS(`fixture runs: ${size[1]} probe paths, ${size[2]} open, exit 0 -- and it prints the set it used`);
+};
+B['CON-3'] = () => {
+  // The fixtures must never touch the real tree: every probe path is hypothetical.
+  const paths = [...ignoreProbe().out.matchAll(/^CHK-37 \[[^\]]+\] [0-9]+ probe paths: (.*)$/gm)]
+    .flatMap(m => m[1].trim().split(/ +/));
+  if (!paths.length) return FAIL('the probe printed no paths to check against the tree');
+  const real = paths.filter(p => fs.existsSync(R(p)));
+  return real.length ? FAIL(`${real.length} probe path(s) EXIST on disk: ${real.join(' ')} -- the fixture is reading the real tree`)
+    : PASS(`all ${paths.length} probe paths are hypothetical; none exists on disk`);
+};
+B['CON-4'] = () => {
+  // Wired, not merely committed. A hook committed non-executable is inert on a fresh clone, which
+  // is CLAUDE.md's BC-8 and is the reason this asserts the index mode and not just the file.
+  const hp = sh('git config --get core.hooksPath').out.trim();
+  if (hp !== 'tools/githooks') return FAIL(`core.hooksPath is "${hp || 'unset'}", not tools/githooks: the hooks are committed and not wired`);
+  const ls = sh('git ls-files -s tools/githooks/').out.split('\n').filter(Boolean);
+  if (!ls.length) return FAIL('tools/githooks/ holds no tracked hook');
+  const inert = ls.filter(l => !/^100755/.test(l));
+  return inert.length ? FAIL(`${inert.length} hook(s) committed non-executable and inert on a fresh clone: ${inert.map(l => l.split('\t')[1]).join(' ')}`)
+    : PASS(`core.hooksPath=tools/githooks; ${ls.length} hook(s), all mode 100755`);
+};
+/* PDF-4 CLOSED. The old note here said there was no binding because PDF-4 does not claim `.txt` is
+ * gitignored -- it claims the CONTAINMENT CHECK covers it. That is now a printed line rather than an
+ * inference: --ignore-probe names the blocked-but-not-ignored set explicitly, so the asymmetry can
+ * be asserted instead of argued. */
+B['PDF-4'] = () => {
+  const line = (ignoreProbe().out.match(/^CHK-37 blocked-but-not-ignored.*$/m) || [])[0];
+  if (!line) return FAIL('the probe does not name its blocked-but-not-ignored set; the .txt asymmetry is inferable only');
+  return /\.txt\b/.test(line) ? PASS('`.txt` is named as an EXTENSION-gate finding, not an ignore rule: ' + line.replace(/^CHK-37 /, '').slice(0, 90))
+    : FAIL('`.txt` is not in the blocked-but-not-ignored set; full-text .txt is uncontained: ' + line.slice(0, 120));
+};
+B['PDF-8'] = () => {
+  const t = sh(`node ${NO_SRC} --tree`), st = sh(`node ${NO_SRC} --staged`);
+  const g = o => (o.match(/scope=(\w+) files_scanned=([0-9]+)/) || []);
+  const a = g(t.out), b = g(st.out);
+  if (!a.length || !b.length) return FAIL('the checker does not print its scope and its file count; a report that does not say what it walked is not evidence');
+  if (a[1] !== 'tree' || b[1] !== 'staged') return FAIL(`the printed scopes are ${a[1]}/${b[1]}, not tree/staged`);
+  return PASS(`both scopes reported and distinguished: tree=${a[2]} files, staged=${b[2]} files`);
+};
+B['PDF-16'] = () => {
+  /* VACUOUS IS NOT PASS, one layer down. An empty stage must SAY it was empty. check_no_sources has
+   * two report branches and the empty one does not print a findings count, so this reads BOTH: the
+   * scope-and-count line, and the explicit statement that scanning nothing asserts nothing. */
+  const r = sh(`node ${NO_SRC} --staged`);
+  const m = r.out.match(/scope=staged files_scanned=([0-9]+)/);
+  if (!m) return FAIL('an empty stage exits 0 and prints no scope or count: a pass it did not earn');
+  if (Number(m[1]) > 0) return PASS(`${m[1]} staged file(s) scanned and reported; the empty branch is not the one exercised today`);
+  const says = /SCANNED NOTHING/.test(r.out) && /nothing is asserted/i.test(r.out);
+  return says ? PASS('files_scanned=0 and the checker says so in words: "SCANNED NOTHING ... nothing was examined, so nothing is asserted"')
+    : FAIL('files_scanned=0 and the checker exits 0 without saying it examined nothing; an empty list reads as a clean one');
+};
+
+/* --- PTH: the path-length ceilings, over the landed corpus ---------------------------------- */
+/* Measured, not remembered. `NAMING.md` sec.8 sets 108 / 64 / 32 and depth 1; a ceiling recorded in a
+ * status cell decays, and this project has already shipped one that did. The separator is a
+ * BACKSLASH because the ceiling exists for Windows, which is the platform it binds on. */
+const CEIL = { repo: 108, leaf: 64, folder: 32 };
+const corpusRel = () => corpusFiles().map(p => path.relative(ROOT, p).replace(/\//g, '\\'));
+const pthGuard = fn => () => { const f = corpusRel(); return f.length ? fn(f) : VAC(`${TREE}/ holds 0 .md files; there is no path to measure`); };
+B['PTH-1'] = pthGuard(f => {
+  const over = f.filter(p => p.length > CEIL.repo).sort((a, b) => b.length - a.length);
+  const mx = Math.max(...f.map(p => p.length));
+  return over.length ? FAIL(`${over.length} of ${f.length} repo-relative paths exceed ${CEIL.repo}: ${over[0]} (${over[0].length})`)
+    : PASS(`${f.length} paths, longest ${mx}, ceiling ${CEIL.repo}`);
+});
+B['PTH-3'] = pthGuard(f => {
+  const leaves = f.map(p => p.split('\\').pop());
+  const over = leaves.filter(l => l.length > CEIL.leaf).sort((a, b) => b.length - a.length);
+  return over.length ? FAIL(`${over.length} leaf name(s) exceed ${CEIL.leaf}: ${over.map(l => l + ' (' + l.length + ')').join(' ; ')}`)
+    : PASS(`${leaves.length} leaves, longest ${Math.max(...leaves.map(l => l.length))}, ceiling ${CEIL.leaf}`);
+});
+B['PTH-4'] = pthGuard(f => {
+  const folders = [...new Set(f.map(p => p.split('\\')[1]))];
+  const over = folders.filter(d => d.length > CEIL.folder).sort((a, b) => b.length - a.length);
+  return over.length ? FAIL(`${over.length} of ${folders.length} folder name(s) exceed ${CEIL.folder}: ${over.map(d => d + ' (' + d.length + ')').join(' ; ')}`)
+    : PASS(`${folders.length} folders, longest ${Math.max(...folders.map(d => d.length))}, ceiling ${CEIL.folder}`);
+});
+B['PTH-5'] = pthGuard(f => {
+  const bad = f.filter(p => p.split('\\').length !== 3);
+  return bad.length ? FAIL(`${bad.length} file(s) are not at literature/<folder>/<leaf>: ${bad.slice(0, 3).join(' ')}`)
+    : PASS(`all ${f.length} files at depth exactly 1 below ${TREE}/`);
+});
+B['PTH-11'] = pthGuard(f => {
+  // A margin, reported. The row asks for the worst case WITH its margin, because a ceiling that is
+  // met exactly reads the same as one met with room, and only one of the two survives a rename.
+  const worst = f.slice().sort((a, b) => b.length - a.length)[0];
+  return PASS(`worst-case landed path ${worst.length} chars, ceiling ${CEIL.repo}, margin ${CEIL.repo - worst.length}: ${worst}`);
+});
+
+/* --- CRP: corpus-level invariants ----------------------------------------------------------- */
+B['CRP-1'] = () => {
+  const r = sh('node tools/check_corpus_collisions.js');
+  const m = r.out.match(/([0-9]+) collisions, ([0-9]+) near-twins/);
+  const walked = (r.out.match(/walked ([0-9]+) files/) || [])[1];
+  if (!m) return FAIL('tools/check_corpus_collisions.js printed no collision count: ' + r.out.trim().slice(0, 120));
+  if (!Number(walked)) return VAC(`the collision checker walked 0 files; CHK-01 over an empty tree is vacuously true`);
+  return r.code === 0 && m[1] === '0' ? PASS(`CHK-01 over the merged tree: ${m[1]} collisions, ${m[2]} near-twins, ${walked} files walked`)
+    : FAIL(`${m[1]} collisions, ${m[2]} near-twins over ${walked} files (exit ${r.code})`);
+};
+B['CRP-7'] = () => {
+  // A case-INSENSITIVE check is not sufficient, and this is that claim made runnable: two paths
+  // differing only by case are one file on Windows and two on Linux, so the corpus size would
+  // depend on the filesystem. Asserted over the real tree, where it must never be able to arise.
+  const f = corpusFiles().map(p => path.relative(ROOT, p).replace(/\\/g, '/'));
+  if (!f.length) return VAC(`${TREE}/ holds 0 .md files`);
+  const seen = new Map(), bad = [];
+  for (const p of f) { const k = p.toLowerCase(); if (seen.has(k) && seen.get(k) !== p) bad.push(`${seen.get(k)} <-> ${p}`); seen.set(k, p); }
+  return bad.length ? FAIL(`${bad.length} path pair(s) differ only by case; the corpus size depends on the filesystem: ${bad.join(' ; ')}`)
+    : PASS(`${f.length} paths, ${seen.size} distinct case-folded; the file count is the same on a case-insensitive filesystem`);
+};
+B['CRP-11'] = () => {
+  /* THE LINE-ENDING FAMILY, kept because it has bitten this project by name. A CRLF diff read as a
+   * content disagreement produced a false "these two files disagree" once already, which is why
+   * MRG-4b reports eol separately. Proved here as a differential rather than asserted: take a real
+   * landed file, build its CRLF twin, and require that the comparator the merge uses calls them
+   * BYTE-different and CONTENT-identical. A comparator that folds the two cannot show both. */
+  const f = corpusFiles();
+  if (!f.length) return VAC(`${TREE}/ holds 0 .md files; there is nothing to compare`);
+  const a = fs.readFileSync(f[0], 'utf8').replace(/\r\n/g, '\n');
+  const twin = a.replace(/\n/g, '\r\n');
+  if (twin === a) return VAC(`${path.basename(f[0])} holds no newline; the CRLF twin is the same bytes`);
+  const contentSame = nz(a) === nz(twin), bytesDiffer = a !== twin;
+  const crlfInTree = f.filter(p => fs.readFileSync(p, 'utf8').includes('\r\n')).length;
+  return (contentSame && bytesDiffer)
+    ? PASS(`byte-different (${twin.length - a.length} bytes) and content-identical under the merge's own normalizer; ${crlfInTree} of ${f.length} landed files carry CRLF`)
+    : FAIL(`the comparator folds line-ending difference into content difference: bytesDiffer=${bytesDiffer} contentSame=${contentSame}`);
+};
+
+/* --- REG-1: the deferral was stale. The loader exists, so the row runs. --------------------- */
+/* Its reason read "the loader that takes a list of register paths is Step 3 (3.8)". Step 3 closed.
+ * `oracle/router/classify.js` exports `loadContext`, and the assertion the row makes -- that the
+ * sidecar is a SET of files rather than one file -- is now measurable. A deferral outliving its
+ * blocker is a row nobody rechecks, which is the same defect as a status cell nobody runs. */
+B['REG-1'] = () => {
+  const f = R('oracle/router/classify.js');
+  if (!fs.existsSync(f)) return DEFER('oracle/router/classify.js is not in this tree. Owner: the router seat');
+  const present = REGS.filter(p => fs.existsSync(R(p)));
+  if (present.length < 2) return VAC(`${2 - present.length} of the 2 register files are absent; a set assertion over one file has no subject`);
+  let C, ctx;
+  try { C = require(f); ctx = C.loadContext({}); } catch (e) { return FAIL('loadContext threw: ' + e.message); }
+  if (ctx.refuse) return FAIL('loadContext refused: ' + JSON.stringify(ctx.refuse).slice(0, 160));
+  const perFile = REGS.map(p => ({ p, n: (fs.readFileSync(R(p), 'utf8').match(/^A\t/gm) || []).length }));
+  const declared = perFile.reduce((a, b) => a + b.n, 0), loaded = ctx.axes.size;
+  const shape = perFile.map(x => path.basename(x.p) + '=' + x.n).join(' + ');
+  return loaded === declared && perFile.every(x => x.n > 0)
+    ? PASS(`the sidecar loads as a SET: ${shape} = ${loaded} axes, joined at load from ${present.length} files`)
+    : FAIL(`${loaded} axes loaded against ${declared} declared (${shape}); a half-loaded set is a refusal, not a set`);
+};
+
+/* --- INV: the two meta-invariants that are about THIS RUNNER and about the clone ------------ */
+B['INV-12'] = () => {
+  /* No test passes on an empty population -- asserted against the runner itself, because the
+   * runner is the only thing that can make this true or false for every other row. Three
+   * properties: VACUOUS maps to UNRUN, DEFER maps to UNRUN, and the summary prints the
+   * no-binding count so it cannot be lost. Delete any one and the suite silently reads green. */
+  const t = fs.readFileSync(__filename, 'utf8');
+  const need = [
+    ["VACUOUS folds to UNRUN", /res\.v === 'VACUOUS' \|\| res\.v === 'DEFER'\) \? 'UNRUN'/],
+    ["UNRUN IS NOT PASS is printed", /UNRUN IS NOT PASS/],
+    ["the no-binding count is printed", /with no binding at all/],
+    ["an absent binding returns UNRUN, never PASS", /if \(!b\) return \{ v: 'UNRUN'/],
+  ];
+  const gone = need.filter(([, re]) => !re.test(t)).map(([n]) => n);
+  return gone.length ? FAIL(`the runner has lost ${gone.length} of its 4 empty-population guards: ${gone.join('; ')}`)
+    : PASS('all 4 guards present: VACUOUS->UNRUN, DEFER->UNRUN, no-binding->UNRUN, and the count is printed every run');
+};
+B['INV-13'] = () => {
+  /* A fresh clone must carry the machine-readable inputs. Every one of these is CONTENT that a
+   * path check passes against while the content is absent, so each is asserted TRACKED BY GIT and
+   * NON-EMPTY -- an untracked file is present for the author and gone for the reader, which is the
+   * difference this row exists to catch. */
+  const need = ['literature/FIELDS.tsv', 'literature/INDEX.tsv',
+    'oracle/REGISTER.lunar.tsv', 'oracle/REGISTER.econ.tsv', 'oracle/question_classes.json'];
+  const tracked = new Set(sh('git ls-files').out.split('\n').map(s => s.trim()).filter(Boolean));
+  const bad = need.filter(p => !tracked.has(p) || !fs.existsSync(R(p)) || fs.statSync(R(p)).size === 0);
+  return bad.length ? FAIL(`${bad.length} machine-readable input(s) absent, untracked or empty and so missing from a fresh clone: ${bad.join(' ')}`)
+    : PASS(`all ${need.length} machine-readable inputs are tracked and non-empty`);
+};
+
+/* --- MUT-1, MUT-6, SLT-5: the suite's own meta-tests, which structural() already computed ---- */
+/* These three were UNRUN while the runner was computing them on every run and printing them as
+ * `[structural]` lines. The results existed and the rows were not being credited with them, so the
+ * suite reported three of its own meta-tests as unmechanized while they were mechanized. Bound to
+ * the same function, so there is one implementation and not two. */
+const fromStructural = (tag, alt) => (s) => {
+  const re = new RegExp('^' + tag + '\\b' + (alt ? '|' + alt : ''));
+  const hit = structural(s).find(r => re.test(r.m));
+  return hit ? (hit.v === 'PASS' ? PASS(hit.m) : hit.v === 'FAIL' ? FAIL(hit.m) : VAC(hit.m))
+    : FAIL(`structural() computed no ${tag} result for ${path.basename(s.file)}`);
+};
+B['MUT-1'] = fromStructural('MUT-1');
+B['MUT-6'] = fromStructural('MUT-6');
+B['SLT-5'] = fromStructural('SLT-5', 'declares no test count');
 
 /* ---------------------------------------------------------------- the run */
 function runOne(row, suite) {

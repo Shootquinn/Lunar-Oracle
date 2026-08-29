@@ -18,6 +18,8 @@ Publisher URL: https://ntrs.nasa.gov/citations/20230008775
 | Figures / tables | 31 figures, 23 tables (per extraction manifest) |
 | Open access | Yes, NASA NTRS |
 
+Source file: `metzger_aquafactorem2021.pdf`
+
 ---
 
 ## Abstract

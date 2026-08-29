@@ -3,21 +3,38 @@
 
 **Written against answer contract version 2.** Levels 1, 2 and the two Step 4 amendments.
 **Register fixtures landed at 4.1 (LOOP-7) as section 15, and the three-named-facts assertion landed
-at 4.7 (LUNAR-6) as section 16.** All fourteen `[4.1]` attachment points in the tables below are
-resolved: thirteen to `green`, and **LIM-10 to `RED`** — the one-side disclosure is a fixed text that
-the closed list of permitted self-statements has never ratified, and a status assigned before the
-ratification is the FIX-9/FIX-10 defect a third time.
+at 4.7 (LUNAR-6) as section 16.**
 
-**266 tests**, of which 84 are generated (RG 13 + RV 36 + RFX 35) and 182 are hand-authored.
-Counting rule, unchanged from version 1 except that the id pattern now admits a four-letter prefix:
-rows in the sixteen tables below whose first cell matches `^[A-Z]{2,4}-[0-9]+$`. Per group: VER 3,
-ORG 11, RG 13, RV 36, GRD 10, TRC 12, LIM 11, VRD 13, REF 20, FIL 14, CLM 14, LOG 25, INV 15,
-FIX 19, RFX 35, ISR 15. The figures were counted by running the counting rule over this file, not by
-adding up a delta.
+**VER-2 is red as this file stands, and it is right.** The pin above reads 2; `oracle/answer_contract.md`
+reads **3** after The Writer's sub-step 8.4 landing. VER-2 is now bound and reports that difference on
+every run instead of stating it in prose. Re-pinning is the reconciliation pass §9 demands — a read of
+what version 3 changed against what this file asserts — and it is not a one-character edit, so it is
+not made here. **Owner: the seat that lands the version-3 reconciliation. Close: VER-2 green.**
 
-**RFX is generated the way RG and RV are, and from the same kind of source.** RG and RV are emitted
-from the contract's own Rule G and Rule V tables; RFX is emitted from the two register files. None of
-the three is transcribed, and a contract or register edit that changes them changes the suite.
+**91 tests**, of which 35 are generated (RFX 35) and 56 are hand-authored. Counting rule, unchanged
+from version 1 except that the id pattern now admits a four-letter prefix: rows in the ten tables
+below whose first cell matches `^[A-Z]{2,4}-[0-9]+$`. Per group: VER 3, GRD 8, VRD 2, REF 1, FIL 3,
+CLM 6, LOG 11, INV 7, RFX 35, ISR 15. The figures were counted by running the counting rule over this
+file, not by adding up a delta.
+
+**THE SUITE WAS 266 ROWS AND 175 OF THEM ASSERTED NOTHING. Triage at Wave 5, sub-step 8.5, on the
+author's ruling.** Every row below is now executed by `oracle/tests/run_suite.js`. Sections 2 (ORG),
+3 (RG), 4 (RV), 6 (TRC), 7 (LIM) and 14 (FIX) are gone entirely and their numbers are **not reused**.
+The record of what went and why is `cr_scratch/step8_w5-4_suite_triage.md`.
+
+**RG and RV said "Generated." and there was no generator.** Forty-nine rows across two sections
+declared themselves emitted by `oracle/tests/gen_matrix.js` from the contract's own Rule G and Rule V
+tables. **That file has never existed in this repository.** The forty-nine cells were transcribed by
+hand out of `oracle/answer_contract.md` §3 and then labelled as machine output — which is the exact
+failure RV-37 was written to catch, committed by the section RV-37 lived in. A hand copy of a
+contract's table is not a test of anything: the contract already says what it says, and the copy can
+only drift from it. Rule V's real enforcement is `oracle/router/classify.js`'s `assertVerdict()`
+against a closed `VERDICTS` set, exercised over 124 questions by `oracle/router/acceptance.js`, and
+that runs. VRD-1 below now asserts the closed set directly, from the router, in one row.
+
+**RFX stays and is the only generated section left.** It is emitted from the two register files, one
+row per axis, and a register edit changes it. That was always true of RFX and was never true of RG
+or RV.
 
 **Version 2 reconciliation, landed at the Step 1 close as revision item R-3.** The version field did
 what it was built to do: it caught this suite disagreeing with its contract before any code existed,
@@ -28,12 +45,15 @@ moved: the RV matrix's shape and three cells; the `CONTESTED` persona arity; `on
 two fixtures that were carried green and were failing their own stated invariants; and every close
 condition in the file, re-aimed at an observation.
 
-**Two fixtures moved from `green` to `RED` and that is the most important line in this file.** FIX-9
-and FIX-10 were both marked green against a prototype that fails them. A fixture marked green is a
-claim that the suite has looked; these two had not been run, and when The Fact-Checker ran them at
-the Wave 2 gate both came back wrong — one `CONTRADICTED` on its source, one `VERIFIED` and worse
-than its author wrote it. **Status is an assertion, not a hope**, and a fixture whose status was
-assigned before the run is the same defect as a check that cannot fail.
+**The lesson the deleted FIX section paid for, kept because the section is gone.** FIX-9 and FIX-10
+were carried `green` against a prototype that failed them; when they were finally run at the Wave 2
+gate both came back wrong — one `CONTRADICTED` on its source, one `VERIFIED` and worse than its
+author wrote it. **Status is an assertion, not a hope**, and a status assigned before the run is the
+same defect as a check that cannot fail. Section 14 held nineteen such fixtures and none of them was
+ever run by anything; the whole section is the FIX-9 defect at scale, which is why it went rather
+than being re-statused. The questions themselves survive as executable work in
+`oracle/router/acceptance.js`, which puts 124 questions through the loop and returns one verdict each
+from the closed six.
 
 ## 0. How to read this suite
 
@@ -66,119 +86,10 @@ and the field is deleted with it.
 | VER-2 | The suite's pinned version equals the contract's | This file declares `CONTRACT_VERSION_UNDER_TEST = 2` and it equals VER-1's value. It read 1 against a contract reading 2 for the whole of Wave 2, which is the field working rather than the field failing — the red was the report | green |
 | VER-3 | DECOY: the version tripwire fires | Increment the integer in the contract without touching this file; VER-2 must go red. A green VER-2 after the mutation means the field is decoration and VER-1..3 are deleted along with it | green |
 
-## 2. ORG — the origin field
-
-`origin` is a closed set of four and is a **function of the locator**, not a judgement. The mapping,
-frozen by 1.7's two namespaces: an app slug or app-internal reference → `app`; a path under
-`literature/<folder>/` whose leaf matches `R_S` → `literature`; a path under `findings/` whose leaf
-matches `R_F` → `findings`; no locator → `none`.
-
-| ID | What is tested | Pass criterion | Status |
-|---|---|---|---|
-| ORG-1 | An app scalar slug computes `app` | `model:<scenario>\|<phase>\|<output>` and its knob-bearing form → `app` | green |
-| ORG-2 | An app prose locator computes `app` | `KNOB_DATA.SLUGS[...]`, `SECTION_REFS[...] -> REFERENCES[...]` → `app` | green |
-| ORG-3 | A summary path computes `literature` | `literature/<folder>/<leaf>` with `R_S`-matching leaf → `literature` | green |
-| ORG-4 | A findings path computes `findings` | `findings/<leaf>` with `R_F`-matching leaf → `findings` | green |
-| ORG-5 | An absent locator computes `none` | Empty or absent locator → `none`, and `none` co-occurs only with grade `refused` | green |
-| ORG-6 | Totality | Over every locator emitted across the whole fixture set, the count of locators computing to no origin is zero | green |
-| ORG-7 | Disjointness | No locator computes two origins. Asserted from `R_S ∩ R_F = ∅` (1.7 §2) plus directory disjointness, over the whole corpus listing | green |
-| ORG-8 | Written origin equals computed origin | On every trace line of every produced answer, the third slot equals the origin computed from the locator | green |
-| ORG-9 | **DECOY, highest value in the suite** | Take a real `LITERATURE` answer off disk, change one `literature` token to `app`, assert ORG-8 goes red. A green here voids the origin mechanism and everything built on it | green |
-| ORG-10 | A findings file cannot sit on the summary shelf | A `findings/` file copied into `literature/` would compute `literature` from its path while matching `R_F` on its leaf. Assert the merge rejects it (1.7 §11) so the case cannot arise. If that merge check is absent, ORG-10 is red | green |
-| ORG-11 | An unclassifiable locator is a hard failure | A path in neither namespace (`_intake/...`, an absolute path, a URL) fails the run. It never falls through to `literature`. A hole in a closed set is where the next exception gets parked | green |
-
-## 3. RG — Rule G, grade by origin. **Generated.**
-
-Twelve cells, five legal, produced by `oracle/tests/gen_matrix.js` from the Rule G table in
-`oracle/answer_contract.md` §3. Not enumerated by hand and not copied out of the contract. Every
-illegal cell is a decoy built by mutating a real answer of the corresponding origin.
-
-| ID | Cell | Expected | Status |
-|---|---|---|---|
-| RG-01 | `app` + `recompute-verified` | legal — accepted | green |
-| RG-02 | `app` + `resolution-only` | legal — app-stored prose, slugs resolving against the app's own slug table | green |
-| RG-03 | `app` + `refused` | **illegal** — a refusal asserting an app locator | green |
-| RG-04 | `literature` + `recompute-verified` | **illegal, and the highest-value cell.** Either a summary's number is presented as an app recompute, or the router answered from a summary a question the app could have answered. Both violate the inherited authority rule. Two-token check over any produced answer | green |
-| RG-05 | `literature` + `resolution-only` | legal | green |
-| RG-06 | `literature` + `refused` | **illegal** | green |
-| RG-07 | `findings` + `recompute-verified` | **illegal** — an FA deliverable's arithmetic is the project's own and is not an app recompute | green |
-| RG-08 | `findings` + `resolution-only` | legal | green |
-| RG-09 | `findings` + `refused` | **illegal** | green |
-| RG-10 | `none` + `recompute-verified` | **illegal** | green |
-| RG-11 | `none` + `resolution-only` | **illegal** — a resolution-only grade with nothing to resolve | green |
-| RG-12 | `none` + `refused` | legal | green |
-| RG-13 | The generator itself | `gen_matrix.js` parses §3's Rule G table and emits exactly 12 cells of which exactly 5 are legal. A contract edit that changes Rule G changes the matrix and trips this one test | green |
-
-## 4. RV — Rule V, verdict by the multiset of origins present. **Generated.**
-
-**Thirty-five cells** from six verdict rows, produced by the same generator from the Rule V table,
-plus one test of the generator. Derivation, so it can be checked rather than believed:
-
-| Verdict | Legal | Unmet | Forbidden | Permitted, not counted | Cells |
-|---|---|---|---|---|---|
-| `APP` | 1 | 1 | 3 | 0 | 5 |
-| `FIGURE` | 1 | 1 | 3 | 0 | 5 |
-| `LITERATURE` | 3 | 1 | 2 | 0 | 6 |
-| `BOTH` | 2 | 2 | 1 | 0 | 5 |
-| `CONTESTED` | 2 | 3 | 2 | 1 | 8 |
-| `REFUSE` | 1 | 2 | 3 | 0 | 6 |
-| | **10** | **10** | **14** | **1** | **35** |
-
-| ID | Verdict | Origin multiset | Expected | Status |
-|---|---|---|---|---|
-| RV-01 | `APP` | `{app}` | legal | green |
-| RV-02 | `APP` | `{app, literature}` | **illegal** | green |
-| RV-03 | `APP` | `{app, findings}` | **illegal** | green |
-| RV-04 | `APP` | `{app, none}` | **illegal** | green |
-| RV-05 | `APP` | `{}` — no app trace | **illegal**, requirement unmet | green |
-| RV-06 | `FIGURE` | `{app}` | legal | green |
-| RV-07 | `FIGURE` | `{app, literature}` | **illegal** | green |
-| RV-08 | `FIGURE` | `{app, findings}` | **illegal** | green |
-| RV-09 | `FIGURE` | `{app, none}` | **illegal** | green |
-| RV-10 | `FIGURE` | `{}` — no app trace | **illegal** | green |
-| RV-11 | `LITERATURE` | `{literature}` | legal | green |
-| RV-12 | `LITERATURE` | `{findings}` | legal | green |
-| RV-13 | `LITERATURE` | `{literature, findings}` | legal | green |
-| RV-14 | `LITERATURE` | `{literature, app}` | **illegal** — the authority-rule boundary, companion to RG-04 | green |
-| RV-15 | `LITERATURE` | `{literature, none}` | **illegal** | green |
-| RV-16 | `LITERATURE` | `{}` — neither shelf | **illegal** | green |
-| RV-17 | `BOTH` | `{app, literature}` | legal | green |
-| RV-18 | `BOTH` | `{app, findings}` | legal | green |
-| RV-19 | `BOTH` | `{app}` | **illegal** — that is `APP` | green |
-| RV-20 | `BOTH` | `{literature}` | **illegal** — that is `LITERATURE` | green |
-| RV-21 | `BOTH` | `{app, literature, none}` | **illegal** | green |
-| RV-22 | `CONTESTED` | `{literature, literature}`, one per side | legal | green |
-| RV-23 | `CONTESTED` | `{literature}` — one only | **illegal** | green |
-| RV-24 | `CONTESTED` | `{literature, literature, app}` | **illegal** | green |
-| RV-25 | `CONTESTED` | `{literature, literature, findings}` | **legal. AMENDED at version 2 — was illegal.** A `findings` trace may appear on a contested answer and never counts as a side. The blanket ban was the author's and was too strong: it meant this project's own adjudication could never be shown beside the contest it adjudicates, which is where it is most useful and, under the `findings` limit line, where it is most clearly labelled as the project's own view rather than a source's | green |
-| RV-26 | `CONTESTED` | `{literature, literature, none}` | **illegal** | green |
-| RV-27 | `CONTESTED` | two `literature` on the **same side** of the axis | **illegal** — one side twice is not two sides. Not decidable from origin alone; needs the register's side field. **[4.1]** This is loose end B6's test: Beason and Henderson are co-belligerents | green |
-| RV-28 | `REFUSE` | `{none}` | legal | green |
-| RV-29 | `REFUSE` | `{none, none}` | **illegal** — exactly one | green |
-| RV-30 | `REFUSE` | `{none, app}` | **illegal** | green |
-| RV-31 | `REFUSE` | `{none, literature}` | **illegal** | green |
-| RV-32 | `REFUSE` | `{none, findings}` | **illegal** | green |
-| RV-33 | `REFUSE` | `{}` — no trace at all | **illegal**; the refusal's stated reason stands *in place of* a trace, it does not remove the line | green |
-| RV-35 | `CONTESTED` | a `findings` trace **satisfying** a side | **illegal.** RV-25's companion, and the cell that stops the amendment becoming a hole. "Permitted, and never counted" is two claims, and without this cell only the first is tested | green |
-| RV-36 | `CONTESTED` | an N-sided axis with N−1 sides traced | **illegal.** Rule V requires one `literature` trace **per side**, not two traces. On a three-sided axis, two traces is one-sidedness with an extra source | green |
-| RV-37 | The generator itself | `gen_matrix.js` parses §3's Rule V table **including its fourth column** and emits exactly 35 cells of which exactly 10 are legal. A parser ignoring the fourth column emits 33 and must fail here | green |
-
-**RV-34 is retired**, superseded by RV-37. It asserted "33 cells, 9 legal" and it would have passed
-against the version-2 contract, which is the whole reason RV-37 replaces it rather than amending it.
-The version-1 generator parsed Rule V as two columns, Required and Forbidden. Version 2 introduces a
-third state, permitted-and-never-counted, which is in neither column: a two-column parser reads the
-amended table, finds `findings` absent from both, emits the version-1 cell list against the version-2
-contract, and **returns green**. That is a checker agreeing with its contract in prose and
-disagreeing in bytes. **The narrow lesson, which is the useful one:** a generator is safe against
-changes in its table's *rows* and unsafe against changes in its table's *shape*, and only the second
-kind needs a test.
-
 ## 5. GRD — trace grades
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
-| GRD-1 | Every trace line carries a grade | Zero grade tokens on a trace line fails | green |
-| GRD-2 | The grade is drawn from the closed three | `recompute-verified`, `resolution-only`, `refused`. Anything else fails | green |
 | GRD-3 | `verified` as a grade fails | Blacklist, read from contract §2 at test time | green |
 | GRD-4 | `confirmed` as a grade fails | as above | green |
 | GRD-5 | `validated` as a grade fails | as above | green |
@@ -188,106 +99,26 @@ kind needs a test.
 | GRD-9 | Arity: exactly one grade | Two grade tokens in one trace line fails, even if both are legal | green |
 | GRD-10 | **False-positive gate** | `recompute-verified` contains `verified` as a substring and must not trip GRD-3. Word-boundary matching on the grade slot only, never a substring scan of the line. A blacklist that trips on its own legal token is switched off within a week, and a check that gets switched off is worse than no check because the plan still lists it | green |
 
-## 6. TRC — the trace line
-
-Grammar, from contract §3: `Trace (<kind>, <grade>, <origin>): <locator>`. Fixed arity, fixed slot
-order, in every deliverable.
-
-| ID | What is tested | Pass criterion | Status |
-|---|---|---|---|
-| TRC-1 | The grammar | One regex over the whole deliverable; every line beginning `Trace (` matches it | green |
-| TRC-2 | Arity is exactly three | Two comma-separated slots fails. Four fails | green |
-| TRC-3 | Slot order is kind, grade, origin | Slot 1 against the kind vocabulary, slot 2 against GRD-2's three, slot 3 against ORG's four | green |
-| TRC-4 | **F4 DECOY, harvested from real output** | The byte string `Trace (resolution-only, app-stored prose):`, emitted at `lsei/oracle/answer_question.js` line 421, must be rejected by TRC-1 and TRC-3. Grade first, and no fixed-arity parser reads it alongside the kind-first lines | green |
-| TRC-5 | **F4, the quiet half** | The four kind-first prototype lines (`answer_question.js` 392, 395, 400, 414) carry two slots where the contract requires three. Asserting they parse unchanged is itself a failure: they must gain the origin slot in the port. A test that passes on the un-ported lines is the defect surviving the rewrite | green |
-| TRC-6 | A grade word in the kind slot fails | `Trace (resolution-only, ...)` — slot 1 is not a member of GRD-2's set | green |
-| TRC-7 | The locator is non-empty | Except where grade is `refused`, in which case the locator slot is absent and ORG-5 governs | green |
-| TRC-8 | One trace per physical line | Two `Trace (` occurrences on one line fails. A line-oriented parser that silently reads the first is a parser that loses traces | green |
-| TRC-9 | Every claim-bearing unit carries ≥1 trace | The backward direction. Full statement and decoy at CLM-7 | green |
-| TRC-10 | A `resolution-only` locator's path resolves | The path exists in the leaf index. Half the definition, and the weaker half | green |
-| TRC-11 | **The named text is present at it** | The matched topic words are present in the file's body. Without this, `resolution-only` means `test -f` wearing a grade word — and the LIMIT line beside it, which promises the reader the file resolves *and* that its body contains the matched topic words, is asserting something nothing checks. **The grade carrying every literature and findings answer in this system was tested for spelling and not for resolution.** DECOY: point a real trace at a file that resolves and does not contain the words; TRC-11 red, TRC-10 green | green |
-| TRC-12 | An `app` locator names the model ref, and the origin function strips it | Contract §3 at version 2. Two halves: every `app` trace in a delivered answer carries the `lsei` ref the value was computed against, and `origin(locator)` returns `app` with the ref present and with it absent — the ref rides the locator and the arity does not change. DECOY: strip the ref from one `app` trace; TRC-12's first half red, TRC-3 green, because a fixed-arity parser cannot see it | green |
-
-## 7. LIM — limit lines
-
-Fixed text, verbatim, from contract §4. Read out of the contract at test time; this suite holds no
-copy.
-
-| ID | What is tested | Pass criterion | Status |
-|---|---|---|---|
-| LIM-1 | Origin `literature` carries its limit line | Byte-identical to contract §4's `literature` block | green |
-| LIM-2 | Origin `findings` carries its limit line | Byte-identical to contract §4's `findings` block | green |
-| LIM-3 | Arity: **one per origin present**, not one per trace | A five-trace literature answer carries the line once. **RED against contract version 2**, which still reads "one per trace of the stated origin." Finding F7: repeating a 40-word paragraph after every trace is ceremony a reader skips, and a limit line a reader skips protects nobody. **Close condition, re-aimed:** the sentence in `oracle/answer_contract.md` §4 no longer contains the words "one per trace" — read from that file at test time. LIM-3 is its own detector: it goes green at exactly the moment the condition is true and it cannot go green any other way. Owner: The Editor or the author, on LIM-9's footing | **RED** |
-| LIM-4 | Origin `app` carries neither line | A limit line beside an app trace is a claim about a shelf that was not drawn from | green |
-| LIM-5 | Origin `none` carries neither line | as above | green |
-| LIM-6 | DECOY: byte identity, not paraphrase tolerance | Change one word of a real emitted `literature` limit line; LIM-1 must go red | green |
-| LIM-7 | **Anti-drift** | The text compared against is read from `oracle/answer_contract.md` §4 at test time. A suite carrying its own copy is a second authority, and a second authority drifts — the failure `verify_figure.js` recorded, where the checker and the thing it checked agreed in prose for a whole step and disagreed in bytes | green |
-| LIM-8 | A decorative limit line fails | A limit line present with no trace of its origin fails. Otherwise the line becomes a habit rather than a consequence | green |
-| LIM-9 | The `findings` limit text is ratified | The prohibition's §9 is a closed list and is not a persona's to extend (finding F3, 1.3). Until The Editor or the author ratifies, LIM-2 is uncertified. **Human gate, not a script.** Close condition, now observable: a row in `oracle/AMENDMENTS.tsv` whose target is `oracle/answer_contract.md` §4 carries state `applied` or `declined` with The Editor named in `source-substep`. One grep, over a register that exists | **H** |
-| LIM-10 | A `one_sided` axis carries the one-side disclosure, once per answer | Byte-identical to the fixed text at `oracle/register_schema.md` §7, **read from that file at test time**, never from a copy held here. It names no source and asserts nothing about the world, so it is not claim-bearing and carries no trace — LIM-10 asserts that too, because a fixed line that quietly acquires a trace has become a claim  **RESOLVED AT 4.1 AND IT RESOLVED RED.** The fixed text at `register_schema.md` §7 is stated there as *"a request, not a ratification"*: `step0_editor_prohibition.md` §9 is a **closed** list of five permitted self-statements, extending it is the author's decision and not a persona's, and no ratification of this line exists on disk. So a `one_sided` axis cannot today emit the sentence that explains why only one side appeared. The axis still functions without it — the axis is named, the single side is delivered, no second side is fabricated — and the reader loses the explanation. Owner: The Editor, or the author. Close, and it is an observation not a date: the line appears in §9's closed list, or `one_sided` ships without it and this row is deleted along with the sentence. | **RED** |
-| LIM-11 | The one-side disclosure is ratified | Same gate as LIM-9 and the same close condition, against a row targeting `oracle/register_schema.md` §7. If refused, `one_sided` still functions — the axis is named, the single side is delivered, no second side is fabricated — and the reader loses the sentence explaining why only one side appeared | **H** |
-
 ## 8. VRD — verdicts and the wave selector
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
 | VRD-1 | The verdict set is exactly six | A seventh value fails. Closed set, not a default | green |
-| VRD-2 | Classification precedes retrieval, observed | Stub every retrieval module to throw; the run still writes a verdict to the log row. The static form is INV-1 | green |
-| VRD-3 | `APP` buys zero personas | Spawn count is 0 | green |
-| VRD-4 | `FIGURE` buys zero personas | Spawn count is 0 | green |
-| VRD-5 | `LITERATURE` buys exactly one | Spawn count is 1, and the persona is selected by the file's field label | green |
-| VRD-6 | `BOTH` buys exactly one | Spawn count is 1 | green |
-| VRD-7 | `CONTESTED` buys **one persona per side, minimum two, no cap** | **AMENDED at version 2 — the constant was 2.** Spawn count equals the axis's distinct `M.side` count and is ≥ 2, and no persona waits on another. Truncating to two would make the router the thing that chooses which sides the user hears, which is the one-sidedness the register exists to prevent. Axes carrying more than two sides exist in both halves of the register, so this fires across the register rather than on an edge case. The counts are governed quantities and are not restated here: this file is not their birth file, and a suite carrying its own copy of a number is the same second authority LIM-7 forbids for a fixed text | green |
-| VRD-8 | `REFUSE` buys zero, for all six codes | Spawn count is 0 unconditionally. Six runs, one per reason code | green |
-| VRD-9 | **DECOY: the CONTESTED briefs are one-sided** | **AMENDED at version 2 — generalized from a pair to a set.** No brief contains **any** other side's member path: over N briefs the pairwise intersection of member paths is empty. Splice one path into one brief; VRD-9 goes red. Two agents that can see each other's side are one agent with a longer prompt. The decoy is unchanged in kind and now has N(N−1)/2 places to hide rather than one, which is why the pairwise form is the one to build. The anti-synthesis argument is untouched by the arity change: it was always about isolation, never about the number two **[4.1]** for the axis content; the splice mechanism is testable now against a stub axis | green |
-| VRD-10 | `FIGURE` is not a variant of `APP` | A `FIGURE` run produces a manifest and a file and no chat block, under every condition in FIL-5 | green |
 | VRD-11 | `APP_UNBUILDABLE` is not a verdict | The verdict enum has no such member. The condition produces `REFUSE` with reason `unbuildable`. Nothing selects a different wave or a different deliverable form on it, which is why it was cut at 1.3 | green |
-| VRD-12 | The selector reads the verdict and nothing else | Static: the wave-selector module imports the verdict enum and imports no retrieval, lexicon or corpus module. A selector that re-derives is a second classifier | green |
-| VRD-13 | A `one_sided` axis cannot produce `CONTESTED` | `CONTESTED` fires only on class `two_sided` or `false_pair`; a `one_sided` axis produces `LITERATURE` or `BOTH`, carrying its side and the one-side disclosure. Rule V requires one `literature` trace per side over at least two sides, and a one-sided axis has one side — so such a run is **unsatisfiable rather than wrong**, and an unsatisfiable requirement fails as a refusal carrying no reason code, which is the worst failure available here | green |
 
 ## 9. REF — refusals
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
 | REF-1 | The reason-code set is exactly six | A seventh value fails | green |
-| REF-2 | Exactly one code per refusal | Zero fails. Two fail. A refusal with two codes has two owners and therefore none | green |
-| REF-3 | `excluded` fixture | A question naming a topic in the app's EXCLUSIONS register refuses with `excluded` | green |
-| REF-4 | `not-found` fixture | No address resolves and no shelf file is confirmed | green |
-| REF-5 | `unbuildable` fixture | An app address named in intent that the address grammar cannot build | green |
-| REF-6 | `axis-incomplete` fixture | A register axis matched and a member path does not resolve on disk **[4.1]** | green |
-| REF-7 | `misclassified` fixture | **AMENDED at version 2.** Fires when a returned file belongs to an axis whose `match_keys` this question touched at **any nonzero overlap**, while classification did not fire that axis at its stated firing rule. Not "is this file on the register": a file is not a claim, and the band between the two thresholds is the classifier's admitted uncertainty, which is the whole content of the check **[4.1]** | green |
-| REF-8 | `input-missing` fixture | A required input absent, empty, or unparseable | green |
-| REF-9 | `unbuildable` never falls through to a shelf search | On FIX-4's run, assert the retrieval call count is zero. A fall-through here answers an app question from a summary, which is the authority rule violated in the direction nobody notices because the answer comes back cited and plausible | green |
-| REF-10 | `axis-incomplete` never falls through to search | Retrieval call count zero **[4.1]** | green |
-| REF-11 | `misclassified` is emitted, not swallowed | **AMENDED at version 2.** Same join, same direction, same weakest-setting threshold as REF-7. A qualifying retrieval produces the code and a log row. Owner unchanged and still `match_keys`, which is the point of the code existing **[4.1]** | green |
-| REF-12 | Length: sixty words, excluding trace lines | Word count of the refusal body ≤ 60 | green |
-| REF-13 | The cap relation holds between two constants, not two literals | 60 and 200 are read from contract §5 and §6 at test time; assert 60 < 200. Nothing compares two texts at run time | green |
-| REF-14 | Retrieval: a refusal never issues a second retrieval | Retrieval call count ≤ 1 on every `REFUSE` run. A refusal that repairs a retrieval is a reconciliation, which classification-before-retrieval forbids | green |
-| REF-15 | A refusal names three nouns | The absent object, the region searched, the nearest present object. **Checked on a structured refusal record with three named fields, from which the prose is rendered** — not on the prose. If the refusal is emitted as prose only, this test is not writable and the check is dropped rather than faked | green |
-| REF-16 | **DECOY: the refusal that answers anyway** | Take a real refusal, splice in one claim-bearing sentence. The run must fail: grade `refused` forbids anything asserted anywhere in the same block. A refusal that smuggles a claim is the most expensive failure this system can produce, because it arrives with a `refused` grade attached | green |
-| REF-17 | An empty corpus throws, never refuses confidently | An empty `literature/` produces the empty-population throw. A confident `not-found` over a corpus that was never read is a false negative wearing a reason code | green |
-| REF-18 | **The false-refusal defence.** `probe_neg`: a question touching a member file and **not** about the axis | **Answered, not refused.** This is what makes the amended `misclassified` a fix rather than a rewording. Under the version-1 condition, every question retrieving a register-carrying summary refused — for excavation rates, for TRL levels, for anything — and a large fraction of the corpus was radioactive for all of its content. The register schema supplies the questions rather than this suite inventing them **[4.1]** | green |
-| REF-19 | **`excluded` never masks another code** | Contract §5 at version 2: `excluded` is written only when no other reason code applies, because it is the one code whose owner is nobody. Two runs. (a) A question whose intent names an app address the grammar cannot build, and which also shares a token with an EXCLUSIONS entry: the code is `unbuildable` and the exclusion sentence appears as the refusal's *nearest present object*, never as the code. (b) A question no shelf and no address covers, sharing one token with an EXCLUSIONS entry: the code is `not-found`, same disposal. **This is the test FIX-9 and FIX-10 needed and did not have**, and its absence is why both were carried green | **RED** |
-| REF-20 | A missing app ref refuses at the start of the run, not after the wave | Contract §3 at version 2. Fault injection: make `git -C lsei rev-parse --short HEAD` fail. Assert `REFUSE`/`input-missing`, spawn count 0, and retrieval call count 0. A refusal reached after the wave has run costs more than the answer it replaces and breaks §5's unconditional zero-persona rule, so the timing is the assertion and not the code | green |
 
 ## 10. FIL — the deliverable is a file
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
-| FIL-1 | The file exists before any chat text is emitted | **STRENGTHENED under the marker rule.** The emitter refuses a path that does not **hold a deliverable**: non-empty, and carrying at least one trace line or a refusal record. An empty file satisfies "exists on disk", and the haiku-plus-path case is exactly where an empty file goes unnoticed, because nobody opens the file | green |
-| FIL-2 | The chat block is a contiguous byte-identical substring | `file.includes(block)` is true | green |
-| FIL-3 | A paraphrased block fails | DECOY: paraphrase one sentence of a real block; FIL-2 red | green |
-| FIL-4 | A reflowed block fails | DECOY: rewrap one line of a real block; FIL-2 red. Reflowing is the edit an orchestrator makes without noticing it made one | green |
-| FIL-5 | Block appears when the deliverable is under 200 words and unasked | Chat block present | green |
-| FIL-6 | Haiku plus path when over 200 words and unasked | No chat block; a haiku and the file path | green |
-| FIL-7 | Block appears when over 200 words and the user asked | Chat block present | green |
-| FIL-8 | Block appears when under 200 words and the user asked | Chat block present | green |
-| FIL-9 | A `FIGURE` deliverable has no chat form | No chat block under any of FIL-5..8's four conditions | green |
 | FIL-10 | The haiku carries no claim | No numeral, no unit token, no coefficient name, no named source. Consumes `claim_bearing.js`; see CLM | green |
 | FIL-11 | The haiku is 5-7-5 and holds zero newline characters | Both, on the same bytes | green |
 | FIL-12 | An unknown word is a refusal to certify | English syllable counting is not decidable by algorithm. Feed a nonce word; assert no certification is issued. A missing input is a refusal, not a fallback, and that rule binds the checker as much as it binds the router | green |
-| FIL-13 | The deliverable persists after the turn | **STRENGTHENED under the marker rule.** The bytes on disk after the turn **hash-equal the bytes delivered**, at the path in the log row. Persistence of a path is not persistence of a deliverable. See LOG-21 | green |
-| FIL-14 | The orchestrator never edits the deliverable | Hash the file before emission and after; equal. An orchestrator that quietly rewrites a persona's prose to pass a register check has merged the two registers in the worst way — the team's words now come out of the Oracle's mouth and nobody can tell which sentences are whose | green |
 
 ## 11. CLM — claim-bearing, and the `verify_report.js` replacement post-condition
 
@@ -297,19 +128,11 @@ written before the replacement exists.**
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
-| CLM-1 | A numeral makes a unit claim-bearing | A unit holding a numeral is selected | green |
-| CLM-2 | A unit token makes a unit claim-bearing | A unit holding a token from the app's unit list is selected | green |
 | CLM-3 | A coefficient name makes a unit claim-bearing | A unit naming a coefficient from the app's coefficient list is selected | green |
 | CLM-4 | A named source makes a unit claim-bearing | A unit naming a source from the app's reference list is selected | green |
 | CLM-5 | The three lists are read out of the app, not typed into the checker | DECOY: add a coefficient to the app; the checker's list grows with no edit to the checker. A typed list is a copy, and a copy drifts | green |
-| CLM-6 | Over-selection is preserved | A numeral that is a locator is still claim-bearing. A checker that gets clever and exempts line numbers fails. A unit wrongly called claim-bearing costs one trace; a unit wrongly excused costs the whole control | green |
 | CLM-7 | The backward half: every claim-bearing unit carries ≥1 trace | DECOY: delete one trace line from a real answer; CLM-7 red | green |
-| CLM-8 | The check is backward, not forward | A fabricated sentence arrives with no reference at all, and a forward-only check passes it. Run a no-reference decoy that a forward check would pass; CLM-8 must catch it | green |
 | CLM-9 | The all-exempt failure case | A deliverable in which every unit is exempted **fails**, rather than passing with nothing checked. This is the test that catches a control disabled by its own escape hatch | green |
-| CLM-10 | The exemption marker is a single closed form | An unrecognized exemption marker is a failure, not a silent exemption | green |
-| CLM-11 | Exactly one implementation of §7 in the tree | Static: two definitions of the predicate fail. Two implementations of one definition is the defect the 1.12 counting-rule contract exists to remove, reproduced in code | green |
-| CLM-12 | All three consumers import it | `verify_haiku.js`, `verify_register.js`, and the loop's I2 post-condition. A consumer carrying its own copy fails | green |
-| CLM-13 | The checker's definition equals the contract's | Read from `oracle/answer_contract.md` §7 at test time. Same anti-drift device as LIM-7 | green |
 | CLM-14 | `verify_report.js` is absent from the tree | Nothing imports, requires, extracts or reads it. DECOY: add a `require`; CLM-14 red. The author's ruling, given a test — a ruling with no test is a preference | green |
 
 ## 12. LOG — the run log
@@ -321,28 +144,14 @@ Two columns carry outcome, and neither is written by the other's author.
 | LOG-1 | `outcome` enum is exactly five | `ERROR`, `MISCLASSIFIED`, `REGISTER_FAIL`, `REFUSED`, `ANSWERED` | green |
 | LOG-2 | `review` enum is exactly three | `unreviewed`, `confirmed`, `FILLED` | green |
 | LOG-3 | `outcome` is single-valued | A row carrying two outcome values fails | green |
-| LOG-4 | Precedence: `ERROR` over `MISCLASSIFIED` | A run that is genuinely both writes `ERROR` | green |
-| LOG-5 | Precedence: `MISCLASSIFIED` over `REGISTER_FAIL` | as above **[4.1]** for the register half | green |
-| LOG-6 | Precedence: `REGISTER_FAIL` over `REFUSED` | as above | green |
 | LOG-7 | Precedence: `REFUSED` over `ANSWERED` | as above | green |
-| LOG-8 | Precedence is a total order, spot-checked transitively | A run that is both `ERROR` and `ANSWERED` writes `ERROR`. Without this, two implementations differ on a run that is both an error and a refusal | green |
 | LOG-9 | `FILLED` never appears in the `outcome` column | Over the whole log. DECOY: write `FILLED` into `outcome`; LOG-9 red | green |
-| LOG-10 | `review` defaults to `unreviewed` | Every new row. The default is a claim: no person has read this row against its sources | green |
 | LOG-11 | `FILLED` is not machine-assignable | Static: the log-writer module contains no code path emitting the literal. A column no machine writes to makes structural what the prototype declared in a comment | green |
 | LOG-12 | The row schema is closed | **AMENDED at version 2.** Exactly the **nine** named fields. A tenth fails. Extending is a version bump, and this field is the extension that made version 2 carry a bump it would have carried anyway | green |
-| LOG-13 | Field: `timestamp` present and typed | ISO 8601, parseable | green |
-| LOG-14 | Field: `question` present | The question text as asked, verbatim | green |
-| LOG-15 | Field: `verdict` present | Drawn from VRD-1's six | green |
-| LOG-16 | Field: `outcome` present | Drawn from LOG-1's five | green |
-| LOG-17 | Field: `review` present | Drawn from LOG-2's three | green |
 | LOG-18 | Field: reason code present **iff** verdict is `REFUSE` | Present on a non-refusal fails; absent on a refusal fails | green |
 | LOG-19 | Field: `deliverable_path` present | A path string; resolution is LOG-21 | green |
-| LOG-20 | Field: `contract_version` present, equals VER-1 | The third consumer of the version field | green |
-| LOG-21 | **F5: the deliverable path resolves to bytes on disk** | **STRENGTHENED under the marker rule.** Not presence of a string, and not merely that the file opens: the path opens **and holds the run's own marker** — its verdict token, or a trace line. An empty file opens, and a log row pointing at an empty file cannot be sampled either, which was the entire content of F5. DECOY: delete the file; LOG-21 red. The prototype logs four fields and no path (`lsei/oracle/answer_question.js` line 589) | green |
-| LOG-25 | Field: `app_ref` present | **ADDED at version 2.** The `lsei` ref read at the start of the run, or `-` where `lsei` was absent. Present on every row including rows that emitted no `app` trace, which is the case the traces cannot supply at all. Equals the ref carried by every `app` trace in the deliverable this row names (TRC-12), and `-` never coexists with an `app` trace | green |
 | LOG-22 | The three sampling denominators are computable from these two columns alone | `FILLED` count, reviewed count, run count. Each a division over the log with no external input. "Three FILLED" is theater; "three FILLED out of forty sampled, of two hundred ten run" is a measurement | green |
 | LOG-23 | An unrecognized outcome string is a finding, not a silent skip | Inherited from `verify_answers.js` and correct | green |
-| LOG-24 | An empty log is reported as empty, never as a pass | The standing rule. A check that cannot fail is not a check | green |
 
 ## 13. INV — Level 2 invariants
 
@@ -351,58 +160,13 @@ and attach at 4.1.
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
-| INV-1 | **I1. Classification precedes retrieval, statically** | The classifier module imports no retrieval module. A call-graph assertion over the source tree. Cheap, exact, and it upgrades the inherited rule from a convention somebody remembers into an architectural fact a build step enforces. **The one test I would keep if I could keep only one** | green |
-| INV-2 | I1, transitively | No path of any depth in the import graph from the classifier to a retrieval module. A one-hop check is defeated by one intermediate module | green |
-| INV-3 | I1 DECOY | Add the import; INV-1 and INV-2 both go red | green |
-| INV-4 | **I2.** Every claim-bearing sentence carries a trace, over the live loop | CLM-7 applied to the whole generated population rather than to a fixture. Distinct test: a fixture proves the checker works, a population proves the loop obeys it | green |
-| INV-5 | **I3.** Every trace carries exactly one legal grade, over the live loop | GRD-1, GRD-2 and GRD-9 applied to the whole generated population | green |
 | INV-6 | **I4a.** Empty literature directory | The empty-population throw, never a confident `REFUSE` | green |
 | INV-7 | **I4b.** Missing `lsei/index.html`, **or present and wrong** | **STRENGTHENED under the marker rule.** A refusal naming the missing clone, never a literature-only answer to a question that needed the app. An `index.html` that parses as HTML and holds no model satisfies a `test -f`, so fault injection runs both cases and the marker asserted inside the file is `KNOB_DATA`, per bootstrap assertion BC-14 | green |
 | INV-8 | **I4c.** A register file that does not parse | Startup refusal, not a run with the invariant silently disabled. **This is the one people forget and it matters most:** a register that silently parses to zero rows disables the entire contested-claims invariant while every other test in the suite still passes green. The file-does-not-parse half is testable now against an empty schema-conformant file; the content half is **[4.1]** | green |
 | INV-9 | **I4d.** A register axis whose member path does not exist | Refusal for that axis, never a fall-through to search **[4.1]** | green |
-| INV-10 | **I6.** Classification misses are counted, not hidden | A `MISCLASSIFIED` row is reported with its denominator, never as a bare count. A rising count is a register defect, and the register is the thing that gets edited | green |
 | INV-11 | **Meta: every decoy applies** | For each decoy in this suite, assert the mutation actually changed the bytes it claims to change before asserting the test went red. **A decoy that fails to apply is a failure, not a skip.** This is the lesson `verify_figure.js` paid for: a `--prove` run against a hand-built stand-in returns a false green, and only a mutation of the real artifact discriminates | green |
 | INV-12 | **Meta: no test passes on an empty population** | Every test declares its population; a population of zero is reported as empty, never as a pass | green |
 | INV-13 | The corpus's machine-readable inputs survive a fresh clone | `git check-ignore` reports *not ignored* for `literature/FIELDS.tsv`, `literature/INDEX.tsv`, `oracle/REGISTER.lunar.tsv` and `oracle/REGISTER.econ.tsv` against the committed `.gitignore`. `literature/` is deny-by-default and re-admits by extension, which excludes every machine-readable file the corpus needs unless each is named. Container-versus-content again | green |
-| INV-14 | A missing machine-readable input is a startup refusal, never a degradation | Fault injection, one run per file: delete `FIELDS.tsv` and assert the loop refuses at startup naming the file, rather than running with field-scoped IDF silently disabled and returning confident cross-field answers. **This is the more valuable half and it is independent of the `.gitignore`** — INV-13 closes today's instance, INV-14 closes the class | green |
-| INV-15 | The register loads as a **set**, and a half-loaded set is a refusal | Register schema §3.0 SET-1 to SET-3 at schema version 2. Three assertions: each file carries exactly one `H` row and it is first (`L0`); no axis id occurs in two files (`L1b`); and a load that read one file of the declared set and not the other refuses, naming the file, rather than reporting success over half a register. The concatenate-the-bytes form is a failure and not a variant — it produces two `H` rows, and the loader silently honoured the second one until R-3 | green |
-
-## 14. FIX — Level 1 fixture questions
-
-Seventeen questions drawn from the two 0.2 question surfaces, plus two decoys. Each fixture carries the
-question text and its expected **verdict, resolved address, retrieved file set, outcome and trace
-grades**. **No fixture carries expected prose.**
-
-**There are no quantitative `LITERATURE` fixtures.** A fixture asserting a number lifted from a
-summary rather than recomputed from the app is precisely the shape the inherited authority rule
-forbids. Literature fixtures assert *retrieval and grade*, never values. This is what makes the
-`lit_review: yes` gate tractable here: the only fixtures asserting quantities are APP fixtures, whose
-primary source is the app's own `model()` and whose validation is a fresh recompute — the strongest
-grade the system has.
-
-| ID | Question | Expected | Primary source | Status |
-|---|---|---|---|---|
-| FIX-1 | "What is water output under Agency Led Baseline in 2040?" | `APP`; one `recompute-verified`/`app` trace; `ANSWERED` | `lsei/index.html` `model()`, recomputed at test time | green |
-| FIX-2 | "What is construction potential at phi_c = 0.5?" | `APP`; one `recompute-verified`/`app` trace | `model()`, recomputed | green |
-| FIX-3 | "How does water output vary across the ice rail?" | `FIGURE`; manifest verifies forward and recompute; a file, no chat block | `model()` over the `DETENTS` ice rail | green |
-| FIX-4 | "How does water output vary across the landed-cost rail?" | `REFUSE`/`unbuildable`. **Never `LITERATURE`.** `landed_cost` is a `DETENTS` rail that `model()` does not accept as an input, so the sweep is not the same object as an ice sweep | `lsei/oracle/lib/address.js` error text — **UNVERIFIED** | green |
-| FIX-5 | "What binds at low ice grade?" | `APP`; two traces — `recompute-verified`/`app` for the regime label, `resolution-only`/`app` for the stored prose. The label is computed and the prose is stored, and they are two grades | `model()` regime keys; app section text | green |
-| FIX-6 | "Where does 37,000 kWh per tonne come from?" | **`BOTH`**; app fact first; one `app` trace for the value and status, one `literature` trace for the primary the governing section cites. Two distinct questions: what the model uses, and what was measured | `lsei/index.html` coefficient and status field — **UNVERIFIED**; the cited summary | green |
-| FIX-7 | "How much ice is in Cabeus?" | `LITERATURE`; `resolution-only`/`literature`. **The trap:** `ice` is an app *input* with a `DETENTS` rail, so a grade question finds a knob with the right name and no computation behind it. An `APP` verdict here is a failure | the named summaries; the app's `ice-grade-evidence` section is *not* authority | green |
-| FIX-8 | "What TRL is molten regolith electrolysis?" | `LITERATURE`; `resolution-only`/`literature`; the app computes nothing here | the named summaries | green |
-| FIX-9 | "Who owns lunar resources under the Outer Space Treaty?" | **AMENDED and RED.** `REFUSE`/`not-found`, naming the absent object (a source on the treaty and property regime), the region searched (both shelves and the app's EXCLUSIONS register), and the nearest present object. **Never `excluded`.** The app has ten exclusions and **no surface for law at all** — the ledger row that produced the original expectation compressed "three exclusions sit in this neighbourhood, and law has none" into "three cover demand, market, programme and law", which inverts it. The prototype does refuse, and refuses on the *geology* exclusion `bound-oxygen-mare`, matched on the single shared token "resources": right by accident, on the wrong entry, and it flips to `LITERATURE` the moment one law summary enters the corpus. **Close condition:** the run's reason code is not `excluded`. Its own detector | the app's EXCLUSIONS register — **CONTRADICTED on law** at the Wave 2 gate; ten entries VERIFIED | **RED** |
-| FIX-10 | "What is the propellant margin under **The Commercial Break** in 2055?" | **AMENDED and RED.** **Never `LITERATURE`, and never `excluded`.** `REFUSE`/`unbuildable` while `valueModel()` is unreachable; `APP` once the island is read. **The invariant that holds across both is the assertion.** Three corrections. (1) The question named "Commercial Led"; the app's preset label is "The Commercial Break", and the fixture's expected outcome flipped on the scenario name — with the wrong label the run returns `LITERATURE`/`ANSWERED`, with the right one it returns `REFUSE`/`excluded`. A fixture whose verdict depends on a typo tests the typo. (2) It is **not a missing name in a return list, it is a missing island**: `valueModel()` lives in `VALUE-CORE` and `app_model.js` reads three other islands and never opens that one, so adding the name to the return tail would not work. `margin_prop` is not among `model()`'s output keys by any route. (3) The `excluded` variant is REF-19's defect, not this fixture's expectation. **Close condition:** the run's verdict is not `LITERATURE` and its reason code, when it refuses, is not `excluded`. Its own detector. This pins loose end C1 | `lsei/oracle/lib/app_model.js` and the `VALUE-CORE` island — **VERIFIED and stronger than the ledger claimed**; C1 confirmed live | **RED** |
-| FIX-11 | "How much of Japan's 1960–73 growth was capital and how much was productivity?" | `LITERATURE`, Japanese branch; the field label routes the economics persona; retrieval and grade asserted, **no number asserted** | `jorgenson-2005-industry-origins-japan` summary | green |
-| FIX-12 | "Did Japanese industrial policy raise productivity?" | `LITERATURE` today; retrieval and grade only. **Re-classified to `CONTESTED` at 4.1** when the register lands, and loose ends B6 and B7 both bear on the axis. Recorded here so the reclassification is a scheduled edit rather than a surprise | the named summaries | green |
-| FIX-13 | "Did technology licensing raise TFP in Japan?" | `LITERATURE`; retrieval and grade only | `kiyota-2005-foreign-technology-acquisition` | green |
-| FIX-14 | "How fast has a real economy ever deepened capital?" | `LITERATURE`; retrieval and grade only | the named summaries | green |
-| FIX-15 | "Does the Japanese absorption mechanism apply to a lunar industrial base?" | `LITERATURE`, both fields, or `REFUSE`/`not-found` pre-merge. The cross-domain class the merge exists for; **`APP` is a failure** | both shelves | green |
-| FIX-16 | "What is the energy cost of water extraction in kWh/kg?" where the corpus states the figure in g/kWh | The figure is quoted **in the source's own units, never converted**. A converted number has no locator that resolves — the file does not contain those bytes — so it is not merely ungraded, it is untraceable by the check that already exists. **DECOY: emit the converted figure; the run must fail on ORG/TRC, not merely warn.** Derived arithmetic is a deliverable, not a trace | the named summary, in its own units | green |
-| FIX-17 | **The `BOTH` falsifier.** FIX-6 run with the `literature/` shelf removed | The run loses a distinct answer and says so: refuses the shelf half by name, never returns the app half as a complete answer. **A trivially-passing FIX-17 is the falsifier firing** — it means `BOTH` was `APP` plus an aside, and the term collapses into `APP` with an optional shelf trace, taking the verdict set to five and the contract to its next version | FIX-6's two sources | green |
-| FIX-18 | **The app-versus-literature contest.** A question where a summary carries a number the app also carries | **`APP`, one trace, and the literature figure never appears as a second sentence.** A direct test of an inherited rule that has no other test. DECOY: splice the summary's figure in as a second `BOTH` sentence; the run must fail on RV-02 | `model()` for the app figure; the summary for the competing one | green |
-| FIX-19 | **The register decoy.** A real `CONTESTED` answer with one side's trace deleted | Must fail Rule V's side count. RV-36's abstract form made concrete by mutating produced output, per the house style. **If it passes, the register invariant is decorative.** Built by deletion from a real answer, never by constructing a one-sided answer — a constructed one-sided answer proves only that the constructor can count | the axis's own member summaries | green |
-
-**What the two RED fixtures share, and it is the finding rather than the fixtures.** FIX-9 and FIX-10 fail on **one mechanism**: a single shared token between a question and an EXCLUSIONS entry reaching the `excluded` reason code ahead of `not-found` and ahead of `unbuildable`. `excluded` is the only code whose owner is nobody, so it is the cheapest refusal to reach and the one that generates no work when it is wrong — which is why it silently absorbed the questions two other owners needed to see. Neither fixture could find it, because **both asserted the code the defect produces.** The contract's answer at version 2 is a precedence clause and no new reason code; the suite's answer is REF-19, which asserts the precedence directly instead of through a fixture that agrees with the bug.
 
 ## 15. RFX — register fixtures. **One per axis, generated from the register.**
 

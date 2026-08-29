@@ -18,6 +18,8 @@ Citation verification: the extracted source PDF carries no printed DOI, journal 
 | Pages (extracted text) | 22 |
 | Open access | Not confirmed from the source; distributed through the paid Curran Associates / proceedings.com IAC 2025 proceedings record |
 
+Source file: `MASS OF LUNAR VOLATILES REQUIRED TO REACH SPACECRAFT EXPOSURE LIMITS - A SIMULATION ANALYSIS.pdf`
+
 ---
 
 ## Abstract

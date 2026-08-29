@@ -10,8 +10,26 @@
 - **Publisher URL:** https://doi.org/10.1029/2005JE002656
 - **Publisher / copyright line (as printed):** Copyright 2006 by the American Geophysical Union; 0148-0227/06/2005JE002656
 
-## Abstract (transcribed from title page)
-Gamma ray spectroscopy data acquired by Lunar Prospector are used to determine global maps of the elemental composition of the lunar surface. Maps of the abundance of major oxides, MgO, Al2O3, SiO2, CaO, TiO2, and FeO, and trace incompatible elements, K and Th, are presented along with their geochemical interpretation. Linear spectral mixing is used to model the observed gamma ray spectrum for each map pixel. The spectral shape for each elemental constituent is determined by a Monte Carlo radiation transport calculation. Linearization of the mixing model is accomplished by scaling the spectral shapes with lunar surface parameters determined by neutron spectroscopy, including the number density of neutrons slowing down within the surface and the effective atomic mass of the surface materials. The association of the highlands with the feldspathic lunar meteorites is used to calibrate the mixing model and to determine backgrounds. A linear least squares approach is used to unmix measured spectra to determine the composition of each map pixel. The present analysis uses new gamma ray production cross sections for neutron interactions, resulting in improved accuracy compared to results previously submitted to the Planetary Data System. Systematic variations in lunar composition determined by the spectral unmixing analysis are compared with the lunar soil sample and meteorite collections. Significant results include improved accuracy for the abundance of Th and K in the highlands; identification of large regions, including western Procellarum, that are not well represented by the sample collection; and the association of relatively high concentrations of Mg with KREEP-rich regions on the lunar nearside, which may have implications for the concept of an early magma ocean.
+Licence: own-summary
+
+The prose below is this project's own, written from the paper and dedicated with the rest of this
+repository. The publisher's abstract was reproduced here verbatim until 2026-08-28 (Step 8.8); it was
+AGU's text under an all-rights-reserved line and was never this project's to dedicate, so it was
+replaced rather than requoted. The citation, DOI, publisher URL and copyright line above are
+attribution and stay.
+
+## Abstract (this project's own description; not the publisher's abstract)
+For this project this paper is the reference source for how much thorium, potassium, iron and titanium sit on the lunar surface and where, and it is the definitive Lunar Prospector elemental product rather than a preliminary one.
+
+The measurement problem it solves is that Lunar Prospector's gamma ray spectrometer had poor energy resolution — roughly 12% FWHM at 662 keV — so apart from thorium and iron the individual elemental lines never separate cleanly in the raw spectrum. The paper's contribution is a way to get abundances out anyway. Each map pixel's spectrum is treated as a blend of per-element spectral shapes, those shapes are computed ahead of time by Monte Carlo radiation transport rather than assumed, and the blend is made tractable by rescaling them using two quantities that neutron spectroscopy measures independently: how many neutrons are slowing down in the surface, and the effective atomic mass of the material they are slowing down in. The blend is then unpicked pixel by pixel with a constrained non-negative weighted least-squares fit, with uranium held proportional to thorium.
+
+The calibration choice is worth noting because it explains the paper's own error budget. The Apollo and Luna traverses are tiny beside the instrument's ~150 km footprint, so the returned samples cannot act as ground truth for a pixel; the authors instead anchor the model to the composition of feldspathic lunar meteorites on the argument that these represent the highlands, and derive backgrounds from latitude-binned highland regions.
+
+The products are global abundance maps of six major oxides — MgO, Al2O3, SiO2, CaO, TiO2, FeO — together with potassium, thorium and uranium, binned at 20°, 5° and 2°. They supersede the abundance maps deposited with the Planetary Data System in 2000, and they are more accurate chiefly because the underlying gamma-ray production cross sections were recomputed.
+
+The findings this project draws on are these. Surface-average thorium comes out at 1.7 ppm, above Warren's post-calibration 1.35 ppm. Thorium and potassium are concentrated on the nearside in the Procellarum KREEP Terrane and are very low across the far side, South Pole–Aitken included. Iron oxide runs above about 18 wt% through western Procellarum and into Imbrium, peaking near 25 wt%. Titania peaks near 8 wt% in Mare Tranquillitatis. Alumina and iron oxide are strongly anticorrelated. Magnesium is elevated where the nearside is KREEP-rich, which the authors read as bearing on the early magma ocean question.
+
+Two stated limits matter to anyone quoting the numbers. Oxide totals across western Procellarum come to about 94% rather than 100%, which the authors take as direct evidence that abundances there are underestimated and that the region is poorly represented by the sample collection. And the FeO values approaching 30 wt% that show up only in the finest 2° binning are artifacts of thin counting statistics, not real compositions.
 
 ## Summary
 

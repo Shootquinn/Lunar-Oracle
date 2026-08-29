@@ -10,6 +10,8 @@ Publisher URL: not printed in source
 
 AIAA conference paper (engineering case study / trade study) · NASA Glenn Research Center and NASA Johnson Space Center · 2020 (AIAA ASCEND 2020) · declared a work of the U.S. Government and not subject to copyright protection in the United States (source statement, p. 1)
 
+Source file: `kleinhenz_paz2020.pdf`
+
 ---
 
 ## Abstract

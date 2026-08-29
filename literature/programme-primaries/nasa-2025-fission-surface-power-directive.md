@@ -13,6 +13,21 @@ Publisher URL: not printed in source
 
 Document type: internal NASA policy directive memorandum (not a journal article or public report) · Issuing office: Office of the Administrator, NASA Headquarters, Mary W. Jackson NASA Headquarters, Washington, DC 20546-0001 · Publication/signature date: August 4, 2025 · Length: 3 pages · Open-access status: not marked; no distribution restriction or public-release notice printed on the pages captured. No DOI, directive number, or document control number is printed anywhere in the source.
 
+Source file: `fsp_directive2025.pdf`
+
+Licence: own-summary
+
+Flagged by tools/audit_abstract_overlap.js at 11.3% verbatim overlap (1,454 shingles) and RULED
+CLEAR on the licence, not on the percentage. The source is an internal NASA directive memorandum --
+a work of the United States Government, which under 17 U.S.C. 105 is not subject to copyright and is
+in the public domain. Directive language quoted here is therefore freely reproducible and this file,
+quotations included, is this project's to dedicate under the Unlicense.
+
+Recorded rather than silently passed over: the audit found this file, the audit was right to find it,
+and a percentage is not a verdict. See cr_scratch/step8_w5-3_copyright_audit.md for the RG-8 note on
+why three files above the threshold are correctly labelled own-summary.
+
+
 ---
 
 ## Abstract

@@ -10,6 +10,8 @@ Publisher URL: https://www.lpi.usra.edu/meetings/lpsc2012/pdf/2633.pdf
 
 Study type: conference abstract, crater-illumination modeling plus image-derived mapping · Institution: Lunar Reconnaissance Orbiter Camera Science Operations Center, Arizona State University · Publication date: 2012 (43rd LPSC) · Open-access status: freely available via the Lunar and Planetary Institute abstract archive.
 
+Source file: `in search of shade 2633.pdf`
+
 ---
 
 ## Abstract

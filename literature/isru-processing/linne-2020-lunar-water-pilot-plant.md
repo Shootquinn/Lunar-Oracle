@@ -10,6 +10,8 @@ Publisher URL: not printed in source.
 
 Study type: conceptual design study (NASA COMPASS point-design team), presented as a 26-slide conference deck. Institution: NASA Glenn Research Center (GRC), with excavator and umbilical hardware development credited to NASA Johnson Space Center (JSC) and NASA Kennedy Space Center (KSC). Publication date: presented November 16-18, 2020, at the AIAA ASCEND conference. Open-access status: slide 2 states the material "is a work of the U.S. Government and is not subject to copyright protection in the United States"; no DOI, publisher URL, or NTRS accession number is printed anywhere in the deck itself. Project records external to this source give NTRS accession 20205008294, but that number does not appear in the source and is not used to construct a citation link here.
 
+Source file: `linne_pilotplant2020.pdf`
+
 ---
 
 ## Abstract

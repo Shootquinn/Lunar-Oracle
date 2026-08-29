@@ -10,6 +10,8 @@ Publisher URL: not printed in source.
 
 Study type: conference presentation slide deck (23 slides), presenting an engineering-based production-rate model and a "lean" Business Case Analysis (BCA) spreadsheet framework, not a completed cost or NPV result · Institution: Jet Propulsion Laboratory, California Institute of Technology, prepared for the 2019 NASA Cost and Schedule Symposium · Publication date: August 13 to 15, 2019 · Open-access status: not stated; the deck carries a notice that cost information is "of a budgetary and planning nature" for informational purposes only and "does not constitute a commitment on the part of JPL and/or Caltech" (slide 1), and a copyright line reading (c) 2019 California Institute of Technology, government sponsorship acknowledged.
 
+Source file: `shishko2019_businesscase.pdf`
+
 ---
 
 ## Abstract

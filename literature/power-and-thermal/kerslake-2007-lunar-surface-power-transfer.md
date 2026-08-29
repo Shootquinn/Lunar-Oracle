@@ -10,6 +10,8 @@ Publisher URL: http://gltrs.grc.nasa.gov
 
 Technical memorandum (concept design study), prepared as conference paper number 167 for the Space Technology and Applications International Forum (STAIF-2008), sponsored by the University of New Mexico's Institute for Space and Nuclear Power Studies, Albuquerque, New Mexico, February 10-14, 2008 · National Aeronautics and Space Administration, Glenn Research Center, Cleveland, Ohio (author affiliation); performing organization report number E-16242 · Report date 01-12-2007 (issued December 2007) · Distribution statement "Unclassified-Unlimited," Subject Categories 20, 32, 33, 36; available from NASA Center for Aerospace Information and the National Technical Information Service; no DOI is printed in the source.
 
+Source file: `kerslake2007_cable.pdf`
+
 ---
 
 ## Abstract

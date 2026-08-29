@@ -10,6 +10,8 @@ Publisher URL: NASA Moon to Mars Architecture program page — https://www.nasa.
 
 White paper / framework document · NASA (agency-authored, mission-directorate coordinated) · 2025 Moon to Mars Architecture Concept Review (ACR25) · Public domain (U.S. Government work) · 4 pages
 
+Source file: `NASA data gaps acr25-wp-data-gaps-v3.pdf`
+
 ---
 
 ## Abstract

@@ -10,6 +10,8 @@ Publisher URL: https://arxiv.org/abs/2009.05080
 
 Preprint (arXiv:2009.05080v1, draft dated 14 September 2020) · authors at the Astronomy Department, New Mexico State University, and Concordia University Wisconsin · the on-disk file is the arXiv preprint; the peer-reviewed version was published in Icarus in 2021 (external metadata, not printed on the preprint), the year the ledger uses to cite it
 
+Source file: `luchsinger2021.pdf`
+
 ---
 
 ## Abstract
@@ -44,7 +46,7 @@ Re-modeling of the 2009 LCROSS impact into Cabeus crater to constrain the pre-im
 
 ### Topic mapping
 
-- The introduction reviews the LCROSS mission, the original 5.6 plus or minus 2.9 wt% plume concentration, and the prior neutron and spectroscopic evidence for polar ice. The modeling sections develop the layered pre-impact sediment (dirty ice increasing with depth, pure regolith, competent layer near 6 m) and the lightcurve fit. The results give the pre-impact ice mass (about 5 times 10^11 kg), the density-dependent 8.2 versus 4.3 wt% concentrations, and the 108 kg model plume ice mass consistent with in-situ measurements.
+- The introduction reviews the LCROSS mission, the original 5.6 plus or minus 2.9 wt% plume concentration reported by Colaprete et al. (2010) — that figure is side A of axis LCC-01 and is quoted here as the prior value this paper re-models, not as a result of this paper — and the prior neutron and spectroscopic evidence for polar ice. The modeling sections develop the layered pre-impact sediment (dirty ice increasing with depth, pure regolith, competent layer near 6 m) and the lightcurve fit. The results give the pre-impact ice mass (about 5 times 10^11 kg), the density-dependent 8.2 versus 4.3 wt% concentrations, and the 108 kg model plume ice mass consistent with in-situ measurements.
 
 ---
 

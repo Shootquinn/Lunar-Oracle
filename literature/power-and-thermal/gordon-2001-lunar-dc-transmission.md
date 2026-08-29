@@ -19,6 +19,8 @@ No DOI is printed in the source. The report was issued under NASA Grant NAG3-105
 | Pages | 188 (body pages 1-165 printed numbering; front matter i-xi; references 171+) |
 | Open access | Yes, NASA STI/NTRS, Unclassified-Unlimited, Subject Category 20 |
 
+Source file: `Electrical Transmission on the Lunar Surface 20040191588.pdf`
+
 ---
 
 ## Abstract

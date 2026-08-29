@@ -14,6 +14,8 @@ Study type: NASA contractor report, an analytical power-system sizing and mass-c
 
 How this artifact was read, recorded because the previous summary of this source was built from text extraction alone and silently lost every figure. The text layer was extracted with pdfplumber. Every mass-breakdown pie chart, every bar chart, and every energy-balance plot in Section 6.0 is a raster with no text layer, so a text-only pass returns the captions and none of the numbers. Those pages were rendered with pdfplumber to_image at 200 dpi, because pdftoppm and poppler are absent on this machine and the Read tool cannot render a PDF page here. Mean luminance was checked on every rendered sheet before any number was read off it, since CMYK JPEGs on this corpus have rendered solid black through a naive inversion; all sheets used came back in the range 232 to 250 on a 0 to 255 scale, which is a white page with black ink. Every recovered legend was then closed against its own printed total before being admitted. Term counts used Python str.count on whitespace-normalized text, never grep -c, and no zero reported below was admitted until known nonzero controls fired on the same instrument in the same run.
 
+Source file: `colozza2020_cr220368.pdf`
+
 ---
 
 ## Abstract

@@ -26,6 +26,8 @@ should carry the first name; a bare "Jones" is ambiguous between the two.
 
 Publisher URL: none in source. · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
 
+Source file: `Take or Make in space.pdf`
+
 ## Abstract
 
 A parametric cost analysis of the "take or make" decision in space life support: whether to

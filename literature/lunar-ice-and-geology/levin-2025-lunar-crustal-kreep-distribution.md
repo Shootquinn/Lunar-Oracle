@@ -8,9 +8,55 @@
 - **Year:** 2025 (Received 9 Apr 2024; Accepted 28 Nov 2024)
 - **DOI:** `10.1029/2024JE008418` (transcribed from the article title page)
 - **Publisher URL:** https://doi.org/10.1029/2024JE008418
+- **Publisher / copyright line (as printed):** 2025. American Geophysical Union. All Rights Reserved.
 
-## Abstract (transcribed from title page)
-The distribution of KREEP—potassium (K), rare earth elements (REE), and phosphorus (P)—in the lunar crust is an important clue to deciphering the geochemical and thermal evolution of the Moon. Surface measurements of thorium abundance taken by the Lunar Prospector Gamma Ray Spectrometer (LPGRS) instrument have shown that KREEP is concentrated on the lunar nearside surface, mirroring the hemispheric asymmetry observed in the distribution of maria, crustal thickness, and topography. However, the overall lateral and vertical distribution of KREEP within the crust is poorly constrained, leaving uncertainty in estimates of bulk crustal thorium abundance and in the history and evolution of KREEP. In this study, we compared the overall lateral and vertical distribution of lunar KREEP in the upper crust by determining the thorium abundance of material excavated by complex impact craters. We find that the distribution of KREEP on the nearside is consistent with a layer of high-Thorium ejecta from the Imbrium impact mixing with underlying low-Th (<1 ppm) crustal material, suggesting the excavation of a sub-crustal KREEP reservoir with thorium abundances as high as 45–120 ppm by the Imbrium-forming impact. Imbrium ejecta alone does not explain the distribution of thorium on the lunar farside, particularly around the South Pole Aitken basin, suggesting other sources for farside thorium enrichments. Furthermore, our results refute the existence of a large-scale Thorium-enriched layer in the upper 16 km of the farside crust.
+Licence: own-summary
+
+The prose below is this project's own, written from the paper and dedicated with the rest of this
+repository. The publisher's abstract was reproduced here near-verbatim until 2026-08-28 (Step 8.8);
+the article prints an AGU all-rights-reserved line, so that text was never this project's to dedicate
+and was replaced rather than requoted. The citation, DOI, publisher URL and copyright line above are
+attribution and stay.
+
+## Abstract (this project's own description; not the publisher's abstract)
+This paper is where the project's numbers for buried lunar KREEP come from, and its interest here is
+that it puts a grade on a resource nobody has sampled.
+
+Thorium is the tracer. It travels with KREEP — potassium, rare earths and phosphorus, the last
+incompatible dregs of the magma ocean — and Lunar Prospector's gamma ray spectrometer mapped it
+globally. The catch is that gamma rays escape only the top twenty centimetres or so, so every existing
+KREEP map describes a skin. How much thorium is in the crust, and how it is stacked with depth, was
+open.
+
+The paper's move is to let impacts do the drilling. Roughly 6,900 complex craters between 20 and 200
+km across have already excavated material from a range of depths and spread it on the surface, so the
+authors measure thorium over each crater's interior, its ejecta and the surrounding background, and
+fit the contrast against a two-layer crust: something thorium-rich on top of anorthositic crust taken
+at 0.63 ppm. Two arrangements are tested — the enriched material lying on top as ejecta, or buried
+beneath anorthosite — and the results are pooled into 300-km regions on a 5° grid to make global maps
+of layer thickness and minimum abundance. Depth reach is set by the largest crater in the set and
+stops around 16 km.
+
+The headline is a grade estimate for a reservoir that was never exposed. To account for the thorium
+observed in Imbrium's discontinuous ejecta blanket 1,200 to 3,300 km out, the primary ejecta must have
+carried 25 to 35 ppm; back out the roughly 28 km of low-thorium crust the impact had to punch through
+first, and the sub-crustal material it reached must have held 45 to 120 ppm. That is several times the
+~12 ppm usually assumed for the nearside subsurface KREEP layer, and it implies correspondingly more
+radiogenic heating under the nearside.
+
+Two negative results carry as much weight. Imbrium ejecta does not account for the thorium on the far
+side, and around South Pole–Aitken the excess runs up to 2 ppm above what an Imbrium source predicts,
+which points at incompatible-element-rich upper mantle exposed by the SPA impact itself rather than at
+a farside KREEP layer. And no large-scale buried thorium-rich layer appears anywhere in the upper 16 km
+of the farside crust — what the data show instead is vertical and lateral patchiness from impact
+mixing, with local exceptions such as the ground near Alphonsus, where buried thorium exceeds the
+surface by at least 8 ppm below 3.5 km.
+
+The reservoir figure is a model inference, not a measurement, and the paper says so. It rests on the
+assumed pre-Imbrian crustal thorium and on how much ejecta mixed with target material; relax the
+mixing and the primary ejecta could be as low as about 13 ppm. The reservoir's thickness is
+unconstrained across published models at anywhere from 2.5 to 40 km, so no total KREEP mass follows
+from any of this.
 
 ## Summary
 

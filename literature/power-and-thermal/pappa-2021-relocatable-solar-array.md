@@ -10,6 +10,8 @@ Publisher URL: https://ntrs.nasa.gov/citations/20210011743 (constructed from NTR
 
 Study type: NASA Technical Memorandum, preliminary conceptual design and structural/thermal analysis study (not built or tested hardware) · Institution: NASA Langley Research Center, with National Institute of Aerospace, Analytical Mechanics Associates, and Virginia Military Institute as contributing organizations · Publication date: March 2021 (report date 3-29-2021 per Report Documentation Page) · Open-access status: Distribution unclassified, unlimited; publicly available through the NASA STI Program and NTRS. 31 pages. Subject terms listed: Lunar Surface Power, Deployable Solar Arrays, Relocatable Solar Arrays, High Power Flexible-Substrate Solar Arrays.
 
+Source file: `pappa2021_vsat.pdf`
+
 ---
 
 ## Abstract

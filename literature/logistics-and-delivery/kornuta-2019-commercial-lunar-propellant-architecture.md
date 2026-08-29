@@ -92,6 +92,8 @@ Page references in this summary use the report's own printed page numbers. The p
 
 Multi-organization collaborative study report, also published as a journal article. 30 authors across 25 organizations spanning industry, government, and academia, coordinated by United Launch Alliance. Study convened at a workshop held at ULA headquarters in Colorado on 1 May 2018 (Kornuta et al., 2019, p. 5). Report completed late 2018 on the document's own internal evidence; published March 2019 in REACH volume 13, article 100026, by Elsevier BV, ISSN 2352-3093. Contains 84 figures and 25 tables. Dedicated to Paul D. Spudis (1952-2018), who is also a listed author and a section author. Open-access status UNVERIFIED.
 
+Source file: `kornuta-2019-commercial-lunar-propellant.pdf`
+
 ---
 
 ## Abstract

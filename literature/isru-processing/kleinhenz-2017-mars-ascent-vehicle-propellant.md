@@ -12,6 +12,8 @@ Verification notes on the citation elements, each carried in place. Authors, aff
 
 AIAA conference paper (system-level modeling and trade study) · NASA Glenn Research Center and NASA Johnson Space Center · January 2017 (per Crossref and NTRS; the artifact prints no date) · open-access status of the AIAA version UNVERIFIED, no copyright or distribution statement appears in the artifact; a copy is publicly downloadable from NTRS
 
+Source file: `kleinhenz_paz2017.pdf`
+
 ---
 
 ## Abstract

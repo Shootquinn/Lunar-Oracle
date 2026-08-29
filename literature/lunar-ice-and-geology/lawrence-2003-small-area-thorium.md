@@ -13,7 +13,17 @@
 
 **Unit note:** the PDF uses **µg/g** (micrograms per gram = ppm) throughout for thorium. pdfplumber's text extraction renders the "µ" glyph as "m" (so it reads "mg/g"); the correct unit µg/g was confirmed by rendering the title-page image (">3 µg/g" visible). All thorium values below are µg/g (ppm).
 
-## Abstract (transcribed from title page)
+Licence: own-summary
+
+The prose below is this project's own, written from the paper, and is dedicated with the rest of
+this repository under the Unlicense. Until 2026-08-28 (Step 8.8) this section was headed
+"transcribed from title page", which it never was: the section is this project's third-person description of the paper, and the audit measures 11.4% overlap, which is five short technical clauses carried across intact, not a reproduction. The heading was corrected rather
+than the prose rewritten -- there is nothing wrong with the prose, and rewriting it to satisfy a
+heading would have destroyed real provenance. The citation, DOI and publisher URL are attribution
+and stay.
+
+
+## Abstract (this project's own description; not the publisher's abstract)
 Using an improved understanding of the Lunar Prospector Gamma-Ray Spectrometer (LP-GRS) spatial footprint, the authors derive a new global thorium map with full-width, half-maximum spatial resolution of ~(80 km)², mapped on 0.5° × 0.5° pixels. The map enables identification and classification of **42 small-area (<[80 km]²) thorium features** across the lunar surface. Twenty of these, all in the nearside Procellarum KREEP Terrane (PKT), show a thorium-iron anticorrelation indicative of mixing between mare basalts and thorium-rich mafic impact-melt breccias (MIB); at least one farside location (Dewar crater) appears to have MIB-like abundances. The map also identifies high-thorium mare basalts (>3 µg/g) in southwestern Mare Tranquillitatis near the Apollo 11 site. With the better footprint understanding, the surface thorium abundance at the **Compton/Belkovich thorium anomaly is constrained to 40–55 µg/g** — higher than any other measured location on the lunar surface and higher than most samples. Using 1 km/pixel Clementine FeO plus footprint information, plausible thorium distributions around Kepler crater are obtained at 1 km/pixel, appearing as simple mixing of thorium-rich MIB compositions and high-thorium mare basalts.
 
 ## Summary

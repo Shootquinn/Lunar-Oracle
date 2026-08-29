@@ -9,7 +9,17 @@
 - **DOI:** `10.48550/arXiv.1802.09508` (arXiv record). Published-version DOI listed on the arXiv record as `10.1029/2018JE005589` (JGR: Planets) — transcribed from the arXiv "related DOI" field, not from the PDF body; confirm on the journal page before formal citation.
 - **Publisher URL:** https://arxiv.org/abs/1802.09508 (preprint); https://doi.org/10.1029/2018JE005589 (journal version)
 
-## Abstract (transcribed from title page)
+Licence: own-summary
+
+The prose below is this project's own, written from the paper, and is dedicated with the rest of
+this repository under the Unlicense. Until 2026-08-28 (Step 8.8) this section was headed
+"transcribed from title page", which it never was: the section is this project's own condensed description, and the audit measures 11.2% overlap, which is two short technical clauses, not a reproduction. The source is an arXiv preprint that prints no reuse licence at all, which is a further reason not to reproduce it. The heading was corrected rather
+than the prose rewritten -- there is nothing wrong with the prose, and rewriting it to satisfy a
+heading would have destroyed real provenance. The citation, DOI and publisher URL are attribution
+and stay.
+
+
+## Abstract (this project's own description; not the publisher's abstract)
 Presents improved-resolution maps of the Lunar Prospector Neutron Spectrometer (thermal, epithermal, fast neutron) data and Gamma-Ray Spectrometer **Th-line fluxes** via global application of **pixon image reconstruction**. Using mock datasets, the pixon method compares favorably with other reconstruction methods used in planetary neutron/gamma-ray spectroscopy. Improved thermal-neutron maps resolve compositional variation across the surface, including within Hertzsprung and Schrödinger basins; confirm Hertzsprung as one of the most anorthositic parts of the crust (near-pure anorthite over tens of km); and reveal at Orientale a surface-vs-subsurface regolith-maturity mismatch implying complex layering.
 
 ## Summary

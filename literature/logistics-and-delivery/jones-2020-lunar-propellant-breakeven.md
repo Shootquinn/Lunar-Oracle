@@ -10,6 +10,8 @@ Publisher URL: not printed in source
 
 Conference presentation slide deck · NASA Langley Research Center (Systems Analysis and Concepts Directorate) with Analytical Mechanics Associates, Inc. · dated November 16, 2020 · no DOI or venue name printed on the deck itself · this is described within the deck as the third in a paper series (Paper 1 SciTech 2019, Paper 2 IAC 2019, with Paper 4 SciTech 2021 noted as a next step)
 
+Source file: `jones2020_breakeven.pdf`
+
 ---
 
 ## Abstract

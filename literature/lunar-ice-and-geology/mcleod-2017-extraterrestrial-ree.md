@@ -14,6 +14,19 @@
 - **Affiliations:** (1) Dept. of Geology and Environmental Earth Sciences, 203 Shideler Hall, Miami University, Oxford, OH 45056, USA; (2) Dept. of Geology and Environmental Earth Science, Miami University-Hamilton, Hamilton, OH 45011, USA. Correspondence: mcleodcl@miamioh.edu.
 - **Open access:** MDPI open-access review article.
 
+Licence: contains-transcribed-source-text
+
+The abstract below is reproduced from the source, and the source permits it. The article prints:
+
+> 2017 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+CC BY 4.0 permits reproduction and redistribution with attribution, so this section is NOT covered
+by this repository's Unlicense dedication and is not this project's to dedicate -- it travels under
+the publisher's licence, which is why that licence is named here rather than left as "open access".
+"Open access" is a distribution fact and not a licence; the specific grant is what does the work.
+The citation, DOI and publisher URL below are the attribution CC BY requires.
+
+
 ## Abstract (transcribed / lightly de-hyphenated from page 1)
 
 The resource budget of Earth is limited. Rare-earth elements (REEs) are used across the world by society on a daily basis yet several of these elements have <2500 years of reserves left, based on current demand, mining operations, and technologies. With an increasing population, exploration of potential extraterrestrial REE resources is inevitable, with the Earth's Moon being a logical first target. Following lunar differentiation at ~4.50–4.45 Ga, a late-stage (after ~99% solidification) residual liquid enriched in Potassium (K), Rare-earth elements (REE), and Phosphorus (P), (or "KREEP") formed. Today, the KREEP-rich region underlies the Oceanus Procellarum and Imbrium Basin region on the lunar near-side (the Procellarum KREEP Terrain, PKT) and has been tentatively estimated at preserving 2.2 × 10^8 km^3 of KREEP-rich lithologies. The majority of lunar samples (Apollo, Luna, or meteoritic) contain REE-bearing minerals as trace phases, e.g., apatite and/or merrillite, with merrillite potentially contributing up to 3% of the PKT. Other lunar REE-bearing phases include monazite, yittrobetafite (up to 94,500 ppm yttrium), and tranquillityite (up to 4.6 wt% yttrium, up to 0.25 wt% neodymium); however, lunar sample REE abundances are low compared to terrestrial ores. At present, there is no geological, mineralogical, or chemical evidence to support REEs being present on the Moon in concentrations that would permit their classification as ores. However, the PKT region has not yet been mapped at high resolution, and certainly has the potential to yield higher REE concentrations at local scales (<10s of km). Beyond the Moon, Mars and other extraterrestrial materials are host to REEs in apatite, chevkinite-perrierite, merrillite, whitlockite, and xenotime; these phases are relatively minor components (<0.6% of total sample) yet dominate a sample's REE budget with abundances typically 1–2 orders of magnitude enriched relative to their host rock. No extraterrestrial REE ore has been identified yet; extraterrestrial materials are host to other resources (metals Fe, Al, Mg, PGEs; and water).

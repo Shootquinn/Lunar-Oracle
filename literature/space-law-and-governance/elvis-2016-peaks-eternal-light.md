@@ -10,6 +10,8 @@ Publisher URL: https://www.sciencedirect.com/science/article/abs/pii/S0265964616
 
 Study type: policy and law analysis, structured around a scientific thought experiment · Institutions: Harvard-Smithsonian Center for Astrophysics; King's College London (Theology and Religious Studies); Georg-August Universitat Gottingen · Publication date: 2016 (Space Policy, vol. 38) · Open-access status: not open access at the publisher; an author preprint is archived at arXiv:1608.01989v1, which is the version this summary is drawn from.
 
+Source file: `Peaks of Eternal Light 1608.01989v1.pdf`
+
 ---
 
 ## Abstract

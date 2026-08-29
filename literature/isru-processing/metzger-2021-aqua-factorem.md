@@ -20,6 +20,8 @@ Identifier appears in the document.
 
 Authors: Metzger, P. T., Sapkota, D., Fox, J., & Bennett, N. · Year: 2021 · Publisher URL: [not stated in the document; confirmation needed before this line is filled] · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
 
+Source file: `metzger_aquafactorem2021.pdf`
+
 ## Abstract
 
 Establishes feasibility of a lunar water extraction architecture that separates ice grains

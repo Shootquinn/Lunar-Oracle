@@ -12,6 +12,8 @@ Study type: physics-based economic trade study (technical/engineering economics 
 
 Published version (external metadata, not on the preprint page): New Space, 2023; arXiv:2205.00378; DOI 10.1089/space.2022.0015. This information is supplied only as an external cross-reference; it was not confirmed against the on-disk PDF, whose front page prints no journal name, volume, issue, page range, year, or DOI (p. 1). Note also that the on-disk preprint's printed title reads "The Cost of Lunar Landing Pads with a Trade Study of Construction Methods," which differs in word order from "...and Construction Methods."
 
+Source file: `metzger_autry2023.pdf`
+
 ---
 
 ## Abstract

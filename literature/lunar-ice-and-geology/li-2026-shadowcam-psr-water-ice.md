@@ -10,6 +10,8 @@ Publisher URL: https://www.science.org/doi/10.1126/sciadv.aec8211
 
 Peer-reviewed journal article · Science Advances (AAAS), volume 12, article eaec8211, published 18 March 2026 · lead author at the Hawaii Institute of Geophysics and Planetology, University of Hawaii at Manoa, with co-authors at Intuitive Machines, Johns Hopkins APL, and NASA Goddard · open access, CC BY-NC 4.0 · DOI 10.1126/sciadv.aec8211
 
+Source file: `li2026_shadowcam.pdf`
+
 ---
 
 ## Abstract

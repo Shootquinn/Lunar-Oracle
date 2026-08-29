@@ -10,6 +10,8 @@ Publisher URL: https://arxiv.org/abs/2502.06056
 
 Preprint / review article (arXiv:2502.06056; v1 dated 9 February 2025, v2 dated 19 January 2026) · Norbert Schorghofer, Planetary Science Institute, Arizona · single-author theoretical review, assumes prior familiarity with lunar polar volatiles
 
+Source file: `schorghofer2026_current_theories_lunar_ice_arxiv2502.06056.pdf`
+
 ---
 
 ## Abstract

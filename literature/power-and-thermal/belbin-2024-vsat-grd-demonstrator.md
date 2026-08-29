@@ -48,6 +48,8 @@ Recorded individually rather than collapsed to a single year, because a conferen
 
 All year-bearing elements agree on 2024, so the publication year is not in dispute. The sub-year dates do disagree, and the disagreement is systematic rather than erroneous. The file was created and deposited to NTRS in mid-April 2024, roughly a month before the symposium at which it was presented in mid-May 2024, so the April dates are deposit dates and the May date is the publication date. This summary treats the May 2024 symposium as the publication event. A citation built from the PDF timestamp alone would present an April deposit date as a publication date.
 
+Source file: `belbin2024_vsat.pdf`
+
 ---
 
 ## Abstract

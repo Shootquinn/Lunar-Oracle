@@ -12,6 +12,19 @@
 - **Publisher URL:** Not printed as a separate URL in the document beyond the DOI link above. Publisher: American Astronomical Society (AAS); open access under CC BY 4.0.
 - **Extraction note:** Text extracted with pdfplumber (UTF-8), 21 pages, all pages returned machine-readable text (no image-only / zero-text pages). Two- and three-column layouts caused some line interleaving, and a few figure captions (notably the Figure 11 caption on page 13) were extracted as scrambled/fragmented vertical text. No content was fabricated; where the extractor garbled a caption it was disregarded rather than reconstructed. Note: the PDF filename foregrounds co-author Zacny, but the first author is Castillo-Rogez; the summary and slug use the correct first author.
 
+Licence: contains-transcribed-source-text
+
+The abstract below is reproduced from the source, and the source permits it. The article prints:
+
+> Original content from this work may be used under the terms of the Creative Commons Attribution 4.0 licence.
+
+CC BY 4.0 permits reproduction and redistribution with attribution, so this section is NOT covered
+by this repository's Unlicense dedication and is not this project's to dedicate -- it travels under
+the publisher's licence, which is why that licence is named here rather than left as "open access".
+"Open access" is a distribution fact and not a licence; the specific grant is what does the work.
+The citation, DOI and publisher URL below are the attribution CC BY requires.
+
+
 ## Abstract (transcribed)
 
 Dwarf planet Ceres is a compelling target for future exploration because it hosts at least regional brine reservoirs and potentially ongoing geological activity. As the most water-rich body in the inner solar system, it is representative of a population of planetesimals that were likely a significant source of volatiles and organics to the inner solar system. The authors describe possible medium-class (~$1 billion) mission concepts that would determine both Ceres' origin and its current habitability potential. Habitability is addressed through a combination of geological, geophysical, and compositional investigations by (i) searching from orbit for evidence of past and ongoing geological activity near landforms interpreted as brine-driven volcanic structures, and (ii) probing the brine distribution below one of these regions with in situ electromagnetic sounding. Two approaches were considered for compositional measurements: (1) in situ exploration at two sites, and (2) sample return from a single site. Both concepts targeted material at Occator crater (~20 Ma; a site rich in evaporites evolved from recently erupted brine sourced from >35 km deep). The authors conclude that a sample return architecture from these young evaporite deposits offers greater science return—enabling high-resolution analysis of organic matter trapped in salt minerals and isotopes of refractory elements—for a similar cost and less science risk than in situ analyses. Six science objectives and two implementation concepts are described.

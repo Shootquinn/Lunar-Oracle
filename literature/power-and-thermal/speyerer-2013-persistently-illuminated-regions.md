@@ -10,6 +10,8 @@ Publisher URL: https://doi.org/10.1016/j.icarus.2012.10.010
 
 Peer-reviewed empirical remote-sensing study (multi-temporal image analysis) · School of Earth and Space Exploration, Arizona State University · Available online 27 October 2012, published in Icarus 222(1), 2013 · Not open access (Elsevier subscription journal, no open-access indicator in the source text)
 
+Source file: `speyerer_robinson2013.pdf`
+
 ---
 
 ## Abstract

@@ -10,6 +10,8 @@ Publisher URL: https://arxiv.org/abs/2005.05369
 
 Preprint (arXiv:2005.05369v1, posted 11 May 2020) · authors at University of Colorado Boulder (LASP), Weizmann Institute of Science, and Planetary Science Institute · the on-disk file is the preprint; the peer-reviewed version was published as Hayne, Aharonson, and Schorghofer (2021), Nature Astronomy, 5, 169-175, DOI 10.1038/s41550-020-1198-9 (external metadata, not printed on the preprint) · the ledger cites this as "hayne 2020", the preprint year
 
+Source file: `hayne2020.pdf`
+
 ---
 
 ## Abstract

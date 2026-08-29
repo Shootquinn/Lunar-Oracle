@@ -25,6 +25,8 @@ author line.
 
 Authors: Schunk, R. G., Babiak, S. D., & Evans, B. W. · Year: 2022 · Publisher URL: https://ntrs.nasa.gov/citations/20210026557 · Derived at sub-step 2.6 from this file's own `## Citation` block; a field absent here is absent from that block, not inferred.
 
+Source file: `IEEE 2022 Paper SH TCS Architecture and Technical Challenges Update.pdf`
+
 ## Abstract
 
 A NASA conceptual design of the Thermal Control System (TCS) for a crewed Lunar Surface Habitat
