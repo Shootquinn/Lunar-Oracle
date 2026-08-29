@@ -103,7 +103,13 @@ const R_S = /^(?!fa[0-8]-)[a-z0-9]+(-[a-z0-9]+)*\.md$/;
 const R_F = /^fa[0-8]-[a-z0-9]+(-[a-z0-9]+)*\.md$/;
 
 // NAMING.md section 8 / section 11 A3.
-const CEIL_RELPATH = 108, CEIL_LEAF = 64, CEIL_FOLDER = 32, CORPUS_DEPTH = 2;
+/* The component ceilings CEIL_LEAF = 64 and CEIL_FOLDER = 32 were RETIRED W5-9, 2026-08-29.
+ * Under CORPUS_DEPTH == 2 a relpath is 12 + len(folder) + len(leaf), so CEIL_RELPATH IS the
+ * constraint `len(folder) + len(leaf) <= 96` and 64/32 was one arbitrary partition of it. See
+ * NAMING.md sec.8 and corpus_suite.md sec.3 for the measurement. LEAF_REPORT is not a ceiling and
+ * nothing compares against it: it is carried so the report still states the longest leaf, which
+ * is the number a reader uses to judge headroom. */
+const CEIL_RELPATH = 108, CORPUS_DEPTH = 2, PREFIX = 12;
 
 // NAMING.md section 10, whitelisted BY NAME and never by pattern (A5, and corpus_suite NAM-12).
 const A5_EXCEPTIONS = ['may-1977-how-japans-economy-grew-so-fast-review.md'];
@@ -592,16 +598,18 @@ CHECKS.PTH = c => {
     maxRel = Math.max(maxRel, winLen);
     maxLeaf = Math.max(maxLeaf, d.leaf.length);
     if (winLen > CEIL_RELPATH) bad.push(`${d.rel} relpath ${winLen} > ${CEIL_RELPATH}`);
-    if (d.leaf.length > CEIL_LEAF) bad.push(`${d.rel} leaf ${d.leaf.length} > ${CEIL_LEAF}`);
     if (d.depth !== CORPUS_DEPTH) bad.push(`${d.rel} depth ${d.depth} != ${CORPUS_DEPTH}`);
   }
-  for (const f of c.folders) if (f.length > CEIL_FOLDER) bad.push(`folder ${f} length ${f.length} > ${CEIL_FOLDER}`);
-  /* The composite is reported alongside the component breaches, always, because the two carry
-   * different urgency and a reader who sees only "3 breaches" cannot tell a corpus that is broken
-   * on disk today from one that has spent its headroom. NAMING.md section 8's budget is
-   * 10 + 1 + 32 + 1 + 64 = 108: the components are what guarantee the composite, so a component
-   * breach is a real finding even while the composite still closes. */
-  const composite = `longest composite relpath ${maxRel}/${CEIL_RELPATH} (the budget still closes on disk), longest leaf ${maxLeaf}/${CEIL_LEAF}`;
+  /* WHAT IS REPORTED AND WHAT IS ASSERTED ARE DIFFERENT THINGS, and after the W5-9 retirement the
+   * difference is the whole point. ASSERTED: the composite relpath and the depth, which together
+   * are the machine-independent half of the 259-character git-for-Windows limit measured in
+   * NAMING.md section 8. REPORTED: the longest leaf and the tightest per-folder leaf budget
+   * (CEIL_RELPATH - PREFIX - len(folder)), which are what a reader needs to judge headroom before
+   * naming a new file. The old text here claimed "the components are what guarantee the composite",
+   * which is true and was the error: a guarantee that is strictly stronger than the thing guaranteed
+   * rejects names the constraint accepts, and it rejected three. */
+  const tight = c.folders.map(f => ({ f, b: CEIL_RELPATH - PREFIX - f.length })).sort((x, y) => x.b - y.b)[0];
+  const composite = `longest composite relpath ${maxRel}/${CEIL_RELPATH}, margin ${CEIL_RELPATH - maxRel}; longest leaf ${maxLeaf}; tightest folder leaf budget ${tight ? tight.b + ' in ' + tight.f + ' (' + tight.f.length + ')' : 'n/a'}`;
   out.push(bad.length ? FAIL(`PTH/A3 ${bad.length} component ceiling breaches: ${bad.slice(0, 6).join(' ; ')} -- ${composite}`)
     : OK(`PTH/A3 ${c.docs.length} files under the ceiling; ${composite}, all at depth ${CORPUS_DEPTH}`));
   return out;

@@ -1,7 +1,14 @@
 
 # The answer contract
 
-**Contract version: 4.**
+**Contract version: 5.**
+
+Version 5 is **one edit**, landed at sub-step 8.8 by The Software Engineer. It carries the **seventh
+refusal reason code**, `transfer-unevaluable`: the §5 table row, the arity words in §1 and §5, and the
+paragraph saying why it is a seventh code rather than a widening of `not-found`. The code was ruled
+into `oracle/router/classify.js` at W4-2 and had no contract row for a wave, so the router declared
+seven while this file said six and every consumer trusting the arity was wrong by one. Nothing in §1
+through §4 or §6 through §11 moved except §1's count of §5's reasons.
 
 Version 4 is **one edit**, landed at sub-step 8.7 by The Writer. It appends **§11**, which rules that
 The Fact-Checker's findings route to The Manager and stop there, and that her scope is bounded to
@@ -36,7 +43,7 @@ and it selects the wave.
 | `LITERATURE` | No app address resolved; retrieval confirmed at least one shelf file. | The answer, with a citation trace per claim, each naming its origin. | 1, by field |
 | `BOTH` | An app-sourced fact and a shelf-sourced fact answer two distinct questions. | Both, app fact first. | 1, by field |
 | `CONTESTED` | A sub-claim matched a contested-claims register axis of class `two_sided` or `false_pair` at classification time. | Every side, the axis named, no adjudication. | One per side, minimum two, no cap. Parallel, each briefed on one side only |
-| `REFUSE` | Nothing available answers, and one of six reasons in §5 says which. | The refusal, per §5. | 0 |
+| `REFUSE` | Nothing available answers, and one of seven reasons in §5 says which. | The refusal, per §5. | 0 |
 
 Where the app and a shelf candidate compete for the same fact, the app wins outright and the shelf
 figure is never folded in as a second `BOTH` sentence. `BOTH` requires two distinct questions.
@@ -161,7 +168,7 @@ LIMIT: this trace resolves to a prior conclusion of this project, not to a sourc
 
 ## 5. Refusals
 
-A refusal carries exactly one reason code, closed set of six. Each routes to a different owner, which
+A refusal carries exactly one reason code, closed set of seven. Each routes to a different owner, which
 is why they are not one code.
 
 | Code | Condition | Who owns the fix |
@@ -172,6 +179,26 @@ is why they are not one code.
 | `axis-incomplete` | A register axis matched and a member path does not resolve on disk. Never falls through to search. | A broken register row. |
 | `misclassified` | A searched retrieval returned a file belonging to an axis whose `match_keys` this question touched at any nonzero overlap, while classification did not fire that axis at its stated firing rule. | The axis's `match_keys`. |
 | `input-missing` | A required input is absent, empty, or unparseable. | The bootstrap. |
+| `transfer-unevaluable` | The transfer gate reached `unknown`: the object is present in the corpus and a condition of the transfer between two fields cannot be evaluated, because no source on disk measures it. Names the unmeasured condition and the region searched. | Whoever can measure the condition — a research question, not an acquisition. |
+
+**The seventh code, and why it is not a widening of `not-found`.** `transfer-unevaluable` was ruled
+into `oracle/router/classify.js` at W4-2 on W4-4's escalation from the transfer gate, and
+`oracle/transfer_gate.md` §3.3 is the escalation in its author's own words: the refusal was being
+written under `not-found` while *"shelf files were confirmed, and what is missing is a measurement of
+a condition rather than a source for a claim"*, and that seat named the choice as *"either a widened
+condition or a seventh code"* rather than making it, because a closed set in two files is a fork.
+
+It is a seventh code. `not-found`'s owner is *a corpus gap, and an acquisition decision*, and **no
+acquisition fixes a transfer nobody has measured** — the object is already on the shelf. Widening
+`not-found` to cover it would put two different owners behind one code, which is exactly the failure
+the `excluded` clause below spends its longest sentence preventing: a code must not tell the reader
+that the corpus is empty when it is not, and must not route a repair to somebody who cannot make it.
+
+**It has no position in the precedence order below, and that is a statement rather than an
+omission.** The order exists to say which code wins when several apply. This one is raised by the
+transfer gate — after classification, on a mechanism carried between two fields — and no question has
+yet produced it together with another code. **The first question that does is owed a ruling on where
+it sits**, by the seat that meets it, and the ruling is a contract edit like this one.
 
 **`misclassified` is a claim test, not a file test.** Its condition at version 1 was *"a searched
 retrieval returned a file that appears on the register"*, and a file is not a claim. A summary sitting
@@ -190,7 +217,7 @@ counterpart, composes nothing, and its only two outputs remain a refusal and a l
 with no ability to combine cannot become a reconciliation, and that is a property of its outputs
 rather than a promise about its use.
 
-**`excluded` is the weakest of the six and is written only when no other code applies.** It is the
+**`excluded` is the weakest of the seven and is written only when no other code applies.** It is the
 one code in this table whose owner is *nobody*, and **a code that routes to nobody must never mask a
 code that routes to someone.** Where an EXCLUSIONS entry matched and another code also applies, the
 other code is written and the exclusion sentence is printed as the refusal's *nearest present
@@ -490,6 +517,25 @@ a judgement about how related two changes feel.
 nothing else. It minted an integer rather than folding into 3 because **§9's own test says 3 had already
 been observed**: `oracle/deliverable_shape.md` states it was written against version 3, and the promoted
 suite's VER-2 names 3 in its report. Version 3 was a state somebody held, so version 4 is the next one.
+
+**Version 5 is the single edit landed at sub-step 8.8, Wave 5, by The Software Engineer.** It carries
+the seventh refusal reason code, `transfer-unevaluable`, and nothing else: §5's table row and its
+ruling paragraph, and the two places that stated the set's arity in words (§1's `REFUSE` row and §5's
+`excluded` clause). §2, §3, §4, §6 through §8, §10 and §11 do not move.
+
+**It mints an integer rather than folding into 4, and the test above is why.** Version 4 was
+committed to the repository and read by other seats across sub-step 8; §9's own closing sentence says
+the question closes *"at the moment of publication, which is a fact about the repository rather than a
+judgement about how related two changes feel."* Version 4 is published. So this is the next state,
+even though the acceptance suite was still pinned at 2 when the edit began and observed neither.
+
+**What this version does NOT do, and it is owed rather than absorbed.** `oracle/question_classes.json`
+still lists six `refusal_codes`. That artifact is not this seat's file, and the router already
+distinguishes the two directions: a code in the artifact that the router does not implement throws as
+a fork, while a code the router implements that the artifact has not written down is reported on
+`ctx.owed_contract_codes`. The seventh code is the one such code today, and it stays reported until the
+artifact's owner adds it. Also owed: `oracle/AMENDMENTS.tsv` takes a row for this edit, in the shape
+`AM-113` took for the last §5 edit, and that file is not this seat's either.
 
 **A section appended is not a section renumbered.** §6a and §10 are appended at the numbers they are
 because §1 through §9 are cited by number across this repository — in `oracle/register_schema.md`,

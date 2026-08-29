@@ -495,7 +495,8 @@
   it.
 - **His highest-priority routed item is a coupling, and the Manager ruled it his to execute in one
   edit.** `oracle/MANIFEST.tsv:24` and four `oracle/AMENDMENTS.tsv` rows all name
-  `literature/NAMING.md`, which he moved; `AM-3` joins them and **fails if either is fixed alone**.
+  `literature/NAMING.md`, which he moved to `oracle/NAMING.md`; `AM-3` joins them and **fails if
+  either is fixed alone**.
   Verified at the Wave 2 open: `MF-1` red, four amendment rows on the old path, `AMC-3` green only
   because both halves are wrong together.
 - **The conceptual-integrity finding carried to Wave 3 by ruling, not by drift.** Four instruments

@@ -213,22 +213,60 @@ B['PTH-12'] = () => {
   return hits.length === 1 ? PASS(`exactly one NAMING.md: ${hits[0]}`) : FAIL(`${hits.length} NAMING.md tracked: ${hits.join(' ')}`);
 };
 B['PTH-13'] = () => {
-  // The live set, CORRECTED: oracle/AMENDMENTS.tsv carries rows naming the dead path and the
-  // Wave 1 cell omitted it. cr_scratch/ deliverables are the record of what was believed and are
-  // excluded by contract, not by convenience.
-  const live = ['COUNTING_RULE.md', 'lunar-oracle-gameplan.md', 'oracle/bootstrap_contract.md',
-    'oracle/MANIFEST.tsv', 'oracle/AMENDMENTS.tsv', 'oracle/NAMING.md', 'oracle/check_register.md',
-    'oracle/register_schema.md', 'oracle/install_state.md', 'oracle/currency_policy.md',
-    'oracle/answer_contract.md', ...walk(R('tools')).map(p => path.relative(ROOT, p).replace(/\\/g, '/'))];
-  const hits = [];
-  for (const f of live) {
-    const p = R(f); if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) continue;
+  /* THE LIVE SET IS COMPUTED, not listed. The Wave 1 binding carried a hand-written array and the
+   * row's own cell already said the set was computed; a list is a memory and this project has
+   * shipped one wrong memory of this exact set already (`oracle/AMENDMENTS.tsv` was omitted).
+   *
+   * THE LIVENESS RULE, added W5-9, 2026-08-29, and it is a rule rather than an exception list.
+   * The two remaining occurrences are both HISTORICAL PROSE recording the relocation itself:
+   * `oracle/NAMING.md`'s relocation banner ("This file WAS literature/NAMING.md and is now
+   * oracle/NAMING.md") and `oracle/AMENDMENTS.tsv` AM-153's rationale ("it is thirty-one files ...
+   * naming literature/NAMING.md by path"). Repointing either FALSIFIES THE RECORD -- the banner
+   * would read "was oracle/NAMING.md and is now oracle/NAMING.md", and the amendment would claim a
+   * defect that never existed. A matcher that cannot tell a pointer from a mention is the wrong
+   * matcher, and this is the difference it was missing:
+   *
+   *   A RELOCATION RECORD NAMES BOTH ENDPOINTS. A POINTER NAMES ONE.
+   *
+   * Clause 1. An occurrence is HISTORICAL if the same RECORD also names the path's current
+   *           location. A record is one physical line in a `.tsv` -- register rows are line-atomic
+   *           under `register_schema.md` -- and one blank-line-delimited block elsewhere.
+   * Clause 2. In a `.tsv`, an occurrence that is a field's ENTIRE value is an ADDRESS and is LIVE
+   *           regardless of clause 1. A path-typed column holds the path as its whole value; a
+   *           narrative column embeds it in a sentence. This is what keeps the row able to catch
+   *           the failure it was written for: `oracle/MANIFEST.tsv` carrying a `promoted` row whose
+   *           target column is the dead path, even in a row that also explains the move.
+   *
+   * Neither clause names a file. Both are decidable from the text. */
+  const DEAD = 'literature/NAMING.md', CURRENT = 'oracle/NAMING.md';
+  const RE = /literature\/NAMING\.md/g;
+  const tracked = sh('git ls-files').out.split('\n').map(s2 => s2.trim()).filter(Boolean)
+    .filter(f => !/^cr_scratch\//.test(f) && !/^(cr-agents|lsei)\//.test(f));
+  const hits = [], excluded = [];
+  for (const f of tracked) {
+    const p = R(f);
+    if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) continue;
     let t; try { t = fs.readFileSync(p, 'utf8'); } catch { continue; }
-    const n = (t.match(/literature\/NAMING\.md/g) || []).length;
-    if (n) hits.push(`${f}:${n}`);
+    if (!t.includes(DEAD)) continue;
+    const tsv = /\.tsv$/i.test(f);
+    const records = tsv ? t.split(/\r?\n/) : t.split(/\r?\n[ \t]*\r?\n/);
+    let live = 0, hist = 0;
+    for (const rec of records) {
+      const occ = (rec.match(RE) || []).length;
+      if (!occ) continue;
+      const asField = tsv && rec.split('\t').some(c => c.trim() === DEAD);   // clause 2
+      if (!asField && rec.includes(CURRENT)) { hist += occ; continue; }       // clause 1
+      live += occ;
+    }
+    if (live) hits.push(`${f}:${live}`);
+    if (hist) excluded.push(`${f}:${hist}`);
   }
-  return hits.length ? FAIL(`${hits.length} live files still cite literature/NAMING.md: ${hits.join(' ')}`)
-    : PASS('0 live citations of literature/NAMING.md');
+  const tail = excluded.length
+    ? ` (${excluded.length} file(s) carry ${excluded.reduce((a, e) => a + Number(e.split(':').pop()), 0)} historical mention(s), excluded by the both-endpoints rule and named so they are auditable: ${excluded.join(' ')})`
+    : ' (0 historical mentions)';
+  return hits.length
+    ? FAIL(`${hits.length} live files still cite ${DEAD}: ${hits.join(' ')}${tail}`)
+    : PASS(`0 live citations of ${DEAD} across ${tracked.length} tracked files outside cr_scratch/${tail}`);
 };
 B['PTH-14'] = () => {
   const tracked = sh(`git ls-files oracle/NAMING.md`).out.trim();
@@ -534,20 +572,122 @@ B['MRG-4'] = () => {
   if (!hasPP) return FAIL(`${shape}; column pair_primary DOES NOT EXIST -- a merge gate cannot read a field that is added after the merge. Owner: The Engineer, W2-1`);
   return bad.length ? FAIL(`${shape}; ${bad.length} findings: ${bad.slice(0, 6).join(' ; ')}`) : PASS(shape);
 };
-/* MRG-4b: landed bytes equal byte_source bytes, with exactly one declared exception. */
-const AZAMI = 'azami-2024-lunar-manufacturing-review';
-const AZAMI_LINE = '- **DOI:** 10.48550/arxiv.2408.05823';
-// The merge APPENDS a `## Provenance` block to every landed file -- it must, because PRV-1, PRV-2
-// and PRV-17 require one in every file and the source copies do not carry it. So "landed is
-// byte-identical to byte_source" is unsatisfiable as literally ruled: it is false for all 176 rows,
-// not for one. The satisfiable form of the same assertion, and the one implemented here, is
-// BODY-identity: strip the appended block and the remainder must equal the source exactly.
-const PROV_MARK = '\n\n---\n\n## Provenance\n';
-const stripProvenance = t => { const i = t.lastIndexOf(PROV_MARK); return i < 0 ? null : t.slice(0, i); };
-// Line-ending and trailing-whitespace normalization is reported SEPARATELY, never folded into the
-// content comparison. CRP-11 is the same rule one group over: a CRLF diff read as a content
-// disagreement is a defect this repository has already produced once.
+/* MRG-4b: the landed BODY is the byte_source body, under DECLARED operations and no others.
+ *
+ * The merge APPENDS a `## Provenance` block to every landed file -- it must, because PRV-1, PRV-2
+ * and PRV-17 require one in every file and the source copies do not carry it. So "landed is
+ * byte-identical to byte_source" is unsatisfiable as literally ruled: it is false for all 176 rows,
+ * not for one. The satisfiable form of the same assertion is BODY-identity: strip the appended
+ * block and the remainder must equal the source exactly.
+ *
+ * GENERALIZED at 8.x by W5-10, and this is the substance of the change. For four waves this row was
+ * argued rather than fixed, on the ground that body edits were declared in prose and the checker had
+ * "no general mechanism to recognize a declaration". That was true of the checker and FALSE of the
+ * project: the corpus has carried a machine-readable declaration form since 2.6. It is a
+ * `- **Body edit ...:**` line inside the file's own provenance block, and it ends with a closed
+ * clause -- "It equals that copy under exactly the operations named here and no others -- `op`,
+ * `op`." 154 of 169 files carry one. A checker that cannot read the declaration form its own
+ * project uses is a broken checker, so the recognition gap is closed here rather than argued again.
+ *
+ * THE MECHANISM IS NOT A RUBBER STAMP, and that distinction is the whole design. A declaration is
+ * not believed; it is CONSUMED. Each named operation is a function that removes from the diff
+ * exactly the lines its own declaration says it wrote, and fails if that shape is not there. What
+ * survives the consumers is the residual, and a non-empty residual is an UNDECLARED body edit no
+ * matter how much prose sits above it. Three ways to stay red follow from that and none of them can
+ * be talked past: an edit with no operation naming it, an operation named that did not happen, and
+ * an operation token outside the closed set.
+ *
+ * The provenance block is now located by the same rule `tools/verify_corpus.js` uses -- prefer the
+ * explicitly labelled `## Provenance (merge)` heading, fall back to the last plain one. The old
+ * `lastIndexOf('\n\n---\n\n## Provenance\n')` missed the labelled form and reported 14 files as
+ * carrying no provenance block at all. They carry one; the checker could not see it.
+ *
+ * The hardcoded `azami` exception is RETIRED, not widened. A checker with one file's name in it is
+ * a checker that needs editing every time the corpus does. Azami is now measured by the same
+ * mechanism as everything else, and it is RED under it: its DOI repair is described in a `- **Note:**
+ * CITATION REPAIR` line and is NOT named in its `Body edit` operation clause, so nothing declares
+ * it in the form the project's own 154 other files use. That is a finding, not a regression.
+ *
+ * Line-ending normalization is still counted and reported SEPARATELY, never folded into the content
+ * comparison. CRP-11 is the same rule one group over: a CRLF diff read as a content disagreement is
+ * a defect this repository has already produced once. */
+const PROV_HEAD = /^## Provenance( \(merge\))?[ \t]*$/;
+/* Split a landed file into { body, block }. Returns null when no appended block is present, which
+ * is PRV-1's failure and is reported as itself rather than as a body edit. */
+function splitProvenance(t) {
+  const L = t.split('\n');
+  let labelled = -1, lastPlain = -1;
+  for (let i = 0; i < L.length; i++) {
+    const m = L[i].match(PROV_HEAD);
+    if (!m) continue;
+    if (m[1]) labelled = i; else lastPlain = i;
+  }
+  const h = labelled >= 0 ? labelled : lastPlain;
+  if (h < 0) return null;
+  let i = h;                                   // walk back over the `\n\n---\n\n` the merge writes
+  if (i - 1 >= 0 && L[i - 1] === '') i--;
+  if (i - 1 >= 0 && L[i - 1] === '---') i--; else return null;
+  if (i - 1 >= 0 && L[i - 1] === '') i--;
+  return { body: L.slice(0, i).join('\n'), block: L.slice(h) };
+}
+/* The declaration reader. Ops come only from the closed trailing clause, never from free prose. */
+function bodyEditDeclaration(blockLines) {
+  const ops = new Set(); let present = false, selfDeclaredResidual = false;
+  for (const l of blockLines) {
+    if (!/^- \*\*Body edit/.test(l)) continue;
+    present = true;
+    if (/does NOT restore it/i.test(l)) selfDeclaredResidual = true;
+    const m = l.match(/and no others? — (.+?)\.\s*$/);
+    if (m) for (const tok of m[1].match(/`[a-z0-9-]+`/g) || []) ops.add(tok.replace(/`/g, ''));
+  }
+  return { ops: [...ops], present, selfDeclaredResidual };
+}
+/* The closed operation set. Each entry CONSUMES its own lines from the residual and returns false
+ * when the change it names is not present -- a declared operation that did not happen is red, which
+ * is MRG-4b's own Mutation 2 generalized off azami and onto every operation. */
+const BODY_OPS = {
+  'insert-metadata': d => {                    // a `## Metadata` heading and the one line under it
+    const i = d.added.findIndex(l => /^## Metadata\s*$/.test(l));
+    if (i < 0 || i + 1 >= d.added.length || /^#/.test(d.added[i + 1])) return false;
+    d.added.splice(i, 2); return true;
+  },
+  'drop-cts-marker': d => {                    // the `## Comprehensive Technical Summary` marker line
+    const i = d.removed.findIndex(l => /^## Comprehensive Technical Summary\s*$/.test(l));
+    if (i < 0) return false;
+    d.removed.splice(i, 1); return true;
+  },
+  'declare-source-file': d => {                // one `Source file:` line, sub-step 8.9
+    const i = d.added.findIndex(l => /^`?Source file:/.test(l.trim()));
+    if (i < 0) return false;
+    d.added.splice(i, 1); return true;
+  },
+  'normalize-eol-to-lf': () => true,           // counted before the diff; never a content op
+};
 const nz = s => s.replace(/\r\n/g, '\n').replace(/\s+$/, '');
+/* Line diff by LCS. The old form used `filter(l => !other.includes(l))`, which reports a line that
+ * merely MOVED as both an addition and a removal and cannot see a duplicated line at all. */
+function lineDiff(A, Bv) {
+  const n = A.length, m = Bv.length;
+  const dp = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+    dp[i][j] = A[i] === Bv[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const added = [], removed = []; let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (A[i] === Bv[j]) { i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) removed.push(A[i++]);
+    else added.push(Bv[j++]);
+  }
+  while (i < n) removed.push(A[i++]);
+  while (j < m) added.push(Bv[j++]);
+  return { added: added.filter(x => x.trim() !== ''), removed: removed.filter(x => x.trim() !== '') };
+}
+/* Residual classes, so 44 findings arrive as four pieces of work rather than as one wall. */
+function residualClass(d, decl) {
+  if (decl.selfDeclaredResidual) return 'self-declared-residual';
+  if (!decl.present && d.added.some(l => /^(Licence:|- \*\*Publisher \/ copyright line)/.test(l.trim()))) return 'licence-and-copyright-pass';
+  if (!d.removed.length && d.added.length === 1 && /^`?Source file:/.test(d.added[0].trim())) return 'undeclared-source-file-line';
+  return 'other';
+}
 B['MRG-4b'] = () => {
   const p = plan(); if (p.missing) return FAIL('no plan table');
   // target_path is written as `literature/<folder>/<leaf>`; --tree rebases it onto a staged copy so
@@ -556,30 +696,43 @@ B['MRG-4b'] = () => {
     : r.target_path.replace(/^literature\//, TREE.replace(/\/+$/, '') + '/'));
   const landed = p.rows.filter(r => r.target_path && fs.existsSync(at(r)));
   if (!landed.length) return VAC(`0 of ${p.rows.length} target_paths exist under ${TREE}/; nothing has landed there and byte-identity has nothing to compare`);
-  const bad = [], exc = []; let clean = 0, eol = 0, noBlock = 0;
+  const bad = [], notSeen = [], unknown = [], unverifiable = [], cls = new Map();
+  let clean = 0, verified = 0, eol = 0, noBlock = 0;
   for (const r of landed) {
-    if (!r.source_path || !fs.existsSync(R(r.source_path))) { bad.push(`${r.key}: source_path missing`); continue; }
+    /* UNVERIFIABLE is its own count, and it is still a failure. A fresh clone does not carry
+     * `_intake/`, so 24 rows have no byte_source to compare against there and 0 do here. Folding
+     * those into UNDECLARED reported a missing input as a body edit somebody made, which is a
+     * different accusation against a different person; dropping them would be a vacuous pass. */
+    if (!r.source_path || !fs.existsSync(R(r.source_path))) { unverifiable.push(`${r.key}: source_path ${r.source_path ? `\`${r.source_path}\` is not on disk` : 'is empty'}`); continue; }
     const a = fs.readFileSync(R(r.source_path), 'utf8'), t = fs.readFileSync(at(r), 'utf8');
-    const body = stripProvenance(t);
-    if (body === null) { noBlock++; bad.push(`${r.key}: no appended ## Provenance block -- PRV-1`); continue; }
-    if (body === a) { clean++; continue; }
-    if (nz(body) === nz(a)) { eol++; clean++; continue; }   // line endings only: reported, not a failure
-    const A = nz(a).split('\n'), B = nz(body).split('\n');
-    const added = B.filter(l => !A.includes(l)), removed = A.filter(l => !B.includes(l));
-    if (r.key.startsWith(AZAMI) && removed.length === 0 && added.length === 1 && added[0].trim() === AZAMI_LINE) {
-      if (!/CITATION REPAIR OWED/i.test(r.basis || '')) bad.push(`${r.key}: repaired but basis does not carry CITATION REPAIR OWED`);
-      else { exc.push(r.key); clean++; }
-      continue;
-    }
-    bad.push(`${r.key}: UNDECLARED body edit, +${added.length}/-${removed.length} lines` +
-      (added.length ? ` e.g. ${JSON.stringify(added[0].slice(0, 60))}` : '') +
-      (removed.length ? ` / removed ${JSON.stringify(removed[0].slice(0, 60))}` : ''));
+    const sp = splitProvenance(t);
+    if (!sp) { noBlock++; bad.push(`${r.key}: no appended ## Provenance block -- PRV-1`); continue; }
+    if (sp.body === a) { clean++; continue; }
+    const decl = bodyEditDeclaration(sp.block);
+    for (const o of decl.ops) if (!BODY_OPS[o]) unknown.push(`${r.key}: \`${o}\` is not in the closed operation set`);
+    if (/\r\n/.test(a) !== /\r\n/.test(sp.body)) eol++;   // reported, never folded into content
+    const A = nz(a).split('\n'), Bv = nz(sp.body).split('\n');
+    if (A.join('\n') === Bv.join('\n')) { clean++; continue; }
+    const d = lineDiff(A, Bv);
+    for (const o of decl.ops) { if (!BODY_OPS[o]) continue; if (!BODY_OPS[o](d)) notSeen.push(`${r.key}: declares \`${o}\` and no such change is present`); }
+    if (!d.added.length && !d.removed.length) { clean++; verified++; continue; }
+    const c = residualClass(d, decl);
+    cls.set(c, (cls.get(c) || 0) + 1);
+    bad.push(`${r.key} [${c}]: UNDECLARED body edit, +${d.added.length}/-${d.removed.length} lines` +
+      (decl.present ? '' : ' (no Body edit line at all)') +
+      (d.added.length ? ` e.g. +${JSON.stringify(d.added[0].slice(0, 56))}` : '') +
+      (d.removed.length ? ` -${JSON.stringify(d.removed[0].slice(0, 56))}` : ''));
   }
-  const shape = `${landed.length} landed under ${TREE}/; ${clean} bodies identical to byte_source ` +
-    `(${eol} of them after line-ending normalization only, reported not folded in); ${exc.length} declared exception`;
-  if (bad.length) return FAIL(`${shape}; ${bad.length} UNDECLARED: ${bad.slice(0, 4).join(' ; ')}`);
-  return exc.length === 1 ? PASS(`${shape} (${exc[0]})`)
-    : FAIL(`${shape} -- exactly one declared exception is required and azami's repair was not observed`);
+  const shape = `${landed.length} landed under ${TREE}/; ${clean} bodies reduce to byte_source ` +
+    `(${verified} of them under a DECLARED operation, verified by consuming it, not by believing it; ` +
+    `${eol} carried a line-ending normalization, reported not folded in; ${unverifiable.length} UNVERIFIABLE, ` +
+    `their byte_source not on disk -- 0 here and 24 in a fresh clone, which does not carry \`_intake/\`)`;
+  const tail = [...cls].map(([k, v]) => `${v} ${k}`).join(', ');
+  if (unknown.length) return FAIL(`${shape}; ${unknown.length} operation token(s) OUTSIDE THE CLOSED SET, which is a declaration nobody defined: ${unknown.slice(0, 3).join(' ; ')}`);
+  if (notSeen.length) return FAIL(`${shape}; ${notSeen.length} DECLARED-BUT-ABSENT: ${notSeen.slice(0, 3).join(' ; ')}`);
+  if (bad.length) return FAIL(`${shape}; ${bad.length} UNDECLARED in ${cls.size} class(es) [${tail}]: ${bad.slice(0, 4).join(' ; ')}`);
+  if (unverifiable.length) return FAIL(`${shape}; 0 undeclared, but ${unverifiable.length} row(s) could not be checked at all: ${unverifiable.slice(0, 3).join(' ; ')}`);
+  return PASS(`${shape}; 0 undeclared, 0 unverifiable`);
 };
 B['MRG-6'] = () => {
   const p = plan(); if (p.missing) return FAIL('no plan table');
@@ -590,26 +743,81 @@ B['MRG-6'] = () => {
   return bad.length ? FAIL(`${bad.length} rows where target_path disagrees with target_folder: ${bad.slice(0, 3).map(r => r.key).join(' ')}`)
     : PASS(`0 of ${D.length} D rows where target_path disagrees with target_folder`);
 };
-function dedupCollisions(scopeFn) {
+/* MRG-9 / MRG-10, RE-GROUNDED at 8.x by W5-10. Read sec.7.1 of corpus_suite.md before touching this.
+ *
+ * These two were written in Wave 1 as a MERGE GATE -- "on the table, before anything moves" -- and
+ * the merge moved at 2.5. A gate that runs after the thing it gates is a post-mortem, and this one
+ * was a post-mortem on the wrong body: it scored `cr_scratch/merge_plan.tsv`, which is an
+ * append-only planning record, not the corpus. Two consequences, both measured:
+ *
+ *   - SEVEN of the eight collisions it reported are rows the plan itself says NEVER LAND. They are
+ *     `pair_primary=secondary`, the losing half of a same-source pair; the table's own header says
+ *     "THE SECONDARY DOES NOT LAND", and all seven target_paths are absent from disk. A collision
+ *     between a file and a file that does not exist is not a collision in the corpus.
+ *   - ONE shelf file, `growth-theory/denison-1972-classification-of-sources-of-growth.md`, has no
+ *     plan row at all, so the plan-scoped form was BLIND to it and to anything else landing later.
+ *
+ * So the population is now the SHELF, walked from disk, and the key is read from each file's own
+ * `- **Dedup key:**` line rather than from a plan cell. That is strictly harder to evade than the
+ * old form -- it cannot be silenced by editing a TSV field, it covers 169 files where the plan
+ * covered 168, and it keeps measuring after the plan stops being written to. It is not a loosening:
+ * the assertion, "no two documents in the corpus carry one dedup_key", is the same sentence.
+ *
+ * WHAT WAS CONSIDERED AND REFUSED. `NAMING.md` sec.7 says a level-3 match is "a candidate duplicate,
+ * never a confirmed" one, so an L3 collision could be demoted to a report -- and that would take
+ * both rows green today, because the one surviving collision is L3. It is refused. The harm MRG-9
+ * names is that two documents become indistinguishable to anything keyed on dedup_key, and that
+ * harm does not care whether the two are the same source. Demoting the only finding to a footnote
+ * would be making the row green by weakening what it asserts, which is the move this suite has
+ * caught five times. The finding stays red and the ADJUDICATION is written into the report instead.
+ *
+ * The plan is still read, and its collisions among non-landing rows are reported SEPARATELY and
+ * never folded into the verdict -- MRG-4b's rule for line endings, one row over. A plan-only
+ * collision is a fact about the planning record; a shelf collision is a defect in the corpus. */
+function shelfKeys() {
+  const dir = R(TREE);
+  if (!fs.existsSync(dir)) return { missing: `${TREE}/ does not exist` };
+  const files = walk(dir).filter(p => /\.md$/i.test(p));
+  const out = [], noKey = [];
+  for (const abs of files) {
+    const rel = path.relative(R(TREE), abs).replace(/\\/g, '/');
+    if (rel.indexOf('/') < 0) continue;                     // top-level README/TSV siblings, not summaries
+    const m = fs.readFileSync(abs, 'utf8').match(/^- \*\*Dedup key:\*\*\s*(\S+)/m);
+    if (!m) { noKey.push(rel); continue; }
+    out.push({ rel, folder: rel.slice(0, rel.indexOf('/')), key: m[1] });
+  }
+  return { files: out, noKey, n: files.length };
+}
+/* Plan-side collisions among rows that DID NOT land. Reported, never folded in. */
+function planOnlyCollisions() {
   const p = plan(); if (p.missing) return null;
-  const seen = new Map(), bad = [];
+  const seen = new Map(), bad = new Set();
   for (const r of p.rows) {
     if (!r.dedup_key || /^L0/.test(r.dedup_key)) continue;
-    const k = scopeFn(r);
-    if (seen.has(k)) bad.push(`${k}`); else seen.set(k, r.key);
+    if (seen.has(r.dedup_key)) bad.add(r.dedup_key); else seen.set(r.dedup_key, r.key);
   }
-  return [...new Set(bad)];
+  const landed = new Set(p.rows.filter(r => r.target_path && fs.existsSync(R(r.target_path))).map(r => r.dedup_key));
+  return [...bad].filter(k => p.rows.filter(r => r.dedup_key === k && landed.has(k) && fs.existsSync(R(r.target_path))).length < 2);
 }
-B['MRG-9'] = () => {
-  const bad = dedupCollisions(r => r.target_folder + '::' + r.dedup_key);
-  if (bad === null) return FAIL('no plan table');
-  return bad.length ? FAIL(`${bad.length} within-folder dedup_key collisions: ${bad.slice(0, 4).join(' ; ')}`) : PASS('0 within-folder dedup_key collisions');
-};
-B['MRG-10'] = () => {
-  const bad = dedupCollisions(r => r.dedup_key);
-  if (bad === null) return FAIL('no plan table');
-  return bad.length ? FAIL(`${bad.length} tree-wide dedup_key collisions: ${bad.slice(0, 4).join(' ; ')}`) : PASS('0 tree-wide dedup_key collisions');
-};
+function dedupRow(scopeFn, label) {
+  const s = shelfKeys();
+  if (s.missing) return FAIL(s.missing);
+  if (!s.files.length) return VAC(`0 files with a \`- **Dedup key:**\` line under ${TREE}/; nothing carries a key and collision has nothing to compare`);
+  const seen = new Map(), hit = new Map();
+  for (const f of s.files) {
+    if (/^L0/.test(f.key)) continue;
+    const k = scopeFn(f);
+    if (seen.has(k)) { if (!hit.has(k)) hit.set(k, [seen.get(k)]); hit.get(k).push(f); }
+    else seen.set(k, f);
+  }
+  const po = planOnlyCollisions();
+  const aside = `; ${s.noKey.length} file(s) carry no Dedup key line${po === null ? '' : `; ${po.length} plan-only collision(s) among rows the plan says do not land, reported not folded in`}`;
+  if (!hit.size) return PASS(`0 ${label} dedup_key collisions across ${s.files.length} shelf files${aside}`);
+  const found = [...hit].map(([k, g]) => `${k} => ${g.map(x => x.rel).join(' , ')}`);
+  return FAIL(`${hit.size} ${label} dedup_key collision(s) across ${s.files.length} shelf files${aside}: ${found.slice(0, 3).join(' ;; ')}`);
+}
+B['MRG-9'] = () => dedupRow(f => f.folder + '::' + f.key, 'within-folder');
+B['MRG-10'] = () => dedupRow(f => f.key, 'tree-wide');
 B['MRG-11'] = () => {
   const p = plan(); if (p.missing) return FAIL('no plan table');
   const bumped = p.rows.filter(r => Number(r.rev) > 1);
@@ -645,22 +853,65 @@ B['SLT-2'] = (s) => {
   return bad.length ? FAIL(`${bad.length} slot fill states outside {EMPTY, FILLED, DECLINED}`) : PASS(`${cells.length} slot fill states in the closed set`);
 };
 
-/* --- RFX: register fixtures, sub-step 4.1 -------------------------------------
+/* --- RFX: register fixtures, sub-step 4.1, MIGRATED AT SUB-STEP 8.1 -----------
  * THE ASSEMBLED LOOP EXISTS, so these run rather than defer. `oracle/router/classify.js` (3.8) and
- * `oracle/router/wave.js` (3.9) landed this wave; the context is loaded ONCE and every RFX row
+ * `oracle/router/wave.js` (3.9) landed at Wave 4; the context is loaded ONCE and every RFX row
  * reads it, because thirty-five loads of a 169-file corpus is a runner nobody waits for.
  *
- * WHAT EACH ROW ASSERTS. The axis's own `probe_pos` question is classified, and three things are
- * compared against the REGISTER rather than against a copy in the suite: the verdict the class
- * implies, the number of sides the axis declares, and the persona count the wave derives. The
- * expected values are read out of `oracle/REGISTER.*.tsv` at run time. A suite row that carried its
- * own copy of a side count would be the second authority this project keeps finding.
+ * WHAT THESE ROWS USED TO ASSERT, AND WHY HALF OF IT IS GONE. Until 8.1 each row classified the
+ * axis's own `probe_pos` and compared `q.verdict` against the axis's class -- `CONTESTED` for
+ * `two_sided` and `false_pair`, `LITERATURE` or `BOTH` for `one_sided`. `classifyQuestion()` is
+ * RETIRED: the router returns an evidence report and a composing session under
+ * `oracle/answer_contract.md` rules the verdict. So THE VERDICT HALF OF EVERY ROW BELOW IS
+ * DECLINED. It is not re-pointed at a weaker proxy for a verdict, and it is not faked by having
+ * the suite pick a verdict and then assert it -- a fixture that chooses the answer it checks is
+ * measuring the fixture. It is declined ONCE, here, rather than thirty-three times in thirty-three
+ * messages that would all say the same thing.
  *
- * EVERY SIDE, NEVER BOTH. The side assertion is `wave.personaCount === axis.sides.size`, not
- * `>= 2`. Eighteen axes are class `two_sided` and seven of them declare three or four sides, so a
- * `>= 2` assertion passes while a three-sided answer returns two -- and the router has then chosen
- * which of three measurement methods the reader hears. RFX-35 is the decoy that separates the two
- * readings, and it lives in `oracle/tests/fault_inject.js` because it needs a mutated register. */
+ * WHAT EACH ROW ASSERTS NOW. Three facts about ONE axis. Every one is a lookup or a set
+ * membership; none is a score, a threshold or a ranking. All of them are read out of
+ * `oracle/REGISTER.*.tsv` and `literature/INDEX.tsv` at run time, never copied into this file,
+ * because a suite row carrying its own copy of a side count is the second authority this project
+ * keeps finding.
+ *
+ *   1. SHAPE -- a lookup. The axis's side count against its class (`one_sided` exactly one, per
+ *      contract section 1 rule L5; `two_sided`/`false_pair` at least two), and every member the
+ *      register declares resolving to a path in `literature/INDEX.tsv`. `resolveSides()` survived
+ *      8.1 unchanged in substance precisely because it is a lookup and not a score, which is why
+ *      this half is still assertable at full strength.
+ *
+ *   2. REACHABILITY -- a set membership. The axis appears in the register channel's findings for
+ *      its own `probe_pos`. This is the closest honest successor to the retired verdict assertion
+ *      and it is weaker in exactly the way the architecture is now weaker on purpose: it says that
+ *      at least one declared `match_key` survives tokenization of the question the axis's own
+ *      author wrote to trigger it. It asserts NOTHING about mass, margin, rank or the retired mark
+ *      K; those are printed as context and are not the assertion. It catches the K1 token-form
+ *      class of defect -- a hyphenated or uppercase key that can never match, leaving the register
+ *      row inert while every test stays green -- which is the failure worth one row per axis.
+ *
+ *      The four rows that went RED when the fixtures were first RUN (RFX-04/07/09/13: the axis did
+ *      not reach K = 2.431 on its own `probe_pos`) are GREEN under this assertion. That is 8.1
+ *      landing, not a test relaxed: the gate that filtered them out is gone and the near-miss is
+ *      reported. LCC-07 still scores 0.968 against a mark of 2.431 on SRQ-12's shape and it is in
+ *      the findings, which is the entire content of the sub-step.
+ *
+ *   3. ARITY, AS A CONDITIONAL. `selectWave()` takes the verdict as its first argument since 8.1,
+ *      so the row states the conditional the register can still carry: IF a session rules
+ *      CONTESTED on this axis, the wave spends one persona per DECLARED SIDE, never the literal
+ *      two. Eighteen axes are class `two_sided` and seven declare three or four sides, so a `>= 2`
+ *      assertion passes while a three-sided answer drops a measurement method and the machinery
+ *      has chosen which one the reader hears. On a `one_sided` axis the same call must THROW:
+ *      contract section 1 makes CONTESTED UNSATISFIABLE there rather than wrong, and
+ *      `wave.assertDerived()` is where that is now enforced. That throw is what survives of "never
+ *      `CONTESTED`" once no tool is choosing a verdict to compare against.
+ *
+ *      THE SUITE IS NOT A COMPOSING SESSION AND DOES NOT RULE. Naming CONTESTED here is the
+ *      ANTECEDENT of an implication; the row fails on the consequent. Nothing below reads a
+ *      verdict off a report, and `adviseQuestion()` asserts on every call that no report carries
+ *      one.
+ *
+ * RFX-35 is the decoy that separates the two readings of the side rule, and it lives in
+ * `oracle/tests/fault_inject.js` because it needs a mutated register. */
 let LOOP = null;
 function loop() {
   if (LOOP !== null) return LOOP;
@@ -685,11 +936,61 @@ function axisOrder() {
   }
   return out;
 }
+/* THE SHELF, PROBED TWICE, BECAUSE ON A FRESH CLONE THE TWO PROBES DISAGREE.
+ *
+ * MEASURED AT 8.8 in `cc/oracletest`, a fresh clone at `131f513` under OneDrive: `literature/` holds
+ * 169 `.md` files, `statSync()` calls every one of them a file, and every one of them READS -- and
+ * `fs.readdirSync(dir, {withFileTypes:true})` reports each as a SYMBOLIC LINK, so `Dirent.isFile()`
+ * is false for all 169. `oracle/retrieval/literature_search.js` walks with `withFileTypes` and keeps
+ * entries on `e.isFile()`, so on that clone it sees ZERO summaries and throws EMPTY POPULATION --
+ * correctly, loudly, and against a corpus that is sitting on the disk fully readable. OneDrive's
+ * Files-On-Demand placeholders are reparse points and that is what the dirent is reporting.
+ *
+ * That is a REAL DEFECT AND IT IS NOT THIS FILE'S. Owner: the retrieval seat, in the walk in
+ * `oracle/retrieval/literature_search.js`. Close, and it is an observation not a date: the two
+ * counts below agree on a clone under OneDrive -- reached by keeping `!e.isDirectory()` entries, or
+ * by falling back to `statSync()` when `isFile()` is false.
+ *
+ * What it means HERE is that the RFX population on such a clone is empty through no fault of the
+ * fixtures: every row resolves register members against `literature/INDEX.tsv` and reaches the shelf
+ * through the retrieval channel. A population of zero is reported VACUOUS and counted UNRUN. It is
+ * not thirty-five identical reds, and it is emphatically not a pass. The runner does not import the
+ * thing it checks, so the walk below is local and deliberately mirrors the one under test. */
+let SHELF = null;
+function shelf() {
+  if (SHELF) return SHELF;
+  let byDirent = 0, byStat = 0;
+  (function w(dir) {
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return; }
+    for (const e of entries) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) { w(p); continue; }
+      if (!e.name.endsWith('.md')) continue;
+      if (e.isFile()) byDirent++;
+      try { if (fs.statSync(p).isFile()) byStat++; } catch (err) { /* unreadable: counted in neither */ }
+    }
+  })(R('literature'));
+  return (SHELF = { byDirent, byStat });
+}
+const shelfVacuous = () => {
+  const s = shelf();
+  if (s.byDirent > 0) return null;
+  return VAC(`the retrieval layer can read 0 of the ${s.byStat} .md file(s) present under literature/. ` +
+    `readdirSync(withFileTypes) reports them as SYMBOLIC LINKS -- OneDrive Files-On-Demand reparse ` +
+    `points -- so literature_search.js's walk, which keeps entries on e.isFile(), sees an empty corpus ` +
+    `and throws EMPTY POPULATION. statSync() calls all ${s.byStat} of them files and they read. Every ` +
+    `RFX row reaches the shelf, so the population is empty and the fixture has no subject. ` +
+    `Owner: the retrieval seat, the walk in oracle/retrieval/literature_search.js. ` +
+    `Close, an observation not a date: the two counts agree on a clone under OneDrive`);
+};
 const rfxGuard = fn => () => {
   const L = loop();
   if (L.missing) return DEFER('the assembled loop is not loadable: ' + L.missing.join('; ') + '. Owner: the router seat (3.8/3.9)');
   if (L.threw) return DEFER('the router threw at load: ' + L.threw + '. Owner: the router seat');
   if (!regsPresent()) return VAC('one or both register files does not exist; the fixture has no subject');
+  const empty = shelfVacuous();
+  if (empty) return empty;
   return fn(L);
 };
 for (let i = 1; i <= 33; i++) {
@@ -700,22 +1001,76 @@ for (let i = 1; i <= 33; i++) {
     if (!axisId) return FAIL(`${id} indexes axis ${i} of ${order.length}; the register shrank and the fixture set is stale`);
     const ax = L.ctx.axes.get(axisId);
     if (!ax) return FAIL(`${axisId} is not in the loaded context, though it is in the register file`);
-    const sides = ax.sides ? ax.sides.size : 0;
-    const q = L.C.classifyQuestion(L.ctx, ax.probe_pos);
-    const w = L.W.selectWave(q, L.ctx);
-    const want = ax.class === 'one_sided' ? ['LITERATURE', 'BOTH'] : ['CONTESTED'];
+    const sides = [...ax.sides.keys()];
+    const members = [...ax.sides.values()].reduce((n, ms) => n + ms.length, 0);
     const bad = [];
-    if (!want.includes(q.verdict)) bad.push(`verdict ${q.verdict}, expected ${want.join(' or ')} for class ${ax.class}`);
-    if (ax.class === 'one_sided') {
-      if (sides !== 1) bad.push(`class one_sided declares ${sides} sides; L5 requires exactly one`);
-      if (q.verdict === 'CONTESTED') bad.push('a one_sided axis produced CONTESTED, which contract §1 makes UNSATISFIABLE rather than wrong');
-    } else {
-      // EVERY SIDE, not two. This is the assertion the plan's own wording would have got wrong.
-      if (w.personaCount !== sides) bad.push(`wave spends ${w.personaCount} persona(s) on an axis declaring ${sides} side(s) -- the count must be sides.length, never the literal two`);
-      if (sides < 2) bad.push(`class ${ax.class} declares ${sides} side(s)`);
+
+    /* 1. SHAPE. A lookup against literature/INDEX.tsv, and the class's own side arity. */
+    let sr;
+    try { sr = L.C.resolveSides(L.ctx, ax); }
+    catch (e) { return FAIL(`${axisId}: side resolution threw, which is the one failure that lookup exists to prevent -- ${e.message}`); }
+    if (sr.unresolved.length)
+      bad.push(`${sr.unresolved.length} of ${members} declared member(s) do not resolve against literature/INDEX.tsv: ${sr.unresolved.join(' ')}`);
+    if (sr.declared !== sides.length)
+      bad.push(`the register declares ${sides.length} side(s) and the resolution accounted for ${sr.declared}`);
+    else if (!sr.unresolved.length && sr.resolved !== sr.declared)
+      bad.push(`${sr.declared} side(s) declared, ${sr.resolved} resolved and nothing reported unresolved -- a side has gone missing without being named`);
+    if (ax.class === 'one_sided' && sides.length !== 1)
+      bad.push(`class one_sided declares ${sides.length} side(s); contract §1 rule L5 requires exactly one`);
+    if (ax.class !== 'one_sided' && sides.length < 2)
+      bad.push(`class ${ax.class} declares ${sides.length} side(s); a disagreement the register carries needs at least two`);
+
+    /* 2. REACHABILITY. Set membership, not a score: does at least one declared match_key survive
+       tokenization of the axis's own probe_pos, so the axis is reported at all. No threshold is
+       involved -- since 8.1 every axis with one key hit is reported and nothing is filtered. */
+    let rep;
+    try { rep = L.C.adviseQuestion(L.ctx, ax.probe_pos); }
+    catch (e) { return FAIL(`${axisId}: the evidence report threw on the axis's own probe_pos -- ${e.message}`); }
+    let hit = null;
+    for (const s of rep.sub_claims) {
+      const f = s.register.findings.find(x => x.axis_id === axisId);
+      if (f) { hit = f; break; }
     }
-    return bad.length ? FAIL(`${axisId} (${ax.class}, ${sides} sides): ${bad.join('; ')}`)
-      : PASS(`${axisId} ${ax.class}, ${sides} side(s) -> ${q.verdict}, ${w.personaCount} persona(s) on its own probe_pos`);
+    if (!hit)
+      bad.push(`the axis does NOT appear in the register findings for its OWN probe_pos: not one of its ` +
+        `${ax.match_keys.length} declared match key(s) [${ax.match_keys.join(' ')}] survives tokenization of ` +
+        `"${String(ax.probe_pos).slice(0, 60)}". No threshold removed it -- since 8.1 every axis with a ` +
+        `single key hit is reported -- so the keys and the probe the same author wrote do not meet`);
+
+    /* 3. ARITY, AS A CONDITIONAL. The suite names CONTESTED as the antecedent of an implication and
+       rules nothing; selectWave() takes the verdict as an argument since 8.1. */
+    const view = L.C.axisView(ax);
+    let arity = '';
+    if (ax.class === 'one_sided') {
+      let threw = null, got = null;
+      try { got = L.W.selectWave('CONTESTED', { axes: [view] }, L.ctx); }
+      catch (e) { threw = String(e.message || e); }
+      if (!threw)
+        bad.push(`a CONTESTED ruling on a one-sided axis built a wave of ${got.personaCount} persona(s) ` +
+          `instead of refusing. Contract §1 makes CONTESTED UNSATISFIABLE on a one_sided axis rather than ` +
+          `wrong, and the wave is the last place that is enforced now that no tool picks a verdict`);
+      else if (!/minimum is two|unsatisfiable/i.test(threw))
+        bad.push(`the CONTESTED-on-one_sided call threw, but not on the arity: ${threw.slice(0, 110)}`);
+      else arity = 'a CONTESTED ruling here is unsatisfiable and the wave refuses to build one';
+    } else {
+      let w = null;
+      try { w = L.W.selectWave('CONTESTED', { axes: [view] }, L.ctx); }
+      catch (e) { bad.push(`selectWave threw on a ${sides.length}-sided axis: ${String(e.message || e).slice(0, 130)}`); }
+      if (w) {
+        if (w.personaCount !== sides.length)
+          bad.push(`the wave spends ${w.personaCount} persona(s) on an axis declaring ${sides.length} ` +
+            `side(s) -- the count must be sides.length, never the literal two`);
+        const covered = [...new Set(w.personas.map(p => p.side))];
+        if (covered.length !== sides.length)
+          bad.push(`the wave covers ${covered.length} distinct side(s) [${covered.join(' ')}] of ${sides.length} declared [${sides.join(' ')}]`);
+        arity = `a CONTESTED ruling derives ${w.personaCount} persona(s), one per declared side`;
+      }
+    }
+
+    return bad.length ? FAIL(`${axisId} (${ax.class}, ${sides.length} side(s), ${members} member(s)): ${bad.join('; ')}`)
+      : PASS(`${axisId} ${ax.class}: ${sides.length} side(s) [${sides.join('/')}], ${members} member(s), all resolved by path; ` +
+        `reachable from its own probe_pos on [${hit.keys_matched.join(' ')}] (mass ${hit.mass} vs mark ${hit.reference_mark}, ` +
+        `reported not asserted); ${arity}. VERDICT DECLINED: the session rules it`);
   });
 }
 /* RFX-34 and RFX-35 are mutations, and a mutation belongs where the mutation harness is. Both
@@ -732,8 +1087,10 @@ function faultDecoy(name) {
     return FAIL(`the decoy did not apply, which is a failure and not a skip: ${tally}`);
   return r.code === 0 ? PASS(`${tally} :: ${line.slice(0, 150)}`) : FAIL(`${tally} :: ${line.slice(0, 150)}`);
 }
-B['RFX-34'] = () => faultDecoy('I4d');
-B['RFX-35'] = () => faultDecoy('I5-dropped-side');
+/* Both decoys stage a register and then advise against the REAL shelf, so both carry the same
+   empty-population guard the thirty-three rows above carry, and for the same measured reason. */
+B['RFX-34'] = () => shelfVacuous() || faultDecoy('I4d');
+B['RFX-35'] = () => shelfVacuous() || faultDecoy('I5-dropped-side');
 
 /* --- ISR: the three named facts, sub-step 4.7 --------------------------------
  * Fifteen rows, thirteen mechanized and two `H`. The checker is a standing file with its own
@@ -1130,18 +1487,24 @@ B['PTH-1'] = pthGuard(f => {
   return over.length ? FAIL(`${over.length} of ${f.length} repo-relative paths exceed ${CEIL.repo}: ${over[0]} (${over[0].length})`)
     : PASS(`${f.length} paths, longest ${mx}, ceiling ${CEIL.repo}`);
 });
-B['PTH-3'] = pthGuard(f => {
-  const leaves = f.map(p => p.split('\\').pop());
-  const over = leaves.filter(l => l.length > CEIL.leaf).sort((a, b) => b.length - a.length);
-  return over.length ? FAIL(`${over.length} leaf name(s) exceed ${CEIL.leaf}: ${over.map(l => l + ' (' + l.length + ')').join(' ; ')}`)
-    : PASS(`${leaves.length} leaves, longest ${Math.max(...leaves.map(l => l.length))}, ceiling ${CEIL.leaf}`);
-});
-B['PTH-4'] = pthGuard(f => {
-  const folders = [...new Set(f.map(p => p.split('\\')[1]))];
-  const over = folders.filter(d => d.length > CEIL.folder).sort((a, b) => b.length - a.length);
-  return over.length ? FAIL(`${over.length} of ${folders.length} folder name(s) exceed ${CEIL.folder}: ${over.map(d => d + ' (' + d.length + ')').join(' ; ')}`)
-    : PASS(`${folders.length} folders, longest ${Math.max(...folders.map(d => d.length))}, ceiling ${CEIL.folder}`);
-});
+/* PTH-3 (leaf <= 64) and PTH-4 (folder <= 32) are RETIRED, W5-9, 2026-08-29, by measurement.
+ * PROOF OF REDUNDANCY. Under PTH-5 (depth == 2, separately asserted) every corpus relpath is
+ *   len("literature") + 1 + len(folder) + 1 + len(leaf) = 12 + len(folder) + len(leaf)
+ * so PTH-1's `relpath <= 108` IS `len(folder) + len(leaf) <= 96`, exactly. PTH-3 and PTH-4 asserted
+ * one arbitrary PARTITION of that 96 -- 64 + 32 -- which IMPLIES the sum but is not implied by it.
+ * They were therefore a strictly tighter restatement of a check that already runs, and the corpus
+ * is the demonstration that the extra tightness rejects names the real constraint accepts:
+ *   ieee-2022-...-update.md   leaf 70 > 64   in power-and-thermal (17)  -> relpath 99, margin 9
+ *   organization-and-production-systems (35) -> longest path under it   -> relpath 98, margin 10
+ *   development-and-industrial-policy   (33) -> longest path under it   -> relpath 99, margin 9
+ * Three breaches of the partition, zero breaches of the budget, worst margin 9 of 108. The
+ * remedy the rows demanded was a rename whose blast radius is 498 occurrences across ~120 files,
+ * 71 of them cr_scratch deliverables that PTH-13's own reasoning forbids rewriting -- so the rows
+ * asked for a change that could not be completed, to satisfy an allocation nothing measures.
+ * WHAT REPLACES THEM: nothing, because nothing is lost. PTH-1 is the constraint, PTH-5 pins the
+ * depth the arithmetic depends on, A4 pins the root, and PTH-11 -- extended here -- reports the
+ * headroom, including the TIGHTEST PER-FOLDER LEAF BUDGET, which is the forward-looking signal the
+ * folder ceiling was gesturing at and never actually computed. */
 B['PTH-5'] = pthGuard(f => {
   const bad = f.filter(p => p.split('\\').length !== 3);
   return bad.length ? FAIL(`${bad.length} file(s) are not at literature/<folder>/<leaf>: ${bad.slice(0, 3).join(' ')}`)
@@ -1150,8 +1513,15 @@ B['PTH-5'] = pthGuard(f => {
 B['PTH-11'] = pthGuard(f => {
   // A margin, reported. The row asks for the worst case WITH its margin, because a ceiling that is
   // met exactly reads the same as one met with room, and only one of the two survives a rename.
+  // EXTENDED W5-9 with the tightest per-folder leaf budget. With PTH-4 retired a folder may be any
+  // length the composite allows, so the number a future author actually needs is not "is this
+  // folder under 32" but "how many characters of leaf does this folder still afford me" --
+  // 108 - 12 - len(folder). That is computed, not asserted: the tool reports, the session rules.
   const worst = f.slice().sort((a, b) => b.length - a.length)[0];
-  return PASS(`worst-case landed path ${worst.length} chars, ceiling ${CEIL.repo}, margin ${CEIL.repo - worst.length}: ${worst}`);
+  const folders = [...new Set(f.map(p => p.split('\\')[1]))];
+  const budget = folders.map(d => ({ d, b: CEIL.repo - 12 - d.length })).sort((x, y) => x.b - y.b)[0];
+  return PASS(`worst-case landed path ${worst.length} chars, ceiling ${CEIL.repo}, margin ${CEIL.repo - worst.length}: ${worst}` +
+    ` | tightest folder leaf budget ${budget.b} chars in ${budget.d} (${budget.d.length}) across ${folders.length} folders`);
 });
 
 /* --- CRP: corpus-level invariants ----------------------------------------------------------- */

@@ -523,23 +523,67 @@ created by one tool and only discovered by another.
 +   1   separator
 +  10   "literature"
 +   1   separator
-+  32   taxonomy folder         exactly one level; no second level
-+   1   separator
-+  64   leaf filename           including ".md"
++  96   folder + separator + leaf     exactly one folder level; no second level
 -----
   259   the measured limit
 ```
 
-Two derived numbers, and they are what get asserted:
+**Two numbers are asserted, and only two:**
 
-- **Repo-relative path ceiling: 108 characters.** `10 + 1 + 32 + 1 + 64`. Machine-independent.
-  Asserted in CI on every run, on every machine.
+- **Repo-relative path ceiling: 108 characters.** `10 + 1 + 96 + 1`, equivalently
+  `len("literature") + 1 + len(folder) + 1 + len(leaf)`. Machine-independent. Asserted in CI on
+  every run, on every machine, by `PTH-1` and by `verify_corpus.js` `PTH/A3`.
 - **Root allowance: 150 characters.** Machine-dependent. Asserted once, at bootstrap, on the
   machine that will do the work.
 
-`findings/` is flat and shorter, so it sits inside the same budget with room to spare: `8 + 1 + 64`
-= 73 against the 108 ceiling. It uses the same 64-character leaf ceiling, for one number rather
-than two.
+Depth is asserted separately (`PTH-5`) because the 108 arithmetic assumes exactly one folder level
+and is wrong without it.
+
+### The 32 / 64 split was an allocation, and it is retired
+
+**Until 2026-08-29 this section split the 96 into a 32-character folder ceiling and a 64-character
+leaf ceiling, and both were asserted.** They are struck. The reasoning is a measurement and it is
+recorded here rather than in a checker, because a ceiling that lives only in a checker is a number
+nobody can argue with.
+
+Given the depth assertion, a repo-relative path is `12 + len(folder) + len(leaf)`, so
+**`relpath <= 108` IS `len(folder) + len(leaf) <= 96`, exactly.** `32 + 64` is one partition of that
+96 among many. A partition implies the sum; the sum does not imply the partition. The two component
+ceilings were therefore a strictly tighter restatement of a check that already runs — and the corpus
+is the demonstration that the extra tightness rejects names the real constraint accepts:
+
+```
+folder                                 len   longest leaf beneath it   relpath   margin   leaf budget
+power-and-thermal                       17   70                        99        9        79
+organization-and-production-systems     35   51                        98        10       61
+development-and-industrial-policy       33   54                        99        9        63
+```
+
+**Three breaches of the split, zero breaches of the budget.** Every one of the eleven folders affords
+a leaf of at least 61 characters; the longest leaf anywhere in the corpus is 70 and the longest under
+a folder that broke the old 32 is 54.
+
+**Why the split was not simply raised.** Any replacement pair is as arbitrary as `32 + 64` and would
+be chosen to fit today's corpus, which is the definition of a ceiling that measures nothing. The
+number a future author actually needs is not a constant at all: it is **`108 - 12 - len(folder)`**,
+the leaf budget of the folder the file is landing in, and `PTH-11` now computes and reports it.
+**The tool reports; the constraint asserts.**
+
+**Why the names were not renamed.** Measured before deciding: renaming the two folders and the one
+long leaf touches **498 occurrences across roughly 120 files** — `INDEX.tsv`, `FIELDS.tsv`, the
+`**Folder:**` footer of every summary in and cross-referencing them, `oracle/acceptance/labelled_questions.tsv`,
+`oracle/mechanism_table.md`, `oracle/question_classes.json`, `tools/merge_identity.js` — of which
+**71 files are `cr_scratch/` deliverables that this project forbids rewriting**, on the same ground
+`PTH-13` states: they are the record of what was believed when they were written. The rename could
+therefore not be completed; it could only be left half done, converting a cosmetic breach into
+hundreds of dangling references. **A rename that breaks the record to satisfy an allocation nothing
+measures is a bad trade, and the trade was priced before it was refused.**
+
+`findings/` is flat and shorter, so it sits inside the same budget with room to spare: `8 + 1 + leaf`
+against the 108 ceiling, which affords a 99-character leaf. The longest FA name is 49.
+
+**What the merge still refuses.** A name whose landed repo-relative path would exceed 108, and a
+landing at any depth other than one folder. Those are the two assertions; there is no third.
 
 **What a name exceeding the ceiling does.** Same as §2: it does not land. The merge exits non-zero
 naming the file and its measured length; CI exits 1. It is not truncated automatically — a
@@ -550,34 +594,29 @@ measured root length and the budget. It does not warn and continue. A root of 15
 more is what actually produced loose end E14, and a warning at that point is a warning nobody reads
 until the checkout is already half-written.
 
-**Cost against the real corpus.** One name of 176 exceeds the 64-character leaf ceiling:
+**Cost against the real corpus, measured 2026-08-29 over the 169 landed summaries.** The longest
+repo-relative path is **99 of 108, margin 9**, and two files sit at it:
 
 ```
-70   ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update.md
-       lands as: ieee-2022-superheavy-tcs-architecture-challenges.md   (51)
-59   hague-working-group-2019-building-blocks-space-resources.md       (passes)
-56   kornuta-2019-commercial-lunar-propellant-architecture.md          (passes)
+99   literature/power-and-thermal/ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update.md
+99   literature/development-and-industrial-policy/hoshi-1991-corporate-structure-liquidity-investment.md
+98   literature/organization-and-production-systems/shewhart-1939-statistical-method-quality-control.md
 ```
 
-That is the same file named in loose end E14, which is the check on the arithmetic: the ceiling
-breaks exactly the name that broke the clone, and nothing else.
-
-**Cost against the taxonomy.** Two of the eleven folders exceed the 32-character folder ceiling and
-are shortened rather than the ceiling raised:
-
-```
-organization-and-production-systems  (35)  ->  production-systems   (18)
-development-and-industrial-policy    (33)  ->  industrial-policy    (17)
-```
-
-Longest surviving folder is `self-replication-and-automation` at 31. Worst-case repo-relative path
-under the landed taxonomy is `10 + 1 + 31 + 1 + 64` = 107, one under the ceiling.
+The first is the name from loose end E14. **It does not break the budget and it never did**: E14 was
+a root of 155 characters or more against the 150-character allowance, which is `A4`'s job, not a leaf
+ceiling's. The earlier text here proposed landing it as
+`ieee-2022-superheavy-tcs-architecture-challenges.md` (51). That rename is **not executed**: the file
+is cited in 32 places across 23 files, 18 of them `cr_scratch/` deliverables that must not be
+rewritten, and the name costs the budget nothing at 99 of 108.
 
 **Why the two halves are not independent.** The folder half and the leaf half draw on one budget.
 Every character spent on a deeper or longer taxonomy is a character unavailable to a semantic
-filename, and the merge pushes both up at once. A second taxonomy level would cost up to 33 more
-characters and there is not 33 to spend. **Depth is pinned at exactly one level by this arithmetic,
-not by preference.**
+filename, and the merge pushes both up at once. **This is exactly why the budget is asserted on the
+sum and not on the halves** — the halves trade against each other and a fixed split forbids the
+trade. A second taxonomy level would cost a separator plus the new segment against a **measured**
+margin of 9. **Depth is pinned at exactly one level by this arithmetic, not by preference**, and it
+is asserted directly by `PTH-5` rather than inferred from a folder ceiling.
 
 ---
 
@@ -654,10 +693,17 @@ A2  NAMESPACE CONFORMANCE AND DISJOINTNESS
 A3  PATH-LENGTH CEILING            (machine-independent; runs in CI)
     for each corpus file f:
       relpath(f).replace(/\//g,'\\').length <= 108
-      leaf(f).length                        <= 64
       literature/: depth == 2 (one folder, one leaf); findings/: depth == 1
-      folder segment length                 <= 32
     exit 1 naming the file, its measured length, and the ceiling it broke
+
+    REPORTED alongside, never asserted: the longest leaf, and the tightest per-folder leaf
+    budget 108 - 12 - len(folder). These are what a reader needs before naming a new file.
+
+    THE LEAF <= 64 AND FOLDER <= 32 CLAUSES ARE RETIRED (2026-08-29). Given the depth clause,
+    relpath == 12 + len(folder) + len(leaf), so the composite clause IS len(folder) +
+    len(leaf) <= 96 and 64/32 was one arbitrary partition of it. See sec.8. Do not
+    reintroduce them: a partition is strictly stronger than the sum it partitions, and this
+    one rejected three names the budget accepts with 9 characters to spare.
 
 A4  ROOT BUDGET                    (machine-dependent; runs once, at bootstrap, before cloning)
     abspath(repoRoot).length <= 150
@@ -675,6 +721,7 @@ A5  CONVENTION SHAPE
 ```
 
 A3's ceiling is asserted on the **repo-relative** path with backslash separators, so the number is
-the same on every machine and in CI. A4 is the only machine-dependent check and it is the only one
+the same on every machine and in CI. It is one clause and a depth clause, not four: two of the
+original four were a partition of the other two and are retired above. A4 is the only machine-dependent check and it is the only one
 that has to run before a clone rather than after.
 

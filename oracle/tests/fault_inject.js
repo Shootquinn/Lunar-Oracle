@@ -39,9 +39,14 @@ const REGISTERS = ['oracle/REGISTER.lunar.tsv', 'oracle/REGISTER.econ.tsv'];
 const BASE = {
   appPath: R('lsei/index.html'),
   // ABSOLUTE, deliberately. `loadContext` resolves a relative litDir against `root`, and three
-  // decoys below inject through `root` because the loader ignores `registerPaths`. Without this the
-  // shelf vanishes under the fake root and every one of them refuses `input-missing` before it
-  // reaches the assertion it was written for -- the neighbouring-assertion failure again.
+  // decoys below inject through `root`. Without this the shelf vanishes under the fake root and
+  // every one of them refuses `input-missing` before it reaches the assertion it was written for
+  // -- the neighbouring-assertion failure again.
+  //
+  // THE `registerPaths` ENTRY BELOW IS THE DEFAULT AND IS OVERRIDDEN BY EVERY FAKE-ROOT DECOY.
+  // It named the REAL registers back when the loader ignored the option; the loader honours it
+  // since 8.1, so a decoy that left it in place would stage a mutation and then read past it.
+  // See the note above `fakeRoot()`.
   litDir: R('literature'),
   registerPaths: REGISTERS.map(R),
   indexPath: R('literature/INDEX.tsv'),
@@ -73,7 +78,19 @@ function copy(src, dst) {
  *      rather than allowed to produce any verdict at all.
  * The signature divergence is routed back to W4-2 rather than worked around: a body that diverges
  * from a frozen signature is the body's bug.
+ *
+ * THE ROUTE WAS REPAIRED AT 8.1 AND THAT BROKE THE WORKAROUND, WHICH IS THE RIGHT WAY ROUND.
+ * `loadContext` now honours `registerPaths` -- and BASE passes ABSOLUTE paths to the REAL registers,
+ * so the moment the honouring landed, every fake root staged a mutated register that the loader
+ * then declined to read in favour of the real one. `reached(ctx)` caught it and reported NOT
+ * APPLIED, which is the second half of the fix above doing exactly its job three waves later. So
+ * the decoys now pass `registerPaths` at the STAGED files as well as `root`: the interface is used
+ * because the interface works, and `root` stays because `literature/INDEX.tsv` is resolved off it.
  */
+/* The staged register list for a fake root, honouring an override that omitted a file. Computed
+   from what is on disk rather than from the override map, so a decoy cannot name a path it did not
+   write. */
+const stagedRegisters = d => REGISTERS.map(f => path.join(d, f)).filter(p => fs.existsSync(p));
 function fakeRoot(name, registerOverrides) {
   const d = stage(name);
   fs.mkdirSync(path.join(d, 'oracle', 'router'), { recursive: true });
@@ -82,7 +99,14 @@ function fakeRoot(name, registerOverrides) {
   // "literature/INDEX.tsv is absent" -- a real refusal, correctly raised, and NOT the one either
   // decoy was aimed at. A decoy that fires a neighbouring assertion has not tested its own, and
   // the next person to read the green would conclude the member-resolution path was exercised.
+  // THE LIST GREW AT 8.1 AND THE GROWTH WAS INVISIBLE UNTIL THEN. `oracle/thin_patches.json` and
+  // `oracle/router/thin_threshold.json` became inputs of `loadContext` after this function was
+  // written, so every fake root refused `input-missing` on the thin-patch register before it built
+  // a single axis. Nothing reported it, because `classifyQuestion()` threw the retirement message
+  // first and three decoys credited any throw. That is this file's own lesson landing on this file:
+  // a decoy that fires a NEIGHBOURING assertion has not tested its own.
   for (const f of ['oracle/router/excluded_nodes.json', 'oracle/router/axis_threshold.json',
+                   'oracle/router/thin_threshold.json', 'oracle/thin_patches.json',
                    'literature/INDEX.tsv', 'literature/FIELDS.tsv'])
     copy(R(f), path.join(d, f));
   for (const f of REGISTERS) {
@@ -96,6 +120,18 @@ function fakeRoot(name, registerOverrides) {
 /* `reached` is checked AFTER the context loads and BEFORE the verdict is believed. A decoy whose
  * mutation did not reach the loaded context is NOT APPLIED, which is a failure, not a skip. */
 
+/* MIGRATED AT SUB-STEP 8.1. This function used to call `classifyQuestion()` and return the verdict
+ * and reason code it produced. That function is RETIRED -- the router advises and the composing
+ * session rules -- so every call here threw, and three decoys whose `expect()` credits any throw
+ * (I4a, I4c, I4d) went GREEN on the retirement message rather than on the fault they inject. A
+ * decoy that passes on the wrong throw is the false green this whole file exists to prevent, in
+ * this file.
+ *
+ * It now runs `adviseQuestion()` and hands the EVIDENCE REPORT to `expect()`, together with the
+ * loaded modules so that a decoy about the wave can rule its own antecedent verdict and call
+ * `selectWave(verdict, ruling, ctx)` itself. THE STAGE STILL MATTERS AND IS STILL RETURNED: a
+ * throw at `load` is a startup refusal, which is what I4b and I4c assert, and a throw at `advise`
+ * is the loop reaching the top, which is what I4a asserts. */
 function runLoop(opts, question) {
   // Loaded fresh each time so a cached context cannot carry an unmutated input into a decoy.
   for (const k of Object.keys(require.cache)) if (/oracle[\\/]router[\\/]/.test(k)) delete require.cache[k];
@@ -104,16 +140,26 @@ function runLoop(opts, question) {
   let ctx;
   try { ctx = C.loadContext(opts); }
   catch (e) { return { stage: 'load', threw: true, message: String(e.message || e) }; }
-  let q;
-  try { q = C.classifyQuestion(ctx, question); }
-  catch (e) { return { stage: 'classify', threw: true, message: String(e.message || e), ctx }; }
-  let wave = null;
-  try { wave = W.selectWave(q, ctx); } catch (e) { wave = { error: String(e.message || e) }; }
-  return { stage: 'answered', threw: false, verdict: q.verdict, reason_code: q.reason_code, q, wave, ctx };
+  let report;
+  try { report = C.adviseQuestion(ctx, question); }
+  catch (e) { return { stage: 'advise', threw: true, message: String(e.message || e), ctx, C, W }; }
+  return { stage: 'advised', threw: false, report, ctx, C, W };
+}
+/* The axis's own finding on the report, across sub-claims. Returns null when the axis is not
+   reported at all, which is a distinct result from being reported with a defect. */
+function findingFor(report, axisId) {
+  for (const s of (report.sub_claims || [])) {
+    const f = (s.register.findings || []).find(x => x.axis_id === axisId);
+    if (f) return f;
+  }
+  return null;
 }
 const describe = r => r.threw ? 'THREW at ' + r.stage + ': ' + r.message.slice(0, 130)
-  : 'returned ' + r.verdict + (r.reason_code ? '/' + r.reason_code : '') +
-    (r.wave && r.wave.personaCount != null ? ', ' + r.wave.personaCount + ' persona(s)' : '');
+  : (r.report.inputs_unavailable && r.report.inputs_unavailable.length
+      ? 'ADVISED with inputs unavailable: ' + r.report.inputs_unavailable.join('; ').slice(0, 120)
+      : 'ADVISED: ' + r.report.findings_count + ' finding(s) over ' + r.report.sub_claim_count +
+        ' sub-claim(s), ' + (r.report.sub_claims[0] ? r.report.sub_claims[0].register.findings.length : 0) +
+        ' axis/axes with a key hit');
 
 /* ------------------------------------------------------------- the decoys */
 /* Each: `id`, `what` (the I4 clause, verbatim in substance), `build` returning
@@ -152,9 +198,14 @@ const DECOYS = [
     };
   },
   expect(r) {
-    if (r.threw) return { pass: true, why: 'the empty population reached the top as a throw' };
-    if (r.verdict === 'REFUSE') return { pass: false, why: 'a CONFIDENT REFUSE over an empty corpus. An empty list must never read as a clean one: the run cannot tell "nobody wrote it" from "I did not look"' };
-    return { pass: false, why: 'answered ' + r.verdict + ' over an empty corpus' };
+    /* The PASS CONDITION IS UNCHANGED at 8.1 -- the empty population must reach the top as a throw
+       -- and it is now reached on the throw this decoy injects rather than on the retired
+       classifyQuestion message. The failure branches are re-pointed at the evidence report because
+       there is no verdict to name in one. */
+    if (r.threw) return { pass: true, why: 'the empty population reached the top as a throw at ' + r.stage + ': ' + r.message.slice(0, 70) };
+    if (r.report.no_findings_anywhere)
+      return { pass: false, why: 'ADVISED "no findings anywhere" over an empty corpus. An empty list must never read as a clean one: the report cannot tell "nobody wrote it" from "I did not look"' };
+    return { pass: false, why: 'advised over an empty corpus with ' + r.report.findings_count + ' finding(s) and no throw' };
   },
 },
 
@@ -165,6 +216,7 @@ const DECOYS = [
   build() {
     const d = stage('no-app');
     const p = path.join(d, 'index.html');   // deliberately never created
+    this.staged = p;
     return {
       opts: Object.assign({}, BASE, { appPath: p }),
       question: 'What is water output under Agency Led Baseline in 2040?',
@@ -172,13 +224,48 @@ const DECOYS = [
       dir: d,
     };
   },
+  /* REWRITTEN at 8.1 by W5-10, and the assertion got STRICTER rather than looser.
+   *
+   * The old form read `r.verdict` and `r.reason_code` off the loop's return. Those fields were the
+   * router DECIDING, and the author retired that at 8.1: the router advises. So the old expect()
+   * asserted a behaviour that no longer exists, and it failed on the migration throw rather than on
+   * anything about a missing app -- the throw it was reading said `classifyQuestion() is RETIRED`.
+   * A red for the wrong reason is the same defect class as a green for the wrong reason: in both,
+   * the control that was written was never exercised.
+   *
+   * The PROPERTY is unchanged and is the one I4b names -- a missing app is reported as a missing
+   * app, and the shelf never silently substitutes for it. Under an advising router that property is
+   * observable in MORE detail than a verdict field ever carried, and all four halves are asserted:
+   *   1. the missing input is NAMED, not merely flagged -- `inputs_unavailable` carries the path;
+   *   2. `sub_claims` is EMPTY, so a literature-only answer is not merely discouraged but
+   *      impossible: there are no sub-claims to carry one and `findings_count` is 0;
+   *   3. the report carries NO decision field, which is 8.1's own rule and is what stops this
+   *      decoy from quietly re-acquiring a verdict to read;
+   *   4. `ctx.refuse` records `input-missing`, so contract sec.3's zero-persona timing still holds.
+   * The old form asserted only that some throw mentioned the word "app". */
   expect(r) {
-    if (r.threw) return { pass: /index\.html|app|clone|ENOENT|not found/i.test(r.message), why: 'the missing app named in the throw' };
-    if (r.verdict === 'REFUSE' && r.reason_code === 'input-missing')
-      return { pass: true, why: 'refused input-missing, per contract §3: a missing input fires before classification with zero personas spent' };
-    if (r.verdict === 'LITERATURE')
-      return { pass: false, why: 'A LITERATURE-ONLY ANSWER TO A QUESTION THAT NEEDED THE APP. This is the exact failure INV-7 names: the shelf silently substitutes for the authority' };
-    return { pass: false, why: 'returned ' + r.verdict + '/' + r.reason_code };
+    const names = s => typeof s === 'string' && (s.includes(this.staged) || /index\.html/i.test(s));
+    if (r.threw) return { pass: names(r.message), why: 'threw at ' + r.stage + ' rather than advising; the missing app is ' + (names(r.message) ? '' : 'NOT ') + 'named in the throw' };
+    const rep = r.report || {};
+    const iu = rep.inputs_unavailable || [];
+    const subs = rep.sub_claims || [];
+    if (!iu.length && subs.length)
+      return { pass: false, why: 'A LITERATURE-ONLY ANSWER TO A QUESTION THAT NEEDED THE APP. This is the exact failure INV-7 names: ' +
+        'the app is absent, the report does not say so, and it offers ' + rep.findings_count + ' finding(s) over ' + subs.length +
+        ' sub-claim(s) drawn from the shelf. The shelf silently substitutes for the authority' };
+    if (!iu.length) return { pass: false, why: 'the app is absent and inputs_unavailable is EMPTY: the report does not report it at all' };
+    if (!iu.some(names)) return { pass: false, why: 'inputs_unavailable is non-empty but does not NAME the missing app: ' + JSON.stringify(iu.slice(0, 3)) +
+      '. A reader told "an input is missing" cannot go and fix it; a reader told which one can' };
+    if (subs.length) return { pass: false, why: 'the missing app is named, but the report ALSO carries ' + subs.length +
+      ' sub-claim(s) and ' + rep.findings_count + ' finding(s). A named refusal beside a shelf answer is still a shelf answer' };
+    if ('verdict' in rep || 'reason_code' in rep)
+      return { pass: false, why: 'the report carries a decision field (' + Object.keys(rep).filter(k => k === 'verdict' || k === 'reason_code').join(',') +
+        '), and 8.1 retired the router deciding. The session rules the verdict; this report is evidence' };
+    const cr = (r.ctx && r.ctx.refuse) || null;
+    if (!cr || cr.reason_code !== 'input-missing')
+      return { pass: false, why: 'inputs_unavailable is right but ctx.refuse is ' + JSON.stringify(cr) + '; contract sec.3 puts a missing input BEFORE the wave, at zero persona cost, and that timing is what ctx.refuse records' };
+    return { pass: true, why: 'the missing app is NAMED in inputs_unavailable (' + JSON.stringify(iu[0].slice(0, 60)) + '), sub_claims is empty and findings_count is 0 ' +
+      'so a shelf-only answer is impossible, the report carries no decision field, and ctx.refuse records input-missing before the wave' };
   },
 },
 {
@@ -221,7 +308,7 @@ const DECOYS = [
     const realAxes = fs.readFileSync(R('oracle/REGISTER.lunar.tsv'), 'utf8').split('\n').filter(l => l.startsWith('A\t')).length;
     const stagedAxes = bad.split('\n').filter(l => l.startsWith('A\t')).length;
     return {
-      opts: Object.assign({}, BASE, { root: d }),
+      opts: Object.assign({}, BASE, { root: d, registerPaths: stagedRegisters(d) }),
       question: 'What is the water ice concentration in the regolith at Cabeus crater?',
       applied: { ok: realAxes > 0 && stagedAxes === 0, what: 'real lunar register carries ' + realAxes + ' A rows; the staged one carries ' + stagedAxes + ' while its H row still declares 15' },
       reached: ctx => (!ctx || !ctx.axes) ? { ok: false, what: 'the context refused before axes were built: ' + JSON.stringify((ctx && ctx.refuse) || 'no ctx') } : ({ ok: ![...ctx.axes.keys()].some(k => /^LCC-/.test(k)),
@@ -230,10 +317,16 @@ const DECOYS = [
     };
   },
   expect(r) {
-    if (r.threw) return { pass: true, why: 'startup refusal: the declared size and the parsed size disagreed and the load refused' };
-    if (r.verdict === 'CONTESTED')
-      return { pass: false, why: 'CONTESTED off a register that parsed to zero lunar rows -- impossible, so the axis came from somewhere the decoy did not stage' };
-    return { pass: false, why: 'the run proceeded and returned ' + r.verdict + '. The contested-claims invariant is now switched off and every other test in the suite still passes green. This is the failure INV-8 calls the one people forget' };
+    /* The PASS CONDITION IS UNCHANGED at 8.1 and is now stricter about WHERE: the refusal must be
+       at STARTUP, which is the whole content of INV-8. Before this migration any throw counted, and
+       the throw actually being counted was `classifyQuestion() is RETIRED` -- a green for a startup
+       refusal that had not been observed. */
+    if (r.threw && r.stage === 'load') return { pass: true, why: 'startup refusal: the declared size and the parsed size disagreed and the load refused' };
+    if (r.threw) return { pass: false, why: 'threw at ' + r.stage + ' rather than at load. The register was accepted at startup and the failure surfaced later: ' + r.message.slice(0, 90) };
+    const lcc = (r.report.sub_claims || []).some(s => s.register.findings.some(f => /^LCC-/.test(f.axis_id)));
+    if (lcc)
+      return { pass: false, why: 'the report carries LCC findings off a register that parsed to zero lunar rows -- impossible, so the axes came from somewhere the decoy did not stage' };
+    return { pass: false, why: 'the load ACCEPTED a register whose H row declares 15 axes and whose body carries none, and advising proceeded. The contested-claims invariant is now switched off and every other test in the suite still passes green. This is the failure INV-8 calls the one people forget' };
   },
 },
 
@@ -250,7 +343,7 @@ const DECOYS = [
     const mutated = src.replace(target, DECOY);
     const d = fakeRoot('missing-member', { 'oracle/REGISTER.lunar.tsv': mutated });
     return {
-      opts: Object.assign({}, BASE, { root: d }),
+      opts: Object.assign({}, BASE, { root: d, registerPaths: stagedRegisters(d) }),
       question: 'What is the water ice concentration in the regolith at Cabeus crater?',
       applied: { ok: src.includes(target) && !mutated.includes(target) && mutated !== src,
         what: 'one member leaf of LCC-01 renamed to a leaf that resolves nowhere; ' + (mutated.length - src.length) + ' byte length delta' },
@@ -267,15 +360,29 @@ const DECOYS = [
       dir: d,
     };
   },
+  /* MIGRATED AT 8.1. The old assertion was `REFUSE`/`axis-incomplete`, and the router no longer
+   * refuses anything. What replaces it is what classify.js's own comment says replaced it: "an
+   * unresolved member used to become REFUSE/axis-incomplete, which is a decision. Now it is a
+   * reported defect WITH THE MEMBER NAMED, and the session rules on it." So the assertion is that
+   * the report NAMES the member that does not resolve, and marks the axis incomplete. The failure
+   * this guards is unchanged and is the one that matters: an axis reported as answerable with a
+   * side whose source is not there is a one-sided answer with nothing saying so. */
   expect(r) {
-    if (r.threw) return { pass: true, why: 'the unresolved member reached the top as a throw' };
-    if (r.verdict === 'REFUSE' && r.reason_code === 'axis-incomplete')
-      return { pass: true, why: 'refused axis-incomplete, which routes to a broken register row and a named owner' };
-    if (r.verdict === 'LITERATURE')
-      return { pass: false, why: 'FELL THROUGH TO SEARCH. Contract §5: axis-incomplete never falls through to search. A broken register row has been converted into a delivered one-sided answer and nothing downstream can tell the difference' };
-    if (r.verdict === 'CONTESTED')
-      return { pass: false, why: 'answered CONTESTED with a side whose member does not resolve -- a one-sided answer wearing a two-sided verdict' };
-    return { pass: false, why: 'returned ' + r.verdict + '/' + r.reason_code };
+    if (r.threw) return { pass: false, why: 'threw at ' + r.stage + ' rather than REPORTING the defect: ' + r.message.slice(0, 110) };
+    const f = findingFor(r.report, 'LCC-01');
+    if (!f) return { pass: false, why: 'LCC-01 does not appear in the register findings at all, so the unresolved member is not reported and nothing downstream can see it. A broken register row has become invisible rather than routed' };
+    const named = (f.unresolved_members || []).filter(u => /DECOY/.test(u));
+    if (!named.length)
+      return { pass: false, why: 'LCC-01 is reported with side_resolution "' + String(f.side_resolution).slice(0, 40) +
+        '" and unresolved_members [' + (f.unresolved_members || []).join(' ') + ']: THE MEMBER THAT DOES NOT RESOLVE IS NOT NAMED. ' +
+        'Contract §5 routes axis-incomplete to a broken register row and a named owner; a report that shows the axis as ' +
+        'complete has converted the broken row into a deliverable one-sided answer' };
+    if (!/^INCOMPLETE/.test(String(f.side_resolution)))
+      return { pass: false, why: 'the member is named but side_resolution reads "' + String(f.side_resolution).slice(0, 40) + '"' };
+    if (f.sides_resolved >= f.sides_declared)
+      return { pass: false, why: 'sides_resolved ' + f.sides_resolved + ' of ' + f.sides_declared + ' declared: the counts do not show the loss' };
+    return { pass: true, why: 'the unresolved member is NAMED in the report (' + named.join(' ') + '), side_resolution is INCOMPLETE, and ' +
+      f.sides_resolved + ' of ' + f.sides_declared + ' sides resolve. The defect is reported to the session rather than decided by the router' };
   },
 },
 
@@ -298,7 +405,7 @@ const DECOYS = [
     const h = keep[0].split('\t'); h[5] = String(Number(h[5]) - removed); keep[0] = h.join('\t');
     const d = fakeRoot('dropped-side', { 'oracle/REGISTER.lunar.tsv': keep.join('\n') });
     return {
-      opts: Object.assign({}, BASE, { root: d }),
+      opts: Object.assign({}, BASE, { root: d, registerPaths: stagedRegisters(d) }),
       question: 'What is the water ice concentration in the regolith at Cabeus crater?',
       applied: { ok: removed === 1, what: removed + ' M row(s) removed from LCC-01 side C; the H row M count follows' },
       reached: ctx => { if (!ctx || !ctx.axes) return { ok: false, what: 'the context refused before axes were built: ' + JSON.stringify((ctx && ctx.refuse) || 'no ctx') };
@@ -308,11 +415,22 @@ const DECOYS = [
       dir: d, expectSides: 2,
     };
   },
+  /* MIGRATED AT 8.1, AND THE PROPERTY IS UNCHANGED. This decoy was never about the verdict: it is
+   * about whether the persona count is DERIVED from the register's side count or is a literal
+   * somewhere. `selectWave()` now takes the verdict as an argument, so the decoy supplies CONTESTED
+   * as the antecedent of the implication it is testing -- IF a session rules CONTESTED on this
+   * axis, the wave must follow sides.length -- and rules nothing itself. The axis view is built
+   * from the MUTATED context, which is the whole point of the staging. */
   expect(r) {
-    if (r.threw) return { pass: false, why: 'threw rather than answering: ' + r.message.slice(0, 90) };
-    const n = r.wave && r.wave.personaCount;
-    if (r.verdict !== 'CONTESTED') return { pass: false, why: 'returned ' + r.verdict + ' where a two-sided axis remains' };
-    if (n === 2) return { pass: true, why: 'the wave followed sides.length down to 2; the count is derived, not a literal' };
+    if (r.threw) return { pass: false, why: 'threw at ' + r.stage + ' rather than advising: ' + r.message.slice(0, 90) };
+    const ax = r.ctx.axes.get('LCC-01');
+    if (!ax) return { pass: false, why: 'LCC-01 is not in the mutated context at all' };
+    try { r.C.resolveSides(r.ctx, ax); } catch (e) { return { pass: false, why: 'side resolution threw: ' + String(e.message).slice(0, 90) }; }
+    let w;
+    try { w = r.W.selectWave('CONTESTED', { axes: [r.C.axisView(ax)] }, r.ctx); }
+    catch (e) { return { pass: false, why: 'selectWave threw on a CONTESTED ruling over a two-sided axis: ' + String(e.message).slice(0, 110) }; }
+    const n = w.personaCount;
+    if (n === 2) return { pass: true, why: 'the wave followed sides.length down to 2 on the mutated register; the count is derived, not a literal' };
     if (n === 3) return { pass: false, why: 'the wave still spends 3 personas on an axis that now declares 2 sides -- the count is a literal somewhere' };
     return { pass: false, why: 'persona count ' + n };
   },
@@ -335,16 +453,25 @@ const DECOYS = [
       dir: null, noMutation: true,
     };
   },
+  /* MIGRATED AT 8.1. The old assertion was `APP` or `FIGURE`, never `LITERATURE`, and the router
+   * names none of the three now. What survives is the channel: a sub-claim naming a value-layer
+   * output must produce an APP-CHANNEL finding -- a resolved address or a grammar that refused to
+   * build one -- rather than leaving the shelf as the only channel with anything in it. Since 8.1
+   * the channels are not exclusive, so the assertion is that the app channel is NON-EMPTY, not
+   * that it suppressed retrieval. */
   expect(r) {
-    if (r.threw) return { pass: false, why: 'threw: ' + r.message.slice(0, 90) };
-    if (r.verdict === 'APP' || r.verdict === 'FIGURE') return { pass: true, why: 'reached the app across the 45-key namespace' };
-    if (r.verdict === 'REFUSE' && r.reason_code === 'unbuildable')
-      return { pass: true, why: 'refused unbuildable, which FIX-10 accepts while valueModel() is unreachable -- the invariant that holds across both is that it is neither LITERATURE nor excluded' };
-    if (r.verdict === 'LITERATURE')
-      return { pass: false, why: 'sent a value-layer output to a literature search. FIX-10 says never LITERATURE' };
-    if (r.reason_code === 'excluded')
-      return { pass: false, why: 'refused `excluded`. FIX-10 and contract §5: `excluded` routes to nobody and must never mask a code that routes to someone' };
-    return { pass: false, why: 'returned ' + r.verdict + '/' + r.reason_code };
+    if (r.threw) return { pass: false, why: 'threw at ' + r.stage + ': ' + r.message.slice(0, 90) };
+    const app = (r.report.sub_claims || []).map(s => s.app).find(a => a && (a.resolves || a.unbuildable_reason));
+    if (app && app.resolves)
+      return { pass: true, why: 'the app channel resolves a ' + app.address_form + ' address on ' + app.answers_output_key +
+        ' (grade ' + app.answers_output_grade + '), so the 45-key namespace is reachable rather than 8 keys wide' };
+    if (app && app.unbuildable_reason)
+      return { pass: true, why: 'the app channel REFUSED to build the address rather than defaulting a dimension, which FIX-10 ' +
+        'accepts while valueModel() is unreachable: ' + String(app.unbuildable_reason).slice(0, 80) };
+    const outs = (r.report.sub_claims || []).flatMap(s => (s.app.outputs_named || []).map(o => o.key));
+    return { pass: false, why: 'NO APP-CHANNEL FINDING AT ALL for a value-layer output (outputs named: [' + outs.join(' ') +
+      ']). The shelf is the only channel carrying anything, which is the shape FIX-10 names: 37 of the 45-key output ' +
+      'namespace falling through to a literature search' };
   },
 },
 /* ---- I7. The vacuous pass inside the release gate. ----------------------
