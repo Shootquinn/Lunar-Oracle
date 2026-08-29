@@ -4,13 +4,18 @@
  * it before retrieval. This file is that consumption, and until it landed the register was correct,
  * calibrated, and read by nothing.
  *
- * TWO TIERS, AND CONFLATING THEM IS WHAT MAKES A SINGLE THRESHOLD FAIL. The Space Resources
+ * RE-SCOPED AT SUB-STEP 8.6: BOTH TIERS ARE REFERENCE MARKS NOW, AND NEITHER GATES ANYTHING. The
+ * router reports every patch that scores at all, with its mass and its signed margin to each tier,
+ * and the session rules. `fired` and `governing` are still computed here, because the two tiers are
+ * still the record of what was measured and a reader wants to know which side of each a patch fell
+ * on -- but nothing downstream branches on them. See oracle/router/thin_threshold.json.
+ *
+ * TWO TIERS, AND CONFLATING THEM IS WHAT MADE A SINGLE THRESHOLD FAIL. The Space Resources
  * Engineer's own words, and the measurement behind them is the reason this file has two constants
  * rather than one:
  *
- *   FIRE    (mass >= fire_threshold)     the patch attaches its `substitution` to the answer as
- *                                        CONTENT. The verdict does not move.
- *   GOVERN  (mass >= govern_threshold)   the patch's `refusal_code` becomes the VERDICT.
+ *   FIRE    (mass >= fire_threshold)     the patch attaches its `substitution` as CONTENT.
+ *   GOVERN  (mass >= govern_threshold)   the patch's `refusal_code` became the VERDICT. RETIRED.
  *
  * T3 fires on SRQ-10 at 5.961 and SRQ-10 is `BOTH` -- its own Must-carry cell says T3 fires there.
  * A one-tier rule must either silence that legitimate fire or turn a `BOTH` into a `REFUSE`.
@@ -19,12 +24,13 @@
  * `regolith` and T2 fires on SRQ-13 on `bearing`. Both are correct vocabulary and wrong triggers on
  * their own. IDF is lunar-scoped, from the retrieval layer's own field tables.
  *
- * THE THRESHOLDS ARE READ, NEVER TYPED HERE. They live in oracle/router/thin_threshold.json, the
- * same posture K takes in oracle/router/axis_threshold.json, and are re-measured by
- * oracle/router/calibrate_thin.js. An absent artifact refuses `input-missing` before classification
- * rather than defaulting -- because a defaulted threshold here does not fail loudly, it silently
- * converts correct answers into refusals, which is exactly what a band measured on too few controls
- * already did once on this sub-step.
+ * THE MARKS ARE READ, NEVER TYPED HERE. They live in oracle/router/thin_threshold.json, the same
+ * posture K takes in oracle/router/axis_threshold.json. An absent artifact no longer refuses
+ * `input-missing` -- since 8.6 it costs the margins and nothing else -- but it is still never
+ * DEFAULTED, because a defaulted mark puts a number nobody chose in front of a reading session.
+ * When these were gates, a defaulted threshold did not fail loudly: it silently converted correct
+ * answers into refusals, which is exactly what a band measured on five control rows did to six of
+ * them on this sub-step. That failure mode is what 8.6 retires; the file records it.
  */
 'use strict';
 const fs = require('fs');
@@ -59,8 +65,12 @@ function matchThinPatches(ctx, text) {
     return { id: p.id, patch: p, mass, hits };
   }).filter(s => s.mass > 0).sort((a, b) => b.mass - a.mass);
 
-  const fired = scored.filter(s => s.mass >= ctx.thinFire);
-  const governing = scored.filter(s => s.mass >= ctx.thinGovern);
+  /* An absent mark is no longer `input-missing` (8.6): the marks inform rather than gate, so their
+     absence costs the margins and nothing else. `>= null` coerces to `>= 0` and would report every
+     scoring patch as crossing a mark that is not there, which is a number nobody chose wearing a
+     verdict's clothes. An absent mark therefore crosses nothing. */
+  const fired = ctx.thinFire == null ? [] : scored.filter(s => s.mass >= ctx.thinFire);
+  const governing = ctx.thinGovern == null ? [] : scored.filter(s => s.mass >= ctx.thinGovern);
   for (const g of governing) {
     if (!fired.includes(g)) {
       throw new Error('oracle/router/thin_patches: ' + g.id + ' governs at mass ' + g.mass +

@@ -1,8 +1,18 @@
 {
   "K": 2.431,
-  "status": "PROVISIONAL",
-  "owner": "sub-step 3.6",
+  "status": "REPORTED, NOT ENFORCED",
+  "disposition_8_6": "SURVIVES AS A REPORTED REFERENCE MARK. RETIRED AS A GATE.",
+  "disposition_reasoning": [
+    "K was calibrated to DECIDE. An axis fired when its IDF-weighted mass reached 2.431, and an axis that did not fire was REMOVED from the router output before anything downstream could see it. Sub-step 8.1 deletes the decision, so the only live question is whether the number is still worth reporting.",
+    "IT IS, AND THE EVIDENCE IS IN THIS FILE. The eleven rows under \"fails\" are the eleven probe questions where the plateau midpoint disagreed with the register author. Eleven of sixty-six at the best-scoring value -- one in six -- and they are not a tuning residue. LCC-07 misses its own probe_pos at 0.968 because the key reads \"kwh\" and the question reads \"kilowatt hours\". LCC-09 misses at 0.919 on \"polar\" against \"pole\". A mark whose own calibration record contains its own refutation is worth showing to a reader. It is not worth filtering on.",
+    "KEPT AS A REPORTED NUMBER, because a mass with no scale is unreadable. 1.540 means nothing alone; 1.540 against 2.431 is a near miss and 0.428 against 2.431 is not. The router now emits mass, mark, signed margin, and margin as a fraction of the mark, and derives a stated confidence from the last of those.",
+    "NOT WIDENED INTO A BAND. A band is still a gate: it decides three ways instead of two and the failure mode is unchanged -- a question near an edge receives a categorical answer the measurement does not support. The margin IS the band, reported continuously, and nobody has to choose its width.",
+    "THE PLATEAU IS THE HONEST SUMMARY OF THIS CALIBRATION AND IT ARGUES AGAINST ITSELF. The best-scoring interval is [2.3195, 2.5416]: 55 of 66, over a 9% wide plateau on which the score does not move at all. A quantity that any value in a 9% interval serves equally is not a quantity the answer depends on. It was carried as 2.431, to three decimal places, for two full seat-sittings.",
+    "THIS FILE IS RETAINED AS THE RECORD OF WHAT WAS MEASURED. It is still READ by oracle/router/classify.js, and only so that a margin can be computed. Deleting it makes the router report masses without margins; it does not make the router refuse, which is what it used to do."
+  ],
+  "owner": "sub-step 3.6; re-scoped by sub-step 8.6",
   "set_by": "oracle/router/calibrate_k.js, run by The Software Engineer at sub-step 3.8",
+  "retired_as_a_gate_at": "sub-steps 8.1 and 8.6, The Software Engineer, on the author ruling of 2026-08-28",
   "provenance": "plateau midpoint of the widest best-scoring interval over the register's own probe_pos/probe_neg fixture set (oracle/register_schema.md section 4.2), 66 labelled questions over 33 axes",
   "score": {
     "pass": 55,
@@ -13,8 +23,9 @@
     ]
   },
   "idf": "field-scoped, oracle/retrieval/literature_search.js idfFor(), scoped to the axis's own register field",
-  "rule": "an axis fires when the IDF-weighted MASS of its match_keys present in the question tokens is >= K",
+  "rule_now": "reported. mass, mark, margin = mass - K, margin / K, and a stated confidence. Nothing is filtered, ranked out or suppressed by this number.",
   "caveat": "This is a measurement, not a ruling. 3.6 owns K. The classifier reads this file and refuses input-missing when it is absent rather than defaulting, so replacing this value is an edit to one artifact and touches no code.",
+  "fails_note": "The eleven disagreements at the adopted value, kept verbatim. These are the argument for retiring the gate, not a defect list to be worked off.",
   "fails": [
     {
       "axis_id": "LCC-01",

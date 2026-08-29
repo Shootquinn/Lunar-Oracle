@@ -1,4 +1,20 @@
 #!/usr/bin/env node
+
+/* ============================================================================================
+ * RETIRED AT SUB-STEP 8.6. THIS FILE CALIBRATED A GATE THAT NO LONGER EXISTS, AND ITS OBJECTIVE
+ * HAS NO SUBJECT.
+ *
+ * It swept the govern threshold against two objectives, and the second one was AGREEMENT WITH THE
+ * VERDICT THE CLASSIFIER EMITTED on the 14 labelled acceptance rows. Sub-step 8.1 deleted the
+ * verdict. There is nothing left for the sweep to score against, and a calibration re-pointed at
+ * some other objective would be a different measurement wearing this one name.
+ *
+ * IT NO LONGER WRITES, AND IT NO LONGER RUNS ITS VERDICT SWEEP. Both tiers survive as REPORTED
+ * reference marks in oracle/router/thin_threshold.json, which now carries the disposition, the two
+ * band endpoint observations, and the superseded five-row band with its measured damage -- six
+ * correct verdicts destroyed. That record is the whole reason this sub-step is not simply deleted:
+ * it cost two seat-sittings and it is falsifiable.
+ * ============================================================================================ */
 /* oracle/router/calibrate_thin.js -- re-measure the two thin-patch thresholds.
  *
  *   node oracle/router/calibrate_thin.js            report the sweep
@@ -153,6 +169,19 @@ function seatValue(ctx) { return ctx.thinPatches.firing_rule.govern_threshold.va
 function inBandOf(both, v, step) { return both.some(p => Math.abs(p.T - v) <= step); }
 
 function main() {
+  console.error('oracle/router/calibrate_thin.js: RETIRED at sub-step 8.6.');
+  console.error('');
+  console.error('Its sweep scored a govern threshold against the VERDICT the classifier emitted on the 14');
+  console.error('labelled acceptance rows. Sub-step 8.1 deleted the verdict, so the objective has no subject');
+  console.error('and the sweep cannot be run honestly. Both tiers survive as reported reference marks in');
+  console.error('oracle/router/thin_threshold.json, which carries the disposition, the two band endpoint');
+  console.error('observations, and the superseded five-row band with its measured damage.');
+  console.error('');
+  console.error('If you need to change a mark, it is a data edit to that artifact by whoever owns the number.');
+  process.exit(2);
+}
+
+function mainRetired() {
   const base = baseline();
   const ctx = base.ctx, rows = base.rows;
   const probes = probeRows(ctx);

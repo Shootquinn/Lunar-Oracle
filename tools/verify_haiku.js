@@ -28,12 +28,27 @@
  * EXISTS at word boundaries. That is exact, decidable, and it is what the form actually requires
  * once the breaks are gone.
  *
- *   node tools/verify_haiku.js "<haiku text>" [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
+ * TWO TO FIVE UNITS, AUTHOR RULING 2026-08-28, carried into `oracle/answer_contract.md` §6 and §6b.
+ * A delivered user-facing TURN is 2 to 5 haiku strung linearly with no line breaks between them; a
+ * single haiku is a UNIT and is still what §1.3 rules. The two objects are checked in two modes and
+ * the mode is required at the command line, because the six worked haiku on disk are units and a
+ * checker that silently treated them as turns would invalidate its own known-answer set.
+ *
+ *   node tools/verify_haiku.js "<text>" (--turn|--unit) [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
  *   node tools/verify_haiku.js --prove
  *   node tools/verify_haiku.js --syllables "<text>"
  */
 'use strict';
 const fs = require('fs'), path = require('path');
+const USAGE = [
+  'usage: node tools/verify_haiku.js "<text>" (--turn|--unit) [--verdict <V>]',
+  '       node tools/verify_haiku.js --prove',
+  '       node tools/verify_haiku.js --syllables "<text>"',
+  '',
+  '  --turn  a delivered user-facing turn: 2 to 5 haiku strung linearly, no line breaks.',
+  '  --unit  a single haiku examined on its own. There is no default; pick one.',
+  '',
+].join('\n');
 const ROOT = path.resolve(__dirname, '..');
 const R = p => path.join(ROOT, p);
 
@@ -82,20 +97,54 @@ function syllables(word) {
 }
 const words = s => s.split(/[\s]+/).map(x => x.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g, '')).filter(Boolean);
 
-/* 5-7-5 without line breaks: does a partition at word boundaries into 5/7/5 exist? */
-function fiveSevenFive(text) {
+/* N HAIKU STRUNG LINEARLY, WITHOUT LINE BREAKS. AUTHOR RULING 2026-08-28, carried at
+ * `oracle/answer_contract.md` §6: *"it should be more like 2-5 haikus strung together linearly (not
+ * using line breaks like the style uses typically)."*
+ *
+ * THE NUMBER OF UNITS IS NOT SEARCHED FOR, IT IS DIVIDED OUT. A valid string of N haiku is exactly
+ * 17N syllables, so `total % 17` decides N with no ambiguity and no backtracking: a text of 34
+ * syllables can only be two, and a text of 35 can be none. That is worth stating because the obvious
+ * implementation -- try N = 2, then 3, then 4 -- invites a greedy split that succeeds on one reading
+ * of an ambiguous text and fails on another, and there is no such ambiguity here.
+ *
+ * THE PARTITION TEST IS A MEMBERSHIP TEST ON THE PREFIX SUMS, and it replaces the old O(n^2) double
+ * loop with the same assertion. Syllable counts are positive, so the prefix sums strictly increase
+ * and each boundary value occurs at most once; a boundary that is present is therefore present at a
+ * word boundary, and every group is non-empty for free. The boundaries are the running totals
+ * 5, 12, 17, 22, 29, 34, ... -- and 17k must be among them, which is what makes the k-th haiku a
+ * haiku rather than seventeen syllables that happen to sit in the right place. */
+const UNIT_MAX = 5;
+function haikuSequence(text, opts) {
+  const maxUnits = (opts && opts.maxUnits) || UNIT_MAX;
   const W = words(text);
   const counts = W.map(syllables);
   const unknown = W.filter((w, i) => !counts[i].certain);
-  if (unknown.length) return { certified: false, unknown, total: null, split: null };
+  if (unknown.length) return { certified: false, unknown, total: null, units: null, split: null };
   const n = counts.map(c => c.n);
   const total = n.reduce((a, b) => a + b, 0);
   const pre = [0]; for (const x of n) pre.push(pre[pre.length - 1] + x);
-  for (let i = 1; i < W.length; i++) for (let j = i + 1; j < W.length; j++) {
-    if (pre[i] === 5 && pre[j] - pre[i] === 7 && pre[W.length] - pre[j] === 5)
-      return { certified: true, unknown: [], total, split: [W.slice(0, i), W.slice(i, j), W.slice(j)] };
-  }
-  return { certified: true, unknown: [], total, split: null };
+  const at = new Map(); pre.forEach((v, i) => { if (!at.has(v)) at.set(v, i); });
+  if (total === 0 || total % 17 !== 0) return { certified: true, unknown: [], total, units: null, split: null };
+  const units = total / 17;
+  if (units > maxUnits) return { certified: true, unknown: [], total, units: null, split: null,
+    overlong: units };
+  /* Every boundary must be achieved at a word boundary. 5 and 12 within each unit, and 17 between. */
+  const bounds = [];
+  for (let k = 0; k < units; k++) bounds.push(17 * k + 5, 17 * k + 12, 17 * k + 17);
+  if (!bounds.every(b => at.has(b))) return { certified: true, unknown: [], total, units: null, split: null };
+  const cuts = [0, ...bounds.map(b => at.get(b))];
+  const split = [];
+  for (let g = 1; g < cuts.length; g++) split.push(W.slice(cuts[g - 1], cuts[g]));
+  return { certified: true, unknown: [], total, units, split };
+}
+/* The single-unit form, kept as a named export because it is what every caller written before the
+ * 2026-08-28 ruling asks for, and because a haiku UNIT is still a haiku unit. The ruling is about
+ * what a TURN carries, not about what a haiku is; conflating the two would invalidate the six worked
+ * haiku on disk, which are the known-answer set this checker is proved against. */
+function fiveSevenFive(text) {
+  const r = haikuSequence(text, { maxUnits: 1 });
+  return { certified: r.certified, unknown: r.unknown, total: r.total,
+    split: r.units === 1 ? r.split : null };
 }
 
 /* ---------------------------------------------------------- prohibitions */
@@ -189,18 +238,63 @@ function moodCheck(text, verdict) {
   return { checked: true, allowed, forbidden, ok: allowed.length > 0 && forbidden.length === 0 };
 }
 
+/* --------------------------------------------------------- the run-on tell */
+/* AUTHOR RULING 2026-08-28, and the reasoning is his: *"it is a way to keep AI from AIing... you'd
+ * give it a paragraph that is one run-on sentence if you were allowed and it would have 16 em
+ * dashes."* The haiku form is the anti-AI-voice mechanism, not a decoration on the output.
+ *
+ * A7 IS SEPARATE FROM §1.3's SEVEN AND DOES NOT JOIN THEM. §1.3 is a closed list of seven ruled at
+ * `cr_scratch/step0_writer_register_spec.md`, and quietly making it eight would put this file in
+ * disagreement with the document it implements. This is a distinct assertion with a distinct owner
+ * and a distinct date, reported on its own line.
+ *
+ * THE FIRST DRAFT OF THIS LIST WAS REFUTED BY THE KNOWN-ANSWER SET AND THE REFUTATION IS RECORDED
+ * RATHER THAN QUIETLY FIXED. It read `em dash, semicolon, colon splice`, on the reasoning that all
+ * three are the punctuation of the run-on paragraph. Running `--prove` turned three of the six
+ * author-written worked haiku red: #4, #5 and #6 each use a SEMICOLON as the caesura -- `the map has
+ * an edge, and your question is over it; I will not guess`. The semicolon is not the AI tell in this
+ * form, it is the pivot the form is built on, and a rule that fires on half the artifact it protects
+ * is wrong about the artifact. **Em dashes: zero across all six.** That is what the author named and
+ * that is all this list holds. This is the second time on this file that a prohibition list
+ * over-fired on the known-answer set -- see the §1.3 rule-1 note on `this one` -- and both times the
+ * set caught it before anything shipped, which is the entire argument for having one. */
+const RUNON_TELL = [
+  { name: 'em dash', re: /—|\s--\s|\w--\w/ },
+];
+function runonCheck(text) {
+  const hitsList = RUNON_TELL.filter(p => p.re.test(text)).map(p => p.name);
+  return { hits: hitsList, ok: hitsList.length === 0 };
+}
+
 /* ------------------------------------------------------------------ check */
-function check(text, verdict) {
+/* `mode` is 'unit' (one haiku, the object §1.3 rules) or 'turn' (a delivered user-facing turn, which
+ * the 2026-08-28 ruling requires to be 2 to 5 units). It defaults to 'unit' HERE and is REQUIRED at
+ * the CLI, and the asymmetry is deliberate: 'unit' is what every caller written before the ruling
+ * means, and the risk of a silent default is at the command line, where a real turn is checked. A
+ * default that cannot be reached by the thing it would excuse is not an escape hatch. */
+function check(text, verdict, mode) {
   const findings = [], uncertified = [];
-  // A1. Zero newline characters. Trivial, exact, and half the stated contract.
+  const M = mode || 'unit';
+  // A1. Zero newline characters. Trivial, exact, and half the stated contract. The 2026-08-28 ruling
+  // strengthens rather than changes this: units are strung LINEARLY, so the break between haiku two
+  // and haiku three is exactly as forbidden as a break inside haiku one.
   const nl = (text.match(/\n/g) || []).length;
   if (nl) findings.push('A1: ' + nl + ' newline character(s); §1.2 renders the haiku as one line and a break in it is the one thing the contract forbids');
-  // A2. 5-7-5, by the stated rule, with the unknown bucket.
-  const f = fiveSevenFive(text.replace(/\n/g, ' '));
+  // A2. 5-7-5 per unit, by the stated rule, with the unknown bucket.
+  const f = haikuSequence(text.replace(/\n/g, ' '), { maxUnits: M === 'turn' ? UNIT_MAX : 1 });
   if (!f.certified) uncertified.push('A2: ' + f.unknown.length + ' word(s) the syllable rule cannot count: ' +
     f.unknown.map(w => '"' + w + '" (' + syllables(w).why + ')').join(', ') +
     ' -- an unknown word is a refusal to certify, not a pass. Add it to DICT with its count, or rewrite.');
-  else if (!f.split) findings.push('A2: ' + f.total + ' syllables and no 5/7/5 partition exists at a word boundary');
+  else if (!f.split) findings.push('A2: ' + f.total + ' syllables and no ' +
+    (M === 'turn' ? '5/7/5 x N (N up to ' + UNIT_MAX + ')' : '5/7/5') +
+    ' partition exists at a word boundary' + (f.overlong ? '; ' + f.overlong + ' units exceeds the cap of ' + UNIT_MAX : ''));
+  // A6. The turn carries 2 to 5 units. Author ruling 2026-08-28; contract §6.
+  if (M === 'turn' && f.certified && f.split && (f.units < 2 || f.units > UNIT_MAX))
+    findings.push('A6: a delivered turn carries 2 to ' + UNIT_MAX + ' haiku strung linearly; this carries ' + f.units);
+  // A7. The run-on tell. The failure mode the form exists to prevent.
+  const runon = runonCheck(text);
+  if (!runon.ok) findings.push('A7 (the run-on tell): ' + runon.hits.join(', ') +
+    ' -- the haiku form is the anti-AI-voice mechanism and these are the punctuation of the paragraph it replaces');
   // A3. The seven prohibitions.
   for (const p of PROHIBITIONS) {
     const h = p.test(text);
@@ -218,15 +312,20 @@ function check(text, verdict) {
     (flat.machinery.length ? '; machinery subject: ' + flat.machinery.map(x => '"' + x + '"').join(', ') : '') +
     (flat.constraint.length ? '; explains or apologises for the constraint: ' + flat.constraint.map(x => '"' + x + '"').join(', ') : ''));
   const outcome = findings.length ? 'FAIL' : (uncertified.length ? 'UNCERTIFIED' : 'PASS');
-  return { text, outcome, findings, uncertified, form: f, mood, flat, newlines: nl };
+  return { text, outcome, findings, uncertified, form: f, mood, flat, runon, newlines: nl, mode: M };
 }
 
 function report(r) {
   const W = s => process.stdout.write(s + '\n');
   W('VERIFY HAIKU  ' + JSON.stringify(r.text.slice(0, 100)));
+  W('  mode                   ' + r.mode + (r.mode === 'turn' ? '  (2 to ' + UNIT_MAX + ' units required)' : '  (one unit)'));
   W('  newlines               ' + r.newlines + (r.newlines ? '   <- A1' : ''));
-  W('  syllables              ' + (r.form.certified ? r.form.total + (r.form.split ? '  5/7/5 at ' +
-    r.form.split.map(g => g.join('-')).join(' | ') : '  NO 5/7/5 PARTITION') : 'UNCERTIFIED'));
+  W('  units                  ' + (r.form.units === null || r.form.units === undefined ? '-' : r.form.units));
+  W('  syllables              ' + (r.form.certified ? r.form.total + (r.form.split ?
+    '  ' + Array.from({ length: r.form.split.length / 3 }, (_, k) =>
+      r.form.split.slice(k * 3, k * 3 + 3).map(g => g.join('-')).join(' | ')).join('   //   ')
+    : '  NO 5/7/5 PARTITION') : 'UNCERTIFIED'));
+  W('  A7 run-on tell         ' + (r.runon.ok ? 'ok' : r.runon.hits.join(', ')));
   W('  §4.4 flat-Oracle       ' + (r.flat.ok ? 'ok' : 'machinery[' + r.flat.machinery.join(',') + '] constraint[' + r.flat.constraint.join(',') + ']'));
   if (r.mood.checked) W('  §1.4 family            ' + (r.mood.ok ? 'ok, on ' + r.mood.allowed.join(', ') :
     'allowed[' + r.mood.allowed.join(',') + '] forbidden[' + r.mood.forbidden.join(',') + ']'));
@@ -367,6 +466,94 @@ function prove() {
       p13 && check(moodOnly.text, 'REFUSE-thin').outcome === 'FAIL');
   }
 
+  /* ---------------------------------------------- 2 to 5 units, the 2026-08-28 ruling
+   * Every decoy below is built by CONCATENATING REAL AUTHOR-WRITTEN HAIKU, not by constructing a
+   * string of the right length. A synthetic 34-syllable string proves the arithmetic; two real haiku
+   * strung the way the ruling says to string them prove the thing the ruling is about. */
+  const two  = good[0] + ' ' + good[1];
+  const five = good.slice(0, 5).join(' ');
+  const six  = good.join(' ');
+
+  const r2 = check(two, null, 'turn');
+  add('SEQ-TWO-UNITS', 'two worked haiku strung linearly certify as a turn, units = 2',
+    r2.outcome + ' units=' + r2.form.units + (r2.findings.length ? ' :: ' + r2.findings[0].slice(0, 100) : ''),
+    r2.outcome === 'PASS' && r2.form.units === 2);
+
+  const r5 = check(five, null, 'turn');
+  add('SEQ-FIVE-UNITS', 'five is the cap and certifies, units = 5',
+    r5.outcome + ' units=' + r5.form.units + (r5.findings.length ? ' :: ' + r5.findings[0].slice(0, 100) : ''),
+    r5.outcome === 'PASS' && r5.form.units === 5);
+
+  const r6 = check(six, null, 'turn');
+  add('SEQ-SIX-UNITS-FAILS', 'six exceeds the cap and fails; the cap is a cap, not a suggestion',
+    r6.outcome + (r6.findings.length ? ' :: ' + r6.findings[0].slice(0, 110) : ''), r6.outcome === 'FAIL');
+
+  const r1t = check(good[0], null, 'turn');
+  add('SEQ-ONE-UNIT-FAILS-AS-A-TURN', 'a single haiku is a valid unit and is NOT a valid turn; A6 fires',
+    r1t.outcome + (r1t.findings.length ? ' :: ' + r1t.findings.find(f => /^A6/.test(f)) : ' :: no A6'),
+    r1t.outcome === 'FAIL' && r1t.findings.some(f => /^A6/.test(f)));
+
+  /* THE DISCRIMINATOR BETWEEN THE TWO MODES. Without this, `unit` could be `turn` with a loose cap
+   * and nothing would notice; the six CONTROL rows would still be green. */
+  const r2u = check(two, null, 'unit');
+  add('SEQ-UNIT-MODE-REJECTS-TWO', 'unit mode is not turn mode with a loose cap: two units fail in unit mode',
+    r2u.outcome + (r2u.findings.length ? ' :: ' + r2u.findings[0].slice(0, 90) : ''), r2u.outcome === 'FAIL');
+
+  /* 17N IS NOT A CONVENIENCE. One syllable added to a valid two-unit turn and nothing partitions. */
+  const off = two.replace(/the model/, 'the model machine');
+  add('MUTATION-APPLIED / off-by-one syllable', 'the mutation changed the bytes',
+    off === two ? 'DECOY DID NOT APPLY' : 'applied', off !== two);
+  const roff = check(off, null, 'turn');
+  add('SEQ-NOT-A-MULTIPLE-OF-17', 'a turn that is not 17N syllables has no partition at any N',
+    (roff.form.total || '?') + ' syllables, units ' + roff.form.units,
+    roff.findings.some(f => /^A2/.test(f)));
+
+  /* THE UNIT BOUNDARY MUST BE AT A WORD BOUNDARY, and this is the assertion a prefix-sum check can
+   * lose. `yours others` (1 + 2) becomes `another` (3): the total stays 34, both units still look
+   * like 17, and the boundary at 17 now falls INSIDE a word. It must not certify. */
+  const straddle = two.replace(/yours others/, 'another');
+  add('MUTATION-APPLIED / straddled unit boundary', 'the mutation changed the bytes',
+    straddle === two ? 'DECOY DID NOT APPLY' : 'applied', straddle !== two);
+  const rst = check(straddle, null, 'turn');
+  add('SEQ-BOUNDARY-MUST-BE-AT-A-WORD', 'a 34-syllable turn whose 17-boundary falls inside a word does not certify',
+    (rst.form.total || '?') + ' syllables, units ' + rst.form.units,
+    rst.form.total === 34 && !rst.form.split);
+
+  /* A PROHIBITION IN THE SECOND UNIT. The decoy against an implementation that checks unit one and
+   * calls it a turn. It is the cheapest wrong way to build this and it passes every other row here. */
+  const late = good[0] + ' ' + good[1].replace(/others have/, 'Beason says');
+  add('MUTATION-APPLIED / prohibition in unit two', 'the mutation changed the bytes',
+    late === two ? 'DECOY DID NOT APPLY' : 'applied', late !== two);
+  const rlate = check(late, null, 'turn');
+  add('SEQ-A3-FIRES-IN-THE-SECOND-UNIT', 'A3 fires on a prohibition planted in unit two, not only unit one',
+    rlate.outcome + (rlate.findings.length ? ' :: ' + rlate.findings.find(f => /^A3/.test(f)) : ' :: no A3'),
+    rlate.findings.some(f => /^A3/.test(f)));
+
+  /* A7, and it is the author's named failure mode rather than a general taste about punctuation. */
+  const dashed = two.replace(/, the number/, ' — the number');
+  add('MUTATION-APPLIED / em dash', 'the mutation changed the bytes',
+    dashed === two ? 'DECOY DID NOT APPLY' : 'applied', dashed !== two);
+  const rdash = check(dashed, null, 'turn');
+  add('DECOY-A7-EM-DASH', 'A7 fires on an em dash, the tell the author named',
+    rdash.outcome + (rdash.findings.length ? ' :: ' + (rdash.findings.find(f => /^A7/.test(f)) || rdash.findings[0]).slice(0, 90) : ''),
+    rdash.findings.some(f => /^A7/.test(f)));
+  add('A7-SPARES-THE-SEMICOLON', 'the semicolon is the caesura three of the six worked haiku use, and A7 does not fire on it',
+    good.filter(h => /;/.test(h)).length + ' of 6 worked haiku use a semicolon; A7 hits on them: ' +
+      good.filter(h => /;/.test(h)).filter(h => !runonCheck(h).ok).length,
+    good.filter(h => /;/.test(h)).length === 3 && good.every(h => runonCheck(h).ok));
+
+  /* THE MODE IS REQUIRED AT THE CLI. A missing input is a refusal, not a fallback, and that rule
+   * binds this checker's argument parsing exactly as it binds its dictionary. */
+  const cp = require('child_process');
+  const run = args => { try { cp.execFileSync(process.execPath, [__filename, ...args], { stdio: 'pipe' }); return 0; }
+    catch (e) { return e.status; } };
+  add('CLI-MODE-IS-REQUIRED', 'the CLI refuses a haiku with no --unit or --turn, exit 2, rather than assuming one',
+    'exit ' + run([good[0]]), run([good[0]]) === 2);
+  add('CLI-UNIT-MODE-WORKS', 'an explicit --unit on a worked haiku exits 0',
+    'exit ' + run([good[0], '--unit', '--verdict', 'APP']), run([good[0], '--unit', '--verdict', 'APP']) === 0);
+  add('CLI-TURN-MODE-WORKS', 'an explicit --turn on two strung haiku exits 0',
+    'exit ' + run([two, '--turn']), run([two, '--turn']) === 0);
+
   const w = Math.max(...out.map(o => o.id.length));
   let bad2 = 0;
   for (const o of out) { if (!o.pass) bad2++; process.stdout.write((o.pass ? 'PASS  ' : 'FAIL  ') + o.id.padEnd(w) + '  expected ' + o.expect + '  |  got ' + o.got + '\n'); }
@@ -385,14 +572,26 @@ if (require.main === module) {
     for (const w of words(argv[1] || '')) { const s = syllables(w); process.stdout.write(String(s.n === null ? '?' : s.n).padStart(3) + '  ' + w.padEnd(14) + s.why + '\n'); }
     process.exit(0);
   } else if (!argv.length) {
-    process.stderr.write('usage: node tools/verify_haiku.js "<haiku>" [--verdict <V>] | --prove | --syllables "<text>"\n');
+    process.stderr.write(USAGE);
     process.exit(2);
   } else {
+    /* THE MODE IS REQUIRED AND HAS NO DEFAULT HERE. `check()` defaults to 'unit' for the callers
+     * written before the 2026-08-28 ruling; the command line is where a real delivered turn is
+     * checked, and a default there is the escape hatch that switches the control off. A missing
+     * input is a refusal, not a fallback. */
+    const turn = argv.includes('--turn'), unit = argv.includes('--unit');
+    if (turn === unit) {
+      process.stderr.write((turn ? 'both --turn and --unit given; they are exclusive\n'
+        : 'no mode given. A delivered user-facing turn is --turn (2 to ' + UNIT_MAX +
+          ' haiku strung linearly); a single haiku examined on its own is --unit. There is no default.\n') + USAGE);
+      process.exit(2);
+    }
     const i = argv.indexOf('--verdict');
-    const r = report(check(argv[0], i < 0 ? null : argv[i + 1]));
+    const r = report(check(argv[0], i < 0 ? null : argv[i + 1], turn ? 'turn' : 'unit'));
     process.exit(r.outcome === 'PASS' ? 0 : 1);
   }
 }
 
-module.exports = { DICT, AMBIGUOUS, syllables, words, fiveSevenFive, PROHIBITIONS, FAMILIES, MACHINERY,
-  CONSTRAINT_TALK, moodCheck, flatCheck, check, readSpecHaiku };
+module.exports = { DICT, AMBIGUOUS, syllables, words, fiveSevenFive, haikuSequence, UNIT_MAX,
+  PROHIBITIONS, FAMILIES, MACHINERY, CONSTRAINT_TALK, RUNON_TELL, moodCheck, flatCheck, runonCheck,
+  check, readSpecHaiku };

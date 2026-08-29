@@ -158,6 +158,13 @@ Scenario Explorer does. The dedication covers the summaries in `literature/`, th
 registers under `oracle/`, the checks in `tools/`, the gameplan, and the agent handoffs in
 `cr_scratch/`.
 
+**The Unlicense rather than CC0, and the reason is practical rather than legal.** Author ruling,
+2026-08-28: *"You can't use CC0 on GitHub, you have to use the Unlicense — I mean, you can, but this
+way we can just pick a default."* GitHub's own licence picker surfaces the Unlicense and does not
+surface CC0, so choosing it is choosing the option the host will recognise and display without anyone
+hand-rolling a `LICENSE` file. The two say substantially the same thing about this project's own
+writing; one of them is on the menu.
+
 **The dedication cannot cover the published works those summaries describe, and does not try to.**
 Each summary is this project's own account of a work it does not own; the source is identified by
 citation and DOI so that a reader reaches the original through its publisher. Several of those sources

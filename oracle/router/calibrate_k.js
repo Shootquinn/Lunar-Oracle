@@ -1,4 +1,23 @@
 #!/usr/bin/env node
+
+/* ============================================================================================
+ * RETIRED AT SUB-STEP 8.6. THIS FILE CALIBRATED A GATE THAT NO LONGER EXISTS.
+ *
+ * K was the axis FIRING threshold: an axis whose mass reached it fired, and one that did not was
+ * removed from the router output. Sub-step 8.1 deleted the decision. K survives as a REPORTED
+ * reference mark so that a mass can be shown with a signed margin, and oracle/router/classify.js
+ * reads oracle/router/axis_threshold.json for exactly that.
+ *
+ * WHY THIS FILE IS KEPT AND NOT DELETED. Its sweep is the record of what was measured, and the
+ * record argues against the gate better than any prose could: 11 of 66 probe questions disagree
+ * with the plateau midpoint, and the plateau itself is 9% wide, so every value in [2.3195, 2.5416]
+ * scores identically. Those eleven rows are preserved verbatim in axis_threshold.json.
+ *
+ * IT NO LONGER WRITES. --write is refused, because writing a new K would move a mark this project
+ * has ruled is not a decision, on the strength of an objective (agreement with a verdict the router
+ * emits) that no longer has a subject. The sweep still RUNS and still prints, for anybody who wants
+ * to re-measure the record.
+ * ============================================================================================ */
 /* oracle/router/calibrate_k.js -- measure a value for K, the axis firing threshold.
  *
  *   node oracle/router/calibrate_k.js            report the sweep
@@ -91,6 +110,14 @@ function plateauMidpoint(pts) {
 }
 
 function main() {
+  if (process.argv.includes('--write')) {
+    console.error('oracle/router/calibrate_k.js: --write is REFUSED. K was retired as a gate at sub-step');
+    console.error('8.6 and survives only as a reported reference mark. Editing the mark is a data edit to');
+    console.error('oracle/router/axis_threshold.json, made by whoever owns that number, not a re-run of a');
+    console.error('calibration whose objective was agreement with a verdict this router no longer emits.');
+    process.exit(2);
+  }
+
   /* Bootstrapping: the classifier refuses input-missing without K, and this file is what produces
      K, so it loads the context with an explicit placeholder that it never uses for classification.
      It only needs ctx.axes and ctx.litDir. */

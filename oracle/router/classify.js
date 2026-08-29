@@ -1,43 +1,55 @@
-/* oracle/router/classify.js -- the classifier. Sub-step 3.8.
+/* oracle/router/classify.js -- the ROUTER. Sub-step 3.8, re-scoped at sub-step 8.1.
  *
- * THREE RETRIEVAL MODES AND ONE APP MODE. The mode is decided BEFORE any retrieval runs, from the
- * sub-claim's own text against three registers the router already holds: the contested-claims
- * register, the app's own address grammar, and the app's own EXCLUSIONS. Two sources are never
- * searched and then reconciled.
+ * THE TOOL REPORTS; THE SESSION RULES. Until 8.1 this file returned a verdict. It does not any
+ * more. It returns an EVIDENCE REPORT -- what matched, at what mass, how far from the reference
+ * mark, and what each score is worth -- and a reading session under oracle/answer_contract.md picks
+ * one of the six verdicts from it.
  *
- *   CONTESTED   a register axis fires                     -> CONTESTED
- *   APP         an app address resolves                   -> APP, or FIGURE if a dimension is unbound
- *   REFUSE      the app's EXCLUSIONS declare the topic     -> REFUSE, or LITERATURE under
- *                                                            EXCLUDED-THEN-CORPUS (3.4)
- *   LITERATURE  none of the above; the shelf is searched  -> LITERATURE, or REFUSE not-found
+ * THE AUTHOR'S RULING, 2026-08-28, which is why:
  *
- * NEVER TWO MODES FOR ONE SUB-CLAIM; NEVER ZERO. That is the contract, and this file ASSERTS it
- * rather than arranging its branches so that it happens to hold. assertOneMode() runs on every
- * sub-claim of every question and throws on a violation. An unasserted contract is this project's
- * signature defect: the check register agreed with itself, passed its own known-answer test, and
- * had never been executed.
+ *   "Have Claude think about stuff instead of trying to use algebra to run a fucking AI. Let it use
+ *    your little tool to help inform itself but don't have it be how it chooses a verdict."
  *
- * The order above is the precedence and it is not arbitrary.
+ *   "I actually want the result of that tool to be a very low weight to Claude."
  *
- * - CONTESTED is first because the register is a statement that the sources DISAGREE, and a
- *   disagreement is not repaired by finding one of the sources. D2 in the loose-ends register, a
- *   position taken at 1.8 and upheld at 0.5: the register is consulted at classification time, as a
- *   third retrieval mode, never after retrieval.
- * - APP is second because of the standing authority rule the app paid for three times: a question
- *   the app can answer is answered from the app, never from a summary that happens to carry a
- *   number.
- * - EXCLUSIONS is third and not first, because an exclusion is a claim about the APP's boundary and
- *   a resolved app address is a claim about the app's content. Where both fire, the app has the
- *   thing; where only the exclusion fires, the app has declared it does not.
- * - LITERATURE is last, and REFUSE not-found is what last place returns when the shelf is empty.
+ * THE PROOF THAT THE ALGEBRA WAS WRONG IS MEASURED, NOT ASSERTED. SRQ-12 asks "how much energy does
+ * it take to produce a kilogram of oxygen on the Moon?". LCC-07 is an axis about oxygen production
+ * energy. It scores 1.540 against a bar of 2.431 and, under the old file, was FILTERED OUT before
+ * anything downstream could see it -- because the key that would have carried the mass reads `kwh`
+ * and no reader writes "kwh". SRQ-8 is the same shape on `polar` against "pole", and worse: three
+ * axes -- LCC-06, LCC-09, LCC-10 -- tie at EXACTLY 0.428 on the single shared key `power`. The
+ * score cannot tell them apart. No reader misses either question. Only a scorer does.
  *
- * K, THE AXIS FIRING THRESHOLD, IS NOT SET HERE. oracle/register_schema.md section 4.3 assigns it
- * to sub-step 3.6 and refuses to state a number in the document that corrects the practice of
- * stating one. This file therefore READS it, from oracle/router/axis_threshold.json, and refuses
- * `input-missing` before classification when it is absent -- which is answer contract section 3's
- * own timing rule for a missing input, and costs zero personas. A classifier that defaulted K would
- * make CONTESTED fire or not fire on a number nobody chose, which is the same shape as C2: a
- * routing decision nobody can see.
+ * So the filter is gone. Every axis with at least one key hit is REPORTED, with its mass, the
+ * reference mark, the signed margin, and a confidence that says in words what the number is worth.
+ * A near-miss is evidence; the old file destroyed it.
+ *
+ * FIVE EVIDENCE CHANNELS, ALL FOUR OF THE NON-RETRIEVAL ONES COMPUTED FIRST, AND ALL OF THEM
+ * REPORTED SIDE BY SIDE. The old file ran four modes in precedence order and stopped at the first
+ * hit, so a question that resolved against the app never showed its register evidence and a
+ * question that reached the shelf never showed its near-miss axes. Precedence WAS the decision.
+ * It is gone with the decision. What survives from it is the ordering RULE that made it worth
+ * having -- the four text-only channels (register, app grammar, exclusions, thin patches) are
+ * computed from the sub-claim's own words BEFORE retrieval runs, retrieval runs exactly once, and
+ * no channel is recomputed against what retrieval found. That rule is asserted, not arranged:
+ * `retrieval.ran_after_text_channels` and `retrieval.runs` are on every report.
+ *
+ * THE SIX VERDICTS STAY CLOSED AND MOVE TO THE COMPOSING SESSION. VERDICTS and REASON_CODES are
+ * still exported, still closed, and assertVerdict()/assertReasonCode() still throw on a value
+ * outside them. What is deleted is the code that PICKED one. A session that rules a verdict passes
+ * it through those assertions and into selectWave(verdict, ruling, ctx), which now takes the
+ * verdict as an argument rather than reading one this file chose.
+ *
+ * LOW WEIGHT, STATED INLINE (sub-step 8.2). Every report carries FAILURE_MODES -- the kwh and polar
+ * misses as worked examples with their measured numbers -- and RELIABILITY, which says in the
+ * artifact that a non-match is weak evidence of absence and that the reader should override on
+ * judgement. A caveat in a document the session may never open is not a caveat.
+ *
+ * THE CALIBRATED THRESHOLDS ARE REFERENCE MARKS, NOT GATES (sub-step 8.6). K (2.431), the thin fire
+ * and govern tiers (1.7 / 6.175) are still READ, so that a margin can be reported. Nothing is
+ * filtered by them and nothing is decided by them. An absent mark is no longer `input-missing`: it
+ * is a report line saying margins are unavailable, because a tool that refuses to describe the
+ * evidence because a number it no longer obeys is missing has the dependency backwards.
  */
 'use strict';
 const fs = require('fs');
@@ -52,6 +64,11 @@ const TP = require('./thin_patches.js');
 
 /* --- closed sets ------------------------------------------------------------------------------- */
 
+/* THE CLOSED SIX. This file no longer picks one. It publishes the set a composing session picks
+   FROM, and it keeps the machinery that throws on anything outside it -- because the property worth
+   keeping was never "the router chose correctly", it was "nothing outside the six can ever be
+   emitted by anybody". That property is now enforced at the session's boundary rather than at the
+   router's, which is the only place it was ever really needed. */
 const VERDICTS = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
 
 /* SEVEN REASON CODES. `transfer-unevaluable` is the seventh and it is ruled here, at W4-2, on W4-4's
@@ -79,7 +96,84 @@ const VERDICTS = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
 const REASON_CODES = ['excluded', 'not-found', 'unbuildable', 'axis-incomplete', 'misclassified',
                       'input-missing', 'transfer-unevaluable'];
 
+/* Precedence among reason codes, answer contract section 5: `excluded` routes to nobody and must
+   never mask a code that routes to someone, so it is written only when no other code applies. The
+   function that APPLIED this to pick a dominant code for a question is deleted with the rest of the
+   decision surface; the ORDER survives, published on every report, because it is a statement in the
+   contract about who owns a repair and a session ruling REFUSE needs it. */
+const CODE_PRECEDENCE = ['input-missing', 'misclassified', 'axis-incomplete', 'unbuildable', 'not-found', 'excluded'];
+
+/* THE FIVE EVIDENCE CHANNELS. These replace the four RETRIEVAL MODES, and the replacement is the
+   whole of sub-step 8.1 in one line. A MODE was exclusive: one fired, the rest were never looked
+   at, and which one fired WAS the decision. A CHANNEL is not exclusive: all five are computed for
+   every sub-claim and all five are reported, so a session sees the register near-miss on a question
+   that also resolves against the app. Nothing is suppressed by something else having matched. */
+const EVIDENCE_CHANNELS = ['register', 'app', 'exclusions', 'thin_patches', 'retrieval'];
+
+/* Retained under its old name because it is still the historical record of what the four exclusive
+   modes were. Nothing in this file branches on it any more. */
 const RETRIEVAL_MODES = ['CONTESTED', 'APP', 'REFUSE', 'LITERATURE'];
+
+/* --- the assertion machinery on the closed sets, kept; the code that PICKED, deleted ------------
+ *
+ * A composing session that has ruled a verdict runs it through here. The throw is the same throw
+ * assertOneMode() used to make; what changed is who is being checked. Before, the router checked
+ * itself, which is the shape this project has already been bitten by twice -- the check register
+ * that agreed with itself and had never been executed. Now the checker and the decider are
+ * different agents, which is the only arrangement in which an assertion is worth anything. */
+function assertVerdict(verdict, where) {
+  const w = where ? ' [' + where + ']' : '';
+  if (verdict == null) {
+    throw new Error('oracle/router/classify: a ruling carries no verdict. The closed set is [' +
+      VERDICTS.join(', ') + '] and the session must name one' + w);
+  }
+  if (typeof verdict !== 'string' || !VERDICTS.includes(verdict)) {
+    throw new Error('oracle/router/classify: "' + verdict + '" is outside the closed six [' +
+      VERDICTS.join(', ') + ']' + w);
+  }
+  return verdict;
+}
+
+function assertReasonCode(verdict, reason_code, where) {
+  const w = where ? ' [' + where + ']' : '';
+  if (verdict === 'REFUSE') {
+    if (!REASON_CODES.includes(reason_code)) {
+      throw new Error('oracle/router/classify: a REFUSE ruling carries reason code ' +
+        JSON.stringify(reason_code) + ', outside the closed set [' + REASON_CODES.join(', ') + ']' + w);
+    }
+  } else if (reason_code != null) {
+    throw new Error('oracle/router/classify: a ' + verdict + ' ruling carries a reason code, and ' +
+      'only a refusal has one' + w);
+  }
+  return reason_code;
+}
+
+/* THE ONE-WAY VALVE. An evidence report that carries a verdict is a router that went back to
+   deciding, and the way that happens is not a rewrite -- it is one convenience field added by
+   somebody in a hurry. So it is asserted, on every report, on every run, by key name and at every
+   depth. `closed_set` and `verdict_options` are the MENU and are allowed; a key literally named
+   `verdict`, `reason_code` or `mode` is not. */
+const FORBIDDEN_REPORT_KEYS = ['verdict', 'reason_code', 'mode', 'reasonCode'];
+function assertNoVerdict(report, where) {
+  const found = [];
+  const seen = new Set();
+  (function walk(node, pathStr) {
+    if (node === null || typeof node !== 'object') return;
+    if (seen.has(node)) return;
+    seen.add(node);
+    if (Array.isArray(node)) { node.forEach((v, i) => walk(v, pathStr + '[' + i + ']')); return; }
+    for (const k of Object.keys(node)) {
+      if (FORBIDDEN_REPORT_KEYS.includes(k)) found.push(pathStr + '.' + k);
+      walk(node[k], pathStr + '.' + k);
+    }
+  })(report, 'report');
+  if (found.length) {
+    throw new Error('oracle/router/classify: the evidence report carries decision field(s) ' +
+      found.join(', ') + '. Sub-step 8.1: the tool reports, the session rules. A report that names ' +
+      'a verdict has made the choice it exists to inform' + (where ? ' [' + where + ']' : ''));
+  }
+  return true;
+}
 
 /* --- register loading -------------------------------------------------------------------------- */
 
@@ -150,7 +244,16 @@ function loadContext(opts) {
   const root = opts.root || path.resolve(__dirname, '..', '..');
   const rel = (p) => path.isAbsolute(p) ? p : path.join(root, p);
 
-  const ctx = { root, missing: [] };
+  const ctx = { root, missing: [], reference_marks_absent: [] };
+
+  /* THE `registerPaths` BUG, FIXED AT 8.1. This loader took `registerPaths` in the signature W4-2
+     relayed and IGNORED IT in the body -- the register file list below was hard-coded. Three
+     fault-injection decoys had to reach it by staging a whole fake `root` instead, which is a
+     harness working around a defect rather than testing through an interface. It is honoured now,
+     and the hard-coded pair is what it falls back to. */
+  ctx.registerPaths = (opts.registerPaths && opts.registerPaths.length)
+    ? opts.registerPaths.map(rel)
+    : [rel(path.join('oracle', 'REGISTER.lunar.tsv')), rel(path.join('oracle', 'REGISTER.econ.tsv'))];
 
   ctx.appPath = rel(opts.appPath || path.join('lsei', 'index.html'));
   ctx.litDir = rel(opts.litDir || 'literature');
@@ -164,7 +267,18 @@ function loadContext(opts) {
   if (!fs.existsSync(ctx.litDir)) ctx.missing.push('the shelf at ' + ctx.litDir);
   if (!fs.existsSync(ctx.excludedNodesPath)) ctx.missing.push('the excluded-node artifact at ' + ctx.excludedNodesPath);
 
-  /* K: read, never defaulted. */
+  /* K: READ, NEVER DEFAULTED, AND NO LONGER AN INPUT WHOSE ABSENCE REFUSES.
+   *
+   * Sub-step 8.6. K was the axis FIRING threshold and its absence made CONTESTED unreachable, which
+   * is why an absent K used to refuse `input-missing` before classification. Under 8.1 K decides
+   * nothing: it is a reference mark, present so that a mass can be reported with a signed margin
+   * against the number that used to matter. An absent mark costs the margins and costs nothing
+   * else, so it is a REPORT LINE and not a refusal. Refusing to describe the evidence because a
+   * number the router no longer obeys is missing has the dependency backwards.
+   *
+   * `never defaulted` survives verbatim and is the half that still matters. A defaulted K would put
+   * a margin in front of a reading session against a bar nobody chose, which is the C2 shape --
+   * a routing input nobody can see -- wearing an advisory hat. */
   if (opts.K != null) {
     ctx.K = opts.K;
     ctx.K_provenance = 'passed by the caller';
@@ -174,7 +288,10 @@ function loadContext(opts) {
     ctx.K_provenance = t.provenance || ctx.thresholdPath;
     ctx.K_status = t.status || null;
   } else {
-    ctx.missing.push('the axis firing threshold K (oracle/register_schema.md section 4.3 assigns it to sub-step 3.6)');
+    ctx.K = null;
+    ctx.K_provenance = null;
+    ctx.reference_marks_absent.push('K, the axis reference mark (' + ctx.thresholdPath + '). ' +
+      'Axis masses are still reported; their margins are not.');
   }
 
   if (ctx.missing.length) {
@@ -183,6 +300,9 @@ function loadContext(opts) {
   }
 
   ctx.surface = loadAppSurface(ctx.appPath);
+  /* Probed once per context, against the app itself. See deriveOutputGrades() for why this is a
+     probe and not a list. */
+  ctx.outputGrades = deriveOutputGrades(ctx.surface);
   ctx.excluded = loadExcludedNodes(ctx.excludedNodesPath);
   ctx.excludedBySlug = new Map(ctx.excluded.nodes.map(n => [n.slug, n]));
 
@@ -211,7 +331,15 @@ function loadContext(opts) {
     ctx.thin_provenance = t.provenance || ctx.thinThresholdPath;
     ctx.thin_status = t.status || null;
   } else {
-    ctx.missing.push('the thin-patch thresholds (oracle/router/thin_threshold.json; run oracle/router/calibrate_thin.js --write)');
+    /* Same disposition as K, and for the same reason plus a sharper one. The govern tier was the
+       number that could SILENTLY CONVERT A CORRECT ANSWER INTO A REFUSAL, and one band on this
+       sub-step -- (1.86, 3.78], measured on five control rows -- did exactly that to six of them.
+       A gate with that failure mode had to refuse rather than default. A reference mark with no
+       power to refuse anything does not. */
+    ctx.thinFire = null;
+    ctx.thinGovern = null;
+    ctx.reference_marks_absent.push('the thin-patch fire and govern reference marks (' +
+      ctx.thinThresholdPath + '). Patch masses are still reported; their margins are not.');
   }
   if (ctx.missing.length) {
     ctx.refuse = { verdict: 'REFUSE', reason_code: 'input-missing', missing: ctx.missing.slice() };
@@ -219,11 +347,16 @@ function loadContext(opts) {
   }
 
 
+  /* The field a register's axes belong to is read off the file's own basename against ROOT_FIELD,
+     which keeps `registerPaths` honourable: a caller may stage a register anywhere, and the field
+     still comes from the file rather than from the position in a hard-coded pair. */
   ctx.axes = new Map();
-  for (const [file, field] of [['oracle/REGISTER.lunar.tsv', ROOT_FIELD.lunar],
-                               ['oracle/REGISTER.econ.tsv', ROOT_FIELD.economics]]) {
-    const p = rel(file);
+  ctx.registerPathsRead = [];
+  for (const p of ctx.registerPaths) {
     if (!fs.existsSync(p)) continue;
+    const base = path.basename(p);
+    const field = /econ/i.test(base) ? ROOT_FIELD.economics : ROOT_FIELD.lunar;
+    ctx.registerPathsRead.push(p);
     for (const [id, ax] of loadRegister(p, field)) {
       if (ctx.axes.has(id)) throw new Error('oracle/router/classify: axis id ' + id + ' occurs in two register files.');
       ctx.axes.set(id, ax);
@@ -533,195 +666,516 @@ function coefficientPath(surface, text) {
   return { form: 'coefficient', coefficients };
 }
 
-/* --- per-sub-claim classification ---------------------------------------------------------------- */
+/* --- output grades: which app keys are answers and which are the caller's own input ------------
+ *
+ * MEASURED HERE, NOT TYPED. `model()` returns 26 keys and they are not 26 answers. Five of them --
+ * `ice`, `power`, `mass`, `fission`, `phi_c` -- are the caller's own arguments handed straight back
+ * (`const ice = a.ice, power = a.power, mass = a.mass, fission = !!a.fission`; `phi_c` is the same
+ * value clamped into [0,1]). Two more, `transDistKm` and `phi_c0`, are `a.x != null ? a.x : <const>`
+ * and, because this router's address grammar never supplies either, are a fixed 3 and 0.10 at every
+ * address it can build. Two further keys, `envPowerFrac` and `envMassFrac`, are genuinely computed
+ * and are nonetheless CONSTANT across all nine (scenario, phase) addresses.
+ *
+ * A resolved address on a key in any of those groups is not an answer. It looks exactly like one:
+ * the same slug, the same recompute trace, the same number-with-units. So the grade is computed by
+ * PROBING the app -- vary the address, watch the value -- rather than by a list somebody maintains,
+ * because a list goes stale the first time the app changes and a stale list here reads as an answer.
+ *
+ * The brief this seat was given named seven echo keys and included `transDistKm` and `phi_c0` among
+ * them. The probe refutes that in detail and agrees with it in substance: neither is an ECHO, since
+ * neither is an input key at any address this grammar builds -- both are DEFAULTS. And the brief
+ * missed `envPowerFrac`/`envMassFrac`. Nine of the twenty-six keys, not seven, carry no
+ * address-dependent information, in three different ways. Three grades, therefore, not two.
+ */
+const OUTPUT_GRADES = ['computed', 'input_echo', 'constant', 'value_computed'];
 
-function classifySubClaim(ctx, subClaim) {
-  const piece = (typeof subClaim === 'string') ? { own: subClaim, full: subClaim } : subClaim;
-  const out = {
-    text: piece.own, mode: null, verdict: null, reason_code: null,
-    axis: null, app: null, exclusion: null, field: null, evidence: {},
-  };
+function deriveOutputGrades(surface) {
+  const grades = new Map();
+  const samples = [];
+  for (const sk of Object.keys(surface.PRESETS)) {
+    for (const ph of surface.phases) {
+      let args;
+      try { args = A.scenarioArgs(surface, sk, ph); } catch (e) { continue; }
+      let out;
+      try { out = surface.model(args); } catch (e) { continue; }
+      samples.push({ args, out });
+    }
+  }
+  if (samples.length === 0) return grades;
 
-  /* MODE 1 -- CONTESTED. The register, at classification time. */
-  const tokens = LIT.tokenize(piece.own);
+  const keys = Object.keys(samples[0].out);
+  for (const k of keys) {
+    const isEcho = samples.every(s => Object.prototype.hasOwnProperty.call(s.args, k) && s.out[k] === s.args[k]);
+    if (isEcho) {
+      grades.set(k, { grade: 'input_echo', varies_over_addresses: false,
+        why: 'model() returns this key unchanged from the caller\'s own argument at every one of the ' +
+             samples.length + ' addresses this grammar can build. Resolving an address on it echoes ' +
+             'the question\'s own input back with a slug attached.' });
+      continue;
+    }
+    const distinct = new Set(samples.map(s => JSON.stringify(s.out[k])));
+    if (distinct.size === 1) {
+      grades.set(k, { grade: 'constant', varies_over_addresses: false, value: samples[0].out[k],
+        why: 'this key takes the same value (' + JSON.stringify(samples[0].out[k]) + ') at all ' +
+             samples.length + ' addresses this grammar can build, so the address is doing no work. ' +
+             'It is either a CONFIG default the grammar never overrides, or a ratio that the ' +
+             'scenario envelope fixes by construction.' });
+      continue;
+    }
+    grades.set(k, { grade: 'computed', varies_over_addresses: true, distinct_values: distinct.size,
+      why: 'model() computes this key and it takes ' + distinct.size + ' distinct values over the ' +
+           samples.length + ' addresses this grammar can build.' });
+  }
+  for (const spec of surface.outputs.values()) {
+    if (grades.has(spec.key)) continue;
+    grades.set(spec.key, { grade: 'value_computed', varies_over_addresses: true,
+      why: 'computed by valueModel(), which needs a landed cost; not probed here because a landed ' +
+           'cost is a dimension of the address rather than of the scenario.' });
+  }
+  return grades;
+}
 
-  /* THE THIN-PATCH MATCH IS COMPUTED HERE, BEFORE ANY MODE RESOLVES, for one reason: a patch that
-     FIRES attaches its substitution to whatever answer results, including a CONTESTED or a BOTH.
-     T3 fires on SRQ-10, which is BOTH, and its own Must-carry cell requires the substitution to be
-     delivered there. Computing it inside the refusal branch would attach it only to refusals, which
-     is the one verdict that needs it least. */
-  const thin = TP.matchThinPatches(ctx, piece.own);
-  out.thin = {
-    fired: thin.fired.map(f => TP.substitutionRecord(f)),
-    governing: thin.governing.map(g => g.id),
-    max_mass: thin.scored.length ? Number(thin.scored[0].mass.toFixed(3)) : 0,
-    top: thin.scored.length ? thin.scored[0].id : null,
-  };
-  out.evidence.thin = { fire_threshold: ctx.thinFire, govern_threshold: ctx.thinGovern,
-    scored: thin.scored.map(x => x.id + '=' + x.mass.toFixed(3)) };
-  const fired = [];
+function gradeOf(ctx, key) {
+  return (ctx.outputGrades && ctx.outputGrades.get(key)) ||
+    { grade: 'computed', varies_over_addresses: null, why: 'not probed' };
+}
+
+/* --- confidence: every finding says what it is worth, in the finding -----------------------------
+ *
+ * Sub-step 8.2. The author asked for this tool's result to carry VERY LOW WEIGHT, so the ceiling is
+ * low by construction and the reasons are written out rather than encoded as a number a reader has
+ * to look up.
+ *
+ * THE CEILING IS `moderate` FOR EVERY WORD-MATCH SCORE. Register mass, thin-patch mass, exclusion
+ * overlap and retrieval score are all the same instrument -- tokens of the question against tokens
+ * somebody wrote into a register -- and that instrument demonstrably misses `kwh` against "kilowatt
+ * hours" and `polar` against "pole". Nothing measured that way earns `high`.
+ *
+ * `high` IS REACHABLE EXACTLY ONCE: a fully-bound app address on a COMPUTED key. That is not a word
+ * match; it is arithmetic performed by the app itself and carried with a recompute trace, and the
+ * grammar refuses rather than defaults when a dimension is unbound. An address on an input-echo or
+ * constant key does NOT earn it, however well-formed, because a well-formed address on a key that
+ * does not vary is a perfect answer to nothing.
+ */
+const CONFIDENCE_LEVELS = ['none', 'very-low', 'low', 'moderate', 'high'];
+
+/* A mass against a reference mark, with the mark's direction and nearness spelled out. */
+function confidenceForMargin(mass, mark, opts) {
+  opts = opts || {};
+  if (mark == null) {
+    return { confidence: 'very-low', confidence_why:
+      'the reference mark is absent, so there is nothing to measure this mass against. A bare mass ' +
+      'is a number without a scale.' };
+  }
+  const margin = mass - mark;
+  const near = Math.abs(margin) / (mark || 1);
+  const side = margin >= 0 ? 'at or above' : 'below';
+  if (opts.tied_with && opts.tied_with.length) {
+    return { confidence: 'very-low', confidence_why:
+      'this mass is EXACTLY equal to ' + opts.tied_with.length + ' other axis mass(es) (' +
+      opts.tied_with.join(', ') + '), so the score cannot tell them apart at all. Whatever it is ' +
+      'evidence of, it is not evidence about THIS axis rather than those.' };
+  }
+  if (near < 0.10) {
+    return { confidence: 'very-low', confidence_why:
+      'mass ' + mass.toFixed(3) + ' sits ' + (margin >= 0 ? '+' : '') + margin.toFixed(3) +
+      ' from the mark ' + mark + ' -- within 10% of it. A match this close to the bar is a ' +
+      'coin-flip wearing a number: one word choice either way moves it across.' };
+  }
+  /* THE CONFIDENCE IS IN THE SCORE'S ABILITY TO DISCRIMINATE, NOT IN THE CONCLUSION. A finding can
+     be confidently BELOW the mark and still be the right axis -- LCC-07 on SRQ-12 is exactly that,
+     at 36% below -- so a below-mark finding carries the asymmetry with it rather than leaving the
+     reader to remember it. */
+  const below = margin < 0 ? ' NOTE THE DIRECTION: this mass is BELOW the retired mark, and a ' +
+    'below-mark score is barely evidence against the axis. FM-1 is a measured case where the ' +
+    'correct axis scored 36% below and was right anyway.' : '';
+  if (near < 0.35) {
+    return { confidence: 'low', confidence_why:
+      'mass ' + mass.toFixed(3) + ' is ' + side + ' the mark ' + mark + ' by ' +
+      Math.abs(margin).toFixed(3) + ' (' + (near * 100).toFixed(0) + '% of it), which is not close ' +
+      'to the bar but is well inside the range a single missing synonym moves.' + below };
+  }
+  return { confidence: 'moderate', confidence_why:
+    'mass ' + mass.toFixed(3) + ' is ' + side + ' the mark ' + mark + ' by ' +
+    Math.abs(margin).toFixed(3) + ' (' + (near * 100).toFixed(0) + '% of it). This is the strongest ' +
+    'a word-match score gets in this tool; it is still a word-match score.' + below };
+}
+
+/* --- the five evidence channels -------------------------------------------------------------------
+ *
+ * Each returns findings and nothing else. None of them returns a verdict, none of them suppresses
+ * another, and none of them stops early because something matched.
+ */
+
+/* CHANNEL 1 -- the register. EVERY axis with at least one key hit, with its distance from K.
+ *
+ * The filter `mass >= ctx.K` is what this sub-step deletes and it is worth being explicit about
+ * what it destroyed. On SRQ-12 it removed LCC-07 -- the axis whose statement is about the energy
+ * cost of oxygen production -- from a question that asks the energy cost of oxygen production,
+ * because 1.540 < 2.431. The report never mentioned it. Nothing downstream could weigh it, because
+ * nothing downstream was ever told it existed. */
+function registerChannel(ctx, tokens) {
+  const scored = [];
   for (const ax of ctx.axes.values()) {
     const { mass, hits } = axisMass(ctx, ax, tokens);
-    if (mass >= ctx.K && hits.length > 0) fired.push({ ax, mass, hits });
+    if (hits.length === 0) continue;
+    scored.push({ ax, mass, hits });
   }
-  fired.sort((a, b) => b.mass - a.mass);
-  out.evidence.axes_fired = fired.map(f => ({ axis_id: f.ax.axis_id, mass: Number(f.mass.toFixed(3)), keys: f.hits }));
+  scored.sort((a, b) => b.mass - a.mass || (a.ax.axis_id < b.ax.axis_id ? -1 : 1));
 
-  if (fired.length) {
-    const top = fired[0].ax;
-    /* A one_sided axis never produces CONTESTED: it has one side, Rule V wants one literature
-       trace per side over at least two sides, and such a run is UNSATISFIABLE rather than wrong.
-       Answer contract section 1 rules it to LITERATURE or BOTH. */
-    if (top.class === 'one_sided') {
-      out.mode = 'LITERATURE';
-      out.verdict = 'LITERATURE';
-      out.field = top.field;
-      out.axis = axisView(top);
-      out.evidence.one_sided_disclosure = true;
-      return out;
-    }
-    out.mode = 'CONTESTED';
-    out.field = top.field;
-    out.axis = axisView(top);
-    /* A two_sided or false_pair axis with fewer than two sides is UNSATISFIABLE under Rule V --
-       one literature trace per side over at least two sides -- rather than answerable with one.
-       Answer contract section 1 says so about one_sided in its own words, and the same reasoning
-       applies to an axis whose class promises sides its M rows do not carry. That is a broken
-       register row, which is what axis-incomplete routes to. */
-    if (out.axis.sides.length < 2) {
-      out.verdict = 'REFUSE';
-      out.reason_code = 'axis-incomplete';
-      out.evidence.side_count = out.axis.sides.length;
-      return out;
-    }
-    /* SIDES ARE RESOLVED BY PATH AGAINST literature/INDEX.tsv, NEVER THROUGH RETRIEVAL, and the
-       resolved side count is asserted equal to the declared side count.
-     *
-     * Two measured findings force this and they compound. (1) Retrieval cannot reach every register
-     * member at any threshold: on fixture X-01 the scored pool holds 38 candidates and
-     * henderson-2008-myth-of-miti.md is not among them -- absent from the pool, not below the bar --
-     * while beason-1996-targeting-japan.md, the other side of the same pair, is present. Six of 37
-     * targets, about 16%, are unreachable at any threshold. (2) Seven of the twenty-two two_sided
-     * axes carry three or four sides rather than two: LCC-01, LCC-03, LCC-04, LCC-07, LCC-09,
-     * LCC-12, ECR-13.
-     *
-     * Sourced from retrieval, a CONTESTED answer therefore drops sides for two unrelated reasons at
-     * once and the reader sees a dispute with a side missing and nothing saying one is missing. The
-     * register already knows its member paths. A member that does not resolve is a HARD ERROR --
-     * axis-incomplete, owner a broken register row -- and never a quietly shorter dispute. */
-    const unresolved = [];
-    const resolvedSides = new Set();
-    for (const [side, members] of top.sides) {
-      for (const m of members) {
-        const hit = indexPathFor(ctx, m.leaf);
-        if (hit) { m.path = hit; resolvedSides.add(side); }
-        else unresolved.push(side + ':' + m.leaf);
-      }
-    }
-    const declaredSides = [...top.sides.keys()];
-    if (unresolved.length || resolvedSides.size !== declaredSides.length) {
-      out.verdict = 'REFUSE';
-      out.reason_code = 'axis-incomplete';
-      out.evidence.unresolved_members = unresolved;
-      out.evidence.sides_declared = declaredSides.length;
-      out.evidence.sides_resolved = resolvedSides.size;
-      out.axis = axisView(top);
-      return out;
-    }
-    out.axis = axisView(top);
-    out.verdict = 'CONTESTED';
-    return out;
+  /* Exact ties are reported as ties. SRQ-8 puts LCC-06, LCC-09 and LCC-10 at 0.428 on the single
+     shared key `power`; a ranked list hides that by printing one of them first. */
+  const byMass = new Map();
+  for (const s of scored) {
+    const k = s.mass.toFixed(6);
+    if (!byMass.has(k)) byMass.set(k, []);
+    byMass.get(k).push(s.ax.axis_id);
   }
 
-  /* MODE 2 -- APP. */
-  const app = tryAppPath(ctx.surface, piece.full);
-  if (app) {
-    out.mode = 'APP';
-    if (app.unbuildable) {
-      out.verdict = 'REFUSE';
-      out.reason_code = 'unbuildable';
-      out.evidence.unbuildable_reason = app.reason;
-      return out;
-    }
-    if (app.form === 'coefficient') {
-      out.app = { form: 'coefficient', coefficients: app.coefficients };
-      /* BOTH, per answer contract section 1: the app says what the coefficient IS and with what
-         status; the shelf says where the number came from. Two distinct questions. The app fact is
-         first and the shelf figure is never folded in as a second app sentence. */
-      out.verdict = 'BOTH';
-      out.field = 'lunar';
-      return out;
-    }
-    out.app = {
-      form: app.form,
-      resolvedAddress: app.resolved.resolvedAddress,
-      slugsAddressed: app.resolved.slugsAddressed,
-      points: app.resolved.points,
-      unbound: app.unbound || null,
-      note: app.note || null,
+  const findings = scored.map(s => {
+    const tied = (byMass.get(s.mass.toFixed(6)) || []).filter(id => id !== s.ax.axis_id);
+    const c = confidenceForMargin(s.mass, ctx.K, { tied_with: tied });
+    const sideInfo = resolveSides(ctx, s.ax);
+    return {
+      axis_id: s.ax.axis_id, axis_class: s.ax.class, field: s.ax.field,
+      axis_statement: s.ax.axis_statement, scope_token: s.ax.scope_token,
+      keys_matched: s.hits, keys_declared: s.ax.match_keys.length,
+      keys_not_matched: s.ax.match_keys.filter(k => !s.hits.includes(k)),
+      mass: Number(s.mass.toFixed(3)),
+      reference_mark: ctx.K == null ? null : Number(ctx.K),
+      margin: ctx.K == null ? null : Number((s.mass - ctx.K).toFixed(3)),
+      margin_as_fraction_of_mark: ctx.K == null ? null : Number(((s.mass - ctx.K) / ctx.K).toFixed(3)),
+      side_of_mark: ctx.K == null ? 'unknown' : (s.mass >= ctx.K ? 'at or above' : 'below'),
+      would_have_fired_under_the_retired_gate: ctx.K == null ? null : s.mass >= ctx.K,
+      tied_at_identical_mass_with: tied,
+      carried_by_a_single_key: s.hits.length === 1 ? s.hits[0] : null,
+      sides_declared: sideInfo.declared,
+      sides_resolved: sideInfo.resolved,
+      side_resolution: sideInfo.status,
+      unresolved_members: sideInfo.unresolved,
+      members: sideInfo.members,
+      one_sided: s.ax.class === 'one_sided',
+      confidence: c.confidence, confidence_why: c.confidence_why,
     };
-    out.verdict = app.form === 'sweep' ? 'FIGURE' : 'APP';
-    return out;
-  }
+  });
 
-  /* MODE 3 -- REFUSE, via the app's own EXCLUSIONS and the three outcomes of sub-step 3.4. */
-  const cands = X.matchExclusions(ctx.surface, piece.own, ctx.excludedBySlug);
-  const band = X.topBand(cands);
-  if (band.length && band[0].overlap >= 2) {
-    const node = ctx.excludedBySlug.get(band[0].key);
-    const v = X.verdictForOutcome(node.outcome, node);
-    out.mode = v.verdict === 'REFUSE' ? 'REFUSE' : 'LITERATURE';
-    out.verdict = v.verdict;
-    out.reason_code = v.reason_code;
-    out.field = 'lunar';
-    out.exclusion = { node, outcome: node.outcome, candidate: band[0], tied: band.map(b => b.key), why: v.why };
-    out.evidence.exclusion_overlap = band[0].overlap;
-    return out;
-  }
-
-  /* MODE 3b -- REFUSE, via the thin-patch register. BEFORE RETRIEVAL, which is sub-step 3.3's
-     specification and the whole point of the register: a question landing in a thin patch must not
-     answer from the nearest word-overlap match. SRQ-13 is why the obvious precondition -- govern
-     only where no competing route answered -- is wrong and was refuted rather than re-derived: it
-     returns LITERATURE confirmed 9 of 9 at frac 0.85, so that rule would block T1 on the one row it
-     must govern. Retrieval being confident is the symptom, not the licence.
-
-     It sits AFTER the app and the register and the exclusions, and BEFORE the shelf. A patch says a
-     specific MEASUREMENT is absent; it does not say the app cannot compute something, and it does
-     not settle a disagreement the register already records. Where the app answers, the patch is
-     irrelevant; where the register records a dispute, the dispute is the answer. */
-  if (thin.governing.length) {
-    const g = thin.governing[0];
-    out.mode = 'REFUSE';
-    out.verdict = 'REFUSE';
-    out.reason_code = g.patch.refusal_code || 'not-found';
-    out.thin_patch = TP.substitutionRecord(g);
-    out.field = 'lunar';
-    out.evidence.thin_governed = g.id + ' at mass ' + g.mass.toFixed(3) + ' >= ' + ctx.thinGovern;
-    return out;
-  }
-
-  /* MODE 4 -- LITERATURE. The shelf is searched HERE and nowhere earlier. */
-  out.mode = 'LITERATURE';
-  const search = LIT.searchLiterature(ctx.litDir, piece.own, { limit: 5 });
-  out.evidence.search = {
-    scored: search.scoredCount, returned: (search.candidates || []).length,
-    confirmed: (search.confirmedSet || []).length,
-    best: search.best ? search.best.filename : null,
-    threshold: search.threshold,
+  return {
+    channel: 'register',
+    reference_mark: {
+      name: 'K', value: ctx.K == null ? null : Number(ctx.K), available: ctx.K != null,
+      status: ctx.K_status || null, provenance: ctx.K_provenance || null,
+      role: 'REPORTED, NOT ENFORCED (sub-step 8.6). Nothing is filtered by this number.',
+    },
+    axes_with_at_least_one_key_hit: findings.length,
+    axes_in_register: ctx.axes.size,
+    suppressed_by_a_threshold: 0,
+    findings,
   };
-  if (search.best) {
-    out.verdict = 'LITERATURE';
-    out.field = search.best.field || null;
+}
+
+/* THE SIDE RESOLUTION SURVIVES 8.1 UNCHANGED IN SUBSTANCE, because it is a LOOKUP and not a score.
+ *
+ * Two measured findings force it and they compound. (1) Retrieval cannot reach every register member
+ * at any threshold: on fixture X-01 the scored pool holds 38 candidates and
+ * henderson-2008-myth-of-miti.md is not among them -- absent from the pool, not below the bar --
+ * while beason-1996-targeting-japan.md, the other side of the same pair, is present. About 16% of
+ * targets are unreachable at any threshold. (2) Seven of the twenty-two two_sided axes carry three
+ * or four sides rather than two.
+ *
+ * Sourced from retrieval, a contested answer therefore drops sides for two unrelated reasons at once
+ * and the reader sees a dispute with a side missing and nothing saying one is missing. What CHANGED
+ * at 8.1 is only the consequence: an unresolved member used to become REFUSE/axis-incomplete, which
+ * is a decision. Now it is a reported defect with the member named, and the session rules on it.
+ *
+ * The assertion that stays is the one that stops a side from VANISHING FROM THE REPORT: every
+ * declared side is accounted for as resolved or as unresolved, and the two counts must add up. That
+ * throws, because a report that has silently lost a side is worse than no report. */
+function resolveSides(ctx, ax) {
+  const declared = [...ax.sides.keys()];
+  const unresolved = [];
+  const resolved = new Set();
+  const members = [];
+  for (const [side, ms] of ax.sides) {
+    const leaves = [], paths = [];
+    for (const m of ms) {
+      const hit = indexPathFor(ctx, m.leaf);
+      leaves.push(m.leaf);
+      paths.push(hit || null);
+      if (hit) { m.path = hit; resolved.add(side); }
+      else unresolved.push(side + ':' + m.leaf);
+    }
+    members.push({ side, leaves, paths });
+  }
+  const accounted = new Set([...resolved, ...unresolved.map(u => u.split(':')[0])]);
+  if (accounted.size !== declared.length) {
+    throw new Error('oracle/router/classify: axis ' + ax.axis_id + ' declares ' + declared.length +
+      ' side(s) and the resolution accounted for ' + accounted.size + '. A side has vanished from ' +
+      'the evidence report, which is the one failure this lookup exists to prevent.');
+  }
+  return {
+    declared: declared.length, resolved: resolved.size, unresolved, members,
+    status: unresolved.length === 0 && resolved.size === declared.length ? 'complete'
+      : 'INCOMPLETE -- ' + unresolved.length + ' member(s) named by the register do not resolve ' +
+        'against literature/INDEX.tsv. A dispute answered from what is left would be a dispute with ' +
+        'a side missing and nothing saying so.',
+  };
+}
+
+/* CHANNEL 2 -- the app's own address grammar, with a grade per output key. */
+function appChannel(ctx, text) {
+  const surface = ctx.surface;
+  const outputs_named = findOutputs(surface, text).map(key => {
+    const g = gradeOf(ctx, key);
+    return { key, source: (surface.outputs.get(key) || {}).source || null,
+             grade: g.grade, varies_over_addresses: g.varies_over_addresses, why: g.why };
+  });
+  const echoes = outputs_named.filter(o => o.grade === 'input_echo').map(o => o.key);
+  const constants = outputs_named.filter(o => o.grade === 'constant').map(o => o.key);
+
+  const out = {
+    channel: 'app',
+    scenario_named: findScenario(surface, text),
+    phase_named: findPhase(surface, text),
+    knob_named: findKnob(surface, text),
+    landed_cost_named: (() => { try { return findLandedCost(surface, text); } catch (e) { return null; } })(),
+    sweep_language_present: SWEEP_LANGUAGE.test(text),
+    outputs_named,
+    input_echo_keys_named: echoes,
+    constant_keys_named: constants,
+    echo_warning: echoes.length ? 'THE QUESTION NAMES ' + echoes.length + ' KEY(S) THE APP HANDS ' +
+      'BACK UNCHANGED (' + echoes.join(', ') + '). An address that resolves on one of these returns ' +
+      'the caller\'s own input with a slug and a recompute trace attached. It is not an answer, and ' +
+      'it is indistinguishable from one on the wire.' : null,
+    constant_warning: constants.length ? 'The question names ' + constants.length + ' key(s) that ' +
+      'take the same value at every address this grammar builds (' + constants.join(', ') + '). ' +
+      'The address is doing no work.' : null,
+    resolves: false, address_form: null, resolved_address: null,
+    points: 0, slugs_addressed: null, unbound_dimension: null,
+    coefficients: [], derivation_note: null, unbuildable_reason: null,
+    confidence: 'none', confidence_why: 'the sub-claim names no address this grammar can build.',
+  };
+
+  let app = null;
+  try { app = tryAppPath(surface, text); }
+  catch (e) { out.unbuildable_reason = 'the grammar threw: ' + e.message; return out; }
+  if (!app) return out;
+
+  if (app.unbuildable) {
+    out.unbuildable_reason = app.reason;
+    out.confidence = 'moderate';
+    out.confidence_why = 'the grammar REFUSED to build this address rather than defaulting a ' +
+      'dimension, which is a mechanical fact about the app rather than a score. What it does not ' +
+      'tell you is whether the question was app-shaped at all.';
     return out;
   }
-  /* A weaker exclusion hit, below the two-token bar, is not a verdict but it IS the refusal's
-     nearest present object (answer contract section 5's three nouns, and its rule that a code
-     routing to nobody must never mask a code routing to someone). */
-  out.verdict = 'REFUSE';
-  out.reason_code = 'not-found';
-  if (band.length) out.exclusion = { node: ctx.excludedBySlug.get(band[0].key) || null, outcome: null, candidate: band[0], why: 'below the exclusion bar; carried as the refusal\'s nearest present object only' };
+  if (app.form === 'coefficient') {
+    out.resolves = true;
+    out.address_form = 'coefficient';
+    out.coefficients = app.coefficients;
+    out.confidence = 'moderate';
+    out.confidence_why = 'the sub-claim names ' + app.coefficients.length + ' coefficient(s) by the ' +
+      'app\'s own key or by its own unit string, which is a mechanical match against CONFIG/VALUE ' +
+      'rather than a word-overlap score. The app says what the coefficient IS and with what status; ' +
+      'it does not say where the number came from, and the two are different questions.';
+    return out;
+  }
+
+  out.resolves = true;
+  out.address_form = app.form;
+  out.resolved_address = app.resolved.resolvedAddress;
+  out.slugs_addressed = app.resolved.slugsAddressed;
+  out.points = (app.resolved.points || []).length;
+  out.unbound_dimension = app.unbound || null;
+  out.derivation_note = app.note || null;
+  out.answers_output_key = app.output;
+  const g = gradeOf(ctx, app.output);
+  out.answers_output_grade = g.grade;
+  if (g.grade === 'input_echo') {
+    out.confidence = 'very-low';
+    out.confidence_why = 'the address resolves cleanly, and the key it resolves on (' + app.output +
+      ') is one the app hands straight back from the caller\'s argument. A perfectly-formed address ' +
+      'on an echo key is a well-traced restatement of the question. ' + g.why;
+  } else if (g.grade === 'constant') {
+    out.confidence = 'low';
+    out.confidence_why = 'the address resolves cleanly, and the key it resolves on (' + app.output +
+      ') takes the same value at every address this grammar builds, so the scenario and phase in ' +
+      'the address changed nothing. ' + g.why;
+  } else {
+    out.confidence = 'high';
+    out.confidence_why = 'a fully-bound address on a computed key, evaluated by the app itself and ' +
+      'carried with a recompute trace over ' + out.points + ' point(s). This is the ONE finding in ' +
+      'this report that is arithmetic rather than word-matching, and it is the only one that earns ' +
+      '`high`. It is still only as good as the app\'s model.';
+  }
   return out;
+}
+
+/* CHANNEL 3 -- the app's own EXCLUSIONS. The two-token bar is reported, not applied. */
+function exclusionChannel(ctx, text) {
+  const cands = X.matchExclusions(ctx.surface, text, ctx.excludedBySlug);
+  const band = X.topBand(cands);
+  const bandKeys = new Set(band.map(b => b.key));
+  const findings = cands.slice(0, 6).map(cand => {
+    const node = ctx.excludedBySlug.get(cand.key) || null;
+    const mapped = node ? X.verdictForOutcome(node.outcome, node) : null;
+    const overlap = cand.overlap;
+    const conf = overlap >= 3 ? 'moderate' : overlap === 2 ? 'low' : 'very-low';
+    return {
+      slug: cand.key,
+      overlap,
+      matched_tokens: cand.matched || cand.hits || null,
+      in_top_band: bandKeys.has(cand.key),
+      meets_the_retired_two_token_bar: overlap >= 2,
+      outcome: node ? node.outcome : null,
+      /* NOT a verdict this tool chose. The three outcomes are a closed table the APP declares about
+         its own boundary, and this is the table's own entry for the outcome the app wrote. A session
+         may take it, and a session may overrule it; what it must not do is mistake it for a score. */
+      outcome_maps_to: mapped ? mapped.verdict : null,
+      outcome_maps_to_code: mapped ? mapped.reason_code : null,
+      outcome_mapping_is: 'a lookup in the app\'s own closed three-entry outcome table, not a score',
+      app_says: node && node.refusal && node.refusal.absent_object ? node.refusal.absent_object.app_says : null,
+      nearest_present_object: node && node.refusal ? node.refusal.nearest_present_object : null,
+      adjacency: node ? node.adjacency || null : null,
+      why: mapped ? mapped.why : null,
+      confidence: conf,
+      confidence_why: 'the match is ' + overlap + ' token(s) of overlap between the sub-claim and ' +
+        'this excluded node\'s match keys. The retired gate fired at two. Two tokens of English ' +
+        'overlap is a weak signal in either direction: it neither establishes that the app excludes ' +
+        'this topic nor, when absent, that the app covers it.',
+    };
+  });
+  return {
+    channel: 'exclusions',
+    nodes_in_artifact: ctx.excluded.nodes.length,
+    candidates_scored: cands.length,
+    retired_bar: { rule: 'top band and overlap >= 2', role: 'REPORTED, NOT ENFORCED' },
+    findings,
+  };
+}
+
+/* CHANNEL 4 -- the thin-patch register. Both tiers reported as marks; neither applied. */
+function thinChannel(ctx, text) {
+  const thin = TP.matchThinPatches(ctx, text);
+  const findings = thin.scored.map(s => {
+    const rec = TP.substitutionRecord(s);
+    const cFire = confidenceForMargin(s.mass, ctx.thinFire);
+    return {
+      patch_id: s.id,
+      title: rec.title,
+      mass: Number(s.mass.toFixed(3)),
+      triggered_on: s.hits,
+      trigger_tokens_declared: (s.patch.trigger_tokens || []).length,
+      fire_mark: ctx.thinFire == null ? null : Number(ctx.thinFire),
+      govern_mark: ctx.thinGovern == null ? null : Number(ctx.thinGovern),
+      margin_to_fire_mark: ctx.thinFire == null ? null : Number((s.mass - ctx.thinFire).toFixed(3)),
+      margin_to_govern_mark: ctx.thinGovern == null ? null : Number((s.mass - ctx.thinGovern).toFixed(3)),
+      crosses_fire_mark: ctx.thinFire == null ? null : s.mass >= ctx.thinFire,
+      crosses_govern_mark: ctx.thinGovern == null ? null : s.mass >= ctx.thinGovern,
+      absent_object: rec.absent_object,
+      substitution: rec.substitution,
+      nearest_present_object: rec.nearest_present_object,
+      /* The patch's own declared code, from oracle/thin_patches.json. Not a code this tool assigned;
+         the register's author wrote it against the patch, not against this question. */
+      patch_declares_code: rec.reason_code,
+      confidence: cFire.confidence,
+      confidence_why: cFire.confidence_why + ' The govern tier (' + ctx.thinGovern + ') is RETIRED ' +
+        'as a gate at 8.6: it was the number that could silently turn a correct answer into a ' +
+        'refusal, and one band measured on five control rows already did exactly that to six of them.',
+    };
+  });
+  return {
+    channel: 'thin_patches',
+    patches_in_register: ctx.thinPatches.patches.length,
+    reference_marks: {
+      fire: ctx.thinFire == null ? null : Number(ctx.thinFire),
+      govern: ctx.thinGovern == null ? null : Number(ctx.thinGovern),
+      available: ctx.thinFire != null && ctx.thinGovern != null,
+      status: ctx.thin_status || null, provenance: ctx.thin_provenance || null,
+      role: 'REPORTED, NOT ENFORCED (sub-step 8.6).',
+    },
+    patches_with_any_mass: findings.length,
+    findings,
+  };
+}
+
+/* CHANNEL 5 -- retrieval. RUNS EXACTLY ONCE, AND LAST.
+ *
+ * "Classification before retrieval" was the rule and the rule survives the decision it was written
+ * for. Its substance is that the four text-only channels are computed from the sub-claim's own words
+ * and are never recomputed against what retrieval found -- so retrieval cannot talk the register
+ * into firing, and a confident search result cannot manufacture a topic. All four run above this
+ * one, none of them reads its result, and no second retrieval repairs a first. */
+function retrievalChannel(ctx, text) {
+  const search = LIT.searchLiterature(ctx.litDir, text, { limit: 5 });
+  const cands = (search.candidates || []).map(c => ({
+    filename: c.filename, path: c.path || null, field: c.field || null,
+    score: Number((c.score || 0).toFixed(4)),
+    confirmed: !!c.confirmed,
+    confirmation_fraction: c.frac == null ? null : Number(c.frac.toFixed(3)),
+    confirmation_threshold: c.threshold == null ? null : c.threshold,
+  }));
+  const best = search.best ? search.best.filename : null;
+  const top = cands[0];
+  let confidence = 'none', why = 'the shelf returned no scored candidate for this sub-claim.';
+  if (top) {
+    const gap = cands.length > 1 ? top.score - cands[1].score : top.score;
+    const confirmedCount = cands.filter(c => c.confirmed).length;
+    if (!best) {
+      confidence = 'very-low';
+      why = 'candidates scored but NONE confirmed in full text. A filename that scores and a body ' +
+        'that does not confirm is the shape a near-miss takes here, and it is not a source.';
+    } else if (gap < 0.1 * (top.score || 1)) {
+      confidence = 'very-low';
+      why = 'the top candidate leads the second by ' + gap.toFixed(4) + ' on a score of ' +
+        top.score.toFixed(4) + ' -- under 10%. The ranking is not distinguishing them.';
+    } else {
+      confidence = confirmedCount >= 2 ? 'moderate' : 'low';
+      why = confirmedCount + ' of ' + cands.length + ' candidate(s) confirmed in full text at ' +
+        'threshold ' + top.confirmation_threshold + ', top score ' + top.score.toFixed(4) +
+        ' leading by ' + gap.toFixed(4) + '. This is a filename-and-token score, not a reading.';
+    }
+  }
+  return {
+    channel: 'retrieval',
+    ran_after_text_channels: true,
+    runs: 1,
+    scored_in_corpus: search.scoredCount,
+    returned: cands.length,
+    truncated: search.truncated,
+    confirmed_count: (search.confirmedSet || []).length,
+    confirmation_threshold: search.threshold,
+    top_confirmed: best,
+    candidates: cands,
+    confidence, confidence_why: why,
+  };
+}
+
+/* --- the sub-claim advisor ----------------------------------------------------------------------
+ * All five channels, every time, in this order, and nothing suppresses anything.
+ */
+function adviseSubClaim(ctx, subClaim) {
+  const piece = (typeof subClaim === 'string') ? { own: subClaim, full: subClaim } : subClaim;
+  const tokens = LIT.tokenize(piece.own);
+
+  /* The four text-only channels first, from the sub-claim's own words alone. */
+  const register = registerChannel(ctx, tokens);
+  const app = appChannel(ctx, piece.full);
+  const exclusions = exclusionChannel(ctx, piece.own);
+  const thin_patches = thinChannel(ctx, piece.own);
+  /* Retrieval last, once, reading none of the above. */
+  const retrieval = retrievalChannel(ctx, piece.own);
+
+  const findings_count = register.findings.length + (app.resolves || app.unbuildable_reason ? 1 : 0) +
+    exclusions.findings.length + thin_patches.findings.length + retrieval.candidates.length;
+
+  return {
+    text: piece.own,
+    text_with_context: piece.full,
+    tokens,
+    channels_run: EVIDENCE_CHANNELS.slice(),
+    findings_count,
+    register, app, exclusions, thin_patches, retrieval,
+  };
 }
 
 function axisView(ax) {
@@ -759,78 +1213,238 @@ function indexPathFor(ctx, leaf) {
   return ctx._indexLeaves.get(leaf) || null;
 }
 
-/* --- assertions ---------------------------------------------------------------------------------
- * "Never two modes for one sub-claim; never zero." A contract nothing asserts is a sentence. */
-function assertOneMode(sub, questionText) {
-  const where = ' [question: ' + JSON.stringify(questionText) + ' sub-claim: ' + JSON.stringify(sub.text) + ']';
-  if (sub.mode == null) throw new Error('oracle/router/classify: sub-claim emitted ZERO retrieval modes' + where);
-  if (!RETRIEVAL_MODES.includes(sub.mode)) throw new Error('oracle/router/classify: sub-claim emitted mode "' + sub.mode + '", outside the closed set' + where);
-  if (Array.isArray(sub.mode)) throw new Error('oracle/router/classify: sub-claim emitted more than one mode' + where);
-  if (sub.verdict == null) throw new Error('oracle/router/classify: sub-claim emitted ZERO verdicts' + where);
-  if (!VERDICTS.includes(sub.verdict)) throw new Error('oracle/router/classify: sub-claim emitted verdict "' + sub.verdict + '", outside the closed six' + where);
-  if (sub.verdict === 'REFUSE' && !REASON_CODES.includes(sub.reason_code)) {
-    throw new Error('oracle/router/classify: a REFUSE sub-claim carries reason code ' +
-      JSON.stringify(sub.reason_code) + ', outside the closed six' + where);
-  }
-  if (sub.verdict !== 'REFUSE' && sub.reason_code != null) {
-    throw new Error('oracle/router/classify: a non-REFUSE sub-claim carries a reason code' + where);
-  }
-  return true;
-}
-
-/* --- composition --------------------------------------------------------------------------------
- * Answer contract section 1. all-APP -> APP (FIGURE where any sub-claim drew a figure); all-shelf
- * -> LITERATURE; a genuine mix of an app fact and a shelf fact answering two DISTINCT questions ->
- * BOTH; any CONTESTED sub-claim -> CONTESTED, because a disagreement does not stop being one
- * because something else in the question resolved; all refused -> REFUSE.
+/* --- what this report is worth, carried IN the report ---------------------------------------------
+ *
+ * SUB-STEP 8.2, AND THE REASON IT IS HERE RATHER THAN IN A DOCUMENT. The author's instruction is
+ * that this tool's result carries VERY LOW WEIGHT. A caveat in a design note is a caveat the reading
+ * session may never open. So every report carries its own known failure modes as WORKED EXAMPLES
+ * with the measured numbers attached, at the moment the session reads the report.
+ *
+ * These are not hypotheticals and they are not fixed by a synonym table. They are what a word-match
+ * score IS.
  */
-function compose(subs) {
-  const v = new Set(subs.map(s => s.verdict));
-  if (v.has('CONTESTED')) return { verdict: 'CONTESTED', reason_code: null };
-  if (v.size === 1) {
-    const only = [...v][0];
-    return { verdict: only, reason_code: only === 'REFUSE' ? dominantCode(subs) : null };
-  }
-  const answered = subs.filter(s => s.verdict !== 'REFUSE');
-  if (answered.length === 0) return { verdict: 'REFUSE', reason_code: dominantCode(subs) };
-  const appish = answered.some(s => s.verdict === 'APP' || s.verdict === 'FIGURE');
-  const shelfish = answered.some(s => s.verdict === 'LITERATURE' || s.verdict === 'BOTH');
-  if (appish && shelfish) return { verdict: 'BOTH', reason_code: null };
-  if (appish) return { verdict: answered.some(s => s.verdict === 'FIGURE') ? 'FIGURE' : 'APP', reason_code: null };
-  return { verdict: 'LITERATURE', reason_code: null };
-}
+const FAILURE_MODES = [
+  {
+    id: 'FM-1',
+    name: 'a register key the reader would never write',
+    question: 'How much energy does it take to produce a kilogram of oxygen on the Moon?',
+    fixture: 'SRQ-12',
+    what_happened: 'LCC-07 is an axis about the energy cost of oxygen production. It matched on ' +
+      '`oxygen` and `energy` for a mass of 1.540 against a reference mark of 2.431 -- a margin of ' +
+      '-0.891 -- and under the retired gate it was filtered out before anything downstream could ' +
+      'see it. The key that would have carried the rest of the mass reads `kwh`. The question reads ' +
+      '"kilowatt hours", which tokenizes to `kilowatt` and `hours` and matches neither.',
+    the_point: 'No reader misses this. Only a scorer does. If you are looking at a near-miss axis ' +
+      'whose statement plainly answers the question, the near-miss is the defect and not the verdict.',
+  },
+  {
+    id: 'FM-2',
+    name: 'a morphological miss, and a three-way tie underneath it',
+    question: 'How much electrical power is actually extractable at the lunar south pole?',
+    fixture: 'SRQ-8',
+    what_happened: 'LCC-09 carries `polar` among its match keys. The question says "pole". They do ' +
+      'not match. What is left is the single shared key `power`, giving a mass of 0.428 against a ' +
+      'mark of 2.431 -- and LCC-06 and LCC-10 score EXACTLY 0.428 on the same single key. Three ' +
+      'axes, one number, no way for the score to tell them apart.',
+    the_point: 'A ranked list prints one of three tied axes first and looks like it chose. It did ' +
+      'not. Read `tied_at_identical_mass_with` before reading the order.',
+  },
+  {
+    id: 'FM-3',
+    name: 'a perfectly-formed address that answers nothing',
+    question: 'any question naming ice, power, mass, fission or phi_c as the thing to be reported',
+    fixture: 'measured by probe against lsei/index.html',
+    what_happened: 'Nine of model()\'s twenty-six output keys carry no address-dependent ' +
+      'information. Five (`ice`, `power`, `mass`, `fission`, `phi_c`) are the caller\'s own ' +
+      'arguments handed back. Two (`transDistKm`, `phi_c0`) are CONFIG defaults this grammar never ' +
+      'overrides, fixed at 3 and 0.10 at every address. Two (`envPowerFrac`, `envMassFrac`) are ' +
+      'computed and constant across all nine addresses. Each resolves with a full slug and a ' +
+      'recompute trace, and looks exactly like an answer.',
+    the_point: 'Read `answers_output_grade` and `input_echo_keys_named` on the app channel before ' +
+      'you believe a resolved address. `resolves: true` is not `answers: true`.',
+  },
+  {
+    id: 'FM-4',
+    name: 'the bar was a coin-flip and the number hid it',
+    question: 'any question whose top axis mass sits within a few percent of the reference mark',
+    fixture: 'the general case',
+    what_happened: 'The retired gate compared a mass against 2.431 and returned a categorical ' +
+      'answer. A mass of 2.44 and a mass of 2.42 sit on opposite sides of it and are the same ' +
+      'measurement. Every finding here therefore carries its signed margin and a confidence that ' +
+      'says so in words.',
+    the_point: 'Where `confidence` reads `very-low` because the margin is small, the number is not ' +
+      'evidence about which side of the line the question falls on. It is evidence that the ' +
+      'question is near a line somebody drew.',
+  },
+  {
+    id: 'FM-5',
+    name: 'decomposition is a heuristic and never became anything else',
+    question: 'any multi-clause question',
+    fixture: 'decomposeSubClaims()',
+    what_happened: 'Sub-claims are split on semicolons and on ", and <wh-word>" with one anaphoric ' +
+      'exception. It is a regular expression over English. It has never been calibrated and it is ' +
+      'not the thing carrying any guarantee in this file.',
+    the_point: 'If the sub-claim boundaries in this report look wrong to you, they are wrong. ' +
+      'Re-read the question yourself; do not reason from the split.',
+  },
+];
 
-/* Precedence among reason codes, answer contract section 5: `excluded` routes to nobody and must
-   never mask a code that routes to someone, so it is written only when no other code applies. */
-const CODE_PRECEDENCE = ['input-missing', 'misclassified', 'axis-incomplete', 'unbuildable', 'not-found', 'excluded'];
-function dominantCode(subs) {
-  const codes = new Set(subs.filter(s => s.verdict === 'REFUSE').map(s => s.reason_code));
-  for (const c of CODE_PRECEDENCE) if (codes.has(c)) return c;
-  return 'not-found';
-}
+const RELIABILITY = {
+  weight: 'VERY LOW',
+  weight_source: 'the author\'s ruling, 2026-08-28: "I actually want the result of that tool to be ' +
+    'a very low weight to Claude."',
+  what_this_is: 'An evidence report. It says what matched, at what mass, how far that mass sits ' +
+    'from a reference mark that no longer decides anything, and what each of those is worth. It ' +
+    'does not name a verdict and it must not be read as implying one.',
+  who_rules: 'The composing session, under oracle/answer_contract.md. The six verdicts are closed ' +
+    'and published on this report as `closed_set`; picking one is the session\'s act.',
+  a_non_match_is_weak_evidence_of_absence:
+    'READ THIS BEFORE CONCLUDING ANYTHING FROM A ZERO. An axis that does not appear in the register ' +
+    'findings, an app address that does not resolve, an exclusion that does not match, a patch that ' +
+    'does not score -- none of these establishes that the thing is not there. Every one of them is ' +
+    'a statement about token overlap between the question\'s words and words somebody wrote into a ' +
+    'register months ago. FM-1 and FM-2 are two measured cases where the right answer was present ' +
+    'in the register and the score did not find it. A NON-MATCH IS WEAK EVIDENCE OF ABSENCE and a ' +
+    'below-mark mass is weak evidence against. The asymmetry is real and it runs one way: a match ' +
+    'is mild evidence FOR, a non-match is barely evidence AGAINST.',
+  override_on_judgement:
+    'You are expected to overrule this report. If the axis statement plainly answers the question ' +
+    'and the mass is below the mark, the mass is wrong. If the address resolves and the key is an ' +
+    'echo, the address is worthless. Read the axis statements, read the candidate summaries, and ' +
+    'rule. This tool exists to put evidence in front of you, not to save you from reading it.',
+  confidence_scale: CONFIDENCE_LEVELS.slice(),
+  confidence_ceiling: 'Every word-match score in this report is capped at `moderate`. `high` is ' +
+    'reachable in exactly one place: a fully-bound app address on a COMPUTED output key, which is ' +
+    'arithmetic the app performed and carried with a recompute trace, not a token overlap.',
+  thresholds_are_reference_marks:
+    'K (2.431), the thin-patch fire tier (1.7) and the thin-patch govern tier (6.175) were ' +
+    'calibrated to DECIDE and are retired as gates at sub-step 8.6. They are still read, and only ' +
+    'so that a margin can be reported. Nothing in this report is filtered, suppressed or ranked out ' +
+    'by any of them.',
+};
 
-function classifyQuestion(ctx, questionText) {
+/* --- the question-level report ------------------------------------------------------------------ */
+
+function adviseQuestion(ctx, questionText) {
+  const base = {
+    question: questionText,
+    /* The MENU, not a pick. A session chooses one of these and runs it through assertVerdict(). */
+    closed_set: VERDICTS.slice(),
+    closed_refusal_codes: REASON_CODES.slice(),
+    refusal_code_precedence: CODE_PRECEDENCE.slice(),
+    reliability: RELIABILITY,
+    failure_modes: FAILURE_MODES,
+    contract: 'oracle/answer_contract.md -- the composing session rules the verdict; this report is ' +
+      'evidence and carries very low weight.',
+  };
+
   if (ctx.refuse) {
-    /* A missing input refuses BEFORE classification, with zero personas spent. Answer contract
-       section 3: a refusal reached after the wave has run costs more than the answer it replaces. */
-    return { questionText, subClaims: [], verdict: 'REFUSE', reason_code: 'input-missing',
-             missing: ctx.refuse.missing, assertions: { every_subclaim_one_mode: true, every_subclaim_one_verdict: true } };
+    /* An input this router cannot open is a fact about the installation, not a verdict. It is
+       reported at the top of the report where a session cannot miss it, with zero personas spent
+       and zero channels claimed to have run. The session still rules; what it rules on is that four
+       of the five channels had nothing to read. */
+    return Object.assign(base, {
+      inputs_unavailable: ctx.refuse.missing.slice(),
+      inputs_note: 'ONE OR MORE INPUTS THIS ROUTER READS IS ABSENT, so the channels below did not ' +
+        'run. Answer contract section 3 puts a missing input before the wave, at zero persona cost. ' +
+        'That timing is a fact about cost; the ruling is still the session\'s.',
+      sub_claims: [],
+      findings_count: 0,
+      assertions: { no_decision_field: true, channels_are_not_exclusive: true },
+    });
   }
+
   const pieces = decomposeSubClaims(questionText);
-  const subClaims = pieces.map(p => classifySubClaim(ctx, p));
-  for (const s of subClaims) assertOneMode(s, questionText);
-  const c = compose(subClaims);
-  return {
-    questionText, subClaims,
-    verdict: c.verdict, reason_code: c.reason_code,
-    assertions: { every_subclaim_one_mode: true, every_subclaim_one_verdict: true, subclaims: subClaims.length },
+  const sub_claims = pieces.map(p => adviseSubClaim(ctx, p));
+
+  const report = Object.assign(base, {
+    inputs_unavailable: [],
+    sub_claims,
+    sub_claim_count: sub_claims.length,
+    findings_count: sub_claims.reduce((a, s) => a + s.findings_count, 0),
+    /* AN EMPTY RESULT IS STATED, NEVER LEFT AS AN ABSENCE.
+     *
+     * Two of the 44 rows in oracle/acceptance/labelled_questions.tsv are deliberate out-of-scope
+     * controls -- hospital wastewater antibiotic resistance, and the Antarctic ozone hole -- and all
+     * five channels return nothing on both. That is CORRECT and it is the strongest signal this tool
+     * produces. It is also the exact shape of a broken install: a register that failed to parse and
+     * a corpus that is empty both return nothing on everything. So the empty result is declared as a
+     * positive finding with the channel counts attached, rather than inferred from a zero. */
+    no_findings_anywhere: sub_claims.every(s => s.findings_count === 0),
+    no_findings_note: sub_claims.every(s => s.findings_count === 0)
+      ? 'ALL FIVE CHANNELS RAN AND ALL FIVE RETURNED NOTHING. Against a register of ' + ctx.axes.size +
+        ' axes, ' + ctx.excluded.nodes.length + ' excluded nodes, ' + ctx.thinPatches.patches.length +
+        ' thin patches and the shelf, not one key, token, address or filename matched. For a corpus ' +
+        'about lunar industrialisation that is what an out-of-scope question looks like -- and it is ' +
+        'ALSO what a broken install looks like, so check the channel counts on this report before ' +
+        'concluding the first. What it is not is a refusal: the ruling is still the session\'s.'
+      : null,
+    reference_marks: {
+      K: { value: ctx.K == null ? null : Number(ctx.K), status: ctx.K_status || null,
+           role: 'reported, retired as a gate at 8.6' },
+      thin_fire: { value: ctx.thinFire == null ? null : Number(ctx.thinFire),
+                   role: 'reported, retired as a gate at 8.6' },
+      thin_govern: { value: ctx.thinGovern == null ? null : Number(ctx.thinGovern),
+                     role: 'reported, retired as a gate at 8.6' },
+    },
+    known_defects_in_the_inputs: {
+      token_form_failures: ctx.token_form_failures || [],
+      owed_contract_codes: ctx.owed_contract_codes || [],
+    },
+    assertions: {
+      no_decision_field: true,
+      channels_are_not_exclusive: true,
+      retrieval_ran_once_per_sub_claim: sub_claims.every(s => s.retrieval.runs === 1),
+      retrieval_ran_after_the_text_channels: sub_claims.every(s => s.retrieval.ran_after_text_channels),
+      no_finding_suppressed_by_a_threshold:
+        sub_claims.every(s => s.register.suppressed_by_a_threshold === 0),
+    },
+  });
+
+  /* THE ONE-WAY VALVE, RUN ON EVERY REPORT ON EVERY CALL. Cheap, and it is the only thing standing
+     between this file and somebody re-adding a convenience verdict field in six months. */
+  assertNoVerdict(report, 'adviseQuestion(' + JSON.stringify(String(questionText).slice(0, 60)) + ')');
+  return report;
+}
+
+/* --- the retired decision surface ----------------------------------------------------------------
+ *
+ * These four functions PICKED a verdict. They are deleted, and they throw rather than vanishing,
+ * because a caller that reaches for one is a caller expecting a decision and the useful thing to
+ * hand it is a sentence saying where the decision went. `Cannot read property 'verdict' of
+ * undefined`, three frames down, says nothing.
+ *
+ * KNOWN CALLERS OUTSIDE THIS SEAT'S WRITE SET, ROUTED RATHER THAN SILENCED:
+ *   oracle/tests/run_suite.js   RFX-01..33 read `q.verdict` against the axis class.
+ *   oracle/tests/fault_inject.js  reads `r.verdict`/`r.reason_code` on two decoys.
+ * Both assert a property that no longer exists. The signal RFX-04/07/09/13 carried -- four axes
+ * that do not reach K on their own probe_pos -- is NOT lost: it is measured and printed by name in
+ * oracle/router/acceptance.js, at full resolution, with the masses.
+ */
+function retired(name, instead) {
+  return function () {
+    throw new Error('oracle/router/classify: ' + name + '() is RETIRED at sub-step 8.1. The router ' +
+      'advises; it does not decide. Call ' + instead + ' and rule the verdict in the composing ' +
+      'session under oracle/answer_contract.md, then pass it through assertVerdict(). ' +
+      'The author\'s ruling, 2026-08-28: "Let it use your little tool to help inform itself but ' +
+      'don\'t have it be how it chooses a verdict."');
   };
 }
+const classifyQuestion = retired('classifyQuestion', 'adviseQuestion(ctx, questionText)');
+const classifySubClaim = retired('classifySubClaim', 'adviseSubClaim(ctx, subClaim)');
+const compose = retired('compose', 'nothing -- composition WAS the decision');
+const assertOneMode = retired('assertOneMode', 'assertNoVerdict(report) and assertVerdict(v)');
 
 module.exports = {
-  VERDICTS, REASON_CODES, RETRIEVAL_MODES, CODE_PRECEDENCE,
+  VERDICTS, REASON_CODES, CODE_PRECEDENCE, EVIDENCE_CHANNELS, RETRIEVAL_MODES,
+  CONFIDENCE_LEVELS, OUTPUT_GRADES, FAILURE_MODES, RELIABILITY, FORBIDDEN_REPORT_KEYS,
   OUTPUT_ALIASES, KNOB_ALIASES, SWEEP_LANGUAGE,
   loadContext, loadRegister, decomposeSubClaims, lexiconCoverage,
   findOutputs, findScenario, findPhase, findKnob, findCoefficients, tryAppPath, axisMass, indexPathFor,
-  classifySubClaim, classifyQuestion, compose, assertOneMode,
+  deriveOutputGrades, gradeOf, confidenceForMargin, resolveSides, axisView,
+  registerChannel, appChannel, exclusionChannel, thinChannel, retrievalChannel,
+  adviseSubClaim, adviseQuestion,
+  assertVerdict, assertReasonCode, assertNoVerdict,
+  /* retired, and they say so when called */
+  classifyQuestion, classifySubClaim, compose, assertOneMode,
 };

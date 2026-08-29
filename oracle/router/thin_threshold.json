@@ -1,9 +1,21 @@
 {
   "fire_threshold": 1.7,
   "govern_threshold": 6.175,
-  "status": "PROVISIONAL",
-  "owner": "the router seat (W4-2), on the same footing as K in oracle/router/axis_threshold.json",
-  "set_by": "oracle/router/calibrate_thin.js",
+  "status": "REPORTED, NOT ENFORCED",
+  "disposition_8_6": {
+    "fire_threshold": "SURVIVES AS A REPORTED REFERENCE MARK. It was never a verdict gate -- crossing it attached the patch substitution as CONTENT -- so retiring it as a gate costs nothing and reporting the margin to it tells a session how firmly a patch matched.",
+    "govern_threshold": "RETIRED AS A GATE. SURVIVES ONLY AS A REPORTED MARK AND AS THE CALIBRATION RECORD. This is the one number in the router with a demonstrated capacity to destroy correct answers, and the demonstration is in this file under superseded_band: a band measured on five control rows, (1.86, 3.78], turned six correct verdicts into refusals. It looked well-measured. The five rows simply did not contain the two that constrain the answer.",
+    "the_band": "THE GOVERN BAND (5.961, 6.389] GOES AS A GATE. It is 7% wide and it is defined by exactly two observations: T3 fires-not-governs on SRQ-10 at 5.961, and T5 governs SRQ-14 at 6.389. A band whose two edges are two single measurements is not a band, it is a pair of points with a line drawn between them; and the adopted value 6.175 sits between them because it is the midpoint, not because anything was measured there. Widening it would widen an interval nothing constrains. Both endpoint observations are retained below, because they are real measurements and they are what a session should be shown."
+  },
+  "disposition_reasoning": [
+    "BOTH TIERS ARE STILL READ, so that a patch mass can be reported with a signed margin to each. Neither filters, suppresses, or decides. oracle/router/thin_patches.js still computes which patches cross which tier and nothing downstream branches on the answer.",
+    "THE TWO-TIER SPLIT IS THE FINDING WORTH KEEPING AND IT SURVIVES AS A REPORTED DISTINCTION. A single threshold either silences a legitimate fire or converts a BOTH into a REFUSE; T3 on SRQ-10 at 5.961 is the row that proves it. Reported as two margins on the same finding, the distinction costs nothing and decides nothing.",
+    "AN ABSENT ARTIFACT NO LONGER REFUSES input-missing. When these were gates, defaulting them was worse than refusing, because a wrong govern threshold does not fail loudly -- it silently converts correct answers into refusals. A reference mark with no power to refuse anything has no such failure mode. It is still never DEFAULTED: an absent mark means the margins are unavailable and are reported as unavailable.",
+    "THE COLLATERAL FIGURE IS THE ARGUMENT AGAINST THE GATE, NOT FOR IT. Two rows were collateral at the adopted value. Two acceptable losses is a sentence somebody writes about a number they have decided to keep; under 8.1 there is no loss to accept, because nothing is refused on this basis at all."
+  ],
+  "owner": "the router seat (W4-2); re-scoped by sub-step 8.6",
+  "set_by": "oracle/router/calibrate_thin.js -- RETIRED, see the file. Its objective was agreement with a verdict the router no longer emits.",
+  "retired_as_a_gate_at": "sub-steps 8.1 and 8.6, The Software Engineer, on the author ruling of 2026-08-28",
   "provenance": "joint plateau of two independently measured objectives: the thin-patch register's own 20 probe rows, and the 14 labelled acceptance rows scored through the full classifier. Joint interval [5.561, 6.372].",
   "joint_interval": [
     5.5612,
@@ -13,6 +25,26 @@
   "register_figure_inside_joint_interval": true,
   "fire_threshold_source": "oracle/thin_patches.json firing_rule.fire_threshold, adopted unchanged. The fire tier attaches content and never moves a verdict, so it carries no collateral risk and re-measuring it against a verdict objective would measure nothing.",
   "collateral_at_adopted": 2,
+  "band_endpoint_observations": [
+    {
+      "patch": "T3",
+      "fixture": "SRQ-10",
+      "mass": 5.961,
+      "observation": "fires and must not govern; the row is BOTH in its own Must-carry cell"
+    },
+    {
+      "patch": "T5",
+      "fixture": "SRQ-14",
+      "mass": 6.389,
+      "observation": "governs; the exclusion path and the patch path agree on not-found"
+    },
+    {
+      "patch": "T1",
+      "fixture": "SRQ-13",
+      "mass": 8.508,
+      "observation": "governs, and retrieval returns five candidates on the same question -- retrieval being confident is the symptom, not the licence"
+    }
+  ],
   "superseded_band": {
     "band": [
       1.86,

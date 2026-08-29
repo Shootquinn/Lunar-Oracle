@@ -1,11 +1,19 @@
 
 # The answer contract
 
-**Contract version: 2.**
+**Contract version: 3.**
 
-Version 2 is **one edit**, landed at the Step 1 close as revision item R-3. It carries eleven
+Version 3 is **one edit**, landed at sub-step 8.4 by The Writer. It carries five changes and
+increments the integer **once**: §6 gains a required deliverable shape, loses the two conditions that
+admitted a chat text block, and extends the form to every user-facing turn including questions; §6a
+records the ruling that removed the conditions; §6b fixes the form at 2 to 5 haiku strung linearly and
+states why the form is a control rather than a decoration; and §10 is appended, specifying the
+evidence pass. §9 holds the register of what each version was, and says why §6b did not mint a
+version 4.
+
+Version 2 was **one edit**, landed at the Step 1 close as revision item R-3. It carried eleven
 amendments — `AM-62` to `AM-65` from 1.8 §1.9, `AM-67` to `AM-71` from 1.6 §12, and two found
-while landing them — and increments the integer **once**. It is not two bumps and it is not three.
+while landing them — and incremented the integer **once**. It was not two bumps and it was not three.
 §9 says why, and says it in the rule rather than in a note, because the ambiguity that produced
 three queued bumps was in the rule.
 
@@ -202,29 +210,178 @@ instead.
 
 A refusal names three nouns: the absent object, the region searched, and the nearest present object.
 
-## 6. The deliverable is a file
+## 6. The deliverable is a file, and it has a shape
 
 **Every deliverable is a file, without exception, short answers and refusals included.** The team
 writes to the file. The orchestrator reads the file. There is no path by which team prose reaches the
 user except through a file that exists on disk first.
 
-The chat text block is never an alternative to the file. It is a verbatim, byte-identical, contiguous
-excerpt of a file that already exists, which is what makes it checkable that the orchestrator did not
-edit on the way out. A paraphrase, a summary, or a reflowed excerpt is a failure.
+**The file's shape is fixed at `oracle/deliverable_shape.md`.** Five sections, closed and ordered: the
+question as asked; the verdict and **why that verdict and not the adjacent one**; **what was tested,
+and how it could have failed**; sources with traces; and what remains unverified. A deliverable
+missing a section does not ship, and a section holding nothing is written with its emptiness stated
+rather than deleted. The shape lives in its own file because it is a template a session fills, and a
+template folded into a rules document is read as prose and filled by nobody.
 
-A chat block appears when either condition holds, and otherwise the user receives a haiku and the
-file's path:
+The operative section is the third. **A claim with no stated falsifier is an assertion**, and the
+difference between this project's deliverable and an essay about the Moon is that column.
 
-1. The deliverable is under two hundred words and fits one screen.
-2. The user asked for a block.
+**The Oracle speaks to the user in haiku and a path, and in nothing else.** There is no chat text
+block. The two conditions that admitted one at version 2 — a deliverable under two hundred words, and
+the user having asked — are removed. §6a records the measurement that removed them and states what
+would reverse it. **The form the haiku takes, and why the form is load-bearing rather than
+decorative, is §6b.**
 
-A `FIGURE` deliverable has no chat form.
+**The path line.** One line beside the haiku, carrying the verdict, the reason code where the verdict
+is `REFUSE`, and the path. Fixed form:
 
-The haiku is the orchestrator's own turn and is not a deliverable. It carries no numeral, no unit
-token, no coefficient name, and no named source.
+```
+<VERDICT> · <reason-code> → <path>
+```
+
+The reason code and its separator are present only where the verdict is `REFUSE`. **The path line is
+subject to §7's claim-bearing test exactly as the haiku is**: a path line holding a numeral, a unit
+token, a coefficient name or a named source fails, and the delivery fails with it. A verdict and a
+reason code are closed-set tokens naming which of this contract's rules the run executed under. They
+assert nothing about the Moon, which is why they may be spoken and a figure may not.
+
+The haiku are the orchestrator's own turn and are not a deliverable. **The prohibitions bind the turn,
+not the unit:** no numeral, no unit token, no coefficient name and no named source, anywhere across
+all of the units. A checker that clears each haiku separately and passes a turn whose fourth unit
+names a source has checked the wrong object.
+
+**Every user-facing turn is in the form, and that includes questions.** If the Oracle must ask the
+user something — to disambiguate a question, to choose between two readings, to say it needs an input
+it does not have — **it asks in haiku.** There is no asking exception. An asking exception would be
+the third carve-out, arriving by the same route as the two §6a just removed and defensible by the same
+argument, and the measurement in §6a is what that argument is worth.
+
+A `FIGURE` deliverable has no chat form. That sentence stood at version 2 as an exception and is kept
+here as a consequence: nothing has a chat form now, and `FIGURE` is no longer the special case.
 
 The deliverable file persists after the turn, and its path is recorded in the run log row for that
 run. A log row that cannot retrieve the bytes that were delivered cannot be sampled.
+
+## 6a. Why the chat block went, and what would bring it back
+
+The author's rule is that the Oracle speaks to the user **only** in haiku and then points at the
+deliverable. Version 2's two conditions were written as narrow exceptions. They were not narrow.
+
+**Condition 1 fired on an entire verdict class.** §5 caps a refusal at sixty words, so **every refusal
+this system can emit is under two hundred words by construction.** That half is a proof and needs no
+measurement: the two caps are 60 and 200, and the condition could never fail to fire on a refusal.
+**A carve-out that fires on a whole verdict class is not an exception. It is a second delivery mode.**
+
+How large the class is, is a measurement, and it carries its moment because the router was being
+rewritten in the same wave. `node oracle/router/acceptance.js`, run 2026-08-28 at the Wave 5 open
+state of `oracle/router/classify.js`, returned `{APP:2, FIGURE:1, BOTH:2, CONTESTED:44,
+LITERATURE:57, REFUSE:18}` over 124 questions — roughly one question in seven, delivered as a chat
+block with no judgement exercised anywhere, every one of them precisely the case the haiku rule
+addresses. **Sub-step 8.1 has since retired `classifyQuestion()` and that command no longer
+reproduces this distribution.** The ruling does not rest on the number: it rests on the two caps, and
+the number says how much the defect was costing.
+
+**Condition 2 had no stated scope, and an unstated scope defaults to the convenient reading.** Nothing
+said whether "the user asked" was per question or per session. A user says *just show me in chat*
+once, a session takes it as standing, and thereafter every answer is a block. The file becomes an
+archive nobody opens and the haiku becomes decoration — which is the state the rule exists to prevent,
+reached without anybody deciding to reach it.
+
+**The cost of removing them, stated rather than waved away: one file open, on every answer, including
+the cheapest one.** The sharp case is the one-line refusal. A user asks something outside the corpus
+and now receives a haiku, a verdict, a reason code and a path, and must open a file to read three
+nouns.
+
+**The remedy is the path line, not a carve-out.** `REFUSE · not-found → runs/2026-08-28/r-0143.md`
+tells the reader at zero cost that nothing was found and that the fix is an acquisition decision
+rather than a rephrasing. The open buys the three nouns of §5, and the three nouns are the part that
+is worth a file — they name the region searched and the nearest present object, which is what a person
+acts on.
+
+**This is reversible, and here is what reverses it.** A sampling read under
+`oracle/sampling_protocol.md` finding that readers routinely open refusal files and find in them
+nothing they could not have been told on the path line. Restoring the two numbered conditions is then
+a two-line edit and a version bump. **It is not reversed by anyone finding it inconvenient**, because
+inconvenience is the observation this ruling was written to survive.
+
+## 6b. The form, and why the form is the mechanism
+
+**The author's ruling, 2026-08-28, verbatim, because the reasoning in it is the part a later session
+will need:**
+
+> *"Haiku always and this is to make it appear whimsical. Even if it has to ask the user a question,
+> it has to write the sentence in haiku style. It is a way to keep AI from AIing I guess — oracles
+> tend to not really answer people all that well right? But you'd give it a paragraph that is one
+> run-on sentence if you were allowed and it would have 16 em dashes. I don't really care about word
+> count but it should be super fucking concise/laconic. 200 words is pretty reasonable for each chat
+> response I guess, but it should be more like 2-5 haikus strung together linearly (not using line
+> breaks like the style uses typically)."*
+
+**The form.** A turn is **2 to 5 haiku**, strung **linearly** — run together as one line of prose,
+without the line breaks the style conventionally uses. One unit is seventeen syllables in 5-7-5, so a
+legal turn is exactly 34, 51, 68 or 85 syllables and nothing between. Every §1.3 prohibition applies
+across the whole turn and not per unit: a numeral in the fourth haiku is a numeral in the turn.
+
+**One haiku is a unit and is not a turn.** The two are different objects and the distinction is not
+pedantry: the six worked haiku at `cr_scratch/step0_writer_register_spec.md` §1.5 are units, they are
+the known-answer set every check on this form is proved against, and a rule that made them illegal
+would have destroyed the evidence it was written to enforce. `tools/verify_haiku.js` checks the two in
+two modes and **requires the mode to be stated**, with no default at the command line.
+
+**Why the form is load-bearing, and this paragraph is the one that stops a later session relaxing
+it.** The haiku is not a stylistic preference laid over the output and it is not decoration on an
+otherwise ordinary answer. It is the **anti-AI-voice mechanism**, and the author's argument is in two
+parts, both of which are about failure modes this system would otherwise have.
+
+1. **An oracle that answers plainly is not an oracle.** The whimsy is the point. A system that returns
+   a tidy paragraph has adopted the register of an assistant, and an assistant that is confidently
+   wrong is read as confidently right. The form makes the Oracle's turn *structurally incapable* of
+   sounding like an answer, which is exactly what it must not sound like: **the answer is the file.**
+   The turn points at it.
+2. **The named failure mode is the run-on paragraph.** Left unconstrained, a language model writes one
+   long sentence with sixteen em dashes, and the fluency of it does the persuading. Seventeen
+   syllables cannot do that. The constraint is not that the output be pretty; it is that the output be
+   **too short and too odd to smuggle a claim through on cadence.** That is the same argument §1.3
+   makes about numerals, applied to voice instead of to content.
+
+**A later session that reads the haiku as a formatting quirk and relaxes it will believe it is
+removing a decoration and will in fact be removing a control.** That sentence is here so the belief
+has to be argued against rather than merely held.
+
+**Laconic is the standard. The word count is a backstop and is not the control.** The author is
+explicit that he does not care about the count and that roughly two hundred words is a reasonable
+ceiling for a turn. **Do not write a word-count test and call this section satisfied.** A
+two-hundred-word turn that obeys the count and rambles has failed the requirement; a thirty-word turn
+in two haiku has met it. The count catches only the case that has already gone badly wrong, and the
+form is what carries the ordinary case — which is why the form is checked per syllable and the count
+is checked once, at the boundary, as a floor under nothing.
+
+**A worked turn**, on the `LCC-01` question the deliverable shape works at
+`oracle/deliverable_shape.md` §7. Two units, run together, no break between them:
+
+```
+the corpus argues with itself, and I will not take a side for you others have stood here, their words are set down below, read them and not me
+```
+
+```
+$ node tools/verify_haiku.js "<the line above>" --turn --verdict CONTESTED
+  units      2
+  syllables  34   the-corpus-argues | with-itself-and-I-will-not | take-a-side-for-you
+                  //   others-have-stood-here | their-words-are-set-down-below | read-them-and-not-me
+  RESULT     PASS
+```
+
+Note what it does **not** do: it names no source, carries no figure, and does not say which side is
+right. It announces a disposition and points. The order-of-magnitude spread, the three sides and the
+scope token are all in the file, where each of them carries a trace.
+
+**What checks it.** `tools/verify_haiku.js`, in `--turn` mode: A1 zero newlines across the whole
+string, A2 a 5-7-5 partition per unit at word boundaries, A3 the seven §1.3 prohibitions over the
+whole turn, A4 the image family, A5 the flat-Oracle leak, **A6 the unit count is 2 to 5**, and **A7
+the run-on tell**. A7 holds one entry, the em dash, because the author named it and because the first
+draft of that list also held the semicolon and was refuted by the known-answer set: three of the six
+worked haiku use a semicolon as the caesura. The refutation is recorded in the checker rather than
+quietly repaired.
 
 ## 7. Claim-bearing, defined here
 
@@ -304,3 +461,75 @@ one-`literature`-per-side requirement and the app-ref clause on `app` locators (
 `misclassified` condition and `excluded`'s precedence (§5); and the run log's ninth field (§8).
 Nothing in §2, §4, §6 or §7 moved.
 
+**Version 3 is the single edit landed at sub-step 8.4, Wave 5, by The Writer.** It carries: the
+required deliverable shape, the removal of the two chat-block conditions, and the extension of the
+form to every user-facing turn including questions (§6); the ruling that removed the conditions, with
+its measurement and its reversal condition (§6a); the form itself, 2 to 5 haiku strung linearly, and
+the argument that it is a control (§6b); and the evidence pass (§10). Nothing in §1 through §5, §7 or
+§8 moved.
+
+**Why §6b did not mint a version 4, and the test that decides such a case.** The author's ruling on
+the haiku form arrived after §6 and §6a were written and before anything consumed version 3. The rule
+above says the integer **names a state**, so the question is not *how many rulings landed* but *how
+many states were observed*. Version 3 had **zero consumers at the moment §6b was added**: no run log
+row recorded it, the acceptance suite still pinned 2, and the file was uncommitted. One state was
+published, so one integer was spent.
+
+**The test, stated so the next author does not have to re-derive it: has any of §9's three consumers
+observed the integer yet?** If no, fold the change in and extend the record. If yes — a log row
+written, a suite re-pinned, the file committed and read by another seat — the integer is already
+naming a state somebody holds, and a further change mints the next one. This is not a licence to
+accumulate: it closes at the moment of publication, which is a fact about the repository rather than
+a judgement about how related two changes feel.
+
+**A section appended is not a section renumbered.** §6a and §10 are appended at the numbers they are
+because §1 through §9 are cited by number across this repository — in `oracle/register_schema.md`,
+in `oracle/tests/answering_loop_suite.md`, in `tools/verify_answers.js`, in `CLAUDE.md` — and
+renumbering to put a new section where it logically belongs breaks every one of those citations in
+exchange for a tidier table of contents. **Insertion is a rename of everything after it.** Where this
+contract grows, it grows at the end or at a lettered suffix, and it says so here so the next author
+does not have to decide it again.
+
+
+## 10. The evidence pass
+
+The router does not decide. Sub-step 8.1 removed `verdict` from its return and left it returning
+findings: which axes matched and at what mass, which app outputs resolve, which node is excluded,
+which patch is thin, and **what each score is worth**. This section says when that report is produced
+and what a session is required to do with it.
+
+**The evidence pass runs concurrently with the Manager's open.** Not before it and not after it.
+Produced before the open, the open is written to the report's shape and the report has decided after
+all. Produced after the open, it arrives too late to inform the first prompts, which is the only thing
+it is for. Concurrent is not a scheduling preference; it is the condition under which the report is
+evidence rather than either a director or a footnote.
+
+**The Manager is sceptical of it, and the scepticism is visible in the artifact.** The open carries
+one line, required:
+
+```
+Evidence pass: took <finding ids>. Set aside <finding ids>: <one reason per id>.
+```
+
+**A Manager who adopts the report wholesale has not used it as evidence. A Manager who ignores it has
+wasted a concurrent pass.** In an open with no such line the two failures are indistinguishable — the
+first has no set-asides and the second has no takes, and neither leaves a mark. The line makes them
+distinguishable, and it makes them distinguishable **in the file** rather than in a promise a contract
+made on the Manager's behalf.
+
+**An open with no set-aside line does not close the sub-step.** `Set aside: none` is a legal value and
+is not the same thing as an absent line: it is a claim, made by a named seat, that every finding
+survived scrutiny — and it is the claim a reviewer checks first, because it is the one that is almost
+never true.
+
+**Why the report carries very low weight, stated where a session reads it rather than in a document a
+session may never open.** The report states its own known failure modes inline, per sub-step 8.2, and
+the worked examples are in the report: SRQ-12 asks *"how much energy does it take to produce a
+kilogram of oxygen on the Moon?"* and fails to reach axis `LCC-07`, an axis about oxygen production
+energy, because the key reads `kwh` and the question reads "kilowatt hours". SRQ-8 fails the same way
+on `polar` against "pole". **No reader misses either. Only a scorer does.**
+
+So a finding the session's own reading contradicts is set aside, and *"I read the question and the
+axis and the tool did not"* is a sufficient reason — the whole reason, needing no synonym table and no
+stemmer to back it up. **The tool reports; the session rules.** A session that defers to a score it
+can see is wrong has reintroduced the classifier this wave removed, in prose.
