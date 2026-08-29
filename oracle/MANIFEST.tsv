@@ -17,11 +17,11 @@
 # what MF-2 cannot see; see the note under the last row.
 #
 # Checks: tools/check_registers.js. Check-register row CHK-27.
-H	1	2026-08-27	20
+H	1	2026-08-28	23
 D	.gitignore	cr_scratch/step1_1_systems_engineer_enforcement.md	-	1.1	-	promoted
 D	COUNTING_RULE.md	cr_scratch/step1_12_designer_counting_rule.md	COUNTING_RULE.md	1.12	-	promoted
 D	QUANTITIES.md	-	-	1.14	tools/quantities.js	promoted
-D	literature/NAMING.md	cr_scratch/step1_7_engineer_naming.md	NAMING.md	1.7	1.1 corrected .gitignore, applied	promoted
+D	oracle/NAMING.md	cr_scratch/step1_7_engineer_naming.md	NAMING.md	1.7	1.1 corrected .gitignore, applied. RELOCATED at 2.20 out of the corpus tree by author ruling (PTH-9); the dead path is named once, in this file's target column before this edit and in AM-153: the retrieval walker returns anything under literature/ as a corpus file, so the contract governing the corpus was IN the corpus. AM-153	promoted
 D	oracle/AMENDMENTS.tsv	-	-	1.14	oracle/MANIFEST.tsv	promoted
 D	oracle/MANIFEST.tsv	-	-	1.14	-	promoted
 D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register_addendum.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	promoted
@@ -36,6 +36,9 @@ D	oracle/install_state.md	cr_scratch/step1_5_systems_engineer_install_state.md	i
 D	oracle/register_schema.md	cr_scratch/step1_8_software_engineer_register_schema.md	oracle/register_schema.md	1.8	-	promoted
 D	oracle/tests/answering_loop_suite.md	cr_scratch/step1_11_software_engineer_loop_suite.md	oracle/tests/answering_loop_suite.md	1.11	-	promoted
 D	tools/quantities.js	-	-	1.14	COUNTING_RULE.md	promoted
+D	tools/check_registers.js	-	-	1.14	-	promoted
+D	tools/manifest.js	-	-	2.19	-	promoted
+D	oracle/tests/corpus_suite.md	-	-	2.20	oracle/tests/run_suite.js	promoted
 D	oracle/REGISTER.econ.tsv	cr_scratch/step1_10_manager_economics_register.md	oracle/REGISTER.tsv (ECR rows)	1.10	-	superseded
 D	oracle/REGISTER.lunar.tsv	cr_scratch/step1_9_space_resources_engineer_register_rows.md	oracle/REGISTER.tsv (lunar rows)	1.9	-	superseded
 # oracle/REGISTER.tsv was state:specified with no marker behind it, failing MF-2 by construction,

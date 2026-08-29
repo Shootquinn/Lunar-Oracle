@@ -306,113 +306,25 @@ thing it did correctly.
 ## 5. Corrected quantity blocks
 
 Per the counting rule §4: the `id` does not change, the old value moves into `superseded` with date,
-author and what was wrong, and every site quoting the id is updated in the same edit. Four values
-change. Three do not change and are marked here as re-measured rather than left silently stale,
+author and what was wrong, and every site quoting the id is updated in the same edit. FIVE values
+change, not the four this paragraph said when it was written: Q-ECR-AXES, Q-ECR-MEMBER-ROWS,
+Q-ECR-KEYS-SHIPPED, Q-ECR-SIDES-GT2 and Q-ECR-PROBE-SEPARATION. Of the four that do not change,
+three are marked here as re-measured rather than left silently stale (Q-ECR-KEYS-TESTED is the
+fourth and is untouched by the correction),
 because a derived quantity whose parent was corrected is `STALE` until its owner says otherwise and
 I am its owner.
 
-```quantity
-id:            Q-ECR-AXES
-class:         fixed
-value:         18
-unit:          A rows in the economics namespace of the contested-claims register
-population:    the rows between the BEGIN and END markers of section 3 of
-               cr_scratch/step1_10_manager_economics_register_addendum.md whose first tab-separated
-               field is the literal "A"
-operation:     script: tools/ecr_verify.js ECR2.tsv _intake/japanese-miracle/lit
-conditions:    cwd: repository root, 55 characters. Node 26.4.0. The block is extracted to ECR2.tsv
-               by the sed in section 4 before the script runs. Economics namespace only; the shared
-               axis LCC-12 is authored under the lunar prefix at 1.9 and is not counted here.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b; this repository c42a217
-predicate:     the economics side of the contested-claims register carries 18 axes.
-derived-from:  none
-sampled:       n/a -- this operation counts rows by their type field, it does not classify
-superseded:    17 (The Manager, economics prompt, 2026-08-27) -- the affirmative targeting finding
-               reported inside wade-2018 had no row; ECR-18 was added at the A.10 gate.
-```
-
-```quantity
-id:            Q-ECR-MEMBER-ROWS
-class:         fixed
-value:         53
-unit:          M rows across the 18 [Q-ECR-AXES] economics axes
-population:    the rows between the BEGIN and END markers of section 3 whose first tab-separated
-               field is the literal "M"
-operation:     script: tools/ecr_verify.js ECR2.tsv _intake/japanese-miracle/lit
-conditions:    cwd: repository root, 55 characters. Node 26.4.0. A source appearing on three axes
-               produces three M rows and is counted three times; the distinct-source count is
-               Q-ECR-LEAVES. ECR-01's six members were redistributed across three sides and were
-               neither added to nor removed from; the single added row is ECR-18's.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b; this repository c42a217
-predicate:     the 18 economics axes carry 53 member rows in total.
-derived-from:  Q-ECR-AXES
-sampled:       n/a -- counts rows by type field
-superseded:    52 (The Manager, economics prompt, 2026-08-27) -- one row added with ECR-18.
-```
-
-```quantity
-id:            Q-ECR-KEYS-SHIPPED
-class:         fixed
-value:         185
-unit:          match_key strings on the 18 [Q-ECR-AXES] economics A rows
-population:    the comma-separated match_keys fields of the 18 A rows, split on commas, counted
-               with multiplicity across axes
-operation:     script: tools/ecr_verify.js ECR2.tsv _intake/japanese-miracle/lit
-conditions:    cwd: repository root, 55 characters. Node 26.4.0. Counted with multiplicity because
-               K1 and K2 are per-axis predicates. ECR-01's eleven keys are unchanged; the nine added
-               are ECR-18's, of which targeting, industrial and policy are deliberately shared with
-               ECR-01 so that a country-less question fires both.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b; this repository c42a217
-predicate:     the 18 economics axes carry 185 match_key strings counted with multiplicity.
-derived-from:  Q-ECR-AXES
-sampled:       n/a -- splits a field and counts
-superseded:    176 (The Manager, economics prompt, 2026-08-27) -- nine keys added with ECR-18.
-```
-
-```quantity
-id:            Q-ECR-SIDES-GT2
-class:         fixed
-value:         5
-unit:          economics axes of class two_sided or false_pair carrying more than two distinct
-               M.side values
-population:    the 13 economics axes of class two_sided or false_pair, of the 18 [Q-ECR-AXES]
-operation:     script: tools/ecr_verify.js ECR2.tsv _intake/japanese-miracle/lit
-conditions:    cwd: repository root, 55 characters. Node 26.4.0. Sides are counted as distinct
-               M.side letters per axis, not as member rows.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b; this repository c42a217
-predicate:     5 of the 13 economics axes that can produce a CONTESTED verdict carry more than two
-               sides (ECR-01, ECR-05, ECR-06 and ECR-13 at three; ECR-07 at four), so amendment V1
-               buys at most four personas on any economics question and 32 across all thirteen.
-derived-from:  Q-ECR-AXES
-sampled:       n/a -- counts distinct field values per axis
-superseded:    4 (The Manager, economics prompt, 2026-08-27) -- ECR-01 moved from one_sided with one
-               side to false_pair with three, so it entered this population and this count.
-```
-
-```quantity
-id:            Q-ECR-PROBE-SEPARATION
-class:         fixed
-value:         18
-unit:          of the 18 [Q-ECR-AXES] economics axes whose probe_pos scores above zero on their own
-               axis and above every other axis, and whose probe_neg scores exactly zero on their own
-               axis
-population:    the 18 [Q-ECR-AXES] economics A rows, each with its probe_pos and probe_neg
-operation:     script: tools/ecr_probes.js ECR2.tsv _intake/japanese-miracle/lit
-conditions:    cwd: repository root, 55 characters. Node 26.4.0. Score is the IDF-weighted sum of an
-               axis's match_keys present in the tokenized probe question; IDF is log(N/df) over the
-               119 .md files of _intake/japanese-miracle/lit. No firing threshold K is applied: K is
-               unset and belongs to 3.6. ECR-01's probe_neg was replaced, because the original named
-               Japanese firms and the re-scoped axis had to be checked against a probe that does not.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b; this repository c42a217
-predicate:     all 18 economics axes separate their own probe_pos from their own probe_neg, with
-               every probe_pos scoring above every other axis and every probe_neg scoring exactly
-               zero. ECR-01 scores 5.68 against 3.20 for ECR-18, and ECR-18 scores 7.90 against 2.29
-               for ECR-01, so each fires on its own probe and both fire on a country-less question.
-derived-from:  Q-ECR-AXES
-sampled:       n/a -- computes a stated weighted sum and compares it
-superseded:    17 (The Manager, economics prompt, 2026-08-27) -- ECR-18 added and ECR-01's probe_neg
-               replaced; re-measured over 18 axes.
-```
+**The five corrected blocks now stand in the parent file,**
+`cr_scratch/step1_10_manager_economics_register.md` §4, **and the re-declarations that stood
+here are deleted.** Declaring them a second time put five ids in two files and fired `M2` five
+times; `class: superseded` would not have helped, because it removes neither the duplicate id
+nor the quotation sites. The corrected `value`, `population`, `operation`, `conditions` and
+`predicate` fields and the `superseded:` entries carrying the old values with their reasons were
+moved verbatim into the parent blocks of the same id, in one edit at Step 2 Wave 2. No
+measurement changed in the move: `Q-ECR-AXES` is 18 [Q-ECR-AXES], `Q-ECR-MEMBER-ROWS` is 53
+[Q-ECR-MEMBER-ROWS], `Q-ECR-KEYS-SHIPPED` is 185 [Q-ECR-KEYS-SHIPPED], `Q-ECR-SIDES-GT2` is 5
+[Q-ECR-SIDES-GT2] and `Q-ECR-PROBE-SEPARATION` is 18 [Q-ECR-PROBE-SEPARATION], each measured in
+the run at §4 above.
 
 **Three unchanged, re-measured rather than left stale.** `Q-ECR-LEAVES` stays **30**: ECR-18's only
 member is `wade-2018`, which was already a member of ECR-05, ECR-13 and ECR-14, so the new axis adds

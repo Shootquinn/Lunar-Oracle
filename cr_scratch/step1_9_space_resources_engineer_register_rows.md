@@ -12,7 +12,7 @@ it. The counting-rule contract, lines 177 to 423 of 1.12. `lsei/lunar-scenario-e
 sections "Every Claim and its sections", "Which coefficients each section governs", "The live
 coefficient values", "What each section carries in the ledger tab", and "The nodes ruled excluded".
 `lsei/oracle/lib/literature_search.js`, for `tokenize()`, because a key is a token or it is nothing.
-The full `lsei/literature/` tree, 152 files. And **forty-three of the fifty-eight summaries these rows
+The full `lsei/literature/` tree, 152 files. And **forty-four of the fifty-nine summaries these rows
 name, opened at the passage where a figure is being encoded** [Q-LCC15-LEAVES-READ], which is where
 most of this sub-step's time went and where six of my Step 0 figures turned out to be wrong or
 under-described.
@@ -497,38 +497,54 @@ superseded:    none
 ```quantity
 id:            Q-LCC15-MEMBER-ROWS
 class:         fixed
-value:         80
+value:         81
 unit:          M rows across the fifteen lunar axes, counting a source once per axis it sits on
-population:    the M rows of the same liftable block
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | awk -F'\t' '$1=="M"' | wc -l
+population:    the M rows of oracle/REGISTER.lunar.tsv, the promoted register of record for the
+               lunar axes. The liftable block in section 3 of this document is the pre-correction
+               draft, holds 80 M rows, and is not the population of this quantity.
+operation:     cmd: awk -F'\t' '$1=="M"' oracle/REGISTER.lunar.tsv | wc -l
 conditions:    cwd: repository root, 55 characters. A source appearing on two axes contributes two
-               rows; this is a count of memberships, not of distinct files. Compare
-               Q-LCC-MEMBER-REFS, which counted 67 references in the Step 0 draft; the authored rows
-               carry more because near-duplicate cluster members are now named in full under B6.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     the fifteen lunar axes carry eighty member rows.
+               rows; this is a count of memberships, not of distinct files. Checked against the
+               register's own H row on the same line: that row's fifth and sixth fields read 15 and
+               81, so the census and the header agree inside one file. Compare Q-LCC-MEMBER-REFS,
+               which counted 67 references in the Step 0 draft; the authored rows carry more
+               because near-duplicate cluster members are now named in full under B6.
+at:            2026-08-28; lsei 7f97983; cr-agents f0c976b
+predicate:     the fifteen lunar axes carry eighty-one member rows.
 derived-from:  none
 sampled:       n/a -- counts rows by type letter
-superseded:    none
+superseded:    80 (The Space Resources Engineer, 2026-08-27) -- the draft rows omitted
+               nasa-2025-moon-to-mars-architecture-add-revc.md from LCC-10, a B6
+               cluster-completeness failure that tools/check_register_rows.js reported and then
+               exited 0 on. Corrected in section 2 of the addendum and promoted to
+               oracle/REGISTER.lunar.tsv; the addendum re-declared this id as a second block
+               rather than quoting this one, which forked it. The re-declaration is deleted and
+               this is the single surviving block (The Space Resources Engineer, 2026-08-28).
 ```
 
 ```quantity
 id:            Q-LCC15-DISTINCT-LEAVES
 class:         fixed
-value:         58
-unit:          distinct leaf filenames named across the eighty member rows
-population:    column 4 of the M rows of the liftable block, deduplicated
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows.md | sed '1d;$d' | awk -F'\t' '$1=="M"{print $4}' | sort -u | wc -l
+value:         59
+unit:          distinct leaf filenames named across the 81 [Q-LCC15-MEMBER-ROWS] member rows
+population:    column 4 of the M rows of oracle/REGISTER.lunar.tsv, deduplicated
+operation:     cmd: awk -F'\t' '$1=="M"{print $4}' oracle/REGISTER.lunar.tsv | sort -u | wc -l
 conditions:    cwd: repository root, 55 characters. Corpus root lsei/literature, 152 .md files.
-               Provisional against the merge only in the sense that the merge renames nine leaves;
-               the count itself does not change.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     the fifteen lunar axes name 58 distinct corpus files, so 58 of the 152 files in
-               lsei/literature would carry a ## Contested block under the lunar rows alone. Every
-               one of the 58 resolves in the leaf index built by listCorpusFiles().
+               Resolution was checked separately in the same session: each of the 59 leaves was
+               looked for by exact filename under lsei/literature and every one was found, zero
+               missing. literature/ in this repository is not the corpus root for this count and
+               held zero files when it was taken.
+at:            2026-08-28; lsei 7f97983; cr-agents f0c976b
+predicate:     the fifteen lunar axes name 59 distinct corpus files, so 59 of the 152 files in
+               lsei/literature would carry a ## Contested block under the lunar rows alone. All 59
+               resolve on disk under lsei/literature.
 derived-from:  Q-LCC15-MEMBER-ROWS
 sampled:       n/a -- deduplicates and counts a string column
-superseded:    none
+superseded:    58 (The Space Resources Engineer, 2026-08-27) -- one leaf short, per the B6 failure
+               recorded at Q-LCC15-MEMBER-ROWS. Re-declared as a second block of this id in the
+               addendum rather than quoting this one; that fork is the M2 duplicate id and the M3
+               two-valued quotation collapsed at Step 2 Wave 2 (The Space Resources Engineer,
+               2026-08-28).
 ```
 
 ```quantity
@@ -790,27 +806,34 @@ superseded:    none
 ```quantity
 id:            Q-LCC15-LEAVES-READ
 class:         fixed
-value:         43
-unit:          of the 58 [Q-LCC15-DISTINCT-LEAVES] named summaries, those opened at the passage
-               carrying the encoded figure during sub-step 1.9
-population:    the 58 [Q-LCC15-DISTINCT-LEAVES] distinct leaves named in the M rows
+value:         44
+unit:          of the 59 [Q-LCC15-DISTINCT-LEAVES] named summaries, those opened at the passage
+               carrying the encoded figure during sub-step 1.9 and its addendum
+population:    the 59 [Q-LCC15-DISTINCT-LEAVES] distinct leaves named in the M rows
 operation:     manual: The Space Resources Engineer; each named leaf was either opened at the
                passage carrying the figure its position field encodes, or not opened in this
-               session; 58 items inspected, one per named leaf
+               session; 59 items inspected, one per named leaf
 conditions:    cwd: repository root, 55 characters. "Opened at the passage" means the figure,
-               boundary and maturity statement in the position field were read from the summary in
-               this session, whether by a full read or by a targeted read of the matching lines. A
-               file opened only at its citation block or abstract is counted as not opened at the
-               passage; li-2018 and cannon-2020 are counted that way.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     43 of the 58 summaries named by the fifteen lunar axes were opened at the encoded
-               passage while authoring the rows; 15 carry positions forward from Step 0 reads and
-               are the honest sampling target for a verification pass.
+               boundary and maturity statement in the position field were read from the summary,
+               whether by a full read or by a targeted read of the matching lines. A file opened
+               only at its citation block or abstract is counted as not opened at the passage;
+               li-2018 and cannon-2020 are counted that way.
+               nasa-2025-moon-to-mars-architecture-add-revc.md was read in full while adjudicating
+               the B6 failure and is counted as opened.
+at:            2026-08-28; lsei 7f97983; cr-agents f0c976b
+predicate:     44 of the 59 summaries named by the fifteen lunar axes were opened at the encoded
+               passage; 15 carry positions forward from Step 0 reads and are the honest sampling
+               target for a verification pass. The unopened fifteen are listed by name in section
+               5.5 and are unchanged.
 derived-from:  Q-LCC15-DISTINCT-LEAVES
-sampled:       58 inspected by hand, 0 found wrong, by The Space Resources Engineer -- this
+sampled:       59 inspected by hand, 0 found wrong, by The Space Resources Engineer -- this
                operation is itself the hand inspection, and the fifteen unopened leaves are listed
                by name in section 5.5 so the claim is checkable rather than asserted
-superseded:    none
+superseded:    43 of 58 (The Space Resources Engineer, 2026-08-27) -- population grew by one leaf,
+               which was read in full when the B6 failure was adjudicated. Re-declared as a second
+               block of this id in the addendum rather than quoting this one; that fork is one of
+               the three M2 duplicate ids collapsed at Step 2 Wave 2 (The Space Resources
+               Engineer, 2026-08-28).
 ```
 
 ---
@@ -908,8 +931,8 @@ would be the adjudication-by-presentation I accepted a ruling against in §1.2.
 ### 5.5 What I did not do, said plainly
 
 Nothing here verifies that a member file supports the sentence beside it, except in the cases where I
-read the passage and wrote the sentence from it in this session. **Fifty-eight distinct files are
-named** [Q-LCC15-DISTINCT-LEAVES]**; forty-three were opened at the encoded passage and fifteen were
+read the passage and wrote the sentence from it in this session. **Fifty-nine distinct files are
+named** [Q-LCC15-DISTINCT-LEAVES]**; forty-four were opened at the encoded passage and fifteen were
 not** [Q-LCC15-LEAVES-READ], and those fifteen carry positions forward from Step 0 reads. They are
 `sargeant-2020`, both `schreiner-2016` files, `sibille-2012`, `pappa-2021`, `belbin-2024`,
 `shishko-2019`, `mckeown-2024`, the three non-headline `sowers-2019` files,

@@ -174,12 +174,9 @@ stated in §3.
 more precisely than it was handed to me, because the precise version is reassuring and the vague one
 is not. Measured: on a CRLF `.md` it prints `no BEGIN/END oracle/REGISTER.tsv block` and **exits 2**.
 It fails closed and loudly; it does not silently verify nothing. On an LF `.md` the same path works.
-The root cause is one regex in `loadRows`, which requires `-->` to be followed immediately by `
-`
-and so cannot match a marker line ending `-->
-`. And the `sed 's/$//'` above is belt-and-braces
-rather than required: `loadRows` splits a `.tsv` on `/?
-/`, so carriage returns inside an
+The root cause is one regex in `loadRows`, which requires `-->` to be followed immediately by `\n`
+and so cannot match a marker line ending `-->\r\n`. And the `sed 's/\r$//'` above is belt-and-braces
+rather than required: `loadRows` splits a `.tsv` on `/\r?\n/`, so carriage returns inside an
 extracted `.tsv` are already harmless — verified by running the same rows both ways to the same exit
 status.
 
@@ -371,76 +368,34 @@ Two of the three unregistered ones are the latent false positives of §1.4.
 
 ---
 
-## 4. Corrected quantity blocks
+## 4. Corrected quantities, quoted from the surviving blocks
 
-Per the counting rule §4, a correction edits `value`, moves the old value into `superseded` with date,
-author and what was wrong, and updates every site quoting the id. Three blocks change value; one is
-reported stale and re-confirmed; two are new. **The `id`s do not change** — the originals in the parent
-document are superseded by these, not renamed.
+Per the counting rule §4, a correction edits `value` in the block's own file and moves the old value
+into `superseded`. **This addendum originally re-declared three ids here, and that was the error.**
+A re-declaration does not correct a block, it forks it. `Q-LCC15-MEMBER-ROWS`,
+`Q-LCC15-DISTINCT-LEAVES` and `Q-LCC15-LEAVES-READ` each stood as two blocks under one id — three
+M2 duplicate-id failures — and `Q-LCC15-DISTINCT-LEAVES` was the only one of the three quoted with a
+readable numeral in both files, so it alone also fired M3 as a two-valued quotation. The three
+re-declared blocks are deleted at Step 2 Wave 2. The single surviving block of each id is the
+corrected one in `cr_scratch/step1_9_space_resources_engineer_register_rows.md`, and the paragraphs
+below quote it.
 
-```quantity
-id:            Q-LCC15-MEMBER-ROWS
-class:         fixed
-value:         81
-unit:          M rows across the fifteen lunar axes, counting a source once per axis it sits on
-population:    the M rows of the corrected liftable block in section 2 of this addendum
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows, corrected) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows, corrected) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows_addendum.md | sed '1d;$d' | awk -F'\t' '$1=="M"' | wc -l
-conditions:    cwd: repository root, 55 characters. A source appearing on two axes contributes two
-               rows; this is a count of memberships, not of distinct files.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     the fifteen lunar axes carry eighty-one member rows.
-derived-from:  none
-sampled:       n/a -- counts rows by type letter
-superseded:    80 (The Space Resources Engineer, 2026-08-27) -- the rows omitted
-               nasa-2025-moon-to-mars-architecture-add-revc.md from LCC-10, a B6 cluster-completeness
-               failure that tools/check_register_rows.js reported and then exited 0 on
-```
+**An addendum that supersedes must quote, never re-declare.** `class: superseded` on the original
+would not have helped: it clears neither the duplicate id nor the quotation sites, and it stales the
+index on top. The structural cause of the value fork is recorded at `Q-LCC15-MEMBER-ROWS` — the `H`
+row of `REGISTER.lunar.tsv` pins the axis and member-row counts and has no distinct-leaves field, so
+the member-row value could not drift while the distinct-leaves value had nothing holding it.
 
-```quantity
-id:            Q-LCC15-DISTINCT-LEAVES
-class:         fixed
-value:         59
-unit:          distinct leaf filenames named across the member rows
-population:    column 4 of the M rows of the corrected liftable block, deduplicated
-operation:     cmd: sed -n '/^<!-- BEGIN oracle\/REGISTER.tsv (lunar rows, corrected) -->$/,/^<!-- END oracle\/REGISTER.tsv (lunar rows, corrected) -->$/p' cr_scratch/step1_9_space_resources_engineer_register_rows_addendum.md | sed '1d;$d' | awk -F'\t' '$1=="M"{print $4}' | sort -u | wc -l
-conditions:    cwd: repository root, 55 characters. Corpus root lsei/literature, 152 .md files.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     the fifteen lunar axes name 59 distinct corpus files, so 59 of the 152 files in
-               lsei/literature would carry a ## Contested block under the lunar rows alone. Every one
-               of the 59 resolves in the leaf index built by listCorpusFiles().
-derived-from:  Q-LCC15-MEMBER-ROWS
-sampled:       n/a -- deduplicates and counts a string column
-superseded:    58 (The Space Resources Engineer, 2026-08-27) -- one leaf short, per the B6 failure
-               recorded at Q-LCC15-MEMBER-ROWS
-```
+The corrected values, quoted:
 
-```quantity
-id:            Q-LCC15-LEAVES-READ
-class:         fixed
-value:         44
-unit:          of the 59 [Q-LCC15-DISTINCT-LEAVES] named summaries, those opened at the passage
-               carrying the encoded figure during sub-steps 1.9 and this addendum
-population:    the 59 [Q-LCC15-DISTINCT-LEAVES] distinct leaves named in the M rows
-operation:     manual: The Space Resources Engineer; each named leaf was either opened at the passage
-               carrying the figure its position field encodes, or not opened; 59 items inspected, one
-               per named leaf
-conditions:    cwd: repository root, 55 characters. "Opened at the passage" means the figure,
-               boundary and maturity statement in the position field were read from the summary,
-               whether by a full read or a targeted read of the matching lines. A file opened only at
-               its citation block or abstract is counted as not opened; li-2018 and cannon-2020 are
-               counted that way. nasa-2025-moon-to-mars-architecture-add-revc.md was read in full
-               while adjudicating the B6 failure and is counted as opened.
-at:            2026-08-27; lsei 7f97983; cr-agents f0c976b
-predicate:     44 of the 59 summaries named by the fifteen lunar axes were opened at the encoded
-               passage; 15 carry positions forward from Step 0 reads and are the honest sampling
-               target for a verification pass. The unopened fifteen are unchanged from the parent
-               document's list.
-derived-from:  Q-LCC15-DISTINCT-LEAVES
-sampled:       59 inspected by hand, 0 found wrong, by The Space Resources Engineer -- the fifteen
-               unopened leaves are listed by name in section 5.5 of the parent document
-superseded:    43 of 58 (The Space Resources Engineer, 2026-08-27) -- population grew by one leaf,
-               which was read in full when the B6 failure was adjudicated
-```
+- The fifteen lunar axes carry 81 [Q-LCC15-MEMBER-ROWS] member rows. The draft rows omitted
+  `nasa-2025-moon-to-mars-architecture-add-revc.md` from LCC-10, a B6 cluster-completeness failure
+  that `tools/check_register_rows.js` reported and then exited 0 on; the corrected liftable block is
+  in section 2 of this document and is the block promoted to `oracle/REGISTER.lunar.tsv`.
+- Those rows name 59 [Q-LCC15-DISTINCT-LEAVES] distinct corpus files, one more than the draft, and
+  every one of the 59 resolves on disk under `lsei/literature`.
+- Of those, 44 [Q-LCC15-LEAVES-READ] were opened at the encoded passage. The fifteen that were not
+  are unchanged and are listed by name in section 5.5 of the parent document.
 
 **`Q-LCC15-SIDES` is reported STALE and re-confirmed unchanged at 37.** Its `derived-from` names
 `Q-LCC15-MEMBER-ROWS`, which was corrected after that block's own `at`, so the checker will flag it.

@@ -1,0 +1,106 @@
+# step2_manager_depth.tsv -- sub-step 2.8 patch table. The Manager (economics prompt), Step 2 Wave 2.
+# provenance_depth for every merge_plan.tsv row whose column 11 review_owner is manager-econ.
+# Applied by The Engineer onto the summary's ## Provenance block when the tree lands. Values are
+# the closed set of GE-2 / integration 2.8: primary | via_review | via_tertiary.
+#
+# KEYED ON `key` = column 2 of cr_scratch/merge_plan.tsv, the normalized union key, which is the
+# merge key and stable by construction. NOT on target_path, which the folder reviewers can move.
+#
+# THE RULE APPLIED, stated so a reviewer can disagree with the rule rather than with 70 rows:
+#   primary       the summarized document makes its own contribution -- measurement, model, design,
+#                 or first-hand account -- and the claims cited from it are the document's own.
+#   via_review    the document's FUNCTION is to report or assess work published elsewhere: a book
+#                 review, a review or survey article, or an overview whose headline figures are
+#                 quoted from prior studies. The corpus's route to the finding runs through it.
+#   via_tertiary  a reference work, textbook, encyclopedia entry, or compiled statistical table that
+#                 reports figures produced elsewhere.
+# The test that separates primary from via_review on a paper with no new data: DOES THE DOCUMENT
+# PRODUCE ITS OWN NUMBERS. ehricke-1974 states "no new empirical data are collected" and is primary,
+# because the order-of-magnitude estimates are its own; downing-2005 states "presents no new data,
+# drawing instead on ... cited prior work" and is via_review, because the content is other people's.
+#
+# Where the file's own ## Abstract or ## Citation states its type in its own words, the basis quotes
+# it. Where it does not, the basis says the value is a judgement and names what would settle it.
+#
+# SCOPE. 44 rows carry field_label=economics and are 2.8's own population. 26 carry field_label=lunar
+# with review_owner=manager-econ -- the deliberate 7/4-versus-8/3 split -- and their basis cells lead
+# with "field=lunar;" so The Engineer can apply the economics 44 alone if 2.8's scope is read off the
+# FIELD rather than off the REVIEWER. They are filled either way; see step2_manager_econ_w2.md item 3.
+#
+# tally = primary 54 | via_review 7 | via_tertiary 9 | n/a 0
+# rows = 70   economics 44   lunar 26
+# read-digest sha256 over sorted path\tsize\tmtimeMs of the 70 files read = 6164c8dcdd6ea459
+# files read = 70, at cr_scratch/merge_plan.tsv column 3, cwd repository root, 55 characters
+# merge_plan.tsv read at digest 9f98ff60509c9d43, size 86887
+# NOT COMPARABLE with any figure carrying a different digest, per standing clause 3.
+key	provenance_depth	basis
+acemoglu-2020-robots-and-jobs.md	primary	Citation: NBER WP 23285, the authors' own study; the note on version summarized says the summary was produced from the working-paper PDF only.
+aghion-1992-model-growth-creative-destruction.md	primary	Citation: Econometrica 60(2), the original creative-destruction model.
+aoki-2009-government-tfp-growth.md	primary	Citation: CIRJE-F-622, the authors' own TFP estimation for Japan's rapid-growth era. Mentions Denison and Chung only in a bibliographic list, not as a source of figures.
+barro-2004-economic-growth-textbook.md	via_tertiary	Citation: "graduate textbook", MIT Press. Abstract calls itself "a scoped reference extract, not a summary of the full book", used for two closed-form results.
+bea-depreciation-rates.md	via_tertiary	Citation states the depreciation patterns are "primarily derived by Barbara M. Fraumeni from estimates made by Charles Hulten and Frank Wykoff" and names Fraumeni 1997 and Hulten-Wykoff 1979/1981 as the primary underlying sources, none of which is on disk. JUDGEMENT: the rates are BEA's published schedule of record, so a reviewer could call this primary; what settles it is whether 2.8 grades the PUBLISHER of a number or its MEASUREMENT. This corpus's only route to delta.
+beason-1996-targeting-japan.md	primary	Citation: Review of Economics and Statistics 78(2), the authors' own targeting estimation.
+beckley-2018-americas-role-japan-miracle.md	primary	Citation: Journal of East Asian Studies 18(1), the authors' own study.
+caballero-2008-zombie-lending-japan.md	primary	Citation: AER 98(5); the on-disk copy is NBER WP 12129, the same authors' own text, cross-checked against the published substance in the citation note.
+christiano-1989-japan-saving-rate.md	primary	Citation: Federal Reserve Bank of Minneapolis Quarterly Review 13(2), the author's own reconstruction-hypothesis analysis.
+deming-1967-japan-quality-control.md	primary	Citation: Industrial Quality Control 24(2); a first-hand account by the participant. Draws in part on the author's own 1966 Sankhya piece, which is the same hand.
+dingman-1993-dagger-and-gift-korean-war.md	primary	Citation: Journal of American-East Asian Relations 2(1), the author's own archival history.
+esri-2016-japan-high-growth-economic-plans.md	primary	Citation: ESRI Research Note 27 by two named ESRI Senior Research Fellows. Abstract: "The authors frame the material as a development-economics case study" -- an institutional account by the agency's own economists, not a report of others' findings.
+esteban-pretel-2009-postwar-japan-policy.md	primary	Citation: RIETI DP 09-E-001, the authors' own structural-change model; the citation note records that the RIETI paper is the document actually read.
+flyvbjerg-2014-what-you-should-know-megaprojects.md	via_review	Citation title is "An overview"; abstract: "Overview of megaproject management". The headline statistics this corpus cites it for (nine of ten cost overruns, rail 44.7 per cent, Big Dig 220 per cent) are reported from the author's earlier studies, none on disk, and the citation note itself records a misattributed statistics cascade inside the source.
+hausmann-2005-growth-accelerations.md	primary	Citation: Journal of Economic Growth 10(4); the file read is NBER WP 10566, the same authors' own empirical study.
+henderson-2008-myth-of-miti.md	via_tertiary	Citation: an entry in The Concise Encyclopedia of Economics. Its own note: "Retrieved this session as a secondary source; used here for the Denison and Chung decomposition figures it reports, not as an original study." Named in GE-2 as not primary.
+hoshi-1991-corporate-structure-liquidity-investment.md	primary	Citation: QJE 106(1), the authors' own investment-sensitivity estimation.
+imf-1963-appraisal-japan-double-income.md	primary	Citation: IMF Staff Papers 1963(1); Fujioka's own appraisal, written eighteen months into the plan. See ECR-12's unregistered third side, landing at 2.16.
+jones-1995-rd-based-growth.md	primary	Citation: JPE 103(4), the author's own critique and model.
+jorgenson-2005-industry-origins-japan.md	primary	Citation: JJIE 19(4), the authors' own industry-level decomposition. It names Denison and Chung only as "the substitute for" -- it does not report their decomposition.
+kawagoe-1999-japan-land-reform.md	primary	Citation: World Bank Policy Research WP 2111. Abstract: "Historical-institutional working paper ... documents the legal design and execution ... tabulates its distributional outcomes". CAUTION for retrieval: its productivity-effect statement is reported speech -- the abstract says it cites "prior studies that found no clear productivity effect" -- while the tabulation is its own.
+kiyota-2005-foreign-technology-acquisition.md	primary	Citation: IJIO 23(7-8), the authors' own firm-level estimation.
+kiyota-2013-import-quota-removal.md	primary	Citation: PRIMCED DP 48, the authors' own productivity estimation; the citation note records which of two identical postings was read.
+lewis-1954-unlimited-supplies-labour.md	primary	Citation: The Manchester School 22(2), the original dual-sector model.
+lucas-1988-mechanics-economic-development.md	primary	Citation: Journal of Monetary Economics 22(1), the author's own models. Cites Denison 1961 as a data source; does not report the 1976 Denison and Chung decomposition.
+may-1977-how-japans-economy-grew-so-fast-review.md	via_review	Citation: "Review of How Japan's Economy Grew So Fast, by E. F. Denison and W. K. Chung", The Economic Journal 87(346). The citation note records that only the middle review on the scanned pages is the subject. Named in GE-2 as not primary.
+miwa-2002-fable-of-the-keiretsu.md	primary	Citation: JEMS 11(2), the authors' own roster construction and tests; the version note establishes the journal typesetting was the copy read.
+murphy-1989-industrialization-big-push.md	primary	Citation: JPE 97(5), the original big-push formalization.
+nakamura-1989-postwar-japanese-economy.md	via_tertiary	Citation: a chapter in The Cambridge History of Japan, Vol. 6. The file's own method line: "narrative synthesis of official Japanese statistical series and secondary economic-history scholarship, organized around twenty numbered data tables; no new data collected."
+otsu-2007-neoclassical-postwar-japan.md	primary	Citation: IMES DP 2007-E-1, the author's own neoclassical accounting. Names the Denison-Chung decomposition only as something "targeted elsewhere in FA1"; does not report it.
+pritchett-2000-hills-among-plateaus.md	primary	Citation: World Bank Economic Review 14(2), the author's own growth-episode analysis.
+rebelo-1991-ak-long-run-growth.md	primary	Citation: JPE 99(3), the original AK analysis.
+romer-1990-endogenous-technological-change.md	primary	Citation: JPE 98(5 Pt 2), the original endogenous-growth model.
+rosenstein-rodan-1943-problems-industrialisation.md	primary	Citation: The Economic Journal 53(210/211), the original big-push argument.
+ryan-2000-self-determination-theory.md	via_review	The file's own abstract opens "Review article presenting self-determination theory (SDT)" and says it "Organizes prior laboratory and field research" -- the empirical support is in studies not on disk. Separately the live falsifier on the two-value field set, which is a different question and not this column's.
+shewhart-1931-economic-control-quality.md	primary	Citation: the 1931 monograph, the original statement of statistical process control.
+shewhart-1939-statistical-method-quality-control.md	primary	Citation: the 1939 USDA Graduate School lectures, the author's own text; Deming is the editor, not an intermediary reporting it.
+simonis-1979-denison-boltho-review.md	via_review	The file's own words: "This is a joint book review (Sammelrezension) of two works, not an original research article." Named in GE-2 as not primary.
+solow-1956-contribution-growth-theory.md	primary	Citation: QJE 70(1), the original growth model.
+spear-1999-decoding-tps-dna.md	primary	Citation: Harvard Business Review, Sept-Oct 1999. Abstract: "Reports findings from a four-year field study of more than 40 manufacturing and service-support operations" -- the authors' own fieldwork, notwithstanding the practitioner venue.
+taylor-1911-scientific-management.md	primary	Citation: the 1911 Harper monograph. The on-disk text is the Project Gutenberg transcription of that edition, which is a reproduction of the primary text and not an intermediary reporting it; the note on the on-disk copy records that locations are given by section because the transcription has no page numbers.
+trist-1951-longwall-coal-getting.md	primary	Citation: Human Relations 4(1), the authors' own field study.
+vanderploeg-2011-natural-resources-curse-blessing.md	via_review	Citation: Journal of Economic Literature 49(2), a survey venue. The file's own abstract opens "Survey of the theory and evidence"; it evaluates eight candidate explanations against evidence published elsewhere.
+wade-2018-developmental-state-dead-or-alive.md	via_review	Citation: Development and Change 49(2), a review essay. Measured at the A.10 gate: its affirmative targeting content is Lane 2017 in reported speech at lines 150-157, and line 230 records that the study which would settle the Japanese case has not been conducted. This corpus's only affirmative targeting finding lives inside it as reported speech, which is exactly what this column exists to mark.
+benaroya-1998-lunar-development-issues.md	primary	field=lunar; Abstract: "An essay/overview arguing ..."; "Method is qualitative argument; appendices tabulate candidate dual-use technologies." The Lunar Development Corporation proposal is the document's own.
+benaroya-2001-commercial-lunar-base.md	primary	field=lunar; Abstract: the three-sector lunar-economy model and the dual-use financing paradigm are the author's own proposals.
+castillo-rogez-2022-ceres-habitability.md	primary	field=lunar; ## Provenance names document type "Peer-reviewed journal article (mission concept study)", PSJ 3, Article 41. The only row of the 70 whose depth was read off a ## Provenance block rather than a ## Citation block.
+colvin-2020-lunar-cislunar-demand.md	primary	field=lunar; Abstract: the team "built a database of lunar companies, conducted interviews, derived cost models" -- the report's own work.
+downing-2005-sustainable-lunar-economy.md	via_review	field=lunar; the file's own abstract: "presents no new data, drawing instead on the authors' industry experience (Bechtel, Boeing, the Maguire Energy Institute) and cited prior work."
+ehricke-1974-lunar-industries.md	primary	field=lunar; Abstract: "Method is qualitative synthesis plus order-of-magnitude engineering estimates; no new empirical data are collected." The estimates are the document's own, which is the test that separates it from downing-2005.
+ehricke-1981-selenosphere-energy.md	primary	field=lunar; Abstract: "Descriptive engineering-economic study; figures drawn from the paper's own tables and charts."
+ehricke-1981-socioeconomic-lunar-evaluation.md	primary	field=lunar; Abstract: "Method is conceptual analysis with illustrative engineering estimates" -- the selenosphere system strategy is the document's own.
+ehricke-1984-selenospheric-economics.md	primary	field=lunar; Abstract: "Descriptive strategic and economic study"; the five stages, four principles and market-product-time matrix are the document's own.
+gao-2011-neutron-detectors-helium3.md	via_tertiary	field=lunar; a congressionally requested GAO technology assessment. The market and supply figures it is read for here -- the abstract says it "Serves here strictly as the demand-side companion" -- are compiled from agency and industry sources named in the report, not measured by GAO. JUDGEMENT: what would settle it is whether the specific figures the Oracle cites from it are GAO's own detector-performance assessment (primary) or its compiled supply data (via_tertiary).
+gdp.md	via_tertiary	field=lunar; Citation: World Bank, Gross Domestic Product 2025 ranking table from the World Development Indicators database. A compiled cross-country table; the GDP figures originate in national accounts produced elsewhere.
+giachino-2021-space-tourism-frontier.md	primary	field=lunar; Abstract: "an empirical, cluster-analysis-based study ... Based on 2,027 survey responses collected from young adults in North-West Italy in January 2020" -- the authors' own survey.
+hein-2018-asteroid-mining-technoeconomic.md	primary	field=lunar; Abstract: the profit equation, NPV formulation and supply-demand model are the paper's own. Preprint-only, per the version note; preprint status is a currency question, not a depth question.
+highfill-2024-us-space-economy-statistics.md	primary	field=lunar; Abstract: "BEA release article presenting new and revised space-economy satellite-account estimates" -- BEA's own estimates, published by the authors who produced them. Contrast bea-depreciation-rates.md, also BEA, which is via_tertiary because its rates were estimated by Hulten and Wykoff. Same publisher, different depth, which is the column doing work.
+marcy-2026-orbiting-data-centres-impact.md	primary	field=lunar; Abstract: the paper "derives the angular size, brightness, and visibility duration" itself, working from published array-area requirements as inputs.
+matthews-2026-lunar-data-economy.md	primary	field=lunar; Abstract: the cost-per-gigabyte model is the paper's own.
+mckeown-2024-space-resource-hurdle-rate.md	primary	field=lunar; Abstract: the hurdle-rate range is the authors' own derivation. CAUTION for retrieval: method (1) is "a survey of hurdle-rate and discount-rate proxies ... reported in the terrestrial mining, oil and gas, aerospace and venture-capital" literature, so the INPUT proxies are reported speech while the derived range is the paper's.
+nayak-2024-six-hypotheses-lunar-economy.md	primary	field=lunar; Abstract: "the author names six technology areas where revolutionary improvement would, in his assessment" -- the author's own position paper, drawing on the LunA-10 study he ran.
+nexgen-2015-evolvable-lunar-architecture.md	primary	field=lunar; Abstract: the economic and systems analysis, the 5-to-7-year and 10-billion-dollar findings, are the study's own.
+oecd-2023-space-economy-in-figures.md	via_tertiary	field=lunar; Abstract: "flagship statistical report ... Compiles indicators on government space budgets, launch activity, satellite populations, private investment, patents" -- a compilation of indicators produced elsewhere.
+shishko-2019-lunar-thermal-mining-business-case.md	primary	field=lunar; the BCA framework and production-rate model are the deck's own. The summary already isolates the reported speech in its own words: the slide-2 literature-review figures "are quoted by Shishko, Stoica, and Mrozinski from these prior authors' own publications; they are not results computed by Shishko et al." That is what a well-formed depth caveat looks like and it is already in the file.
+smith-vaniz-2026-lunar-mining-economic-framework.md	primary	field=lunar; Abstract: the diagnostic DCF-disaggregation framework is the paper's own.
+statistical-review-of-world-energy.md	via_tertiary	field=lunar; Citation: Energy Institute Statistical Review of World Energy 2026. "The standard annual dataset of global energy production, consumption, trade, and emissions" -- a compilation from national and industry reporting.
+turyshev-2026-orbital-data-centers.md	primary	field=lunar; Abstract: the viability conditions, the 29.4 kg/kW base case and the 34-59 kg/kW total are the paper's own derivation.
+usgs-2025-platinum-group-metals-mcs.md	via_tertiary	field=lunar; the file's own abstract: "A pure data/reference fact sheet; it reports market size and" prices. A Mineral Commodity Summaries entry compiling reported production and trade.
+zuniga-2017-lunar-cots-infrastructure.md	primary	field=lunar; Abstract: "findings are from conceptual design plus numerical simulation, not flight hardware" -- the paper's own trajectory and mass analyses.

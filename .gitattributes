@@ -1,0 +1,40 @@
+# .gitattributes -- line endings, and nothing else.
+# Added at 2.20, 2026-08-28, by The Systems Engineer. Routed as item (a) of the Wave 2 open.
+#
+# THE DEFECT THIS CLOSES. Until today this repository had NO .gitattributes at any path. Every
+# hook under tools/githooks/ begins `#!/usr/bin/env node`, and the only thing keeping that first
+# line LF in the index was core.autocrlf=true happening to be set on the authoring machine.
+# core.autocrlf is PER-INSTALL CONFIGURATION. .gitattributes is CONTENT. A clone whose autocrlf
+# differs -- the default on Windows for many installs, and `input`/unset elsewhere -- checks the
+# hook out with CRLF, and the kernel's shebang parser takes the carriage return as part of the
+# interpreter path: `bad interpreter: /usr/bin/env node^M`. The hook does not run, git reports
+# nothing useful, and every check it dispatches is silently unwired.
+#
+# THIS IS THE THIRD MEMBER OF ONE FAMILY, and naming the family is the point of writing it down.
+#   E1        -- hooks are not cloned, so a hook in .git/hooks/ is a mechanism for one machine.
+#   HK-2      -- a hook committed at 100644 is executable here and inert on a Linux clone,
+#                because core.filemode is false on the authoring machine.
+#   this file -- a hook committed with CRLF is executable here and inert on a Linux clone,
+#                because core.autocrlf is true on the authoring machine.
+# In all three the CONTENT is committed and the TRIGGER is metadata, and in all three the
+# assertion that the mechanism exists passes on the machine where it cannot fail. The remedy is
+# the same shape every time: put the property in the tree, not in the config.
+#
+# WHY THIS FILE IS NARROW. It governs the executable text this repository dispatches and nothing
+# else. A blanket `* text=auto` would be a normalization pass over 108 tracked files during the
+# merge wave, which is a diff nobody can review sitting on top of the diff that matters. The
+# corpus is .md and .tsv and its line endings are not load-bearing; when someone shows that they
+# are, that is a rule with a reason and it can be added then.
+
+# --- the dispatchers and everything beside them -------------------------------------------
+# eol=lf is stated in addition to `text` rather than relying on it: `text` alone normalises to LF
+# in the INDEX and converts back on checkout according to the per-install setting, which is the
+# exact dependence being removed. eol=lf pins the WORKING TREE.
+tools/githooks/** text eol=lf
+
+# --- everything this repository executes ---------------------------------------------------
+# Same reason one level wider: a .js or .sh reached from a hook or a gate has the same shebang
+# exposure the moment anyone marks it executable, and `sh script.sh` on CRLF fails in its own
+# obscure ways ($'\r': command not found) long before anyone suspects line endings.
+*.js text eol=lf
+*.sh text eol=lf

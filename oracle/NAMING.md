@@ -41,6 +41,10 @@ are normalized.
 
 ```
 normalize(name):
+  0. PRECONDITION (2.20). If the leaf's final extension is not ".md" (case-insensitive),
+     REJECT. Return no value. normalize() is not defined on such a name and MUST NOT
+     rename one. A leaf with no dot at all is also a rejection: the corpus has no
+     extensionless members and an inferred extension is a rename by another route.
   1. s <- the leaf name only; discard any directory prefix
   2. if s ends with ".md" (case-insensitive), remove exactly that one trailing occurrence
   3. s <- lowercase(s)
@@ -53,6 +57,29 @@ normalize(name):
 Nothing else. No stemming, no token reordering, no year extraction, no transliteration. It is
 reversible enough to audit by eye and short enough to state in seven lines, which is the property a
 merge key needs.
+
+**Step 0 is a PRECONDITION and not an eighth step, and the numbering is deliberate.** `NRM-1` in
+`oracle/tests/corpus_suite.md` and the header of `tools/merge_identity.js` both assert *the seven
+steps, in order*. Renumbering would leave both sentences syntactically intact and semantically
+about a different function — the same reason §7 inserted level 2B between 2 and 3 instead of
+renumbering. Step 0 either returns nothing or hands seven untouched steps a name they already
+accept.
+
+**Why it is a rejection and not a rename, added at 2.20.** Step 2 removes exactly one trailing
+`.md` and step 7 appends `.md` unconditionally, so before this precondition
+`un-1967-outer-space-treaty.txt` normalized to `un-1967-outer-space-treaty.txt.md`. **`normalize()`
+was a renamer that turned a published treaty text into something with the extension of a summary
+this project wrote.** Nothing lands wrong today — the merge glob is `*.md`, so no non-`.md` leaf
+ever reaches the function — and that is precisely the hazard rather than the mitigation: *the
+safety is in the caller and the defect is in the contract.* Every future caller inherits the
+renamer, and the one that inherits it will be the one whose glob is wider, because a wider glob is
+the natural next change. A property of the naming contract is not fixed by a property of one
+caller's glob.
+
+The rejection is loud by construction: it returns no value, so a caller that ignores it fails on
+the next line rather than proceeding with a plausible wrong name. §2's ruling stands unchanged and
+this is an instance of it — **the merge records; it does not rename.** A name that needs a decision
+is a decision, and it goes to a person.
 
 Steps 4 and 5 are separate on purpose. Step 4 turns `_ _` into `--`; step 5 collapses it. Merging
 them into one character class would also collapse hyphens the author wrote deliberately. There is
@@ -104,6 +131,16 @@ of `fa0`…`fa8`, and `R_S` forbids it. No string matches both. No string in eit
    failing its namespace's regex is not copied; the merge exits non-zero naming the file, and no
    partial corpus is left behind. The merge records; it does not rename. A name that needs a
    decision is a decision, and it goes to a person.
+
+   **This is not the landing gate §7.1 strikes, and the distinction is not a hair.** §7.1 governs
+   *metadata about a document* — an identifier, a citation block, a duplicate adjudication — and
+   rules that none of it may keep a file off the shelf. This clause governs *the address the file
+   lands at*, and a file with no valid address has nowhere to land. The remedy is the same either
+   way and it is never exclusion: **fix the name, then merge.** The all-or-nothing exit is what
+   makes that an ordering rather than a withholding — it fails the whole run so the names get
+   fixed, instead of shipping 175 files and quietly dropping one. **A merge must report every
+   failing name in one pass**, not exit on the first, or "fix the name, then merge" becomes a
+   loop somebody runs until they give up.
 2. **In CI, on every run.** `tools/check_corpus_collisions.js` walks both shelves and exits 1 on
    any file failing its own namespace's regex, or matching the other namespace's. §11.
 3. **Never at query time.** `literature_search.js` does not validate filenames and must not be
@@ -389,12 +426,64 @@ pages, and the precedence is built for it:
   ehricke-1981, nasa-2025 — are not. **A level-3 match is a candidate duplicate, never a confirmed
   one.** It is reported for a
   person to resolve and the merge does not act on it.
-- **No citation block at all.** Not a dedup failure, a landing failure. The file does not land until
-  it has one.
+- **No citation block at all.** Not a dedup failure and — **as corrected at 2.20 — not a landing
+  failure either.** This clause used to read *"the file does not land until it has one."* **That is
+  now wrong and it is struck.** See §7.1 immediately below, which replaces it: the file lands under
+  its filename-derived key and the identifier is recorded as `none`.
 
 **Precedence is per-pair, not per-file.** Two files are compared at the highest level where **both**
 carry a key. A file with a DOI and a file without are compared at level 3, and that comparison is a
 candidate, not a confirmation.
+
+---
+
+## 7.1 Nothing is withheld from the shelf for a metadata reason
+
+**AUTHOR RULING, 2026-08-28, and it OUTRANKS every clause in §7 above.** The corpus was handed to
+this project in two folders. It goes on the shelf.
+
+> **Disposition governs HOW a file lands. It never governs WHETHER it lands.**
+
+A missing DOI, a missing citation block, an unresolved identifier, an unadjudicated duplicate
+candidate — each is **a fact recorded about a file, not grounds to keep it off the shelf.** The
+precedence in §7 is a *dedup key ladder*, and a ladder is for grouping files that landed. It was
+never a gate and one clause had quietly made it one.
+
+**The identifier requirement is a RECORDED-FIELD requirement.** Every landed file carries an
+identifier field. Where no key resolves at any level, that field is written **`none`**, explicitly,
+and the file lands under its filename-derived key. This is the project's own standing rule arriving
+in the naming contract: **an omitted field is invisible and `none` is falsifiable.** A shelf of 176
+files of which some record `none` is countable, greppable and correctable. A shelf of 150 files with
+26 withheld somewhere else is none of those things, and nothing in this repository would have
+reported the 26.
+
+### Duplicate resolution: pick, do not hold
+
+Every duplicate group resolves, and the resolution is a **pick**, in this order:
+
+1. **A recorded prior decision wins.** If the merge table already carries a disposition for the
+   pair — a hold, a false-merge finding, a ruling that the two are distinct documents — that
+   decision stands and nothing here overrides it. **This is the clause that protects the weak key:**
+   a level-3 match found to be two genuinely different documents (`barnett-2025`, `ehricke-1981`,
+   `nasa-2025`) is *not a duplicate group*, and **both members land.**
+2. **Byte-identical: take either.** There is nothing to choose. Measured in the staged corpus:
+   `azami-2024-lunar-manufacturing-review` and `csank-2022-powering-the-moon` are both exact
+   byte-for-byte pairs at 5,437 and 7,637 bytes.
+3. **Otherwise take the larger file.** `metzger-2013-bootstrapping-space-industry` is 24,076 bytes
+   against 5,269 — and **the retrieval layer resolved to the 5,269-byte member every time**, which
+   is the defect `CHK-01` was built for. The rule is deliberately blunt because the alternative is a
+   held pair, and a held pair is a file that did not land.
+
+The loser is **recorded, not deleted**: it stays outside the namespace in
+`_intake/superseded-duplicates/`, exactly as the deferred-merge paragraph below already provides.
+Recording which member was dropped is what makes the pick reversible.
+
+**No check row was added for this clause, deliberately.** It is a correction of a contract against a
+ruling, and `CHK-01` already fails on the outcome this rule exists to prevent — two files that are
+one file to the retrieval layer. A second instrument asserting the same property from the other end
+would be a second authority on what a duplicate is.
+
+---
 
 **The two deferred merges.** Poston 2020 resolves at level 1 on `10.1080/00295450.2020.1725382`.
 Metzger 2021 has no DOI and no publisher URL — both members are preprints — and resolves at level 3,

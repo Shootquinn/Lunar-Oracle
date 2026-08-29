@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+/*
+ * tools/githooks/merge-gate -- the merge-gate dispatcher. Check-register row CHK-38.
+ * Installed at 2.20 by The Systems Engineer, 2026-08-28.
+ *
+ * WHY. CHK-01 and CHK-04 have named the trigger `merge-gate` since 1.13 and nothing installed a
+ * dispatcher for it. Two BLOCKING rows fired on nothing, which made them decorative on the one
+ * day they matter, and 2.5 -- the corpus merge -- is that day.
+ *
+ * MERGE-GATE IS NOT A GIT EVENT, AND THAT IS MEASURED RATHER THAN ASSUMED. On git
+ * 2.55.0.windows.1, `git hook run merge-gate` exits 1 with `unknown hook event 'merge-gate'; use
+ * --allow-unknown-hook-name to allow non-native hook names`. So the invocation is
+ *
+ *     git hook run --allow-unknown-hook-name merge-gate
+ *
+ * and check_register.md's TRIGGERS table records that literal, because a dispatcher reachable
+ * only by a flag nobody wrote down is a dispatcher nobody runs. Running the file directly --
+ * `node tools/githooks/merge-gate` -- also works and is the same code path; the hook-run form is
+ * preferred because it goes through git's own resolver, which is the whole reason E1's remedy was
+ * replaced (asserting core.hooksPath proves nothing: git exits 0 against a nonexistent or empty
+ * directory and fires nothing either way).
+ *
+ * WHAT IT DISPATCHES. Every row whose invoked_by names merge-gate, in row order, through the
+ * shared engine in ./dispatch.js. Nothing about the dispatch rule is written twice; see that file
+ * for why that mattered enough to move it.
+ *
+ * HAND-OPERATED IS NOT UNWIRED, AND THE 1.13 RULING STANDS. check_register.md section 5.2 ruled
+ * merge-gate KEPT and declared hand-operated: its operator is the agent executing 2.5. That
+ * ruling was about WHO PULLS THE TRIGGER and it is unchanged. This file is WHAT THE TRIGGER
+ * DOES. The two were conflated in the 2.20 brief -- "nothing installs a dispatcher" was read as
+ * "the trigger is unwired" -- and they are different failures with different fixes. An operator
+ * with no mechanism and a mechanism with no operator are both broken; until today this trigger
+ * was the first, and the TRIGGERS table said so honestly.
+ *
+ * THE 100644 AND CRLF TRAPS APPLY TO THIS FILE EXACTLY AS THEY APPLY TO pre-commit. See that
+ * file's header and .gitattributes. `git ls-files -s tools/githooks/merge-gate` must report
+ * 100755.
+ *
+ * NO SELF-INVOCATION, and the guard for it is now shared. A row dispatched here that shells out
+ * to any trigger re-enters dispatch.js at depth 1 and is refused with the chain printed. Adding
+ * this second trigger is what made a per-trigger guard insufficient, and the guard was
+ * generalised in the same edit rather than a later one.
+ */
+
+'use strict';
+
+const { dispatch } = require('./dispatch.js');
+
+process.exit(dispatch({ trigger: 'merge-gate', rowId: 'CHK-38 merge-gate dispatcher:' }));

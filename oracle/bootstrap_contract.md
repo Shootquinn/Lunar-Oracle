@@ -286,7 +286,15 @@ and HK-2 is the assertion. **Second**, `core.autocrlf` is `true` here and there 
 `.gitattributes`: the staged blobs are LF today only because of one contributor's local setting, and
 a `#!/usr/bin/env node` shebang stored with CRLF fails on Linux with `bad interpreter`. That is the
 same trap as the mode, one layer down, and closing it needs a `.gitattributes` this sub-step does not
-own. **Third**, the first execution of HK-1 was **red**, and for none of the five reasons HK-1 lists:
+own. **CLOSED AT 2.20**, by the same author, in the sub-step that owns it: `.gitattributes` now
+carries `tools/githooks/** text eol=lf` plus `*.js` and `*.sh`, and `git check-attr eol` confirms
+`lf` on both dispatchers. The paragraph above stays as written because it is the diagnosis; only the
+last clause is now history. **The family is three deep and should be read as one item**: hooks are
+not cloned (E1), a hook committed at 100644 is inert on a clone (HK-2), a hook committed with CRLF is
+inert on a clone (this). In each, the content is committed and the trigger is metadata, and in each
+the assertion that the mechanism exists passes on the machine where it cannot fail. **The remedy is
+the same shape every time: put the property in the tree, not in the config** — which is E12's
+distinction between content and per-install state, arriving here from a different direction. **Third**, the first execution of HK-1 was **red**, and for none of the five reasons HK-1 lists:
 the resolver worked perfectly and a dispatched row failed on accepted repository state. See
 `check_register.md` §5 HK-1 and the `CHK-14` authority cell.
 

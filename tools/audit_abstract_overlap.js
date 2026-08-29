@@ -31,7 +31,25 @@ function pdfText(file, pages) {
   } catch { return null; }
 }
 function abstractOf(md) {
-  const m = md.match(/^##+\s*Abstract\s*$([\s\S]*?)(?=^##\s)/mi);
+  /* REPAIRED 2026-08-28 (W2-2), against PRV-15. The shipped pattern was
+   *     /^##+\s*Abstract\s*$([\s\S]*?)(?=^##\s)/mi
+   * and it returned null on 73 of the 267 union files that carry an Abstract heading, for TWO
+   * independent reasons, both of them a regex asserting a document shape the corpus does not have:
+   *
+   *   HEADING SHAPE (18 files, tree-wide). `\s*$` after `Abstract` demands a BARE heading. Every
+   *   annotated one was skipped -- `## Abstract (transcribed from title page)`, `## Abstract
+   *   (transcribed)`, `## Abstract (as transcribed / paraphrased from the paper)`. All 18 carry the
+   *   word "transcribed" IN THE HEADING, which is exactly the population PRV-15 exists to measure.
+   *   The instrument was blind to its own target set and returned zero findings on it.
+   *
+   *   TERMINATOR (55 more files, and nobody had named this one). `(?=^##\s)` demands a FOLLOWING
+   *   `##` heading. In most summaries the Abstract is the LAST section, so there is nothing to look
+   *   ahead to and the match fails on a perfectly well-formed bare heading. Three times the size of
+   *   the defect I was sent to fix, same class, found by measuring instead of by reading the line.
+   *
+   * Measured on the 271-file union: 194 extracted before, 267 after. The 4 remaining files carry
+   * no Abstract heading at all and correctly return null. */
+  const m = md.match(/^##+[ \t]*Abstract\b[^\n]*$([\s\S]*?)(?=^##[ \t]|$(?![\s\S]))/mi);
   return m ? m[1].trim() : null;
 }
 

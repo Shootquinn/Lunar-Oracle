@@ -90,7 +90,8 @@ population:    the 176 [Q-MERGE-UNION-176] union keys of lsei/literature and
 operation:     cmd: node tools/merge_identity.js --plan lsei/literature _intake/japanese-miracle/lit
                cr_scratch/step2_engineer_taxonomy.md _intake/superseded-duplicates
                cr_scratch/merge_plan.tsv ; awk -F'\t' '$1==1' cr_scratch/merge_plan.tsv | wc -l
-conditions:    read-digest 3cb8cc59509e77c39cd87fb45c2905c5ea9ca7d0754a640ebd62ccc8517a85c1 over
+conditions:    cwd: repository root, 55 characters. Node 26.4.0. read-digest
+               3cb8cc59509e77c39cd87fb45c2905c5ea9ca7d0754a640ebd62ccc8517a85c1 over
                278 files read (271 corpus .md, 6 superseded, 1 taxonomy). This file is NOT in the
                declared file set the digest covers and does not count itself
 at:            2026-08-28; lsei 7f97983
@@ -106,26 +107,33 @@ superseded:    none
 
 ## 3. BLOCK 2 — 59 rows, and the churn figure
 
-**Churn = 5 / 59 = 8.47%.** Under the Manager's 15%. I did not tune to it and I say below exactly
-what it does and does not measure.
+**Churn = 21 / 59 = 35.59%.** OVER the Manager's 15%, and reported at the number it came out at.
+Five rows are Wave 1 partition corrections; sixteen are the pair members whose landing outcome the
+author's 2026-08-28 duplicate ruling changed. I did not tune to the threshold and I did not narrow
+the definition to get under it.
 
 ```quantity
 id:            Q-PLAN-CHURN
-class:         measured
-value:         8.47
-unit:          percent of block-2 rows carrying rev > 1, where a rev bump is a change to
-               disposition, primary_secondary or target_folder after first write
+class:         fixed
+value:         35.59
+unit:          percent, block-2 rows carrying rev > 1 over all block-2 rows, where a rev bump is a
+               change to disposition, byte_source, target_folder or landing outcome after first write
 population:    the 59 rows of cr_scratch/merge_plan.tsv where column 1 (block) equals 2
-operation:     cmd: awk -F'\t' '$1==2' cr_scratch/merge_plan.tsv | awk -F'\t' '$16>1' | wc -l
-               — 5, over 59 block-2 rows. First write is the partition this brief states as
-               premises P1 and P2; second write is the partition measured in section 1
-conditions:    read-digest 3cb8cc59509e77c39cd87fb45c2905c5ea9ca7d0754a640ebd62ccc8517a85c1 over
+operation:     cmd: awk -F'\t' '$1==2' cr_scratch/merge_plan.tsv | awk -F'\t' '$17>1' | wc -l
+               — 21, over 59 block-2 rows. Column 17 is rev; it was column 16 until the Wave 2
+               column split took the table from 17 columns to 18
+conditions:    cwd: repository root, 55 characters. Node 26.4.0. read-digest
+               3cb8cc59509e77c39cd87fb45c2905c5ea9ca7d0754a640ebd62ccc8517a85c1 over
                278 files. Same run as Q-PLAN-BLOCK1-117 and directly comparable to it
 at:            2026-08-28; lsei 7f97983
-predicate:     5 of 59 contested rows changed disposition or block between the brief's stated
-               partition and the measured one. The five are 473486main-iss-atcs-overview,
-               bea-depreciation-rates, ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-
-               update, barro-2004-economic-growth-textbook and falcon-heavy-wikipedia.
+predicate:     21 of 59 contested rows have been revised after first write. Five are the Wave 1
+               partition corrections: 473486main-iss-atcs-overview, bea-depreciation-rates,
+               ieee-2022-paper-sh-tcs-architecture-and-technical-challenges-update,
+               barro-2004-economic-growth-textbook, falcon-heavy-wikipedia. Sixteen are the pair
+               members, whose landing outcome changed when the author ruled on 2026-08-28 that one
+               member of a duplicate pair is picked and the secondary does not land. THE RISE FROM
+               8.47 IS A RULING LANDING, NOT INSTABILITY, and the definition was not narrowed to
+               keep the figure under the Manager's 15 percent.
 derived-from:  Q-PLAN-BLOCK1-117
 sampled:       n/a — total over the block
 superseded:    none

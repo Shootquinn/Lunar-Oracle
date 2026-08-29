@@ -51,6 +51,34 @@
 *.[tT][iI][fF]
 *.[tT][iI][fF][fF]
 
+# AMENDED AT 2.20 (The Systems Engineer). The ten classes above stopped at the WORD-PROCESSOR and
+# PRESENTATION members of the office family and admitted the SPREADSHEET ones, and .xlsx and .docx
+# ARE THE SAME CONTAINER FORMAT -- a zip of XML parts. A boundary that admits one and excludes the
+# other is arbitrary rather than principled, and an arbitrary boundary is one nobody can reason
+# about at the moment they are deciding whether their file is on the safe side of it.
+#
+# MEASURED FIRST, and the measurement moved the fix. The Wave 2 open reported that xls, xlsx, zip,
+# rar and 7z "all COMMIT". A 76-cell git check-ignore matrix says something narrower and more
+# useful: they commit at the REPOSITORY ROOT and under oracle/, tools/ and cr_scratch/, and they
+# are already ignored at every depth under /literature/**, /findings/** and /_intake/ by the
+# deny-by-default blocks below. So the hole is the WORKING TREE, not the corpus -- which is the
+# opposite of where a reader of that sentence would look, and it is the tree a merge staging step
+# actually writes into.
+#
+# WHAT IS NOT HERE, AND WHY, because the omission is the considered half. zip, rar, 7z, tar, gz
+# and tgz are NOT ignored. They are in tools/check_no_sources.js instead, on the .txt precedent
+# stated below: an archive has honest non-source uses, and IGNORING an extension with honest uses
+# hides the legitimate case SILENTLY, whereas BLOCKING it names the file and a person rules on it
+# in one line. CHK-13 sits on pre-commit and blocks, so an archive cannot be committed either way;
+# the difference is entirely whether the person finds out. It matters here more than usually:
+# 2.11 pulls roughly 224 MB in Wave 3 and the natural shape for that to arrive in is one zip.
+*.[xX][lL][sS]
+*.[xX][lL][sS][xX]
+*.[rR][tT][fF]
+*.[oO][dD][tT]
+*.[oO][dD][sS]
+*.[oO][dD][pP]
+
 # --- Working copies of upstream repositories ------------------------------------------
 # Cloned by the bootstrap in CLAUDE.md. Never committed, never vendored: the app in lsei/
 # is an authority on the model, and a copy of an authority drifts away from it silently

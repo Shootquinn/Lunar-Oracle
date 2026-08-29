@@ -36,6 +36,30 @@ Every one of these is closed. A value outside a set is a failure, not a variant.
 `consumed:<id>[,<id>...]` for `library` and `fixture` rows. Each token names an invoker *and* the
 event it fires on; that is why there is no separate `fires` column.
 
+**A trigger token may carry an invocation payload: `<trigger>:<argv>`.** Added at 2.20. The
+`token:payload` grammar is not new — `consumed:CHK-05` has been in this column since 1.13 — and
+reading every token that way costs a bare token nothing.
+
+*Why it was needed, and it was found by running rather than by reading.* `CHK-04` names
+`merge-gate` and `tools/ecr_verify.js` takes **two positional arguments**, a sidecar path and a
+corpus root. The first dispatch of the new merge-gate hook invoked it bare; `readFileSync(undefined)`
+threw an uncaught `TypeError` and node exited **1**, which the row above says a dispatcher must read
+as *a finding about the content*. **A dispatcher that accuses the corpus because an instrument was
+called wrongly is worse than one that does not run**: it sends a person to the wrong place with
+confidence. The mode-prefix convention below covers a *mode*; it cannot express *data*.
+
+Three places the argv could have come from, and two are rejected in writing so the rejection is
+checkable: a tenth column (a schema change to a promoted contract, during a freeze, for one row);
+a table inside the dispatcher keyed on row id (**the second-authority defect the shared engine
+exists to prevent**, and it is the convenient answer, which is why it is named); or the cell that
+already says how the row is reached. The third is taken.
+
+A row may name one trigger **twice, with two payloads**, and is then dispatched twice in order.
+That is how `CHK-04` covers both `REGISTER.*.tsv` sidecars without becoming two rows. The payload
+is split on spaces, so **a path containing a space cannot be expressed**; none exists in this
+repository and `oracle/NAMING.md` forbids one in the corpus. If one ever must be, that is a change
+to this clause and not a quiet escape convention in a dispatcher.
+
 **`on_failure`** — five.
 
 | Value | Meaning |
@@ -235,6 +259,8 @@ HK-3  IT ACTUALLY FIRED                                          (reports; does 
 
 **HK-1 proves a hook would fire. HK-3 proves one did.** Neither substitutes for the other.
 
+**HK-2's companion landed at 2.20 and it is `.gitattributes`, discharging `AM-57`.** That row asked for `tools/githooks/** text eol=lf` **before installing hooks**, and the ordering was not kept: the hooks went in at 2.14 and the attributes file at 2.20, so for one day both dispatchers were LF in the index only because `core.autocrlf` happened to be `true` on one machine. **No new assertion was added for it and that is deliberate.** HK-2 asks whether the trigger is committed rather than merely present; a CRLF shebang is the same question with a different byte, and the answer now lives in the tree where `git check-attr eol` can be asked it directly. A fourth HK row would be a second place to look for one property, during a freeze, for a rule git already enforces on checkout.
+
 ### 5.1 HK-1 may not be asserted from inside the thing it asserts
 
 `CHK-09` originally asserted CL-1 to CL-7 **and** HK-1 and HK-2, on
@@ -285,12 +311,45 @@ specificity is load-bearing: `CHK-01` asserts a whole-corpus property, and at ev
 that is twenty runs of a check whose input changed once. At the merge it is the point. Collapsing the
 two would move a check away from the moment it exists for in order to retire a word.
 
+**AMENDED AT 2.20: `merge-gate` now has a dispatcher AND an operator, and the two were being
+conflated.** `tools/githooks/merge-gate` is `CHK-38`. The 2.20 brief read "nothing installs a
+dispatcher" as "the trigger is unwired"; those are different failures with different fixes. *Who
+pulls the trigger* is unchanged and is still the agent executing 2.5 — the row above still says so.
+*What the trigger does* did not exist until today. An operator with no mechanism and a mechanism
+with no operator are both broken, and until 2.20 this trigger was the first.
+
+**Three facts about that dispatcher, each measured rather than assumed, because each was a surprise:**
+
+1. **`merge-gate` is not a native git event.** `git hook run merge-gate` exits 1 with `unknown hook
+   event 'merge-gate'`. The working invocation carries `--allow-unknown-hook-name`, and it is
+   written into the `T` row above rather than into a deliverable, because a dispatcher reachable
+   only by a flag nobody recorded is a dispatcher nobody runs.
+2. **One engine, two triggers.** `tools/githooks/dispatch.js` holds the membership test, the status
+   rule, the argv rule and the exit classification; `pre-commit` and `merge-gate` are thin. Two
+   copies of one rule about one file is the second-authority defect, and it drifts silently because
+   each copy is green against itself.
+3. **The reentrancy guard is now ONE marker across all triggers, and generalising it was forced by
+   this addition rather than deferred to a later one.** `CON-6` bounds the recursion `git hook run`
+   does not; a per-trigger marker bounds `pre-commit` inside `pre-commit` and leaves
+   `pre-commit → merge-gate → pre-commit` unbounded. The chain is printed on refusal, because a
+   guard that hides a recursion removes the symptom and leaves the row that caused it looking fine.
+
+**MERGE-GATE IS RED TODAY, AND THAT IS THE INSTRUMENT WORKING.** First execution, 2026-08-28:
+`CHK-01` exits 0 over an empty `literature/`; `CHK-04` reports **359 failures across the two
+sidecars — 134 `L4 leaf does not resolve` and 225 `B3/K2 key occurs in no member`.** The 134 are the
+corpus not being merged yet and clear when 2.5 lands. **The 225 do not**: they are register content,
+owed under `AM-78`/`AM-79`/`AM-80` (lunar) and `AM-93`…`AM-97` (econ), and they belong to two other
+seats. A blocking row that is red because the content is bad is the row doing its job, and the
+correct response is to discharge the amendments, not to soften the gate. This register does not
+carry a waiver flag and 2.20 deliberately did not add one: a gate with a bypass is a gate nobody
+runs in gate mode.
+
 ```
 # BEGIN TRIGGERS
 T	pre-commit	CHK-10	the committed dispatcher, reached through core.hooksPath, which BC-8 sets
 T	git	CHK-10,CHK-11	git itself, at its own events. The two trigger rows sit directly on it
 T	substep-gate	hand:the agent executing the sub-step, against the gameplan step table
-T	merge-gate	hand:the agent executing 2.5, the corpus merge. Kept rather than collapsed; see above
+T	merge-gate	CHK-38, the committed dispatcher, pulled by hand by the agent executing 2.5. INVOCATION: git hook run --allow-unknown-hook-name merge-gate -- the flag is NOT optional, measured on git 2.55.0.windows.1, which exits 1 with "unknown hook event" without it
 T	session-start	hand:the agent reading CLAUDE.md at session open. Section 9's unverified base case
 T	answer-loop	hand:the answering loop of oracle/answer_contract.md, from 3.x
 T	ci-linux	hand:NOBODY. No CI exists. CHK-12 row 10 is complete only on a case-sensitive filesystem, so this is a REAL GAP and not a naming question, and it was found by building this table rather than by reading the register
@@ -337,13 +396,13 @@ counts.
 
 ```
 # BEGIN CHECKS
-H	2	2026-08-28	37	21	14	2
+H	3	2026-08-28	38	22	14	2
 S	tools/**
 S	oracle/**/*.js
-C	CHK-01	tools/check_corpus_collisions.js	check	no two summaries under a corpus root tokenize to the same key set	pre-commit,merge-gate	block	E5; E13; gameplan A3 -- the retrieval layer cannot distinguish colliding names and silently returns one of them every time	live
+C	CHK-01	tools/check_corpus_collisions.js	check	no two files under a corpus root tokenize to the same extension-blind key set: a COLLISION when they share an extension, a NEAR-TWIN when they do not, with the declared literature/_pdf/ store exempted by path segment	pre-commit,merge-gate	block	E5; E13; gameplan A3 -- the retrieval layer cannot distinguish colliding names and silently returns one of them every time. WIDENED AT 2.20, no new row: the walk admitted .md ONLY, so three UN treaty full texts and 112 source PDFs sitting in the same directories as their own summaries were never walked and the check reported 146 summaries, 0 collisions. Key semantics for .md are byte-identical -- stripping one trailing extension and stripping .md are the same operation on a .md leaf -- so A1's meaning is untouched and the three known collisions still reproduce exactly	live
 C	CHK-02	tools/audit_abstract_overlap.js	harness	measures verbatim 10-gram overlap between a summary's Abstract and its paired PDF; classifies nothing	manual	report	Open Question 8. A shingle detector measures overlap, not passing-off; the difference is visible only by opening the file	live
 C	CHK-03	tools/check_register_rows.js	check	1.8 section 9 L2-L5, B1-B3, B6, B7 over a TSV path	manual	none	superseded by CHK-04, removed at 2.15; hard-codes an absolute corpus path containing the author's username and cannot run on any other install. UNWIRED from substep-gate at R-2 per the 1.5/1.13 review R2(b): a check that cannot fail must not sit on a gate for eleven sub-steps	retiring
-C	CHK-04	tools/ecr_verify.js	check	1.8 section 9 L2-L5 and B1-B7 over a TSV path or a deliverable's marked block, against a given corpus root	substep-gate,merge-gate	block	1.8 section 9. The only implementation of the schema assertions that exits non-zero; CHK-03 and CHK-05 consolidate into it at 2.15	live
+C	CHK-04	tools/ecr_verify.js	check	1.8 section 9 L2-L5 and B1-B7 over a TSV path or a deliverable's marked block, against a given corpus root	substep-gate,merge-gate:oracle/REGISTER.lunar.tsv literature,merge-gate:oracle/REGISTER.econ.tsv literature	block	1.8 section 9. The only implementation of the schema assertions that exits non-zero; CHK-03 and CHK-05 consolidate into it at 2.15. INVOCATION PAYLOAD ADDED AT 2.20, and it was found by RUNNING the new merge-gate dispatcher rather than by reading the row: this artifact takes two POSITIONAL arguments and the register had no way to say so, so a bare dispatch threw an uncaught TypeError out of readFileSync and exited 1, which a dispatcher reads as a FINDING ABOUT THE CONTENT. One row, two sidecars, two payloads; see section 3	live
 C	CHK-05	tools/ecr_keycheck.js	check	1.8 section 4.1 K1 and K2 over a JSON axis fixture	manual	none	superseded by CHK-04, removed at 2.15; K1 and K2 are CHK-04's B3 and this adds nothing CHK-04 lacks	retiring
 C	CHK-06	tools/ecr_probes.js	harness	reports per-axis IDF-weighted separation between probe_pos, probe_neg and every other axis's match_keys	manual	report	1.8 section 4.3. The labelled data 3.6 sets the firing threshold K against; K is deliberately unset until then	live
 C	CHK-07	tools/ecr_key_candidates.json	fixture	the ECR axis, member and candidate-key set CHK-05 reads	consumed:CHK-05	n/a	1.10's Q-ECR-KEYS measurement. Retires with CHK-05 at 2.15	live
@@ -377,6 +436,7 @@ C	CHK-34	tools/clusters.js	harness	author-year clustering under two stated rules
 C	CHK-35	tools/doicov.js	harness	DOI coverage over a pair of corpus roots under several stated definitions of what counts as a DOI, reporting the count under each rather than one number	manual	report	2.12, The Engineer. CL-1 was RED on it. The several-definitions form is the point: a single DOI-coverage number is a number whose definition is invisible	live
 C	CHK-36	tools/manifest.js	harness	reads oracle/MANIFEST.tsv and answers queries over its D rows; deliberately checks nothing, because CHK-27 does	manual	report	2.19(b), The Software Engineer; Step 1 final close item 20. CL-1 was RED on it. It does not validate, and that separation is its own header argument: an accessor that also validates is two contracts on one artifact	live
 C	CHK-37	tools/check_no_sources.js	check	--ignore-probe: the .gitignore published-source-carrier rules hold over a probe set the run prints, covering the eight PDF-2 paths, two case permutations and nine other carriers	pre-commit	block	corpus_suite.md CON-1, The Software Engineer, Wave 1. HIS ARGUMENT AND IT IS RIGHT: a measurement in a status cell decays and had already decayed once, PDF-2 naming four open paths when five were open. Same path as CHK-13 under section 3 one-artifact-several-modes, mode carried as a literal prefix. It prints its own probe set size because the failure it guards is not a probe that fails, it is a probe set that quietly shrinks until the survivors all pass	live
+C	CHK-38	tools/githooks/merge-gate	trigger	dispatches every job whose invoked_by names merge-gate, in row order, through the shared engine tools/githooks/dispatch.js; the first non-zero exit wins and is reported by row id	manual	block	2.20. CHK-01 and CHK-04 have named this trigger since 1.13 and NOTHING INSTALLED A DISPATCHER, so two blocking rows fired on nothing on the one day they matter -- 2.5, the merge. invoked_by is manual and not git: merge-gate is NOT a native git event, and git hook run refuses it without --allow-unknown-hook-name (measured, git 2.55.0.windows.1). Section 6's manual bar does not apply -- that bars a check that EXECUTES A STRING harvested from markdown from an AUTOMATIC trigger, and this is a dispatcher with a hand operator, which is the T row's ruling unchanged. Hooks are not cloned, so this is a committed script reached through core.hooksPath	live
 # END CHECKS
 ```
 

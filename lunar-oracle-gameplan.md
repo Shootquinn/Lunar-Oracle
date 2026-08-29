@@ -188,7 +188,7 @@ gameplan, per A.6.2.
 |---|------|-------------|--------|
 | 0 | Draft, review, and land the operating gameplan. Sub-steps 0.1 through 0.8 below. | The Manager (bookends), Wave 1 (five), register wave (two), Wave 2 (two) | **Complete.** Closed at the author's gate 2026-08-26 |
 | 1 | **Rulings, contracts, and the enforcement layer.** Nothing moves until these land. 15 sub-steps, 1.0 through 1.14. | The Systems Engineer, The Software Engineer, The Engineer, The Designer, The Fact-Checker, The Manager (both prompts) | **Complete and approved by the author at the gate, 2026-08-28.** Closed by The Manager 2026-08-27 after two refusals and a revision pass |
-| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. **20 sub-steps, 2.1 to 2.20** — the ratified 18, plus 2.19 and 2.20 added by The Manager at the open and approved by the author the same day. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer, The Software Engineer, The Designer, The Fact-Checker | **In progress.** Opened 2026-08-28. Six cycles; Cycle A running |
+| 2 | **Corpus identity, taxonomy, and the merge.** Objective 1. **20 sub-steps, 2.1 to 2.20** — the ratified 18, plus 2.19 and 2.20 added by The Manager at the open and approved by the author the same day. | The Engineer (owner), The Space Resources Engineer, The Manager (economics prompt), The Systems Engineer, The Software Engineer, The Designer, The Fact-Checker | **In progress.** Opened 2026-08-28. Three waves (the six-cycle plan was superseded at the rewave). Wave 1 closed at `ef7cc20`; **Wave 2 Phase 1 running, six seats.** |
 | 3 | **The app boundary and retrieval.** Objective 3. 10 sub-steps, 3.1 to 3.10. | The Space Resources Engineer, The Software Engineer, The Manager (economics prompt) | Not started |
 | 4 | **Invariants, the transfer gate, and going corpus-live.** 8 sub-steps, 4.1 to 4.8. | The Software Engineer, The Manager (economics prompt), The Space Resources Engineer | Not started |
 | 5 | **The register split, enforced.** Objective 4. 3 sub-steps, 5.1 to 5.3. | The Software Engineer | Not started |
@@ -413,6 +413,7 @@ only statement of which entry supersedes which.
 | 2 W1 | 2026-08-28 | **Wave 1 closed: seven seats in parallel, `ef7cc20`.** Every quantitative claim re-run by the orchestrator; **nothing refuted**, two counts routed back. **The finding: the check register was internally consistent, passed its own known-answer test, and had never been executed. First run returned exit 1 -- `CHK-14` had blocked every commit since 1.13.** Second: four instruments walked this repository within one minute and reported 100/71/17/89 files; no two agree, none is wrong. **Delivered `cr_scratch/merge_plan.tsv`**, 176 rows x 17 columns, verified to the row: **Block 1 is 117 files ready to merge**, Block 2 is 59 contested, churn **8.47%** against a pre-registered 15%. E1 closed. The enforcement layer ran on a real commit for the first time and declared its debts rather than reporting green. `QUANTITIES.md` regenerated at the boundary: 111 blocks, **17 to 15 hard failures** at digest `ac74373c4556b46c` over 101 files, **10 of 15 being one fork**. Open: `MRG-4` is a genuine contract collision, not an error. **`literature/` holds zero files.** |
 | 2 W2 open | 2026-08-28 | **The Manager closed Wave 1, ruled three times, and opened Wave 2. Accumulator entries written for all seven seats** (A.4 step 7, overdue since the wave). **He answered the author's question -- are we keeping our eye on the ball -- with No, not on this wave**, and diagnosed the cause as aggregate rather than anybody's: the enforcement layer has never been executed as a system and the project has been adding to it instead of running it. He would strike no individual addition. **Remedy: the instrument freeze, ratified by the author.** He applied it first to his own strongest proposal -- an assertion that every required deliverable exists, which would have caught `FIELDS.tsv` four sub-steps ago -- and declined to take it, on the ground that a freeze that spares its author's favourite item is decoration. **Rulings.** (1) `MRG-4`: the column splits into `byte_source` and `pair_primary` on the `CHK-13` precedent; neither seat was wrong and `pair_primary` reads `unadjudicated` on all 16 pair members because a merge gate cannot read a field that does not exist until 2.16. (2) The fork collapses at the wave open before any other write, executed by the seat that measured each half, predicted **15 to 5 to 2** with both survivors named in advance. (3) Standing clauses 8 and 9 rewritten; **the structural half he took himself -- arm 2a is discharged at the wave open or not at all**, so all eight Wave 2 prompts are written before any seat runs. **He corrected the orchestrator: 10 of the 15 failures are the fork, not 11** -- `Q-DEGRADED-MODES` is the `AM-132` theorem. Confirmed. **Wave 2 reshaped:** 2.17 and 2.18 out to Wave 3 (building half a tool a wave before its other half is the defect that justified collapsing six cycles into three); 2.7, 2.8, `FIELDS.tsv`, the suite runner and the merge-gate dispatcher in; The Designer deliberately not spawned. All 44 routed items carry a disposition with an owner and a wave. **An A.10 negative stands: `PRV-13` and `PRV-15` do not clear, so 173 of 175 tests are the contract**, and both repairs are Wave 2 close conditions. |
 | 2 compact | 2026-08-28 | **This file compacted at the author's direction**, 1,024 lines to 720 and 148,363 bytes to 82,877. Register status cells reduced to a verdict plus a pointer into the `cr_scratch/` deliverable holding the evidence; the progress log reordered chronologically and its three rows all labelled `1 gate` disambiguated; design notes and open questions squeezed to one paragraph each, with the author's directory-map table kept verbatim because it is the push policy; the 0.2 deliverable specifications collapsed to a pointer. **Nothing was deleted that does not survive in a `cr_scratch/` deliverable or in this file's git history.** An executive abstract was added at the head. Two stale pointers fixed: the Step 2 read-first still named the superseded six-cycle plan, and the header still carried the Step 0 disclaimer saying this file holds nothing after Step 0. |
+| 2 W2 | 2026-08-28 | **Wave 2 Phase 1 spawned, six seats concurrent**, prompts written to `cr_scratch/relay/spawn/` before any spawn (arm 2a). **The author ruled there is no intra-step gate** and that the step runs to completion, and delivered a standing critique of the project's proceduralism that is recorded above as a ruling in its own right; it was relayed into all six briefs ahead of clause 1. Seats: W2-1 the merge and the stage, W2-2 the suite runner and `MRG-4`, W2-3 the dispatcher and the repoint, W2-4 and W2-5 the two halves of the duplicate-id fork, W2-6 the currency patch table. |
 
 ## Design notes
 
@@ -507,6 +508,29 @@ Two consequences worth stating plainly, because they are the reason the map look
 *The corpus is pushed and the app is not.* These look inconsistent and are not. The corpus is this project's own writing, static, and the thing being built.
 
 **Provisional `CLAUDE.md`.** The `CLAUDE.md` currently in this repository is a session-recovery stub written at seed time. It is not the deliverable. The real one is drafted in a step the team defines at 0.2, and it is the file that carries the bootstrap contract and the first-run sequence.
+
+---
+
+## Author ruling, 2026-08-28 (mid-Step-2)
+
+**There is no intra-step gate.** A step runs to completion without stopping at wave boundaries for
+approval. The orchestrator does not hold at a wave close and ask; it closes the wave, opens the next,
+and reports at the step close. This overturns the orchestrator's reading of A.4, which had treated
+the wave boundary as a place to stop for the author's word.
+
+**And the standing critique that came with it, in the author's words:** *"stop with the
+committee-to-reinvent-the-wheel act. You guys are defining your own procedures more than you are
+doing anything. Pretty soon you'll be writing your own constitution. Keep your eye on the prize, I
+want my fucking oracle."*
+
+This is the same diagnosis The Manager reached independently at the Wave 1 close, arrived at from
+outside and stated harder. It converts the instrument freeze from a budget into a prohibition: an
+apparatus allowance is a ceiling to undershoot, not a target to spend. It extends the freeze to prose
+— a long memorandum about how the work would be done is apparatus too. And it names the deliverable
+plainly, which is worth writing down because the project has repeatedly optimized the enforcement
+layer over the thing enforced: **the prize is a corpus in `literature/` the Oracle can answer from,
+and after that an Oracle that answers.** It was relayed verbatim in substance into all six Wave 2
+Phase 1 briefs, ahead of clause 1.
 
 ---
 

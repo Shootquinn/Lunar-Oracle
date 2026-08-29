@@ -62,6 +62,21 @@ const { execFileSync } = require('child_process');
 const CARRIER_EXT = new Set([
   'pdf', 'djvu', 'epub', 'doc', 'docx', 'ppt', 'pptx', 'ps', 'tif', 'tiff',
 
+  /* ADDED AT 2.20, and they ARE in .gitignore: the ten above stopped at the word-processor and
+   * presentation members of the office family and admitted the spreadsheet ones. .xlsx and .docx
+   * are the same container format. A boundary that admits one and excludes the other is
+   * arbitrary rather than principled. */
+  'xls', 'xlsx', 'rtf', 'odt', 'ods', 'odp',
+
+  /* ARCHIVES. ADDED AT 2.20, and DELIBERATELY NOT IN .gitignore, on exactly the .txt reasoning
+   * stated below -- an archive has honest non-source uses and the loud instrument is the right
+   * one for those. Two things make them worse than an ordinary admitted type rather than better:
+   * an archive defeats BOTH other gates at once (the magic-byte gate sees PK, not %PDF,
+   * and every extension inside is hidden from the name gate), and 2.11 pulls roughly 224 MB in
+   * Wave 3, whose natural shape is one zip. This gate sees the CONTAINER; nothing here opens it,
+   * and claiming otherwise would be the more dangerous error. */
+  'zip', 'rar', '7z', 'tar', 'gz', 'tgz',
+
   /* .txt is IN THE CHECK AND DELIBERATELY NOT IN .gitignore, and the asymmetry is the point.
    * The three UN treaty full texts (18,378 / 23,794 / 27,097 bytes) are source material: they
    * sit under every size threshold and carry no magic bytes, so only an extension rule reaches
@@ -164,7 +179,16 @@ const PROBE_PATHS = [
   'literature/x.pdf', 'literature/isru/x.pdf', '_intake/x.pdf',
 ];
 const PROBE_CASES = ['x.PDF', 'x.Pdf'];
-const PROBE_CARRIERS = ['x.djvu', 'x.epub', 'x.docx', 'x.doc', 'x.pptx', 'x.ppt', 'x.ps', 'x.tif', 'x.tiff'];
+/* PROBE_CARRIERS asserts IGNORED, so it holds the .gitignore half only. The archive
+ * extensions in CARRIER_EXT are deliberately absent from it: they are blocked by the extension
+ * gate and NOT ignored, and probing them here would assert the opposite of the ruling. That
+ * asymmetry is the same one .txt has carried since 2.14; it is now three lines wide instead of
+ * one, which is why the two halves are named separately below rather than left to be inferred. */
+const PROBE_CARRIERS = ['x.djvu', 'x.epub', 'x.docx', 'x.doc', 'x.pptx', 'x.ppt', 'x.ps', 'x.tif', 'x.tiff',
+                        'x.xls', 'x.xlsx', 'x.rtf', 'x.odt', 'x.ods', 'x.odp'];
+/* BLOCKED BUT NOT IGNORED. Named as a literal so a reader can see the boundary rather than derive
+ * it by differencing two lists, and so that moving one across is a visible edit. */
+const BLOCK_NOT_IGNORE = ['txt', 'zip', 'rar', '7z', 'tar', 'gz', 'tgz'];
 
 function isIgnored(root, rel) {
   const r = require('child_process').spawnSync('git', ['check-ignore', '-q', '--', rel], { cwd: root });
@@ -186,6 +210,8 @@ function ignoreProbe(root) {
       if (!isIgnored(root, rel)) { open++; console.error('CHK-37 OPEN ' + rel + ' -- commits cleanly; the repository-wide rule does not reach it'); }
     }
   }
+  console.log('CHK-37 blocked-but-not-ignored, by ruling: ' + BLOCK_NOT_IGNORE.map(function(e){return '.'+e;}).join(' ') +
+              ' -- these are EXTENSION-gate findings, not ignore rules, and a probe asserting them ignored would be wrong');
   console.log('CHK-37 probe set size=' + total + ' open=' + open +
               ' (a SHRINKING probe set is the failure this reports its own size to prevent)');
   if (open) {
