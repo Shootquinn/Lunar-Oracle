@@ -114,13 +114,11 @@ refusal that had not happened yet, and an earlier draft of this file defended it
 sequence existed for. A refusal that arrives with its consequence attached does not need to be
 apologised for in advance.
 
-**One thing of value left with the prose and is owed a new home.** The two refusals mean opposite
-things — *nobody has measured this* sends the reader to another source, and *the project does not
-speak to it* means there is no other source to try — and a reader who cannot tell them apart learns
-nothing from either. No haiku can carry that distinction: it is a claim about the system's behaviour,
-and beat 2 is biography rather than mechanism. **It belongs at the point of first refusal, in the
-refusal itself, and it is not written there yet.** Recorded here rather than restored to a greeting
-where it was preemptive.
+**The refusal framing went with them and is not owed anywhere.** An earlier draft of this file
+carried the two refusals into the greeting and a later one recorded them as owed a new home. Both
+were the system explaining in advance why it might not answer, which is the same move the three cut
+sentences were, one level up. Author ruling 2026-09-01: it is not carried forward, not relocated, and
+not restored.
 
 ## 4. When the bootstrap did not fully succeed
 

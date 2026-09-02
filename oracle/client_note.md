@@ -21,14 +21,21 @@ five-section file, and it is the only object a client ever sees.
 | The annex | `deliverable_shape.md` | The note's writer, and a reviewer auditing the note | No | The loop, unsigned |
 | The client note | this document | The client | **Yes** | A named person |
 
+**The contract is prep, not command.** `answer_contract.md` and `deliverable_shape.md` govern the
+annex and stop there. They are a first pass that sorts the corpus and records what it found; they do
+not instruct the seats that write the note, and a verdict they return — `REFUSE` included — is
+evidence the note's author weighs rather than an order the note's author obeys. Author ruling
+2026-09-01.
+
 The five-section file is renamed in role from *the deliverable* to *the annex*. Nothing in its
 specification changes. It stays complete, contract-governed, non-adjudicating, and full of falsifiers.
 It stops being the thing that gets sent.
 
-The annex may not adjudicate because it is unsigned machine output and `answer_contract.md` §1
-forbids it. The note may adjudicate because a person's name is on it and that person is accountable
-for the reasoning. This is the whole of why the two objects can differ in their conclusions'
-strength while resting on the same evidence.
+The annex does not adjudicate because it is unsigned machine output and its own rules keep it
+neutral. The note adjudicates because a person's name is on it and that person is accountable for the
+reasoning. This is the whole of why the two objects can differ in their conclusions' strength while
+resting on the same evidence, and why a neutral annex is not a ceiling on what the note may
+conclude.
 
 ## 2. What the note is
 

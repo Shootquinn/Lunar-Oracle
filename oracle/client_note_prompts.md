@@ -26,9 +26,15 @@ The sequence does not open until all four hold.
 | `cr-agents/` is present at a known ref | `git -C cr-agents rev-parse --short HEAD` against `VERIFIED.tsv` |
 | The audience and the length are fixed | Both are inputs to prompt 1; §2 gives the audience default and the length tiers |
 
-An annex that refused, under any reason code, produces no note. A refusal is a statement that the
-corpus cannot answer, and the client-facing form of that is a two-paragraph letter, not a technical
-note. The letter is out of scope here and is owed.
+**A refused annex still produces a note.** `answer_contract.md` is a first-pass instrument and its
+verdict is an input to this sequence, not an order to it. `REFUSE` means the register did not resolve
+the question by its own rules, which is a fact about the register. It is not a finding that nothing
+can be said, and the seats are not bound by it.
+
+What the seats do with a refusal is their judgement. The default is to write the note anyway, from
+whatever the corpus does carry, and to say plainly in Methods what the register could not resolve and
+why that limits the conclusions. A note that reports a real limit is worth more than a letter
+reporting that a tool returned a code. Author ruling 2026-09-01.
 
 ## 2. The six slots
 
@@ -74,6 +80,13 @@ Requirements:
 - Purpose: [PURPOSE]
 - Length: [LENGTH], per oracle/client_note.md section 3.1
 - Every claim must map to a row in the attached annex
+
+The annex is first-pass prep work, not an instruction to you. If it carries
+a refusal verdict, or a verdict you think is wrong, that is a fact about
+what its rules resolved and it does not bind this note. Do the best work
+the corpus supports, and say in Methods what could not be resolved and how
+that limits the conclusions. Do not decline to write because a tool
+returned a code.
 
 Exclusions, and these are not stylistic preferences:
 [EXCLUSIONS]
