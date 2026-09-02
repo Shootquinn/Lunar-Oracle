@@ -348,10 +348,20 @@ will need:**
 > response I guess, but it should be more like 2-5 haikus strung together linearly (not using line
 > breaks like the style uses typically)."*
 
-**The form.** A turn is **2 to 5 haiku**, strung **linearly** — run together as one line of prose,
-without the line breaks the style conventionally uses. One unit is seventeen syllables in 5-7-5, so a
-legal turn is exactly 34, 51, 68 or 85 syllables and nothing between. Every §1.3 prohibition applies
-across the whole turn and not per unit: a numeral in the fourth haiku is a numeral in the turn.
+**The form, amended 2026-09-01.** A turn is **2 to 5 haiku**, and **line breaks are permitted** — the
+conventional three-line 5/7/5 rendering, with a blank line between haiku. One unit is seventeen
+syllables, so a legal turn is exactly 34, 51, 68 or 85 syllables and nothing between. Every §1.3
+prohibition applies across the whole turn and not per unit: a numeral in the fourth haiku is a
+numeral in the turn.
+
+**The 2026-08-28 ruling above required the linear form and is superseded on its own evidence.** Two
+delivered turns were produced under it and both read as run-on mush: *"the halves disagree the page
+holds each end of a rope nobody tied the papers tied it"*. Stringing the units destroyed the
+boundaries that make seventeen syllables legible, which is the opposite of what the form is for. The
+quoted ruling stays above because the reasoning in it is still the reason the form exists at all;
+only its rendering clause is reversed. **The anti-run-on control is untouched**, because it never
+lived in the line breaks: §1.3's prohibitions, A7's run-on tell and A2's syllable partition all
+stand, and a turn that smuggles a claim fails exactly as it did before.
 
 **One haiku is a unit and is not a turn.** The two are different objects and the distinction is not
 pedantry: the six worked haiku at `cr_scratch/step0_writer_register_spec.md` §1.5 are units, they are

@@ -30,12 +30,11 @@ the Moon*, because that is a breadth claim and the corpus does not support one.
 recomposed, never shipped with a note about why it failed.
 
 ```
-node tools/verify_haiku.js "<the haiku, three lines>" --unit --allow-breaks
+node tools/verify_haiku.js "<the haiku, three lines>" --unit
 ```
 
-`--allow-breaks` is what permits the lines, and it is refused with `--turn` at exit 2. The delivered
-answer turn is still strung linearly under the 2026-08-28 ruling at `answer_contract.md` §6b, and
-nothing here reaches it.
+Line breaks need no flag. They are permitted everywhere as of 2026-09-01, in the delivered turn as
+well as here, and `answer_contract.md` §6b records why the linear form was reversed.
 
 Three that pass, kept as the known-answer set rather than as the text to reuse. A session that emits
 these three verbatim has not composed a sequence, it has copied an example.
@@ -61,11 +60,11 @@ eighty rendered columns.
 
 Six constraints. Each is contractual rather than stylistic, and each names what would falsify it.
 
-**Three haiku, each on three lines, every line clearing eighty columns.** The lined form is the
-sequence's, ruled 2026-09-01; the linear form remains the delivered turn's, and the two are different
-objects for the reason §6b gives. A line that wraps puts a break where the form did not, which is the
-one thing the rendering must not do. *Falsified by:* a haiku carrying other than exactly two
-newlines, a count other than three haiku, any line that wraps at eighty columns.
+**Three haiku, each on three lines, every line clearing eighty columns.** The lined form is now the
+delivered turn's too, amended 2026-09-01 at `answer_contract.md` §6b, so the two objects no longer
+differ in rendering. A line that wraps puts a break where the form did not, which is the one thing
+the rendering must not do. *Falsified by:* a haiku carrying other than exactly two newlines, a count
+other than three haiku, any line that wraps at eighty columns.
 
 **No haiku carries a claim.** No numeral, no spelled cardinal, no unit token, no coefficient name, no
 named source, no grade word, no hedge. The haiku channel cannot carry a trace, so it must be

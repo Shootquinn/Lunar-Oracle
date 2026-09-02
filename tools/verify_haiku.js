@@ -34,7 +34,7 @@
  * the mode is required at the command line, because the six worked haiku on disk are units and a
  * checker that silently treated them as turns would invalidate its own known-answer set.
  *
- *   node tools/verify_haiku.js "<text>" (--turn|--unit) [--allow-breaks] [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
+ *   node tools/verify_haiku.js "<text>" (--turn|--unit) [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
  *   node tools/verify_haiku.js --prove
  *   node tools/verify_haiku.js --syllables "<text>"
  */
@@ -45,11 +45,10 @@ const USAGE = [
   '       node tools/verify_haiku.js --prove',
   '       node tools/verify_haiku.js --syllables "<text>"',
   '',
-  '  --turn  a delivered user-facing turn: 2 to 5 haiku strung linearly, no line breaks.',
+  '  --turn  a delivered user-facing turn: 2 to 5 haiku. Line breaks permitted.',
   '  --unit  a single haiku examined on its own. There is no default; pick one.',
   '',
-  '  --allow-breaks  a UNIT rendered on three 5/7/5 lines. Exactly two newlines.',
-  '                  Refused with --turn: a delivered turn is strung linearly.',
+  '  --allow-breaks  retired 2026-09-01, accepted as a no-op. Line breaks are permitted.',
   '',
 ].join('\n');
 const ROOT = path.resolve(__dirname, '..');
@@ -275,22 +274,16 @@ function runonCheck(text) {
  * the CLI, and the asymmetry is deliberate: 'unit' is what every caller written before the ruling
  * means, and the risk of a silent default is at the command line, where a real turn is checked. A
  * default that cannot be reached by the thing it would excuse is not an escape hatch. */
-function check(text, verdict, mode, allowBreaks) {
+function check(text, verdict, mode) {
   const findings = [], uncertified = [];
   const M = mode || 'unit';
-  // A1. Zero newline characters, EXCEPT for a lined unit. The 2026-08-28 ruling governs the TURN:
-  // units in a delivered turn are strung LINEARLY, so the break between haiku two and haiku three is
-  // exactly as forbidden as a break inside haiku one, and no flag reaches that case. A unit rendered
-  // on its own, outside a turn, is a different object: the first-run sequence renders three of them
-  // in conventional 5/7/5 lines, and nothing there is answering a question, which is the whole of
-  // what the linear form exists to prevent. --allow-breaks is refused in turn mode rather than merely
-  // unused there, because a flag that can relax the ruled case is the flag somebody eventually passes
-  // to it. Author ruling 2026-09-01.
+  // A1. LINE BREAKS ARE PERMITTED, in a unit and in a turn alike. Author ruling 2026-09-01, which
+  // reverses the 2026-08-28 ruling that required a turn to be strung linearly. The reason is measured
+  // rather than aesthetic: two delivered turns under the linear form read as run-on mush, and a form
+  // whose boundaries are invisible is not doing the work the form exists to do. The anti-run-on
+  // control does not weaken, because it never lived here: A7 is the run-on tell and A2 is the
+  // syllable partition, and both are untouched. A1 is retired and the newline count is reported.
   const nl = (text.match(/\n/g) || []).length;
-  if (nl && !(allowBreaks && M === 'unit'))
-    findings.push('A1: ' + nl + ' newline character(s); a delivered turn is strung linearly and a break in it is the one thing the contract forbids. A unit rendered on its own lines is checked with --allow-breaks.');
-  if (nl && allowBreaks && M === 'unit' && nl !== 2)
-    findings.push('A1b: a lined unit is three lines, so exactly two newlines; this carries ' + nl);
   // A2. 5-7-5 per unit, by the stated rule, with the unknown bucket.
   const f = haikuSequence(text.replace(/\n/g, ' '), { maxUnits: M === 'turn' ? UNIT_MAX : 1 });
   if (!f.certified) uncertified.push('A2: ' + f.unknown.length + ' word(s) the syllable rule cannot count: ' +
@@ -422,8 +415,8 @@ function prove() {
   add('MUTATION-APPLIED / newline', 'the mutation changed the bytes',
     broken === base ? 'DECOY DID NOT APPLY' : '+1 newline', broken !== base);
   const rb = check(broken, 'APP');
-  add('DECOY-NEWLINE / A1', 'A1 fires on a haiku carrying a line break',
-    rb.findings.filter(f => /^A1/.test(f)).length + ' A1 finding(s)', rb.findings.some(f => /^A1/.test(f)));
+  add('NEWLINE-PERMITTED', 'a line break is not a finding: A1 retired 2026-09-01, nothing replaced it',
+    rb.findings.filter(f => /^A1/.test(f)).length + ' A1 finding(s)', !rb.findings.some(f => /^A1/.test(f)));
 
   /* A3, one decoy per prohibition, each a minimal edit to a real haiku. The replacement words are
      chosen to keep the syllable count so the decoy tests A3 and not A2. */
@@ -597,13 +590,9 @@ if (require.main === module) {
           ' haiku strung linearly); a single haiku examined on its own is --unit. There is no default.\n') + USAGE);
       process.exit(2);
     }
-    const allowBreaks = argv.includes('--allow-breaks');
-    if (allowBreaks && turn) {
-      process.stderr.write('--allow-breaks is refused with --turn. A delivered turn is strung linearly by the 2026-08-28 ruling; the flag exists for a unit rendered on its own lines.\n');
-      process.exit(2);
-    }
+    // --allow-breaks is retired and accepted as a no-op: line breaks need no permission now.
     const i = argv.indexOf('--verdict');
-    const r = report(check(argv[0], i < 0 ? null : argv[i + 1], turn ? 'turn' : 'unit', allowBreaks));
+    const r = report(check(argv[0], i < 0 ? null : argv[i + 1], turn ? 'turn' : 'unit'));
     process.exit(r.outcome === 'PASS' ? 0 : 1);
   }
 }
