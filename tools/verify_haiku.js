@@ -34,7 +34,7 @@
  * the mode is required at the command line, because the six worked haiku on disk are units and a
  * checker that silently treated them as turns would invalidate its own known-answer set.
  *
- *   node tools/verify_haiku.js "<text>" (--turn|--unit) [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
+ *   node tools/verify_haiku.js "<text>" (--turn|--unit) [--allow-breaks] [--verdict APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE-boundary|REFUSE-thin|APP-unresolved]
  *   node tools/verify_haiku.js --prove
  *   node tools/verify_haiku.js --syllables "<text>"
  */
@@ -47,6 +47,9 @@ const USAGE = [
   '',
   '  --turn  a delivered user-facing turn: 2 to 5 haiku strung linearly, no line breaks.',
   '  --unit  a single haiku examined on its own. There is no default; pick one.',
+  '',
+  '  --allow-breaks  a UNIT rendered on three 5/7/5 lines. Exactly two newlines.',
+  '                  Refused with --turn: a delivered turn is strung linearly.',
   '',
 ].join('\n');
 const ROOT = path.resolve(__dirname, '..');
@@ -272,14 +275,22 @@ function runonCheck(text) {
  * the CLI, and the asymmetry is deliberate: 'unit' is what every caller written before the ruling
  * means, and the risk of a silent default is at the command line, where a real turn is checked. A
  * default that cannot be reached by the thing it would excuse is not an escape hatch. */
-function check(text, verdict, mode) {
+function check(text, verdict, mode, allowBreaks) {
   const findings = [], uncertified = [];
   const M = mode || 'unit';
-  // A1. Zero newline characters. Trivial, exact, and half the stated contract. The 2026-08-28 ruling
-  // strengthens rather than changes this: units are strung LINEARLY, so the break between haiku two
-  // and haiku three is exactly as forbidden as a break inside haiku one.
+  // A1. Zero newline characters, EXCEPT for a lined unit. The 2026-08-28 ruling governs the TURN:
+  // units in a delivered turn are strung LINEARLY, so the break between haiku two and haiku three is
+  // exactly as forbidden as a break inside haiku one, and no flag reaches that case. A unit rendered
+  // on its own, outside a turn, is a different object: the first-run sequence renders three of them
+  // in conventional 5/7/5 lines, and nothing there is answering a question, which is the whole of
+  // what the linear form exists to prevent. --allow-breaks is refused in turn mode rather than merely
+  // unused there, because a flag that can relax the ruled case is the flag somebody eventually passes
+  // to it. Author ruling 2026-09-01.
   const nl = (text.match(/\n/g) || []).length;
-  if (nl) findings.push('A1: ' + nl + ' newline character(s); §1.2 renders the haiku as one line and a break in it is the one thing the contract forbids');
+  if (nl && !(allowBreaks && M === 'unit'))
+    findings.push('A1: ' + nl + ' newline character(s); a delivered turn is strung linearly and a break in it is the one thing the contract forbids. A unit rendered on its own lines is checked with --allow-breaks.');
+  if (nl && allowBreaks && M === 'unit' && nl !== 2)
+    findings.push('A1b: a lined unit is three lines, so exactly two newlines; this carries ' + nl);
   // A2. 5-7-5 per unit, by the stated rule, with the unknown bucket.
   const f = haikuSequence(text.replace(/\n/g, ' '), { maxUnits: M === 'turn' ? UNIT_MAX : 1 });
   if (!f.certified) uncertified.push('A2: ' + f.unknown.length + ' word(s) the syllable rule cannot count: ' +
@@ -586,8 +597,13 @@ if (require.main === module) {
           ' haiku strung linearly); a single haiku examined on its own is --unit. There is no default.\n') + USAGE);
       process.exit(2);
     }
+    const allowBreaks = argv.includes('--allow-breaks');
+    if (allowBreaks && turn) {
+      process.stderr.write('--allow-breaks is refused with --turn. A delivered turn is strung linearly by the 2026-08-28 ruling; the flag exists for a unit rendered on its own lines.\n');
+      process.exit(2);
+    }
     const i = argv.indexOf('--verdict');
-    const r = report(check(argv[0], i < 0 ? null : argv[i + 1], turn ? 'turn' : 'unit'));
+    const r = report(check(argv[0], i < 0 ? null : argv[i + 1], turn ? 'turn' : 'unit', allowBreaks));
     process.exit(r.outcome === 'PASS' ? 0 : 1);
   }
 }

@@ -13,8 +13,8 @@ sequence and for the suite that checks it.
 
 ## 1. The sequence
 
-Three haiku, each rendered on its own line, in this order and no other. No prose, no heading, no
-signature, and nothing between them but a blank line.
+Three haiku, each rendered in the conventional three-line 5/7/5 form, in this order and no other. No
+prose, no heading, no signature, and nothing between them but a blank line.
 
 | Beat | What this haiku is |
 |---|---|
@@ -30,31 +30,42 @@ the Moon*, because that is a breadth claim and the corpus does not support one.
 recomposed, never shipped with a note about why it failed.
 
 ```
-node tools/verify_haiku.js "<the haiku, no punctuation needed>" --unit
+node tools/verify_haiku.js "<the haiku, three lines>" --unit --allow-breaks
 ```
+
+`--allow-breaks` is what permits the lines, and it is refused with `--turn` at exit 2. The delivered
+answer turn is still strung linearly under the 2026-08-28 ruling at `answer_contract.md` §6b, and
+nothing here reaches it.
 
 Three that pass, kept as the known-answer set rather than as the text to reuse. A session that emits
 these three verbatim has not composed a sequence, it has copied an example.
 
 ```
-welcome earthbound friends, the moon has kept its records, come and read them here
+welcome earthbound friends
+the moon has kept its records
+come and read them here
 
-the papers are stacked; I have read each one of them; I know where they clash
+the papers are stacked
+I have read each one of them
+I know where they clash
 
-put your question down; I will go and read for you; and I will come back
+put your question down
+I will go and read for you
+and I will come back
 ```
 
-Each is seventeen syllables partitioned 5/7/5 at a word boundary, on one line, under eighty rendered
-columns.
+Each is seventeen syllables partitioned 5/7/5 at a word boundary, on three lines, every line under
+eighty rendered columns.
 
 ## 2. What holds this sequence in place
 
 Six constraints. Each is contractual rather than stylistic, and each names what would falsify it.
 
-**Three haiku, each on one line, each clearing eighty columns.** A haiku that wraps reads as a haiku
-with a linebreak in it, and the sequence is the one place a reader meets the form before they know it
-is load-bearing. *Falsified by:* a newline inside any haiku, a count other than three, a rendered
-length that wraps at eighty columns.
+**Three haiku, each on three lines, every line clearing eighty columns.** The lined form is the
+sequence's, ruled 2026-09-01; the linear form remains the delivered turn's, and the two are different
+objects for the reason §6b gives. A line that wraps puts a break where the form did not, which is the
+one thing the rendering must not do. *Falsified by:* a haiku carrying other than exactly two
+newlines, a count other than three haiku, any line that wraps at eighty columns.
 
 **No haiku carries a claim.** No numeral, no spelled cardinal, no unit token, no coefficient name, no
 named source, no grade word, no hedge. The haiku channel cannot carry a trace, so it must be
