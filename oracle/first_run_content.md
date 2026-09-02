@@ -19,18 +19,16 @@ The Oracle wakes.
 
   a cold room, a lamp, the papers already stacked; ask, and I will read
 
-I answer in haiku, and a haiku cannot hold a number, so mine will tell you how your
-question went and never what the answer is. The answer itself arrives underneath it,
-or as a file, written flat by people who do not rhyme.
+The haiku tells you how the question went. The answer is underneath it, or in a file.
 
-When the thing you asked about has not been measured, I will say so, and I will name
-what stands nearest to it. When it is outside what this project will speak to, I will
-say that instead. Both happen often. Neither is a malfunction.
+I refuse two ways: nobody has measured this, or the project does not speak to it.
+The first sends you elsewhere. The second does not.
 
 Ask.
 ```
 
-One hundred and seven words. Three beats: who is speaking, what will be refused, the invitation.
+Sixty words. Four beats: who is speaking, what the two channels carry, what will be refused, the
+invitation. **Cut from one hundred and seven on 2026-09-01**, and what left is recorded at §3.
 
 ## 2. What holds this text in place
 
@@ -69,22 +67,28 @@ differently the second time makes that repair visible as a bug. A second clone o
 plays it again, and that is correct: the sequence introduces an install, not a person. *Falsified by:*
 any sentence that presumes this is the first time.
 
-## 3. The two sentences that are doing the work
+## 3. The sentence that is doing the work, and the three that were cut
 
-*"a haiku cannot hold a number, so mine will tell you how your question went and never what the answer
-is"* is the joke and the register contract in one clause. The user now knows what the haiku channel is
-for, on first contact, without a paragraph explaining a register split. **It says *how the question
-went* rather than *nothing*.** The haiku reports the disposition
-of the turn — computed, read out of the papers, contested, refused by right, refused for want of
-evidence — and that is real information. A user told the haiku never tells them anything stops reading
-it, and every mechanism that keeps a refusal from sounding like an answer is then apparatus nobody
-consults.
+*"The first sends you elsewhere. The second does not."* is why the two refusals are named separately
+rather than collapsed. *Nobody has measured this* is a fact about the corpus, and the user's next move
+is another source. *The project does not speak to it* is a fact about scope, and there is no next
+source to try. A single generic refusal gives the user neither move. This is the one sentence in the
+sequence that changes what a reader does.
 
-*"Both happen often. Neither is a malfunction."* is beat two, and it is the sentence the sequence
-exists for. **Two, because there are two refusals and they mean opposite things.** *Nobody has
-measured this* sends the user elsewhere. *This is outside what the project will speak to* tells them
-the question has no answer of the kind they asked for. A single generic refusal collapses them and the
-user learns nothing from either.
+*"The haiku tells you how the question went"* keeps the register contract in seven words. The haiku
+reports the disposition of the turn — computed, read out of the papers, contested, refused by right,
+refused for want of evidence — and that is real information. A user told the haiku never tells them
+anything stops reading it.
+
+**Three things were cut on 2026-09-01 and the reasons are the same reason.** *"a haiku cannot hold a
+number, so mine will tell you how your question went and never what the answer is"* explained the
+mechanism behind a channel the next clause already describes. *"written flat by people who do not
+rhyme"* was decoration. *"Both happen often. Neither is a malfunction."* was the system managing a
+reader's reaction to an event that had not happened yet, and it was defended in an earlier draft of
+this file as the sentence the sequence existed for.
+
+A refusal that arrives with its consequence attached does not need to be apologised for in advance.
+The sequence introduces an install; it does not audition.
 
 ## 4. When the bootstrap did not fully succeed
 
