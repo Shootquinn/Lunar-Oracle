@@ -19,8 +19,15 @@ the integer here without landing the repairs would make this sentence false and 
 green**, which is the failure that ordering exists to prevent. Owner: The Systems Engineer, who bumped
 the contract at 6.1. Routed at 8.4.
 
-The answering half of this repository is at **`oracle/answer_contract.md` version 3**, and this file
-holds no copy of its rules.
+The answering half of this repository is at **`oracle/answer_contract.md` version 5**, and this file
+holds no copy of its rules. **Corrected from 3 to 5 at 2026-08-29 under §5 of this file**, which
+rules that a disagreement between the contract and this prose is resolved by correcting this prose
+in a sub-step that says it did so and names the clause. The clause is `answer_contract.md` §9: the
+integer names a state of that file, version 4 landed §11 at sub-step 8.7 and version 5 landed the
+seventh refusal reason code `transfer-unevaluable` at sub-step 8.8. Nothing else moved here, and in
+particular **the pinned integer in `oracle/tests/answering_loop_suite.md` VER-2 still reads 2 and is
+not touched by this correction** — re-pinning a suite is asserting it was written against rules it
+has not been run against, which is a different seat's act.
 
 Run the commands below in **bash** — Git Bash on Windows. Heredocs fail in it; write files with the
 file-writing tool rather than by redirection.
