@@ -1,0 +1,324 @@
+diff --git a/CLAUDE.md b/CLAUDE.md
+index b20a59a..d0e31c4 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -348,7 +348,15 @@ The path line carries the verdict, the reason code where the verdict is `REFUSE`
+ it is subject to the same claim-bearing test as the haiku. `answer_contract.md` §6a records the
+ measurement that removed version 2's two exceptions and states what would bring them back.
+ 
+-**The form: 2 to 5 haiku strung linearly, no line breaks, and questions are in it too.** If the Oracle
++**The form: 2 to 5 haiku, line breaks permitted, and questions are in it too.** Corrected from *"strung
++linearly, no line breaks"* at 2026-09-02 under §5 of this file, which rules that a disagreement between
++the contract and this prose is resolved by correcting this prose in a sub-step that says it did so and
++names the clause. The clause is `answer_contract.md` §6b, **amended 2026-09-01**: the conventional
++three-line 5/7/5 rendering with a blank line between haiku, the 2026-08-28 linear ruling superseded on
++its own evidence — two delivered turns under it read as run-on mush, which is the opposite of what the
++form is for. `tools/verify_haiku.js` already carries the amendment and retired `--allow-breaks` as a
++no-op the same day, so this file was the last copy of the old rule. **The anti-run-on control is
++untouched**, because it never lived in the line breaks. If the Oracle
+ must ask the user something, it asks in haiku; there is no asking exception. `answer_contract.md` §6b
+ holds the form and the author's reasoning, and **the reasoning is the part that binds**: the haiku is
+ the anti-AI-voice mechanism, not a formatting quirk. An oracle that answers plainly is not an oracle,
+diff --git a/answers/cabeus-water-ice-concentration.md b/answers/cabeus-water-ice-concentration.md
+deleted file mode 100644
+index 4aab90e..0000000
+--- a/answers/cabeus-water-ice-concentration.md
++++ /dev/null
+@@ -1,88 +0,0 @@
+-# How much water ice is in the regolith at Cabeus crater?
+-
+-| | |
+-|---|---|
+-| **Verdict** | `CONTESTED` |
+-| **Axis** | `LCC-01`, three sides |
+-| **Scope token** | the measurement footprint and the sampled depth |
+-| **Personas** | 3, one per side, each briefed on one side's leaves and no other's |
+-| **Ruled by** | the composing session, under `oracle/answer_contract.md` |
+-| **Router's advice** | evidence only, weight `VERY LOW`, no verdict offered |
+-| **Date** | 2026-08-29 |
+-
+-## Question
+-
+-*How much water ice is in the regolith at Cabeus crater?*
+-
+-## Verdict
+-
+-`CONTESTED`, and not `LITERATURE`.
+-
+-The corpus carries three sources that give a concentration for Cabeus and whose central values span roughly an order of magnitude. A single number returned here would be a choice among them, made by whoever assembled the answer. **No such choice was made and none is available below.**
+-
+-**Why `CONTESTED` and not the adjacent verdict.** `LITERATURE` was the alternative and it fails on the register: `LCC-01` declares three sides with distinct member leaves, so an answer drawing on "the literature" as one voice would flatten a disagreement the register exists to preserve. `APP` was also available and was rejected on inspection — the app resolves an address for `ice`, but `ice` is one of the keys the model echoes back from its own input, so an `APP` answer here would have returned the caller's control setting with a recompute trace attached. That is the sharpest failure this question tests for, and it is a live path, not a hypothetical.
+-
+-**No adjudication follows.** The three sides are set out below in their own terms. The reader picks, or declines to.
+-
+-### Side A — the impact plume, spectroscopy
+-
+-The LCROSS Centaur impact of 9 October 2009 gives a mean water concentration of **5.6 ± 2.9 percent by mass**.
+-
+-This is not a regolith sample. It is a ratio of two masses inside a spectrometer field of view: water vapour plus water ice, over an ejecta dust mass. Two coaligned nadir spectrometers shared a one-degree field of view, roughly 10 km across at 8 s after impact and 9.6 km at 20 s. The denominator is a dust mass of about 2,175 kg on average, and **that mass is a radiative-transfer output, not a weighed quantity**.
+-
+-**The paper gives no depth.** No excavation depth, depth interval, or excavated volume appears anywhere in it. Its only depth-adjacent statement is a caveat that the LCROSS sample was "possibly deeper than neutron spectroscopy can effectively sample," which it puts at deeper than about 0.7 m.
+-
+-The figure moves with the assumptions that set the denominator: grain density 3,000 kg/m³, silica refractive indices standing in for real regolith, an area-weighted grain radius of 2.5 µm, and a 0.58 filling factor for field-of-view underfilling. A lighter assumed grain lowers the dust mass and raises the percentage. The paper calls its water masses lower limits, because after about 20 s some water lay outside the field of view — while early-period ratios are "likely to be overestimates" when the cloud was smaller than the field of view. **It does not net the two biases.**
+-
+-### Side B — the region, collimated neutrons
+-
+-Subsurface water ice averaged over Cabeus-1 is **0.49 ± 0.05 percent by mass**, with a maximum of **about 0.7 percent** at the crater floor.
+-
+-These are two different quantities and are not interchangeable. The 0.49% is an area average over the collimated field of view of an orbital neutron spectrometer; the source states its estimates "represent a different support volume than a local impact or sample measurement." The 0.7% is a within-crater peak at the site of minimum average annual temperature — which coincides with the LCROSS impact location — and it carries no stated uncertainty.
+-
+-The quantity is **subsurface**, not surface. The method reads hydrogen through neutron moderation, so the fraction describes buried material integrated over the depth epithermal neutrons sample, tied to "the assumed regolith and burial parameters."
+-
+-**Both figures are model-derived, not counted.** No water is detected as such; an ice fraction is the output of a conversion from neutron suppression whose assumptions about regolith composition and burial depth carry into the answer. Observation period 2009 to 2023. The source frames its own contribution as a bound on generalisation: it constrains how far a high local value extends across the crater.
+-
+-### Side C — the same impact, re-modelled
+-
+-A re-analysis of the same 2009 impact, not a new observation, deriving **two** concentrations:
+-
+-- **8.2 wt%**, assuming a water ice albedo of 0.8 and a regolith density of 1.5 g/cm³
+-- **4.3 wt%**, assuming a regolith density of 3.0 g/cm³
+-
+-**The spread 4.3–8.2 wt% is the finding.** It arises purely from the choice of assumed regolith density. The formal errors quoted alongside each value are far smaller than that modelling spread and must not be read as the uncertainty.
+-
+-The model consumes ground-based lightcurve observations of the debris plume, fitted against an assumed layered pre-impact column — a dirty-ice layer with ice concentration increasing with depth, a pure regolith layer, and a competent subsurface layer near 6 m. The footprint is the whole crater; the sampled depth is the excavated column above roughly 6 m, since the competent layer was not excavated and never entered the plume. Within that column the ice is not uniformly distributed but increases with depth.
+-
+-The 5.6 ± 2.9 wt% figure appearing in this paper's introduction is **not its result** — it is attributed to Colaprete et al. (2010) and Heldmann et al. (2015) as the prior value being re-modelled.
+-
+-## What was tested, and how it could have failed
+-
+-| Claim | How it was tested | What would have falsified it | Result |
+-|---|---|---|---|
+-| The three sides describe different physical objects | Each persona was required to state footprint and sampled depth independently, without access to the others | Any two sides reporting the same footprint and depth — which would make the spread a genuine contradiction rather than a scope difference | Three distinct objects: a spectrometer field of view over an ejecta plume; a collimated orbital footprint over buried material; a whole-crater excavated column above 6 m |
+-| No persona synthesised across sides | Each was briefed on one leaf, told the others existed, and forbidden to speculate about them | Any side hedging toward a middle, or writing "however, other studies…" | None did. Side B bounded its own generalisability from its own source; side C named its borrowed figure and attributed it |
+-| Side C's borrowed figure is not presented as its own | Persona instructed to attribute exactly as the source attributes | Side C reporting 5.6 ± 2.9 wt% as its own result | Correctly attributed to Colaprete and Heldmann |
+-| The app must not answer this | Checked whether `resolveOutput("ice")` resolves | The address failing to resolve, making the trap hypothetical | **It resolves.** `ice` is an input-echo key; an `APP` verdict would have returned the caller's own setting |
+-| Every figure carries its assumption | Each persona required to name the assumption behind each value | A concentration stated without the density, albedo, or filling factor it depends on | Held on all three sides |
+-
+-**What was not tested.** No persona's arithmetic was re-derived from the source PDFs. Every figure here traces to a summary in `literature/`, and the summaries were verified against their sources in a separate pass, not in this one.
+-
+-## Sources
+-
+-| Side | Leaf | Trace |
+-|---|---|---|
+-| A | `literature/lunar-ice-and-geology/colaprete-2010-lcross-ejecta-water-detection.md` | central value L84; FOV L39, L41; dust mass as denominator L84, L117; no depth L117; 0.7 m caveat L107; assumptions L121–L126, L49; bias statements L115 |
+-| B | `literature/lunar-ice-and-geology/litvak-2024-lend-cabeus-water-ice.md` | central value L17, L34; maximum L17, L35–36, L47; footprint L24, L41; moderation basis L29–30; model-derived L42; period L17, L29 |
+-| C | `literature/lunar-ice-and-geology/luchsinger-2021-lcross-water-modeling.md` | density dependence L19; borrowed figure L25, L49; model inputs L31–32; both values with assumptions L37; depth and competent layer L39; spread vs formal error L43–44 |
+-
+-Register: `oracle/REGISTER.lunar.tsv`, axis `LCC-01`, class `two_sided`, sides A, B, C.
+-
+-## What remains unverified
+-
+-1. **Whether the three are reconcilable at all.** They measure different objects, so the order-of-magnitude spread is not prima facie a contradiction — but nothing here establishes that they are consistent either. That work was not done and is not claimed.
+-2. **Side A's unnetted biases.** The paper states one bias raising the figure and one lowering it, and nets neither. The direction of the residual is unknown.
+-3. **Whether side B's footprint contains side A's impact site in the way a reader would assume.** Side B says the coldest point coincides with the LCROSS site; whether the averaging volume overlaps the excavated column is not established by either source.
+-4. **The register labels `LCC-01` `two_sided` while it carries three sides.** The class name is historical and its invariant now reads "every side." The label has not been corrected.
+-5. **No source PDF was opened for this answer.** Everything traces to summaries.
+diff --git a/answers/deloitte-building-the-lunar-economy-review.md b/answers/deloitte-building-the-lunar-economy-review.md
+deleted file mode 100644
+index ddd7c89..0000000
+--- a/answers/deloitte-building-the-lunar-economy-review.md
++++ /dev/null
+@@ -1,203 +0,0 @@
+-run:              r-2026-08-29-deloitte-01
+-asked:            2026-08-29T19:13:29Z
+-verdict:          LITERATURE
+-reason code:      -
+-contract version: 5
+-lsei ref:         7f97983
+-
+-## Question
+-
+-"in the downloads folder on this machine is a file called deloitte-building-the-lunar-economy-report.pdf. did deloitte get it right? what did they miss? did they address true economic sustainability? thanks"
+-
+-## Verdict
+-
+-`LITERATURE`.
+-
+-**The short form of the answer, before the reasons.** Deloitte's *prose* is largely right and is
+-unusually candid for a consulting report: it names the geological uncertainty, quotes a propellant
+-sceptic against its own thesis, flags that Starship could undercut lunar production, states the
+-US-centric bias of its inputs, and refuses to add its largest number to its headline total. **Its
+-*model* implements none of that candour.** The two halves of the document disagree, and the
+-disagreement runs in one direction: every caveat the prose raises is one the model does not carry.
+-
+-What they missed is not a fact. It is a **cost side**. The model computes revenue and calls the
+-result value. And on the third question — no. **The report does not address economic sustainability
+-in any sense a reader would recognise as "true."** It never defines a condition under which the
+-lunar economy stops requiring Earth. The word "sustained" in the title is an engineering claim about
+-presence, not an economic claim about closure, and the appendix contains no variable that could
+-carry the economic one.
+-
+-**Why `LITERATURE` and not `CONTESTED`, which is the adjacent verdict here.** `CONTESTED` requires
+-that a sub-claim matched a contested-claims register axis at classification time. The evidence pass
+-(`oracle/router/classify.js`, `adviseQuestion`) fired **zero** axes on both sub-claims, out of 33 in
+-the two registers. Under the adjacent verdict this answer would have been composed by one persona per
+-side of a named axis, briefed in isolation, with no adjudication — and there is no axis whose sides
+-this question asks me to hold apart. **`ECR-15` is the near miss and it is real**, and it is set out
+-in §5 rather than suppressed: it governs whether the base rate for a lunar growth projection should
+-be drawn from the cross-country distribution of growth episodes or from the distribution of
+-capital-programme outcomes. Deloitte drew from neither. Naming that gap is a `LITERATURE` finding.
+-*Ruling* which base rate Deloitte should have used is a `CONTESTED` question, and it is a different
+-question from the one asked.
+-
+-**Not `APP`, not `BOTH`, not `FIGURE`.** No app address resolves: the evidence pass reports
+-`resolves: false`, `address_form: null`, confidence `none`, because the question names no scenario,
+-phase, knob or output key the address grammar can build. The Scenario Explorer models a lunar
+-scenario; it does not hold a critique of somebody else's model. `BOTH` would require an app-sourced
+-fact answering a second, distinct question, and adding one here would be padding rather than
+-evidence.
+-
+-**Not `REFUSE`.** Retrieval ran once, after the four text channels, and confirmed shelf files in full
+-text on both sub-claims (3 of 5 candidates confirmed at threshold 0.28, on each). The corpus holds
+-the standard this report is being measured against.
+-
+-**The one contract problem this run has, stated up front rather than buried.** The Deloitte report is
+-**not a corpus source and cannot carry a trace.** `answer_contract.md` §3 closes `origin` at four
+-values — `app`, `literature`, `findings`, `none` — and a PDF in the user's Downloads folder is none of
+-them. So every figure below that belongs to Deloitte is quoted from the object under examination, not
+-from a source, and it appears in §3 with the exact command that reproduces it rather than in §4 with
+-a trace. That is the correct slot for it: §3 exists to record tests and their falsifiers, and a
+-`grep` over a named file with a stated expected result is a test a reader can re-run and watch fail.
+-The traces in §4 carry only the corpus sources that supply the *standard*. The gap this exposes in
+-the contract is filed in §5.
+-
+----
+-
+-## What was tested, and how it could have failed
+-
+-Two families of test. **Family A** runs against the artifact under examination,
+-`~/Downloads/deloitte-building-the-lunar-economy-report.pdf`, extracted with
+-`pdftotext <file> - | tr -s '[:space:]' ' '`. **Family B** runs the `deliverable_shape.md` §3
+-source-verification procedure, steps 1 to 4, against corpus files, and records step 4's output.
+-
+-### Family A — claims about the report
+-
+-| Claim | Test run | Falsifier — the result that would have refuted it | Observed |
+-|---|---|---|---|
+-| The value equations contain no cost term | Read the three Value Pool 2 equations and the Value Pool 1 equation in the Appendix, verbatim | Any equation carrying a subtracted cost, a margin, or a net | Four equations, all multiplicative, all gross. VP1: `Activity(i,t)=(Unit price_i * Unit price profile(i,t)) * Quantity profile(i,t)`. Replacement: `(Replacement share * Addressable market volume) * Lunar unit price`. Nascent: `(Theoretical market volume * Growth rate) * Lunar unit price`. Speculative: the same, `* Probability_i`. **No subtraction appears anywhere in the model.** |
+-| The report never nets capital expenditure against revenue | `grep -ci` the full text for `net present value of cost`, `capital stock`, `depreciat`, `opportunity cost`, `crowding out` | Any nonzero count, which would mean a netting concept is present somewhere | 0, 0, 0, 0, 0 |
+-| Value Pool 1 counts spending as value | Read the VP1 definition in Appendix Figure 1 | A definition naming output, surplus, or value added rather than investment | *"Economic activity from investments that occur on or around the Moon for the purpose of developing the enabling lunar infrastructure."* The pool is the bill. |
+-| The single largest line item is the cost of getting there | Read the conservative-scenario core-activity split | Transportation below half of core activity | *"transportation accounts for approximately US$150 billion, or 72% of total core lunar activity through 2050."* |
+-| The report states no self-sufficiency or closure condition | `grep -ci` for `closure`, `self-suffici`, `import substitut`, `Earth-imported`, `trade balance`, `balance of payments` | Any nonzero count | 0, 0, 0, 0, 0, 0. The only sustainability sentence in the body is a hedge: *"long-term sustainability may require a broader set of customers and markets."* No condition is stated, and nothing in the model tests one. |
+-| The report never distinguishes gross output from value added | `grep -ci` for `value added`, `value-added`, `GDP contribution` | Any nonzero count | 0, 0, 0. The headline `$343B–$566B` is therefore **on an unnamed basis**, and §4's first two traces show the two candidate bases differ materially in the one national account that measures this sector. |
+-| Only the speculative bucket is probability-weighted | Compare the three Value Pool 2 equations for a probability term | A `Probability_i` term on the Replacement or Nascent equation | Present on Speculative only. **Helium-3 into existing terrestrial markets is classified `Replacement`; in-space propellant refuelling is classified `Nascent`.** Both enter the total at full weight. |
+-| The discount rate is the baseline with no risk premium | Read the Results Overview rate statement | A rate above ~10%, or any additive risk premium | *"expressed as net present values (NPV) in 2026 US dollars using a 7% discount rate, a standard approach for long-horizon infrastructure investments under uncertainty."* One rate, flat, for 25 years, across markets the report itself calls speculative. |
+-| No financial hurdle-rate concept appears | `grep -n -i hurdle` over the full text | A hit in a financial sense | One hit, at *"Significant engineering hurdles remain."* The word appears in the report exactly once and not about capital. |
+-| Value Pool 1 has no mass-throughput driver | Read the six quantity drivers; `grep -ci` the appendix for `tonne`, `excavat`, `throughput`, `grade`, `reserve` | Any extraction-rate or ore-grade driver present | Drivers are: missions and payload mass; MW of electricity; number of satellites and nodes; number of vehicles; volume of fixed infrastructure; person-days. Appendix counts: `tonne` 0, `excavat` 0, `throughput` 0, `grade` 0, `reserve` 0. **The helium-3 and propellant revenue lines are not coupled to any physical production capacity in the model that is supposed to enable them.** |
+-| The enabled-activity table excludes the markets a prior NASA-commissioned screening found viable | Read Table 2's eight activities; `grep -ci` the appendix for `tourism`, `moon rock`, `burial`, `memorial`, `artifact`, `advertis` | Any of those six present in the modelled set | Table 2 holds eight activities: national security, lunar data products, helium-3 (three separate lines), in-space propellant refuelling, off-Earth compute manufacturing, advanced materials and isotopes. Appendix counts for the six: 0, 0, 0, 0, 0, 0. `tourism` appears **once in the whole report**, in a list of things interviewees mentioned. |
+-| The report's prose does flag its own model's weaknesses | Read the Limitations section and the Part II propellant section | No acknowledgement of geological, proxy, or probability risk | Four limitations stated, all real: US-centric inputs; *"the underlying probabilities are themselves judgment-based estimates rather than observed outcomes"*; value concentrated at the end of the period; and terrestrial proxies for learning rates. Body: *"many business cases for lunar propellant rest on geological assumptions that have not yet been proven."* **This row is why the verdict is not a dismissal.** The report knows. The model does not. |
+-| Value Pool 3's proxy is a stock-market artefact | Read Table 3's key driver for global pride and inspiration | A willingness-to-pay survey, a contingent valuation, or any welfare measure not drawn from asset prices | *"The estimated welfare associated with inspiring individuals, proxied by short-term excess stock market returns observed around events of national or cultural significance."* This pool is `$541 billion` — larger than the entire modelled market economy. It is correctly held out of the headline total and correctly flagged as illustrative; it is nonetheless the single largest number in the document and it rests on that proxy. |
+-
+-### Family B — the standard the corpus supplies
+-
+-| Claim | Test run | Falsifier | Observed |
+-|---|---|---|---|
+-| The space-resource economics literature puts the required return far above 7% | §3 procedure steps 1-4 on `mckeown-2024-space-resource-hurdle-rate.md`, searching `25%` and `7%` | The figures absent; or present only inside an attribution to another author | Present as the paper's own conclusion. Line 120: *"The article concludes that a hurdle rate 'in the range of 25%' is an appropriate starting point for evaluating commercial space resource development-stage projects."* **Step 4 fired and matters here:** line 200 records that the `7%` in that paper is the *baseline WACC input*, and lines 205-206 work an example where a **low-risk, established-sponsor, stable-legal-regime** project scores an 18-point risk premium **on top of** the 7% to reach 25%. Deloitte's headline rate is that paper's starting input with the premium set to zero. Lines 207-211: a higher-risk sponsor reaches 43%; earlier project stages carry multipliers to 38% and 50%. |
+-| One percentage point of discount rate can flip a lunar mining NPV's sign | §3 procedure on `smith-vaniz-2026-lunar-mining-economic-framework.md`, searching `15%` and `16%` | The illustration absent, or not the paper's own | Present as the paper's own worked example: `$1,000M` upfront, `$200M` annual net cash flows over ten years; at 15% NPV is about `$3.8M`, at 16% it is about `-$33.4M`. The paper's conclusion: *"uncertainty-driven increases in required returns can eliminate apparent economic viability."* Deloitte runs sensitivity between two **market** scenarios and none on the rate. |
+-| The standard NPV formulation for lunar mining subtracts costs | §3 procedure on the same file, searching the NPV equation | A revenue-only formulation | `NPV = sum over t of (R_t - C_t)/(1+r)^t - C_i`, with `C_t = Q_e,t * (c_opex,t + c_transport,t) + C_m,t + C_energy,t` and `r = r_base + r_tech + r_market + r_policy`. **Deloitte's model has `R_t`. It has no `C_t`, no `C_i`, and its `r` is `r_base` alone.** |
+-| Current lunar data support inferred resources, not proven reserves | §3 procedure on the same file, searching `inferred resources` and `proven reserves` | The distinction absent, or attributed rather than asserted | The paper's own claim, via McKelvey (1974) and CIM definition standards: current data *"support only 'inferred resources,' not 'proven reserves,'"* and without detailed characterisation *"estimates of economic viability remain speculative and disconnected from operational reality."* Deloitte prices helium-3 at a cited `US$20 million per kilogram` and books it as `Replacement`-class revenue with no probability weight. |
+-| A NASA-commissioned demand screening found private demand insufficient | §3 procedure on `colvin-2020-lunar-cislunar-demand.md`, searching the summary table of private lunar markets | The report finding private demand sufficient, or the screening covering different markets | *"Private demand is judged insufficient to sustain a pure-play lunar company."* Markets it found **viable**: tourism via Starship, trinkets, moon rocks, artifacts, burials, advertising. Markets it screened out on cost: helium-3 for Earth sale (*"ROI could be ~50 years at expected demand/prices"*), computing on the Moon (*"power alone ~200x Earth cost"*), manufacturing in lunar vacuum (*"creating vacuum in Earth orbit is cheaper"*), platinum-group metals, lunar solar power, hazardous-waste disposal. On propellant: *"unlikely to capture the LEO-to-GEO market... and may not be viable if Starship meets its cost and performance targets."* **Deloitte's modelled set is close to the complement of that screening's viable set.** |
+-| Value added and gross output differ materially for this sector | §3 procedure on `highfill-2024-us-space-economy-statistics.md`, searching `131,776` and `232,061` | Either figure absent, or the two equal | Both present as BEA's own 2022 estimates: GDP (value added) `$131,776 million`, equal to `0.5 percent` of total US GDP; gross output `$232,061 million`. Two measures of one sector, one year, differing by roughly the size of the smaller. Deloitte names neither basis for its own total. |
+-| The current global space economy has no single agreed size | §3 procedure on `oecd-2023-space-economy-in-figures.md`, searching the global estimate range | A single agreed figure | *"Estimates of the global space economy, excluding government procurement, range from about USD 200 billion to USD 350 billion depending on definition and method."* Deloitte's framing figure is *"more than US$613 billion generated annually,"* sourced to Space Foundation's *The Space Report 2025 Q2*. **These are not comparable and I am not claiming Deloitte's number is wrong** — the OECD range excludes government procurement and the Space Foundation figure does not. The finding is that the report cites one basis-free number to establish scale and never says which basis it is on, which is the same defect as the one in the row above. |
+-| Helium-3 grade sets a mass-throughput floor the model does not carry | §3 procedure on `olson-2021-lunar-helium3-mining.md`, searching `ppb` and the M-3 excavation figures | The grade unstated, or stated only by attribution | The file's own reporting of Apollo 11 sample 10084: `11.8 ppb` mean, range `9.22` to `17.9 ppb`. M-3 miner concept: `1,258 tonnes/hour` excavation; roughly `33 kg` of helium-3 per year against *"nearly five million tonnes"* of regolith excavated at `10 ppb`. **Step 4 fired:** the file itself records that the paper does not reconcile its own two statements of that ratio, so this row establishes the order of magnitude and not a number. Deloitte's appendix contains no tonnage, no excavation rate and no grade, so this floor is absent from the model rather than disagreed with. |
+-| The corpus holds a stated definition of economic self-sufficiency | §3 procedure on `metzger-2013-bootstrapping-space-industry.md`, searching `full closure` | No closure concept present | Present and central: a model of *"full material and electronic self-sufficiency ('full closure')"*, tracked generation by generation with an explicit electronics-import fraction per generation. Seeded at `12 t` to `41 t` landed over roughly 20 years, reaching `156 t` with 60 robots or `40,000 t` with 100,000 robots. **This is what an economic-sustainability variable looks like, and Deloitte has no analogue of it.** |
+-| A prior paper made sustainability of presence conditional on commercial viability | §3 procedure on `downing-2005-sustainable-lunar-economy.md` | The paper treating presence and viability as independent | *"the sustainability of human lunar presence depends on developing a viable lunar economy based on profitable use of the Moon's resources."* Twenty-one years old, and the conditional is the one Deloitte's title asserts and its model does not test. |
+-
+----
+-
+-## Sources
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/colvin-2020-lunar-cislunar-demand.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/mckeown-2024-space-resource-hurdle-rate.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/smith-vaniz-2026-lunar-mining-economic-framework.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/highfill-2024-us-space-economy-statistics.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/oecd-2023-space-economy-in-figures.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/downing-2005-sustainable-lunar-economy.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/space-economy-and-markets/nayak-2024-six-hypotheses-lunar-economy.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/isru-processing/olson-2021-lunar-helium3-mining.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+-Trace (citation, resolution-only, literature): literature/self-replication-and-automation/metzger-2013-bootstrapping-space-industry.md
+-LIMIT: this trace proves the file resolves and that its body contains the matched topic words. It does not prove the file supports the sentence beside it; only a person's sampling read closes that gap.
+-
+----
+-
+-## What remains unverified
+-
+-8 items unverified, over 22 claims and 22 tests examined.
+-
+-1. **The object of this answer carries no trace, and the contract has no origin token for it.**
+-   `answer_contract.md` §3 closes `origin` at `app`, `literature`, `findings`, `none`. A
+-   user-supplied artifact outside the repository is none of the four, and `CLAUDE.md` §3 prohibition 3
+-   says the answering loop never reads outside the repository at runtime while `_intake/` exists
+-   precisely so that outside material can arrive through a human-supervised step. **The user handing
+-   over a path is that step, and there is no vocabulary for its output.** Every Deloitte figure above
+-   is consequently a §3 observation with a reproducible command and not a §4 trace. Closing this is a
+-   contract edit and a version bump, and it is The Writer's act, not this run's.
+-
+-2. **`ECR-15` bears on this question and the evidence pass did not reach it.** The axis governs
+-   *"whether the base rate for a lunar growth projection should be drawn from the cross-country
+-   distribution of growth episodes or from the distribution of capital-programme outcomes."* Its
+-   `match_keys` are technical vocabulary — `megaproject`, `overrun`, `forecasting`, `optimism`,
+-   `benchmark`, `escalation`, `reference`, `distribution` — and the question as asked says "did they
+-   get it right." That is failure mode **FM-1** in the router's own report, the `kwh`-versus-"kilowatt
+-   hours" case, reproduced exactly. **I set the zero aside on judgement and did not convert the answer
+-   to `CONTESTED`,** because the axis's sides are not what the user asked me to hold apart. *"Which
+-   base rate should a lunar projection use, and what does that base rate say about a 25-year
+-   forecast?"* is a live `CONTESTED` question against this same corpus and it is the natural
+-   follow-up to this answer. It is not answered here and none of its member files was read for this
+-   run.
+-
+-3. **Every trace above is `resolution-only`, and one of them is `via_review`.** Nobody has confirmed
+-   that these summaries say what their source PDFs say. `downing-2005` carries provenance depth
+-   `via_review` in its own record, and the corpus's largest helium-3 energy claims reach it through a
+-   popular-science citation, which that file states itself. Source PDFs are **absent from this
+-   install** (`BC-19`), so nothing in the answering loop can close this; only a sampling read against
+-   the sources can.
+-
+-4. **The cost-per-kilogram spread is named and not reconciled.** Deloitte gives roughly
+-   `US$36,000` per kilogram to put propellant on the lunar surface from Earth. `nayak-2024` cites
+-   cost-to-surface at roughly `$1M–$1.5M` per kilogram. `colvin-2020` gives lunar-produced propellant
+-   at about `$9,000` down to about `$1,000` per kilogram on the surface, and surface water above
+-   `$5,000` per kilogram. **These may be measuring different things** — a marginal commodity delivery
+-   versus a delivered system's fully burdened cost — and no source in this corpus compares them on a
+-   common basis. Computing a ratio across them would be cross-source arithmetic, which
+-   `answer_contract.md` §2 makes a `findings` deliverable rather than a trace, and no such entry
+-   exists.
+-
+-5. **`colvin-2020` runs to 2040 and was written in 2019-20; Deloitte runs to 2050.** The ten-year
+-   overhang is real and it favours Deloitte: markets that failed a 2040 screen may pass a 2050 one.
+-   The screening's *method* — compare lunar provision cost against terrestrial cost and
+-   willingness to pay — is what this answer relies on, and that method is time-invariant. Its
+-   *verdicts on specific markets* are six years old. Nothing in this corpus re-runs them.
+-
+-6. **I did not test whether Deloitte's quantity profiles are internally consistent.** The conservative
+-   2050 state — roughly 350 launches a year, 600 MW of surface power, 50-day crew stays, two 25-satellite
+-   constellations, commercial missions outnumbering government three to one — was read and not checked
+-   against the energy and mass requirements the ISRU shelf carries (`Q-CARD-KWH-PER-KG`, 63 to 93 kWh
+-   thermal per kilogram of oxygen, is the obvious probe). **That check is the strongest remaining test
+-   of this report and it was not run.** It would close or refute the mass-throughput finding in Family A.
+-
+-7. **"Did they get it right" has no measured answer and this document does not give one.** No source
+-   in this corpus scores consulting-house market forecasts against realised outcomes. `_intake/` holds
+-   a note named `fa8-failed-space-forecasts-industry-note.md` which may bear directly on it; that file
+-   is **staged intake and not on a shelf**, so it carries no legal origin and was deliberately not
+-   read for this run. Promoting it is an acquisition decision and a human act.
+-
+-8. **The report's third value pool was read and not evaluated.** `$541 billion` from short-term excess
+-   stock-market returns around culturally significant events is a strong methodological claim about
+-   welfare measurement, and this corpus holds no source on event-study welfare proxies against which
+-   to test it. It is named in §3 and adjudicated nowhere.

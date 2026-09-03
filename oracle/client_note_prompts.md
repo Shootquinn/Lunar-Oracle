@@ -10,8 +10,8 @@ material is an annex.
 
 The sequence has one property that matters more than any of its content: **the deliverable of the
 first prompt is not the note.** It is a test plan. The deliverable of the second is an outline. A
-human approves each before the next runs. A session that produces prose at prompt 1 has failed the
-sequence regardless of how good the prose is.
+seat approves each before the next runs, and none of those approvals is the user's. A session that
+produces prose at prompt 1 has failed the sequence regardless of how good the prose is.
 
 ---
 
@@ -162,7 +162,7 @@ substitute, and it is where the reading limitation, the procedure and the source
 
 ## 5. Prompt 2 — the outline
 
-Run after a human approves the test plan. The seat is The Writer, whose context recipe at
+Run after The Manager approves the test plan. The seat is The Writer, whose context recipe at
 `cr-agents/method/operational_guide.md` A.3.2 already loads
 `cr-agents/supplements/writing-guides/structure.md` and `style.md`.
 
@@ -194,7 +194,7 @@ and every table the plan requires is specified with its columns.
 
 ## 6. Prompt 3 — the draft
 
-Run after a human approves the outline.
+Run after The Manager validates the outline against the test plan.
 
 ```
 Write the note from the attached outline. Each topic sentence is developed
@@ -233,16 +233,33 @@ after revision.
 
 ## 8. The gates
 
-Three human approvals, and they are the point of the sequence.
+Three approvals, and **not one of them is the user's**. Ruled 2026-09-02 by the author, on a run that
+stopped and asked him to type *go* after prompt 1.
 
-| Gate | Approves | Failure it catches |
+| Gate | Approved by | Failure it catches |
 |---|---|---|
-| After prompt 1 | The test plan | The note would have answered a different question |
-| After prompt 2 | The outline | A missing argument, at ten minutes' cost instead of two hours' |
-| After prompt 4 | The note | Everything else |
+| After prompt 1 | The Manager | The note would have answered a different question |
+| After prompt 2 | The Manager, against the test plan | A missing argument, at ten minutes' cost instead of two hours' |
+| After prompt 4 | The Fact-Checker, on the map | Everything else |
 
-A session that runs prompts 1 through 4 without stopping has produced a draft nobody specified, which
-is the failure the sequence exists to prevent and is indistinguishable from not using it.
+**The user asked a question. They are not a co-author of the answer.** Version 1 of this file put a
+human at all three gates, which was borrowed from a method whose human *was* the document's author and
+was driving the prompts himself. Here the person at the keyboard is a reader who asked something and
+is waiting, and a cognizant reader in a space-adjacent role is not necessarily someone who knows what
+a test plan is or what they would be approving. A run that halts to ask them is asking them to ratify
+machinery they did not ask to see, and the pause reads as the system being unsure rather than as the
+system being careful.
+
+The discipline is unchanged and the interruption is gone. The test plan is still written before the
+outline and the outline before the prose, and a seat still refuses to proceed on work that has not
+passed the prior gate. §5 already gave The Manager the outline validation; this makes the other two
+match it. **What the sequence may never do is run prompts 1 through 4 as one undifferentiated drafting
+pass**, which is the failure it exists to prevent, and that failure is about the ordering and the
+approvals rather than about who is inconvenienced by them.
+
+**The user is interrupted for exactly one thing: a question only they can answer.** A missing input, a
+question that admits two readings the corpus cannot choose between, or an instruction that contradicts
+itself. Never for approval of an intermediate artifact, and never for approval of a plan.
 
 ## 9. Worked fill
 

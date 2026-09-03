@@ -171,7 +171,7 @@ clean and the fork reads as `equal`. Report `unknown` there, and never `equal`.
 ```bash
 ls literature/*/*.md 2>/dev/null | grep -Ec '/[a-z0-9]+(-[a-z0-9]+)*\.md$' || echo "BC-17: origin literature unavailable"
 ls findings/*.md     2>/dev/null | grep -Ec '/fa[0-8]-[a-z0-9]+(-[a-z0-9]+)*\.md$' || echo "BC-18: origin findings unavailable"
-test -d literature/_pdf && [ -n "$(ls -A literature/_pdf 2>/dev/null)" ] && echo "BC-19: source PDFs present" || echo "BC-19: source PDFs absent"
+test -s tools/source_roots.local || [ -n "$LUNAR_ORACLE_SOURCE_ROOTS" ] && echo "BC-19: source publications reachable" || echo "BC-19: source publications not reachable from this machine"
 ```
 
 A `literature/` holding only a `README.md` passes a non-empty test and holds no corpus, which is why
@@ -182,10 +182,15 @@ it found a repository missing its own headline deliverable.
 `findings/` is permitted to be absent. Absent and empty are the same result for the origin set and are
 distinguished in the report, because absent is expected today and empty later is a defect.
 
-BC-19 is recorded as a fact rather than as a failure. The author's `literature/` and a fresh clone's
-`literature/` are permanently different trees with the same name, and without this fact nothing tells a
-session which one it is in. A session that cannot tell will offer a reader a source a clone does not
-have, or decline to read one that is sitting on disk.
+BC-19 is recorded as a fact about **the machine**, never as a state of the corpus. It answers whether
+this install can reach the *source publications* the summaries were written from, which exactly one
+check needs — `tools/audit_abstract_overlap.js`, the copyright-hygiene audit. A session that cannot
+tell will offer a reader a source a clone does not have, or decline to open one that is sitting on
+disk. **The probe was corrected at 2026-09-02 under §5 of this file**, clause `bootstrap_contract.md`
+BC-19, restated at W5-6: it used to probe `test -d literature/_pdf`, a directory sub-step 2.11 would
+have created and which is now retired, so the assertion was permanently false everywhere and read as
+a shortfall on every install. The 169 summaries are the deliverable; a clone holding all of them is
+complete, and `pdfs_present: false` is the ordinary case and owes nothing.
 
 Phase 4 ends by assigning the in-force mode set and computing which origins are available.
 
@@ -336,19 +341,36 @@ optional one, and the report names which is absent.
 **TDD (`cr-agents/method/tdd_method.md`): always active.** Every deliverable has its own test plan,
 written before the deliverable.
 
-**The answer is a TDD report, and its shape is `oracle/deliverable_shape.md`.** Five sections, closed
+**The annex is a TDD report, and its shape is `oracle/deliverable_shape.md`.** Five sections, closed
 and ordered: the question as asked; the verdict and why not the adjacent one; **what was tested and
 how it could have failed**; sources with traces; what remains unverified. That third section is why
-the answer is a report and not an essay — *a claim with no stated falsifier is an assertion*. The
-shape is required by `oracle/answer_contract.md` §6 and it is not optional for short answers or for
-refusals.
+it is a report and not an essay — *a claim with no stated falsifier is an assertion*. The shape is
+required by `oracle/answer_contract.md` §6 and it is not optional for short answers or for refusals.
+
+**There are three output objects, not two, and the five-section file is the second of them.**
+**Added at 2026-09-02 under §5 of this file**, clause `oracle/client_note.md` §1, promoted
+2026-09-01 on `cr_scratch/postmortem_deloitte_run.md`: that document renames the five-section file in
+role from *the deliverable* to **the annex** — contract-governed, unsigned, non-adjudicating, read by
+the note's writer rather than by the client — and specifies a third object, **the client note**, as
+the only object a client ever sees. Nothing in `answer_contract.md` or `deliverable_shape.md` changes;
+the note sits beside them and is governed by neither. The turn is the first object and is unchanged.
+**The contract is first-pass prep, not command:** a verdict the annex returns, `REFUSE` included, is
+evidence the note's author weighs rather than an order the note's author obeys. The note carries no
+verdict token, no axis identifier, no header block, no trace line and no unverified-items section;
+`client_note.md` §4 and §5 are the operative halves and are exclusions rather than aims. The four
+seats and the four-prompt sequence with its three human gates are `oracle/client_note_prompts.md`.
 
 **The user receives haiku and a path, and nothing else.** No chat text block, under any condition.
 The path line carries the verdict, the reason code where the verdict is `REFUSE`, and the path — and
 it is subject to the same claim-bearing test as the haiku. `answer_contract.md` §6a records the
 measurement that removed version 2's two exceptions and states what would bring them back.
 
-**The form: 2 to 5 haiku strung linearly, no line breaks, and questions are in it too.** If the Oracle
+**The form: 2 to 5 haiku, each rendered on three lines 5/7/5 with a blank line between them, and
+questions are in it too.** **Corrected from "strung linearly, no line breaks" at 2026-09-02 under §5
+of this file**, which names the clause: `answer_contract.md` §6b, amended 2026-09-01, permits line
+breaks everywhere and supersedes the 2026-08-28 linear ruling *on its own evidence* — the two turns
+the linear form actually produced both read as run-on mush. A legal turn is exactly 34, 51, 68 or 85
+syllables. The anti-run-on control did not live in the line breaks and is untouched. If the Oracle
 must ask the user something, it asks in haiku; there is no asking exception. `answer_contract.md` §6b
 holds the form and the author's reasoning, and **the reasoning is the part that binds**: the haiku is
 the anti-AI-voice mechanism, not a formatting quirk. An oracle that answers plainly is not an oracle,
