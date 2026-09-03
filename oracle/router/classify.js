@@ -61,6 +61,7 @@ const { loadAppSurface } = require('./app_surface.js');
 const { loadExcludedNodes } = require('./excluded_nodes.js');
 const LIT = require('../retrieval/literature_search.js');
 const TP = require('./thin_patches.js');
+const RC = require('../reason_codes.js');
 
 /* --- closed sets ------------------------------------------------------------------------------- */
 
@@ -74,7 +75,7 @@ const VERDICTS = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
 /* SEVEN REASON CODES. `transfer-unevaluable` is the seventh and it is ruled here, at W4-2, on W4-4's
  * escalation from the transfer gate at 4.4.
  *
- * THE RULING, AND WHY IT IS NOT A WIDENING OF `not-found`. Answer contract section 5 gives the codes
+ * THE RULING, AND WHY IT IS NOT A WIDENING OF `not-found`. Answer contract section 5 gave the codes
  * a closed set of six and says in its own words why they are not one code: "Each routes to a
  * different owner." `not-found`'s owner is "a corpus gap, and an acquisition decision." A transfer
  * refusal is the opposite situation -- the object IS present in the corpus and the TRANSFER between
@@ -86,22 +87,34 @@ const VERDICTS = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
  * So: a seventh code, and the set stays closed. classifyQuestion() still throws on any code outside
  * this array, which is the property that matters and which a widening would have preserved equally.
  *
- * OWED, AND ROUTED. This array is the implementation; the authority is answer_contract.md section 5,
- * which is frozen at version 2 and is not in my write set. The exact table row, the section 9
- * version bump to 3, and the oracle/question_classes.json refusal_codes edit are routed with their
- * text written out. Until they land, assertContractSets() below REPORTS the difference by name
- * rather than throwing on it -- because the direction that can do damage is an UNKNOWN code
- * arriving, not a known code not yet written down, and those two directions are checked separately.
+ * ROUTED, AND LANDED AT STEP 48. The paragraph here used to say the routing was owed: the table row,
+ * the version bump and the oracle/question_classes.json edit were written out and waiting, and
+ * assertContractSets() below REPORTED the difference on ctx.owed_contract_codes rather than throwing
+ * on it, because the direction that can do damage is an UNKNOWN code arriving and not a known code
+ * not yet written down. All three landed. The contract's table carries the row and its section 9
+ * version reads 5; question_classes.json's refusal_codes key is DELETED rather than corrected, and
+ * the report channel that watched it went with the key, because a channel over an empty population
+ * can never fire and is indistinguishable from one nobody wired. The verdicts half of that block is
+ * a different set, is correct, and still throws.
+ *
+ * THIS COMMENT STAYS HERE AND THE DECLARATION DOES NOT. The ruling was made in this file at W4-2 and
+ * the record of a ruling belongs where the ruling was made; the SET now lives one layer up, at
+ * oracle/reason_codes.js, because an authority selected from among the consumers migrates to
+ * whichever copy a seat last reasoned about, and a thing that moves is not an authority. Provenance
+ * picks the content. It does not pick the location. classifyQuestion() still throws on any code
+ * outside the array, which is the run-time property that matters, and it now sits over a derived one.
  */
-const REASON_CODES = ['excluded', 'not-found', 'unbuildable', 'axis-incomplete', 'misclassified',
-                      'input-missing', 'transfer-unevaluable'];
+const REASON_CODES = RC.CODES;
 
 /* Precedence among reason codes, answer contract section 5: `excluded` routes to nobody and must
    never mask a code that routes to someone, so it is written only when no other code applies. The
    function that APPLIED this to pick a dominant code for a question is deleted with the rest of the
    decision surface; the ORDER survives, published on every report, because it is a statement in the
-   contract about who owns a repair and a session ruling REFUSE needs it. */
-const CODE_PRECEDENCE = ['input-missing', 'misclassified', 'axis-incomplete', 'unbuildable', 'not-found', 'excluded'];
+   contract about who owns a repair and a session ruling REFUSE needs it.
+   DERIVED AT STEP 48 FOR THE SAME REASON THE SET IS. This was a second literal enumeration of the
+   same table, in the same file, three lines below the one that had drifted -- and a sweep that
+   computes its own population found it, which a list of the five known sites could not have. */
+const CODE_PRECEDENCE = RC.CODE_PRECEDENCE;
 
 /* THE FIVE EVIDENCE CHANNELS. These replace the four RETRIEVAL MODES, and the replacement is the
    whole of sub-step 8.1 in one line. A MODE was exclusive: one fired, the rest were never looked
@@ -375,25 +388,18 @@ function loadContext(opts) {
       throw new Error('oracle/router/classify: question_classes.json carries a different verdict set ' +
         'than this file. [' + qv.join(',') + '] vs [' + VERDICTS.join(',') + '].');
     }
-    /* THE TWO DIRECTIONS ARE NOT THE SAME FAILURE AND ARE NOT CHECKED THE SAME WAY.
+    /* THE refusal_codes HALF OF THIS BLOCK IS DELETED AT STEP 48, WITH THE KEY IT READ.
+     * It threw on a code question_classes.json carried that this router does not implement, and
+     * reported the other direction on ctx.owed_contract_codes. Both are gone because the key is
+     * gone: oracle/reason_codes.js is now the single declaration and this file derives from it, so
+     * there is no second copy for the two directions to differ across. A throw over an empty
+     * population can never fire, and a reporting channel that can never fire is indistinguishable
+     * from one that was never wired. The two-direction DOCTRINE survives and moved to the check,
+     * where both directions block -- at check time there is no wave to unblock and the orphan is
+     * the more dangerous failure.
      *
-     * A code in the contract-bearing artifact that this file does not implement is an UNKNOWN CODE
-     * ARRIVING: the router would emit or accept something it has no branch for. That is a fork and
-     * it throws.
-     *
-     * A code this file implements that the artifact has not yet written down is an OWED CONTRACT
-     * ROW. It is real, it is routed, and it does damage only by being forgotten -- so it is named
-     * on ctx and reported, not thrown. Throwing here would block the transfer gate on a document
-     * edit in another seat's write set, which is the barrier the wave structure exists to remove.
-     * `transfer-unevaluable` is the one such code today. */
-    const qr = ctx.questionClasses.refusal_codes || [];
-    const unknown = qr.filter(c => !REASON_CODES.includes(c));
-    if (unknown.length) {
-      throw new Error('oracle/router/classify: question_classes.json carries reason code(s) this ' +
-        'router does not implement: ' + unknown.join(', ') + '. An unknown code arriving is a fork ' +
-        'of the closed set, not a drift in it.');
-    }
-    ctx.owed_contract_codes = REASON_CODES.filter(c => qr.length && !qr.includes(c));
+     * THE verdicts HALF ABOVE STAYS AND KEEPS THROWING. It is about a different set, that set is
+     * still declared in two files, and it is correct as written. */
   }
 
   /* K1 TOKEN FORM over every literal this router compares against tokenizer output. Three silent
@@ -1389,7 +1395,10 @@ function adviseQuestion(ctx, questionText) {
     },
     known_defects_in_the_inputs: {
       token_form_failures: ctx.token_form_failures || [],
-      owed_contract_codes: ctx.owed_contract_codes || [],
+      /* `owed_contract_codes` was removed at Step 48 with the computation that fed it. Checked
+         before removing: acceptance.js's REQUIRED_REPORT_FIELDS does not name it, and nothing else
+         reads it. `closed_refusal_codes`, which acceptance.js:162 DOES require, is a different
+         field, is fed from REASON_CODES below, and is a correct derivation that stays. */
     },
     assertions: {
       no_decision_field: true,

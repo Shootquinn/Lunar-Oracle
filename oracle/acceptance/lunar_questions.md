@@ -16,7 +16,7 @@ different digest are not comparable. The audit behind these numbers is
 
 **What this set is for.** It is not a test of answer wording, which is nondeterministic. Every
 `Expected` cell names a verdict from the closed six  `APP`, `FIGURE`, `LITERATURE`, `BOTH`,
-`CONTESTED`, `REFUSE`  and every REFUSE names one of the closed six reason codes. Those are
+`CONTESTED`, `REFUSE`  and every REFUSE names one of the closed seven reason codes. Those are
 deterministic functions of the question, the app and the register, and they are what is asserted.
 The `Must carry` and `Fails if` columns are the discriminating content.
 
@@ -45,7 +45,7 @@ SRQ-5 is the instance.
 `captureEff` = 1 carries the status `ASSUMPTION (optimistic bound, no primary reports 100
 percent)`, and the status field is not part of the arithmetic. SRQ-1 and SRQ-11 are the instances.
 
-**F3  a refusal routes to nobody.** `excluded` is the weakest of the six reason codes and its
+**F3  a refusal routes to nobody.** `excluded` is the weakest of the seven reason codes and its
 owner is nobody. Where the app declares a boundary *and* another code applies, the other code is
 written. SRQ-12 and SRQ-14 are the instances, in opposite directions.
 
@@ -94,7 +94,7 @@ written. SRQ-12 and SRQ-14 are the instances, in opposite directions.
 | All ten question classes | SRQ-1 & SRQ-10, one each |
 | All three register classes | `two_sided` SRQ-5, SRQ-8, SRQ-12 ý `false_pair` SRQ-6 ý `one_sided` SRQ-11 |
 | All three trace grades | `recompute-verified` SRQ-1, SRQ-2, SRQ-3 ý `resolution-only` SRQ-2, SRQ-4, SRQ-7, SRQ-9 ý `refused` SRQ-13, SRQ-14 |
-| Refusal reason codes | `not-found` SRQ-13, SRQ-14. **Not covered: `unbuildable`, `axis-incomplete`, `misclassified`, `input-missing`**  these are loop failures rather than lunar-domain questions and belong in The Software Engineer's group, not this one. |
+| Refusal reason codes | `not-found` SRQ-13, SRQ-14. **Not covered: `excluded`, `unbuildable`, `axis-incomplete`, `misclassified`, `input-missing`, `transfer-unevaluable`**  `excluded` and `transfer-unevaluable` were added to this half at Step 48 as a MEASUREMENT, not a judgement: no `Expected` cell in this file names either, confirmed by parsing the rows rather than by reading them, and a coverage table titled so a gap is visible was under-enumerating the set it covers by two. **Why `transfer-unevaluable` is uncovered, and whether this set gains a row exercising it, is an open question owned by The Space Resources Engineer's seat** -- the loop-failure reason below does not obviously apply to a transfer-gate refusal over an object that IS in the corpus. The four original members are covered by that reason:  these are loop failures rather than lunar-domain questions and belong in The Software Engineer's group, not this one. |
 | The three exclusion outcomes | EXCLUDED-THEN-CORPUS SRQ-12 ý EXCLUDED-THEN-THIN SRQ-14 ý **EXCLUDED-BUT-ADJACENT not covered.** The three adjacency pairs ship as data in `oracle/question_classes.json`; a fixture for them needs the router's adjacency mechanism to exist first, and is owed at the sub-step that builds it. |
 | R5, the three named facts | SRQ-11 asserts it explicitly; SRQ-12 asserts the boundary half through its scope token |
 

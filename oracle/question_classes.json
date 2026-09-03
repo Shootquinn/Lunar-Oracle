@@ -88,7 +88,6 @@
     }
   },
 
-  "refusal_codes": ["excluded", "not-found", "unbuildable", "axis-incomplete", "misclassified", "input-missing"],
   "verdicts": ["APP", "FIGURE", "LITERATURE", "BOTH", "CONTESTED", "REFUSE"],
 
   "classes": [

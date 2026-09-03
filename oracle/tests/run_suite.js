@@ -1448,28 +1448,139 @@ B['VRD-11'] = () => {
     : PASS('APP_UNBUILDABLE appears in no .js or .json under oracle/ or tools/ (this checker excluded); the condition produces REFUSE with reason unbuildable');
 };
 
-B['REF-1'] = () => {
-  /* CLM-5's lesson applied to this row: the expected set is READ OUT OF THE CONTRACT at test time,
-   * never typed here. A checker holding its own copy of a closed set cannot detect the set moving,
-   * which is the only thing this row is for. */
-  const rc = routerConst();
-  if (!rc || !rc.REASON_CODES) return FAIL('oracle/router/classify.js declares no REASON_CODES array');
+/* --- REF: the reason codes. REF-1 IS GONE AND WAS REPLACED, NOT WIDENED. ------------------------
+ *
+ * REF-1 asserted that `oracle/router/classify.js`'s array equalled the contract's §5 table, reading
+ * both at test time and holding no copy of its own. Its comment stated the doctrine correctly and
+ * the row was honestly built: mutate either file it read and it went red. It was ALSO green through
+ * the entire fork it existed to catch, because three of the five sites carrying the set were not in
+ * its population and nothing announced their absence.
+ *
+ * WHAT WAS WRONG WITH IT IS NOT WHAT MY OWN STEP 47 RULE MEASURES. That rule constrains where a row
+ * gets its EXPECTATION -- do not hold your own copy -- and REF-1 obeyed it. It says nothing about
+ * where a row gets its SUBJECT LIST, and an author who mutates the artifact his row names will
+ * always succeed in seeing it go red. The failure mode of a list is that ITS COMPLEMENT IS
+ * UNSTATED: a list of two sites is green on the third the day it is added. A computed population's
+ * complement is empty by construction, so the next site fails on arrival. That is
+ * `check_register.md` §4's own doctrine -- "the list is closed, not merely complete, because its
+ * complement is computed" -- applied to a set of sites instead of a set of checks, and
+ * `AMENDMENTS.tsv` AM-155 ruled the identical thing on PTH-13's matcher six days earlier.
+ *
+ * AND AFTER FIX 6 REF-1 WOULD HAVE BEEN A TAUTOLOGY. `classify.js` now derives from
+ * `oracle/reason_codes.js` and §5's table is generated from it, so "the router's set equals the
+ * contract's set" is true by construction. A row asserting that a generated artifact matches its
+ * generator reports green forever and is worse than an absent row. */
+
+const reasonPop = () => {
+  /* THE POPULATION IS COMPUTED, NEVER LISTED, and the three exclusions are each a declared boundary
+     rather than a taste call:
+       - `cr_scratch/**` is outside both of `check_register.md`'s declared S roots, and it holds
+         frozen records of closed waves -- `cr_scratch/sre_w4/verify_all.js` line 11 declares the
+         set at six and correcting it would falsify a dated record.
+       - the authority module is the one file that is ALLOWED to enumerate the set.
+       - this file is excluded by name on VRD-11's own precedent: the first version of that row
+         searched for a token in a string it was itself holding and reported its own source. */
+  const out = sh('git ls-files').out.split(String.fromCharCode(10)).map(s => s.trim()).filter(Boolean);
+  return out.filter(f => (f.startsWith('oracle/') || f.startsWith('tools/')) &&
+    (f.endsWith('.js') || f.endsWith('.json')) &&
+    f !== 'oracle/tests/run_suite.js' && f !== 'oracle/reason_codes.js');
+};
+const authority = () => require(R('oracle/reason_codes.js'));
+
+B['REF-2'] = () => {
+  /* THE SWEEP, in VRD-11's shape and over a population this row computes at run time.
+   *
+   * WHAT COUNTS AS A SECOND DECLARATION, stated so nobody re-argues it. A file naming ONE member as
+   * a datum -- `"reason": "unbuildable"` on a single class prediction, a fixture refusing
+   * `not-found` -- is using the vocabulary, not declaring the set, and eleven files in the
+   * population do exactly that. An ENUMERATION is three or more DISTINCT members inside one
+   * 200-character span, which is what an array, an object key list and a regex alternation all look
+   * like and what a per-row datum never does. Comments are stripped from .js first: prose naming
+   * the codes is discussion, and `classify.js`'s own W4-2 provenance paragraph names four of them.
+   *
+   * THIS ROW'S LIMIT, NAMED RATHER THAN LEFT TO BE FOUND: a new consumer that hard-codes ONE member
+   * passes it. It catches a copy of the SET, which is the thing that forked. */
+  const RC = authority();
+  const strip = t => t.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1 ');
+  const pop = reasonPop();
+  if (!pop.length) return VAC('git ls-files returned no .js or .json under oracle/ or tools/');
+  const bad = [];
+  for (const f of pop) {
+    let t;
+    try { t = fs.readFileSync(R(f), 'utf8'); } catch (e) { continue; }
+    if (f.endsWith('.js')) t = strip(t);
+    const hits = [];
+    for (const c of RC.CODES) {
+      const rx = new RegExp('[\'"`|(]' + c + '[\'"`|)]', 'g');
+      let m; while ((m = rx.exec(t))) hits.push({ c: c, i: m.index });
+    }
+    hits.sort((a, b) => a.i - b.i);
+    for (let i = 0; i < hits.length; i++) {
+      const d = [...new Set(hits.filter(h => h.i >= hits[i].i && h.i < hits[i].i + 200).map(h => h.c))];
+      if (d.length >= 3) { bad.push(f + ' [' + d.join(' ') + ']'); break; }
+    }
+  }
+  return bad.length
+    ? FAIL(`${bad.length} file(s) of ${pop.length} enumerate the reason-code set outside oracle/reason_codes.js: ` +
+        `${bad.join('; ')}. The set has ONE declaration and every other site derives from it; a second enumeration is ` +
+        `a fork waiting for somebody to add the next code to one of them. Owner: whoever added the enumeration. ` +
+        `Close: the site imports oracle/reason_codes.js.`)
+    : PASS(`${pop.length} tracked .js/.json under oracle/ and tools/ computed at test time; none enumerates the set ` +
+        `outside oracle/reason_codes.js (this checker and cr_scratch excluded, with reasons in the source)`);
+};
+
+B['REF-3'] = () => {
+  /* THE RENDERING AND THE ARITY, and the rendering compares ALL THREE COLUMNS. REF-1 compared code
+   * names only, and names-only is precisely why it was green over a fork: it would have passed an
+   * owner column reassigning `transfer-unevaluable` to "a corpus gap, and an acquisition decision",
+   * which is the one distinction that makes it a seventh code rather than a widening of
+   * `not-found`. A check that reads the names has checked a list, not §5.
+   *
+   * THE ARITY HALF'S POPULATION IS ALSO COMPUTED. "closed set of six" written in words is a copy and
+   * it is one of the copies that drifted -- the tool's own rejection message cited "§5's closed six"
+   * to reject a value §5 declares legal. Computing the population found two live sites a
+   * hand-authored two-site list missed, `oracle/router/wave.js` and `tools/exclusions_match.js`.
+   * `oracle/AMENDMENTS.tsv` is excluded: it is a dated append-only record and AM-113 correctly says
+   * "six" about the state at R-3. Correcting a record falsifies it. Same rule for a past-tense
+   * sentence inside a live file -- `classify.js`'s provenance comment says section 5 GAVE the codes
+   * a closed set of six, which is the pre-version-5 state narrated accurately. */
+  const RC = authority();
   const c = contractText();
-  const sec = c.slice(c.indexOf(String.fromCharCode(10) + '## 5. Refusals'));
-  const table = sec.slice(0, sec.indexOf(String.fromCharCode(10) + '## 6.'));
-  const fromContract = [...table.matchAll(/^\| `([a-z-]+)` \|/gm)].map(m => m[1]);
-  if (!fromContract.length) return FAIL('the contract sec.5 table yields no reason codes; the table shape moved and this row cannot read it');
-  const declared = (table.match(/closed set of ([a-z]+)/) || [])[1];
-  const extra = rc.REASON_CODES.filter(v => !fromContract.includes(v));
-  const absent = fromContract.filter(v => !rc.REASON_CODES.includes(v));
-  if (!extra.length && !absent.length)
-    return PASS(`exactly ${fromContract.length}, closed, and the router's set is the contract's set: ${fromContract.join(' ')}`);
-  return FAIL(`THE SET IS NOT CLOSED. oracle/router/classify.js declares ${rc.REASON_CODES.length} reason codes; ` +
-    `${CONTRACT} sec.5 tables ${fromContract.length} and its prose says "closed set of ${declared}". ` +
-    `In the router and not in the contract: [${extra.join(' ')}]. In the contract and not in the router: [${absent.join(' ')}]. ` +
-    `A code ruled into the router without a contract row is a seventh member of a set the contract still calls six, ` +
-    `and every consumer that trusts the contract's arity is wrong by one. Owner: the seat that ruled the extra code in. ` +
-    `Close: the contract's sec.5 table and its stated arity name every code the router can emit.`);
+  const b = c.indexOf(RC.BEGIN), e = c.indexOf(RC.END);
+  if (b < 0 || e < 0) return FAIL(`${CONTRACT} carries no generated reason-code block; the markers oracle/reason_codes.js emits are absent and §5's table is hand-written again`);
+  const block = c.slice(b + RC.BEGIN.length, e).replace(/^\s*\n/, '').replace(/\n\s*$/, '');
+  const want = RC.renderSection5();
+  if (block !== want) {
+    const bl = block.split(String.fromCharCode(10)), wl = want.split(String.fromCharCode(10));
+    const at = bl.findIndex((l, i) => l !== wl[i]);
+    return FAIL(`${CONTRACT} §5's generated block is not the render of oracle/reason_codes.js. First difference at block line ${at + 1}: ` +
+      `contract has [${(bl[at] || '(absent)').slice(0, 120)}] and the module renders [${(wl[at] || '(absent)').slice(0, 120)}]. ` +
+      `All three columns are compared: a check over the code names alone would pass an owner column that had been reassigned.`);
+  }
+  /* Every arity stated in words, over a computed population. */
+  const W = 'four|five|six|seven|eight|nine|ten';
+  const want_word = RC.arityWord();
+  const proseFiles = sh('git ls-files').out.split(String.fromCharCode(10)).map(s => s.trim()).filter(Boolean)
+    .filter(f => (f.startsWith('oracle/') || f.startsWith('tools/') || f === 'CLAUDE.md') &&
+      (f.endsWith('.js') || f.endsWith('.md')) &&
+      f !== 'oracle/tests/run_suite.js' && f !== 'oracle/reason_codes.js' && f !== 'oracle/AMENDMENTS.tsv');
+  const forks = [];
+  let sites = 0;
+  for (const f of proseFiles) {
+    let lines;
+    try { lines = fs.readFileSync(R(f), 'latin1').split(String.fromCharCode(10)); } catch (err) { continue; }
+    lines.forEach((L, i) => {
+      const m = L.match(new RegExp('\\b(' + W + ')\\s+reason\\s+codes?\\b')) ||
+                L.match(new RegExp('reason code[^.]{0,80}closed set of (' + W + ')\\b')) ||
+                L.match(new RegExp('\u00a75\'s closed (' + W + ')\\b'));
+      if (!m) return;
+      sites++;
+      if (m[1] !== want_word) forks.push(`${f}:${i + 1} states "${m[1]}" :: ${L.trim().slice(0, 110)}`);
+    });
+  }
+  return forks.length
+    ? FAIL(`${forks.length} of ${sites} prose site(s) state a reason-code arity the authority contradicts (it holds ${RC.CODES.length}, "${want_word}"): ${forks.join(' | ')}`)
+    : PASS(`§5's generated block is the render of oracle/reason_codes.js over all three columns, and ${sites} prose site(s) across ${proseFiles.length} computed files all state "${want_word}"`);
 };
 
 /* --- CON and PDF: containment, bound to check_no_sources' own runnable probe ---------------- */

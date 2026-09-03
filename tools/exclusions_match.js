@@ -118,7 +118,7 @@ function outcomeFor(node) {
    must be able to assert that every outcome maps to exactly one verdict.
  *
  * EXCLUDED-THEN-CORPUS is NOT a refusal. Answer contract section 5: `excluded` is the weakest of
- * the six reason codes, its owner is nobody, and "a code that routes to nobody must never mask a
+ * the seven reason codes, its owner is nobody, and "a code that routes to nobody must never mask a
  * code that routes to someone." A node whose corpus holds a named primary has an answer; refusing
  * it writes a no-owner code over a real one.
  *

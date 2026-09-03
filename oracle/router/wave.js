@@ -58,7 +58,7 @@ function loadFieldSeats(fieldsPath) {
 const ARITY = {
   APP:        { of: () => 0, why: 'answer contract section 1: an APP verdict spends no personas; the app is the authority and the value carries a recompute trace' },
   FIGURE:     { of: () => 0, why: 'answer contract section 1: a FIGURE verdict spends no personas; the manifest and its verifier carry the answer' },
-  REFUSE:     { of: () => 0, why: 'answer contract section 5: a refusal spends zero personas, unconditionally, for every one of the six reason codes' },
+  REFUSE:     { of: () => 0, why: 'answer contract section 5: a refusal spends zero personas, unconditionally, for every one of the seven reason codes' },
   LITERATURE: { of: () => 1, why: 'answer contract section 1: one persona, selected by the field label' },
   BOTH:       { of: () => 1, why: 'answer contract section 1: one persona, selected by the field label; the app fact needs none' },
   CONTESTED:  { of: (sides) => Math.max(2, sides.length),

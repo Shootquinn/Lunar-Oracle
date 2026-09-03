@@ -11,13 +11,17 @@ edit, so here is the read. **Version 3** (8.4) moved §6, added §6a, §6b and �
 shape, the haiku form and the evidence pass. **Version 4** (8.7) appended §11. **No row in this file
 asserts against any of those sections**: every `§6` below names The Space Resources Engineer's ISRU
 specification, not this contract, and nothing here reads §6a, §6b, §10 or §11. **Version 5** (8.8)
-added the seventh refusal reason code to §5, and this file does have a row on §5 — REF-1 — which reads
-the table at run time rather than carrying a copy of it, and which was red *because* the code had no
-row. Re-pinned to 5, with REF-1 green on the contract rather than on the pin.
+added the seventh refusal reason code to §5, and this file does have rows on §5. Re-pinned to 5, with
+those rows green on the contract rather than on the pin. **REF-1 was replaced at Step 48 and its
+number is not reused.** It read `classify.js`'s array against §5's table, held no copy of its own, and
+was green through the entire four-site fork it existed to catch, because its population was two
+hand-authored sites and a list's complement is unstated. It is now REF-2, a sweep whose population is
+computed from `git ls-files` at test time, and REF-3, which compares the contract's generated §5 block
+to its generator over all three columns and checks every arity stated in prose.
 
-**91 tests**, of which 35 are generated (RFX 35) and 56 are hand-authored. Counting rule, unchanged
+**92 tests**, of which 35 are generated (RFX 35) and 57 are hand-authored. Counting rule, unchanged
 from version 1 except that the id pattern now admits a four-letter prefix: rows in the ten tables
-below whose first cell matches `^[A-Z]{2,4}-[0-9]+$`. Per group: VER 3, GRD 8, VRD 2, REF 1, FIL 3,
+below whose first cell matches `^[A-Z]{2,4}-[0-9]+$`. Per group: VER 3, GRD 8, VRD 2, REF 2, FIL 3,
 CLM 6, LOG 11, INV 7, RFX 35, ISR 15. The figures were counted by running the counting rule over this
 file, not by adding up a delta.
 
@@ -114,7 +118,8 @@ and the field is deleted with it.
 
 | ID | What is tested | Pass criterion | Status |
 |---|---|---|---|
-| REF-1 | The reason-code set is exactly six | A seventh value fails | green |
+| REF-2 | No file under `oracle/` or `tools/` enumerates the reason-code set outside `oracle/reason_codes.js` | The population is COMPUTED from `git ls-files` at test time, never listed; an enumeration is three or more distinct members inside one 200-character span, so a per-row datum passes and an array, an object key list or a regex alternation fails. `cr_scratch/`, the authority module and this checker are excluded, each by a declared boundary | green |
+| REF-3 | The contract's §5 block is the render of the authority over ALL THREE COLUMNS, and every arity stated in prose equals the authority's length | An owner column reassigned, a condition cell reworded, or a prose sentence stating the arity in words as anything but the authority's own length all fail. This cell states the failure rather than quoting an example of it, because REF-3 fired on the quotation the first time it was run -- which is the row proving it fires, and the fix was to reword rather than to widen the pattern around it. The prose population is computed too: the hand-authored two-site list missed `wave.js` and `exclusions_match.js` | green |
 
 ## 10. FIL — the deliverable is a file
 

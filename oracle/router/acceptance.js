@@ -71,6 +71,7 @@
 const fs = require('fs');
 const path = require('path');
 const C = require('./classify.js');
+const RC = require('../reason_codes.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
@@ -93,6 +94,29 @@ function readTsvQuestions(p) {
   return out;
 }
 
+/* --- the two label alternations, BUILT AT LOAD TIME FROM THE TWO CLOSED SETS ----------------------
+ *
+ * Both of these were hard-coded alternations in adjacent lines, over two closed sets, in the same
+ * expression. One of them had drifted and one had not, and they are ONE defect: correcting only the
+ * drifted one is how a repository arranges to have this conversation twice.
+ *
+ * WHY A DERIVED ALTERNATION IS NOT ON ITS OWN THE FIX. Measured at Step 48 on a real row: fed a row
+ * whose Expected cell reads `transfer-unevaluable`, the old code alternation did NOT return null. It
+ * returned `excluded`, taken from a cell further down the same row describing what a WRONG answer
+ * would be -- so a row correctly labelled with the seventh code was silently relabelled as the exact
+ * code the row exists to say is wrong. A missing label is visible. A plausible wrong label is not.
+ * Two live rows of the shipped acceptance set were being mislabelled that way with no mutation at
+ * all: SRQ-7, a LITERATURE row, read `misclassified`, and SRQ-12, a CONTESTED row, read `excluded`.
+ * Widening the alternation from six branches to seven fixes today and leaves the mechanism intact
+ * for the eighth code, so the reader below matches the SEMANTIC CLASS in the LABEL CELL and then
+ * tests membership, and reports an unrecognised label as a finding.
+ */
+const escAlt = a => '`(' + a.map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')`';
+const LABEL_VERDICT_RX = new RegExp(escAlt(C.VERDICTS));
+/* THE SEMANTIC CLASS: a backticked lowercase token, hyphens admitted. It is deliberately WIDER than
+   the set -- that width is what turns an unrecognised code into a finding instead of a silence. */
+const CODE_CLASS_RX = /`([a-z][a-z0-9]*(?:-[a-z0-9]+)*)`/g;
+
 /* A markdown question set. The Space Resources Engineer's oracle/acceptance/lunar_questions.md is a
    TABLE whose rows carry an id, the question, and the verdict a reader is expected to reach. That
    label is READ AND KEPT even though nothing agrees or disagrees with it any more, because it is the
@@ -109,13 +133,27 @@ function readMarkdownQuestions(p) {
       const idCell = cells.find(c => /^\*?\*?[A-Z]{2,4}-\d+\b/.test(c));
       const qCell = cells.find(c => c.endsWith('?') && c.length > 12);
       if (!qCell) continue;
-      const rest = cells.join(' | ');
-      const label = (rest.match(/`(APP|FIGURE|LITERATURE|BOTH|CONTESTED|REFUSE)`/) || [])[1] || null;
-      const code = (rest.match(/`(excluded|not-found|unbuildable|axis-incomplete|misclassified|input-missing)`/) || [])[1] || null;
+      /* THE LABEL IS READ OUT OF THE LABEL CELL, NOT OUT OF THE WHOLE ROW, and the code is
+         matched as a SEMANTIC CLASS and then tested for membership. Both halves are required and
+         neither is sufficient, which was measured rather than argued -- see the block above
+         LABEL_VERDICT_RX for what the old line did when it was fed the seventh code. */
+      const labelCell = cells.find(c => LABEL_VERDICT_RX.test(c)) || '';
+      const label = (labelCell.match(LABEL_VERDICT_RX) || [])[1] || null;
+      const tokens = [...labelCell.matchAll(CODE_CLASS_RX)].map(m => m[1]);
+      const known = tokens.filter(t => RC.CODES.includes(t));
+      const unknown = tokens.filter(t => !RC.CODES.includes(t));
       out.push({
         id: (idCell || (path.basename(p) + '#' + (n + 1))).replace(/\*/g, '').split(/\s/)[0],
         question: qCell.replace(/\*\*/g, '').replace(/`/g, '').replace(/\\\|/g, '|').trim(),
-        label_verdict: label, label_code: code,
+        label_verdict: label, label_code: known[0] || null,
+        /* AN UNRECOGNISED LABEL IS A FINDING, NEVER AN ABSENCE. `null` for "this row carries no
+           expected code" and `null` for "this row carries a code I do not recognise" are the same
+           byte, and a harness that cannot tell them apart reports the second as the first and
+           produces a coverage number out of it. */
+        label_code_finding: unknown.length
+          ? ('row ' + (idCell || '#' + (n + 1)) + ' labels reason code(s) [' + unknown.join(', ') +
+             '] that are not in the closed set of ' + RC.arityWord() + ' at oracle/reason_codes.js')
+          : null,
       });
       n++;
       continue;
@@ -403,6 +441,14 @@ function main() {
   for (const p of badProofs) console.log('  BROKEN  ' + p.name + ' -- ' + p.why);
 
   /* 6. reachability */
+  /* The label findings, printed before reachability because an unrecognised label makes every
+     number below it about a row whose expected code nobody read. */
+  const labelFindings = rows.map(r => r.label_code_finding).filter(Boolean);
+  if (labelFindings.length) {
+    console.log('');
+    console.log('LABEL FINDINGS: ' + labelFindings.length + ' question row(s) label a reason code outside the closed set.');
+    for (const f of labelFindings) console.log('  ' + f);
+  }
   const labelled = rows.filter(r => r.label_verdict);
   if (labelled.length) {
     const reached = labelled.filter(r => r.reach && r.reach.reachable);

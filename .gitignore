@@ -155,6 +155,14 @@
 # foot of this file, which is a different rule with a different purpose; a state file that
 # survives a clone because someone tightened the litter rule is the failure this row prevents.
 /.oracle-state.json.tmp
+# The run log, added at Step 48. Third literal in this section and the same class as the two above:
+# machine-written state describing THIS install. It moved here from the OS temp directory, where its
+# path was a function of the MACHINE -- two installs of this repository on one disk computed the same
+# path and appended to one file, and the resulting log named deliverables that resolved inside
+# neither install. A log addressed by an install cannot collide with another install's. Anchored, and
+# a literal rather than a wildcard, for the reason the two rows above give: a convenience pattern
+# here would eventually swallow something that must survive a clone.
+/.oracle-run-log.jsonl
 
 # --- The findings shelf --------------------------------------------------------------------
 # Same posture as literature/ above, and for the same reason. The author ruled at the Step 0

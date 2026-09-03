@@ -42,9 +42,31 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const ROOT = path.resolve(__dirname, '..');
 const R = p => path.join(ROOT, p);
 
-/* The run log is session history and is never part of the published tree. Default under the OS
- * temp directory, as the prototype has it; a caller who wants a specific log passes its path. */
-const DEFAULT_LOG = path.join(os.tmpdir(), 'lunar-oracle', 'run_log.jsonl');
+/* The run log is session history and is never part of the published tree. It is ADDRESSED BY THIS
+ * INSTALL, not by this machine, and that is a correction rather than a preference.
+ *
+ * WHAT THE OLD LINE DID, MEASURED ON THIS MACHINE RATHER THAN REASONED ABOUT. It read
+ * `path.join(os.tmpdir(), 'lunar-oracle', 'run_log.jsonl')`, a function of the MACHINE and of
+ * nothing else. Two installs of this repository were live here and both computed the identical path
+ * and appended to one file. The preserved artifact is
+ * `cr_scratch/run_pair_2026-09-02/run_log_machine_scoped.jsonl`: two rows, one of which names a
+ * deliverable that exists at that exact relative path inside the OTHER install and at no path inside
+ * this one. §6 says a log row that cannot retrieve the bytes that were delivered cannot be sampled,
+ * and a row nobody can attribute to an install is a row nobody can retrieve.
+ *
+ * SO THE DEFAULT RESOLVES INSIDE THE INSTALL THAT WROTE IT. A second install computes a second path
+ * by construction, and no arithmetic over a machine identifier can collide the two. It is ignored
+ * rather than committed -- see `.gitignore`, beside `/.oracle-state.json`, which is machine-written
+ * install state of exactly this kind and established both the convention and the anchored-literal
+ * form the rule is written in.
+ *
+ * BOTH ROUTES WERE TAKEN AND THEY ARE NOT ALTERNATIVES. Addressing the log by install stops two
+ * installs sharing a file from here on; it does nothing about rows already written. `integrity()`
+ * below therefore ALSO requires each `deliverable` to be retrievable -- absolute, or resolving to a
+ * file that exists inside THIS install. Either half alone leaves half of the measured defect
+ * standing: the first leaves the existing shared log's rows unattributable, and the second leaves
+ * two installs still writing one file. */
+const DEFAULT_LOG = path.join(ROOT, '.oracle-run-log.jsonl');
 
 /* Contract §8, both closed sets, and the precedence order is DATA rather than a chain of ifs, so
  * that PRECEDENCE-ORDER below can assert it rather than restate it. */
@@ -55,7 +77,20 @@ const SIX = [...OUTCOMES, 'FILLED'];
 const FIELDS = ['timestamp', 'question', 'verdict', 'outcome', 'review', 'reason_code',
   'deliverable', 'contract_version', 'lsei_ref'];
 const VERDICTS = ['APP', 'FIGURE', 'LITERATURE', 'BOTH', 'CONTESTED', 'REFUSE'];
-const REASON_CODES = ['excluded', 'not-found', 'unbuildable', 'axis-incomplete', 'misclassified', 'input-missing'];
+/* §5's closed set, DERIVED FROM `oracle/reason_codes.js` AND DELIBERATELY NOT FROM
+ * `oracle/router/classify.js`, which is the nearer import and the wrong one. THIS FILE IS A LOG
+ * LINTER AND THE ROUTER IS THE SUBSYSTEM WHOSE OUTPUT IT EXISTS TO VERIFY. Importing the router's
+ * array costs nothing today, which is exactly the problem: a router that widened its set would
+ * silently widen what this file accepts, and a drift that is at least visible today would become an
+ * invisible agreement -- strictly worse than the fork being fixed. Both files are consumers of the
+ * contract layer; neither can move the other's expectation.
+ *
+ * EVERY ARITY BELOW IS `.length` AND NEVER A LITERAL. This file previously accepted six codes and
+ * printed the word "six" in two places, one of them the user-visible rejection message at
+ * `integrity()` -- so it rejected `transfer-unevaluable` while citing the very section that declares
+ * it legal. A corrected literal is the same defect with a later expiry date. */
+const RC = require('../oracle/reason_codes.js');
+const REASON_CODES = RC.CODES;
 
 /* --------------------------------------------------------------- reading */
 function readLog(logPath) {
@@ -89,7 +124,7 @@ function integrity(rows) {
     if (!VERDICTS.includes(r.verdict)) findings.push(at + ': verdict "' + r.verdict + '" outside contract §1\'s closed six');
     // §8: the reason code is recorded where the verdict is REFUSE, and only there.
     if (r.verdict === 'REFUSE') {
-      if (!REASON_CODES.includes(r.reason_code)) findings.push(at + ': verdict REFUSE with reason_code "' + r.reason_code + '" outside §5\'s closed six');
+      if (!REASON_CODES.includes(r.reason_code)) findings.push(at + ': verdict REFUSE with reason_code "' + r.reason_code + '" outside §5\'s closed ' + RC.arityWord());
     } else if (r.reason_code && r.reason_code !== '-') {
       findings.push(at + ': verdict ' + r.verdict + ' carries reason_code "' + r.reason_code + '"; §5 attaches a code to a refusal and to nothing else');
     }
@@ -103,8 +138,18 @@ function integrity(rows) {
       findings.push(at + ': outcome REFUSED with verdict ' + r.verdict);
     // §6: "The deliverable file persists after the turn, and its path is recorded in the run log row
     // for that run. A log row that cannot retrieve the bytes that were delivered cannot be sampled."
+    /* §6's field, checked for what §6 says it is for. Until Step 48 this asserted NON-EMPTINESS
+       only, which is satisfied by any string, and a two-install log whose every deliverable resolved
+       inside no install passed it and printed `RESULT PASS (log well-formed)`.
+       AN ABSOLUTE PATH IS ACCEPTED WHATEVER IT NAMES, and that is deliberate rather than a gap: an
+       absolute path SAYS WHICH INSTALL WROTE THE ROW, which is the property §6 needs, and a log
+       written by another install on another disk is not retrievable from here and must not be
+       reported as a defect in the log. A RELATIVE path is a claim about THIS install and is checked
+       against it. */
     if (!r.deliverable || r.deliverable === '-')
       findings.push(at + ': no deliverable path. §6 -- a log row that cannot retrieve the bytes that were delivered cannot be sampled, and a sampling protocol over such rows is theater');
+    else if (!path.isAbsolute(r.deliverable) && !fs.existsSync(path.resolve(ROOT, r.deliverable)))
+      findings.push(at + ': deliverable "' + r.deliverable + '" is relative and resolves inside no install -- it names no file under ' + ROOT + ' and does not say which install wrote it. §6: a row nobody can retrieve the bytes for is a row nobody can sample');
     if (String(r.contract_version) !== String(r.contract_version | 0) || !r.contract_version)
       findings.push(at + ': contract_version "' + r.contract_version + '" is not a bare monotone integer (§9)');
     // §8's ninth field. A run that emitted no app trace records the ref anyway; `-` where absent.
@@ -193,7 +238,7 @@ function prove() {
   };
   const row = o => Object.assign({
     timestamp: '2026-08-28T00:00:00Z', question: 'q', verdict: 'LITERATURE', outcome: 'ANSWERED',
-    review: 'unreviewed', reason_code: '', deliverable: 'oracle/answers/a.md',
+    review: 'unreviewed', reason_code: '', deliverable: path.join(ROOT, 'oracle', 'answers', 'a.md'),
     contract_version: 2, lsei_ref: 'deadbee',
   }, o);
 
@@ -254,6 +299,25 @@ function prove() {
     integrity(readLog(nopath).rows).filter(f => /cannot be sampled/.test(f)).length + ' finding(s)',
     integrity(readLog(nopath).rows).some(f => /cannot be sampled/.test(f)));
 
+  /* §6 AGAIN, AND IT IS THE ROW THE TWO-INSTALL LOG WALKED THROUGH. A relative deliverable naming a
+     file that exists in no install is a row nobody can retrieve. The fixture is the two rows of the
+     preserved artifact, quoted rather than invented. */
+  const foreign = write('foreign', [row({ deliverable: 'answers/deloitte-lunar-economy-second-review.md' })]);
+  add('DELIVERABLE-RESOLVES-IN-AN-INSTALL', 'a relative deliverable that resolves inside no install is a finding, not a PASS',
+    integrity(readLog(foreign).rows).filter(f => /resolves inside no install/.test(f)).length + ' finding(s)',
+    integrity(readLog(foreign).rows).some(f => /resolves inside no install/.test(f)));
+
+  /* §5's SEVENTH CODE. The old fixtures constructed every refusal with `not-found`, so this proof
+     went on passing over a set that had lost its seventh member -- which is exactly what had
+     happened. The code is taken from the authority at run time rather than typed, so an eighth code
+     is exercised the day it is declared and this row cannot go stale the same way twice. */
+  const seventh = RC.CODES[RC.CODES.length - 1];
+  const seven = write('seventh', [row({ verdict: 'REFUSE', outcome: 'REFUSED', reason_code: seventh })]);
+  add('EVERY-CONTRACT-CODE-IS-ACCEPTED', 'every code the authority declares is accepted here, the last one included',
+    RC.CODES.length + ' code(s), last is ' + seventh,
+    RC.CODES.every(c => integrity(readLog(write('c-' + c, [row({ verdict: 'REFUSE', outcome: 'REFUSED', reason_code: c })])).rows).length === 0)
+      && integrity(readLog(seven).rows).length === 0);
+
   /* FILLED is never assigned here. The assertion is over this file's own source. */
   const src = fs.readFileSync(__filename, 'utf8');
   const assigns = [...src.matchAll(/review\s*[:=]\s*'FILLED'/g)].length;
@@ -280,7 +344,7 @@ if (require.main === module) {
     process.stdout.write('  outcome (5)   ' + OUTCOMES.join(' > ') + '   machine-written, single-valued, precedence order\n');
     process.stdout.write('  review  (3)   ' + REVIEWS.join(' | ') + '   human-written, never machine-written\n');
     process.stdout.write('  verdict (6)   ' + VERDICTS.join(' ') + '\n');
-    process.stdout.write('  reason  (6)   ' + REASON_CODES.join(' ') + '   written where verdict is REFUSE and nowhere else\n');
+    process.stdout.write('  reason  (' + REASON_CODES.length + ')   ' + REASON_CODES.join(' ') + '   written where verdict is REFUSE and nowhere else\n');
     process.stdout.write('  the six counted every run: ' + SIX.join(' ') + '\n');
     process.exit(0);
   } else {

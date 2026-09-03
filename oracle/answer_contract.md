@@ -171,6 +171,13 @@ LIMIT: this trace resolves to a prior conclusion of this project, not to a sourc
 A refusal carries exactly one reason code, closed set of seven. Each routes to a different owner, which
 is why they are not one code.
 
+<!-- The table below is GENERATED from `oracle/reason_codes.js`, which is the single declaration of
+     this set. Edit the module and re-render; an edit made here is overwritten and, until it is,
+     `REF-2` fails on it. All three columns are generated and all three are compared: a check that
+     reads the code names only has checked a list, not §5. The argument below the table, the
+     precedence order, the `misclassified` paragraph and the §11 record are hand-written and no
+     generator touches them. -->
+<!-- BEGIN GENERATED reason-code table -- oracle/reason_codes.js --render-section-5 -->
 | Code | Condition | Who owns the fix |
 |---|---|---|
 | `excluded` | The app's EXCLUSIONS register declares the topic. | Nobody. The app's declared boundary, working. |
@@ -180,6 +187,7 @@ is why they are not one code.
 | `misclassified` | A searched retrieval returned a file belonging to an axis whose `match_keys` this question touched at any nonzero overlap, while classification did not fire that axis at its stated firing rule. | The axis's `match_keys`. |
 | `input-missing` | A required input is absent, empty, or unparseable. | The bootstrap. |
 | `transfer-unevaluable` | The transfer gate reached `unknown`: the object is present in the corpus and a condition of the transfer between two fields cannot be evaluated, because no source on disk measures it. Names the unmeasured condition and the region searched. | Whoever can measure the condition — a research question, not an acquisition. |
+<!-- END GENERATED reason-code table -->
 
 **The seventh code, and why it is not a widening of `not-found`.** `transfer-unevaluable` was ruled
 into `oracle/router/classify.js` at W4-2 on W4-4's escalation from the transfer gate, and
@@ -539,13 +547,16 @@ the question closes *"at the moment of publication, which is a fact about the re
 judgement about how related two changes feel."* Version 4 is published. So this is the next state,
 even though the acceptance suite was still pinned at 2 when the edit began and observed neither.
 
-**What this version does NOT do, and it is owed rather than absorbed.** `oracle/question_classes.json`
-still lists six `refusal_codes`. That artifact is not this seat's file, and the router already
-distinguishes the two directions: a code in the artifact that the router does not implement throws as
-a fork, while a code the router implements that the artifact has not written down is reported on
-`ctx.owed_contract_codes`. The seventh code is the one such code today, and it stays reported until the
-artifact's owner adds it. Also owed: `oracle/AMENDMENTS.tsv` takes a row for this edit, in the shape
-`AM-113` took for the last §5 edit, and that file is not this seat's either.
+**What this version left owed, and where it landed.** Version 5 said `oracle/question_classes.json`
+still listed six `refusal_codes`, that the artifact was another seat's file, and that the seventh code
+would stay reported on `ctx.owed_contract_codes` until that seat added it. It also said
+`oracle/AMENDMENTS.tsv` was owed a row in `AM-113`'s shape. **Both closed at Step 48, and the first
+closed in the opposite direction to the one this paragraph anticipated.** The `refusal_codes` key is
+DELETED rather than corrected: the set now has one declaration, `oracle/reason_codes.js`, and §5's
+table above is generated from it, so there is no second copy for the two directions to differ across.
+The reporting channel went with the key it reported on, because a channel over an empty population can
+never fire and is indistinguishable from one nobody wired; the two-direction doctrine survives and
+moved to the check, where both directions block. The amendment row is `AM-156`.
 
 **A section appended is not a section renumbered.** §6a and §10 are appended at the numbers they are
 because §1 through §9 are cited by number across this repository — in `oracle/register_schema.md`,
