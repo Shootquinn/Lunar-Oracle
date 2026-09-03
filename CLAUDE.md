@@ -112,6 +112,15 @@ of keys it writes is closed.
 
 ```bash
 for d in cr-agents lsei; do
+  [ -d "$d" ] || { echo "BC-6: $d is missing; nothing to configure here this session"; continue; }
+  # git -C DOES NOT FAIL ON A DIRECTORY CARRYING NO .git. It walks up and operates on the enclosing
+  # clone. --show-prefix is empty at a repository top and names the subdirectory when it walked up,
+  # so it tells the two apart without itself walking anywhere.
+  if [ -n "$(git -C "$d" rev-parse --show-prefix 2>/dev/null)" ] || [ ! -e "$d/.git" ]; then
+    echo "BC-6: $d present-but-wrong -- present on disk and not a git repository of its own."
+    echo "BC-6: reported and NOT repaired (BC-21). No .git is created here and nothing inside $d is touched."
+    continue
+  fi
   git -C "$d" remote set-url --push origin DISABLED
   git -C "$d" remote -v | grep -q 'DISABLED (push)' || echo "BC-6: push-disable did not take on $d"
   git -C "$d" config core.longpaths true
@@ -121,6 +130,28 @@ git config core.longpaths true
 git config core.hooksPath tools/githooks
 git ls-files -s tools/githooks/ | grep -qv '^100755' && echo "BC-8: a hook is committed non-executable and is inert on a fresh clone"
 ```
+
+**The guard on `git -C`, and which way the correction ran.** `oracle/bootstrap_contract.md` is the
+specification and §5 of this file says a disagreement between them is resolved by correcting **this**
+file. The contract needed no correction: BC-6's own on-failure column already reads *"Report; retry
+once; if it will not take, mode `present-but-wrong`"*, and §5 gives that mode the disjunct *"the
+directory exists and is not a git repository."* The loop above implemented neither. So this is
+existing contract vocabulary being wired, not new vocabulary being invented, and the edit is here.
+
+**Why the quiet case is the dangerous one, measured rather than reasoned.** `git -C` against a
+**missing** directory is loud: `lsei` produces four `fatal: cannot change to 'lsei'` lines and trips
+BC-6's own echo. `git -C` against a directory that is **present and carries no `.git`** is completely
+silent — it walks up to the enclosing repository and does all of the work there, printing nothing. The
+live case is on disk at `CC/oracletest2`: `cr-agents/` unpacked without a `.git`, `lsei/` absent, and
+the install's **own** `remote.origin.pushurl` set to `DISABLED` by a loop that was aiming at a working
+copy. A guard that handles only the missing case fixes the half that was already reporting itself.
+
+**It reports and it never repairs, on BC-21's precedent.** It does not `git init` the directory, it
+does not add a remote, and it does not touch a byte inside it. BC-21's paragraph gives the reason for
+the fetch URL and it governs here for the same reason: *"a fork the author is deliberately working
+against is indistinguishable, from inside this contract, from a mistake, and the report is what tells
+them apart."* §5's "never clone over `present-but-wrong` and never delete it — something put it there
+on purpose" is the same rule one level up.
 
 Assert the push-disable every session rather than at acquire time; every install predating the fix
 holds a working copy with push still enabled. `core.longpaths` and the push URL are the only two keys written into a
